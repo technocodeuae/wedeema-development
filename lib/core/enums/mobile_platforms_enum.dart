@@ -1,0 +1,1 @@
+enum MobilePlatformsEnum { Android, IOS }

@@ -1,0 +1,1 @@
+enum LocalAuthTypeEnum { NONE, TOUCH_ID, PIN_CODE, DISABLE_PIN_CODE }

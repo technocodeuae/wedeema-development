@@ -1,0 +1,28 @@
+# This is an example Starter pipeline configuration
+# Use a skeleton to build, test and deploy using manual and parallel steps
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+
+image: "cirrusci/flutter:3.10.0"
+
+pipelines:
+  default:
+    - parallel:
+      - step:
+          name: 'Build and Test'
+          
+          script:
+            - flutter packages get
+            - flutter clean
+            - flutter build apk --target-platform android-arm,android-arm64 --split-per-abi
+          artifacts:
+             - build/app/outputs/apk/release/app-armeabi-v7a-release.apk
+    - step:
+        name: 'Deployment to Staging'
+        deployment: staging
+        image: node
+        script:
+         - npm install -g appcenter-cli
+         - appcenter login --token $APPCENTER_API_TOEKN
+         - appcenter distribute release -f     build/app/outputs/apk/release/app-armeabi-v7a-release.apk -g Collaborators --app BashirAltereh/Wadeema
+
