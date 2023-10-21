@@ -172,8 +172,9 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
   // }
   @override
   Widget build(BuildContext context) {
+    print('--------------------------------------------------${widget.name}');
     return Container(
-      height: 260.sp,
+      height:  260.sp,
       // width: 400.sp,
       child: SmartRefresher(
         enablePullDown: true,
@@ -290,224 +291,138 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
   int selectedIndex = -1;
 
   _buildBody() {
-    return Column(
-      children: [
-        widget.is_category == true
-            ? Container()
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    widget.name.toString(),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppStyle.verySmallTitleStyle.copyWith(
-                        color: AppColorsController().textPrimaryColor,
-                        fontWeight: AppFontWeight.midLight,
-                        fontSize: AppFontSize.fontSize_14),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      DIManager.findNavigator().pushNamed(
-                        ViewAllPage.routeName,
-                        arguments: ViewAllArgs(
-                          category_id: widget.category_id,
-                          type: widget.type,
-                        ),
-                      );
-                    },
-                    child: Text(
-                      translate("view_all"),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          widget.is_category == true
+              ? Container()
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      widget.name.toString(),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: AppStyle.verySmallTitleStyle.copyWith(
                           color: AppColorsController().textPrimaryColor,
                           fontWeight: AppFontWeight.midLight,
                           fontSize: AppFontSize.fontSize_14),
                     ),
-                  ),
-                ],
-              ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 8.0.sp),
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: itemsList.isNotEmpty &&
-                    categoriesBloc
-                        .isJobs(itemsList.first.category_title ?? '') &&
-                    widget.category_id == AppConsts.jobCategoryId
-                ? 200.sp
-                : 190.sp,
-            child: widget.type == 10
-                ? Row(
-                    children: [
-                      Expanded(
-                        child: ListView.separated(
-                          controller: _controller,
-                          physics: BouncingScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            selectedIndex = index - 1;
-
-                            if (categoriesBloc.isJobs(
-                                itemsList[index].category_title ?? '')) {
-                              return SizedBox(
-                                child: JobAdCard(
-                                  width:
-                                      MediaQuery.sizeOf(context).width * 0.85,
-                                  data: itemsList[index],
-                                  onPress: () {
-                                    DIManager.findNavigator().pushNamed(
-                                      ItemsDetailsPage.routeName,
-                                      arguments: ItemsArgs(
-                                          id: itemsList[index].ad_id ?? 0),
-                                    );
-                                  },
-                                ),
-                              );
-                            }
-                            return HomeItemsWidget(
-                              onPress: () {
-                                DIManager.findNavigator()
-                                    .pushNamed(ItemsDetailsPage.routeName,
-                                        arguments: ItemsArgs(
-                                          id: itemsList[index].ad_id ?? 0,
-                                        ));
-                              },
-                              data: itemsList[index],
-                            );
-                          },
-                          separatorBuilder: (context, index) {
-                            return SizedBox(
-                              width: 8,
-                            );
-                          },
-                          itemCount: itemsList.length,
-                          scrollDirection: Axis.horizontal,
-                        ),
-                      ),
-                      message == ''
-                          ? Container()
-                          : Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 15.sp),
-                              child: InkWell(
-                                onTap: () {
-                                  DIManager.findNavigator().pushNamed(
-                                    ViewAllPage.routeName,
-                                    arguments: ViewAllArgs(
-                                      category_id: widget.category_id,
-                                      type: widget.type,
-                                    ),
-                                  );
-                                },
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.arrow_circle_left_outlined,
-                                        color: AppColorsController()
-                                            .buttonRedColor,
-                                        size: 48.sp),
-                                    Text(
-                                      message,
-                                      // 'عرض الكل',
-                                      style: AppStyle.verySmallTitleStyle
-                                          .copyWith(
-                                              color: AppColorsController()
-                                                  .textPrimaryColor,
-                                              fontWeight:
-                                                  AppFontWeight.midLight,
-                                              fontSize:
-                                                  AppFontSize.fontSize_12),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                    ],
-                  )
-                : SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        if (!(categoriesBloc
-                            .isJobs(itemsList[0].category_title ?? '')))
-                          Row(
-                            children: [
-                              if (widget.name == "الإعلانات الأكثر شيوعاً") ...[
-                                HomeItemsWidget(
-                                  onPress: () {
-                                    DIManager.findNavigator()
-                                        .pushNamed(ItemsDetailsPage.routeName,
-                                            arguments: ItemsArgs(
-                                              id: itemsList[0].ad_id ?? 0,
-                                            ));
-                                  },
-                                  data: itemsList[0],
-                                ),
-                              ] else ...[
-                                HomeItemsWidget(
-                                  onPress: () {
-                                    DIManager.findNavigator()
-                                        .pushNamed(ItemsDetailsPage.routeName,
-                                            arguments: ItemsArgs(
-                                              id: itemsList[0].ad_id ?? 0,
-                                            ));
-                                  },
-                                  data: itemsList[0],
-                                ),
-                                SizedBox(
-                                  width: 10.sp,
-                                ),
-                                HomeItemsWidget(
-                                  onPress: () {
-                                    DIManager.findNavigator()
-                                        .pushNamed(ItemsDetailsPage.routeName,
-                                            arguments: ItemsArgs(
-                                              id: itemsList[1].ad_id ?? 0,
-                                            ));
-                                  },
-                                  data: itemsList[1],
-                                ),
-                                SizedBox(
-                                  width: 10.sp,
-                                ),
-                                HomeItemsWidget(
-                                  onPress: () {
-                                    DIManager.findNavigator()
-                                        .pushNamed(ItemsDetailsPage.routeName,
-                                            arguments: ItemsArgs(
-                                              id: itemsList[2].ad_id ?? 0,
-                                            ));
-                                  },
-                                  data: itemsList[2],
-                                ),
-                              ],
-                            ],
+                    InkWell(
+                      onTap: () {
+                        DIManager.findNavigator().pushNamed(
+                          ViewAllPage.routeName,
+                          arguments: ViewAllArgs(
+                            category_id: widget.category_id,
+                            type: widget.type,
                           ),
-                        //               // if(widget.name == "الإعلانات التي تم رفعها مؤخراً"  )
-                        //               //   SizedBox(width: 10.sp,),
-                        //               // if(widget.name == "الإعلانات التي تم رفعها مؤخراً"  )
-                        //               //   HomeItemsWidget(
-                        //               //     onPress: () {
-                        //               //       DIManager.findNavigator()
-                        //               //           .pushNamed(ItemsDetailsPage.routeName,
-                        //               //           arguments: ItemsArgs(
-                        //               //             id: itemsList[  1].ad_id ?? 0,
-                        //               //           ));
-                        //               //     },
-                        //               //     data: itemsList[1],
-                        //               //   ),
-                        //               // if(widget.name == "الإعلانات التي تم رفعها مؤخراً"  )
-                        //               //    SizedBox(width: 10.sp,),
-                        //               // if(widget.name == "الإعلانات التي تم رفعها مؤخراً" )  HomeItemsWidget(
-                        //               //   onPress: () {
-                        //               //     DIManager.findNavigator()
-                        //               //         .pushNamed(ItemsDetailsPage.routeName,
-                        //               //         arguments: ItemsArgs(
-                        //               //           id: itemsList[2].ad_id ?? 0,
-                        //               //         ));
-                        //               //   },
-                        //               //   data: itemsList[2],
-                        //               // ),
-                        //
+                        );
+                      },
+                      child: Text(
+                        translate("view_all"),
+                        style: AppStyle.verySmallTitleStyle.copyWith(
+                            color: AppColorsController().textPrimaryColor,
+                            fontWeight: AppFontWeight.midLight,
+                            fontSize: AppFontSize.fontSize_14),
+                      ),
+                    ),
+                  ],
+                ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 8.0.sp),
+            child:  Container(
+              width: MediaQuery.of(context).size.width,
+              height: itemsList.isNotEmpty &&
+                      categoriesBloc
+                          .isJobs(itemsList.first.category_title ?? '') &&
+                      widget.category_id == AppConsts.jobCategoryId
+                  ? 200.sp
+                  : 190.sp,
+              child:SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          if (!(categoriesBloc
+                              .isJobs(itemsList[0].category_title ?? '')))
+                            Row(
+                              children: [
+                                if (widget.name == "الإعلانات الأكثر شيوعاً") ...[
+                                  HomeItemsWidget(
+                                    onPress: () {
+                                      DIManager.findNavigator()
+                                          .pushNamed(ItemsDetailsPage.routeName,
+                                              arguments: ItemsArgs(
+                                                id: itemsList[0].ad_id ?? 0,
+                                              ));
+                                    },
+                                    data: itemsList[0],
+                                  ),
+                                ] else ...[
+                                  HomeItemsWidget(
+                                    onPress: () {
+                                      DIManager.findNavigator()
+                                          .pushNamed(ItemsDetailsPage.routeName,
+                                              arguments: ItemsArgs(
+                                                id: itemsList[0].ad_id ?? 0,
+                                              ));
+                                    },
+                                    data: itemsList[0],
+                                  ),
+                                  SizedBox(
+                                    width: 10.sp,
+                                  ),
+                                  HomeItemsWidget(
+                                    onPress: () {
+                                      DIManager.findNavigator()
+                                          .pushNamed(ItemsDetailsPage.routeName,
+                                              arguments: ItemsArgs(
+                                                id: itemsList[1].ad_id ?? 0,
+                                              ));
+                                    },
+                                    data: itemsList[1],
+                                  ),
+                                  SizedBox(
+                                    width: 10.sp,
+                                  ),
+                                  HomeItemsWidget(
+                                    onPress: () {
+                                      DIManager.findNavigator()
+                                          .pushNamed(ItemsDetailsPage.routeName,
+                                              arguments: ItemsArgs(
+                                                id: itemsList[2].ad_id ?? 0,
+                                              ));
+                                    },
+                                    data: itemsList[2],
+                                  ),
+                                ],
+                              ],
+                            ),
+                          //               // if(widget.name == "الإعلانات التي تم رفعها مؤخراً"  )
+                          //               //   SizedBox(width: 10.sp,),
+                          //               // if(widget.name == "الإعلانات التي تم رفعها مؤخراً"  )
+                          //               //   HomeItemsWidget(
+                          //               //     onPress: () {
+                          //               //       DIManager.findNavigator()
+                          //               //           .pushNamed(ItemsDetailsPage.routeName,
+                          //               //           arguments: ItemsArgs(
+                          //               //             id: itemsList[  1].ad_id ?? 0,
+                          //               //           ));
+                          //               //     },
+                          //               //     data: itemsList[1],
+                          //               //   ),
+                          //               // if(widget.name == "الإعلانات التي تم رفعها مؤخراً"  )
+                          //               //    SizedBox(width: 10.sp,),
+                          //               // if(widget.name == "الإعلانات التي تم رفعها مؤخراً" )  HomeItemsWidget(
+                          //               //   onPress: () {
+                          //               //     DIManager.findNavigator()
+                          //               //         .pushNamed(ItemsDetailsPage.routeName,
+                          //               //         arguments: ItemsArgs(
+                          //               //           id: itemsList[2].ad_id ?? 0,
+                          //               //         ));
+                          //               //   },
+                          //               //   data: itemsList[2],
+                          //               // ),
+                          //
 
                         if ((categoriesBloc
                             .isJobs(itemsList[0].category_title ?? '')))
@@ -562,227 +477,348 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                           ),
                         //
 
-                        // Expanded(
-                        //   child: ListView.separated(
-                        //     controller: _controller,
-                        //     physics: BouncingScrollPhysics(),
-                        //     itemBuilder: (context, index) {
-                        //
-                        //       selectedIndex = index -1;
-                        //
-                        //       if (categoriesBloc.isJobs(itemsList[index].category_title ?? '')) {
-                        //         return SizedBox(
-                        //           child: JobAdCard(
-                        //             width: MediaQuery.sizeOf(context).width * 0.85,
-                        //             data: itemsList[index],
-                        //             onPress: () {
-                        //               DIManager.findNavigator().pushNamed(
-                        //                 ItemsDetailsPage.routeName,
-                        //                 arguments: ItemsArgs(id: itemsList[index].ad_id ?? 0),
-                        //               );
-                        //             },
-                        //           ),
-                        //         );
-                        //       }
-                        //       return HomeItemsWidget(
-                        //
-                        //         onPress: () {
-                        //           DIManager.findNavigator()
-                        //               .pushNamed(ItemsDetailsPage.routeName,
-                        //               arguments: ItemsArgs(
-                        //                 id: itemsList[index].ad_id??0,
-                        //               ));
-                        //         },
-                        //         data: itemsList[index],
-                        //       );
-                        //     },
-                        //
-                        //     separatorBuilder: (context, index) {
-                        //
-                        //       return SizedBox(
-                        //         width: 8,
-                        //       );
-                        //     },
-                        //     itemCount: itemsList.length ,
-                        //     scrollDirection: Axis.horizontal,
-                        //
-                        //   ),
-                        // ),
+                          // Expanded(
+                          //   child: ListView.separated(
+                          //     controller: _controller,
+                          //     physics: BouncingScrollPhysics(),
+                          //     itemBuilder: (context, index) {
+                          //
+                          //       selectedIndex = index -1;
+                          //
+                          //       if (categoriesBloc.isJobs(itemsList[index].category_title ?? '')) {
+                          //         return SizedBox(
+                          //           child: JobAdCard(
+                          //             width: MediaQuery.sizeOf(context).width * 0.85,
+                          //             data: itemsList[index],
+                          //             onPress: () {
+                          //               DIManager.findNavigator().pushNamed(
+                          //                 ItemsDetailsPage.routeName,
+                          //                 arguments: ItemsArgs(id: itemsList[index].ad_id ?? 0),
+                          //               );
+                          //             },
+                          //           ),
+                          //         );
+                          //       }
+                          //       return HomeItemsWidget(
+                          //
+                          //         onPress: () {
+                          //           DIManager.findNavigator()
+                          //               .pushNamed(ItemsDetailsPage.routeName,
+                          //               arguments: ItemsArgs(
+                          //                 id: itemsList[index].ad_id??0,
+                          //               ));
+                          //         },
+                          //         data: itemsList[index],
+                          //       );
+                          //     },
+                          //
+                          //     separatorBuilder: (context, index) {
+                          //
+                          //       return SizedBox(
+                          //         width: 8,
+                          //       );
+                          //     },
+                          //     itemCount: itemsList.length ,
+                          //     scrollDirection: Axis.horizontal,
+                          //
+                          //   ),
+                          // ),
 
-                        // // الإعلانات الأكثر شيوعاً
-                        //               //
-                        //               if(widget.name == "الإعلانات الأكثر شيوعاً" ||!(categoriesBloc.isJobs(itemsList[0].category_title ?? '')))
-                        //                 Row(
-                        //                   children: [
-                        //                     HomeItemsWidget(
-                        //                       onPress: () {
-                        //                         DIManager.findNavigator()
-                        //                             .pushNamed(ItemsDetailsPage.routeName,
-                        //                             arguments: ItemsArgs(
-                        //                               id: itemsList[0].ad_id ?? 0,
-                        //                             ));
-                        //                       },
-                        //                       data: itemsList[0],
-                        //                     ), SizedBox(width: 10.sp,),
-                        //
-                        //                   ],
-                        //                 ),
-                        //
-                        //               if(widget.name == "الإعلانات الأكثر تقييماً"  ||!(categoriesBloc.isJobs(itemsList[0].category_title ?? '')))
-                        //                 Row(
-                        //                   children: [
-                        //                     HomeItemsWidget(
-                        //                       onPress: () {
-                        //                         DIManager.findNavigator()
-                        //                             .pushNamed(ItemsDetailsPage.routeName,
-                        //                             arguments: ItemsArgs(
-                        //                               id: itemsList[0].ad_id ?? 0,
-                        //                             ));
-                        //                       },
-                        //                       data: itemsList[0],
-                        //                     ),  SizedBox(width: 10.sp,),HomeItemsWidget(
-                        //                       onPress: () {
-                        //                         DIManager.findNavigator()
-                        //                             .pushNamed(ItemsDetailsPage.routeName,
-                        //                             arguments: ItemsArgs(
-                        //                               id: itemsList[1].ad_id ?? 0,
-                        //                             ));
-                        //                       },
-                        //                       data: itemsList[1],
-                        //                     ),
-                        //                     SizedBox(width: 10.sp,),HomeItemsWidget(
-                        //                       onPress: () {
-                        //                         DIManager.findNavigator()
-                        //                             .pushNamed(ItemsDetailsPage.routeName,
-                        //                             arguments: ItemsArgs(
-                        //                               id: itemsList[2].ad_id ?? 0,
-                        //                             ));
-                        //                       },
-                        //                       data: itemsList[2],
-                        //                     ),
-                        //                   ],
-                        //                 ),
+                          // // الإعلانات الأكثر شيوعاً
+                          //               //
+                          //               if(widget.name == "الإعلانات الأكثر شيوعاً" ||!(categoriesBloc.isJobs(itemsList[0].category_title ?? '')))
+                          //                 Row(
+                          //                   children: [
+                          //                     HomeItemsWidget(
+                          //                       onPress: () {
+                          //                         DIManager.findNavigator()
+                          //                             .pushNamed(ItemsDetailsPage.routeName,
+                          //                             arguments: ItemsArgs(
+                          //                               id: itemsList[0].ad_id ?? 0,
+                          //                             ));
+                          //                       },
+                          //                       data: itemsList[0],
+                          //                     ), SizedBox(width: 10.sp,),
+                          //
+                          //                   ],
+                          //                 ),
+                          //
+                          //               if(widget.name == "الإعلانات الأكثر تقييماً"  ||!(categoriesBloc.isJobs(itemsList[0].category_title ?? '')))
+                          //                 Row(
+                          //                   children: [
+                          //                     HomeItemsWidget(
+                          //                       onPress: () {
+                          //                         DIManager.findNavigator()
+                          //                             .pushNamed(ItemsDetailsPage.routeName,
+                          //                             arguments: ItemsArgs(
+                          //                               id: itemsList[0].ad_id ?? 0,
+                          //                             ));
+                          //                       },
+                          //                       data: itemsList[0],
+                          //                     ),  SizedBox(width: 10.sp,),HomeItemsWidget(
+                          //                       onPress: () {
+                          //                         DIManager.findNavigator()
+                          //                             .pushNamed(ItemsDetailsPage.routeName,
+                          //                             arguments: ItemsArgs(
+                          //                               id: itemsList[1].ad_id ?? 0,
+                          //                             ));
+                          //                       },
+                          //                       data: itemsList[1],
+                          //                     ),
+                          //                     SizedBox(width: 10.sp,),HomeItemsWidget(
+                          //                       onPress: () {
+                          //                         DIManager.findNavigator()
+                          //                             .pushNamed(ItemsDetailsPage.routeName,
+                          //                             arguments: ItemsArgs(
+                          //                               id: itemsList[2].ad_id ?? 0,
+                          //                             ));
+                          //                       },
+                          //                       data: itemsList[2],
+                          //                     ),
+                          //                   ],
+                          //                 ),
 
-                        //   SizedBox(width: 10.sp,),
-                        // if(widget.name == "الإعلانات الأكثر تقييماً"  )
-                        //   HomeItemsWidget(
-                        //     onPress: () {
-                        //       DIManager.findNavigator()
-                        //           .pushNamed(ItemsDetailsPage.routeName,
-                        //           arguments: ItemsArgs(
-                        //             id: itemsList[1].ad_id ?? 0,
-                        //           ));
-                        //     },
-                        //     data: itemsList[1],
-                        //   ),
-                        //   SizedBox(width: 10.sp,),
-                        // if(widget.name == "الإعلانات الأكثر تقييماً"  )
-                        //   HomeItemsWidget(
-                        //   onPress: () {
-                        //     DIManager.findNavigator()
-                        //         .pushNamed(ItemsDetailsPage.routeName,
-                        //         arguments: ItemsArgs(
-                        //           id: itemsList[2].ad_id ?? 0,
-                        //         ));
-                        //   },
-                        //   data: itemsList[2],
-                        // ),
+                          //   SizedBox(width: 10.sp,),
+                          // if(widget.name == "الإعلانات الأكثر تقييماً"  )
+                          //   HomeItemsWidget(
+                          //     onPress: () {
+                          //       DIManager.findNavigator()
+                          //           .pushNamed(ItemsDetailsPage.routeName,
+                          //           arguments: ItemsArgs(
+                          //             id: itemsList[1].ad_id ?? 0,
+                          //           ));
+                          //     },
+                          //     data: itemsList[1],
+                          //   ),
+                          //   SizedBox(width: 10.sp,),
+                          // if(widget.name == "الإعلانات الأكثر تقييماً"  )
+                          //   HomeItemsWidget(
+                          //   onPress: () {
+                          //     DIManager.findNavigator()
+                          //         .pushNamed(ItemsDetailsPage.routeName,
+                          //         arguments: ItemsArgs(
+                          //           id: itemsList[2].ad_id ?? 0,
+                          //         ));
+                          //   },
+                          //   data: itemsList[2],
+                          // ),
 
-                        // HomeItemsWidget(
-                        //   onPress: () {
-                        //     DIManager.findNavigator()
-                        //         .pushNamed(ItemsDetailsPage.routeName,
-                        //         arguments: ItemsArgs(
-                        //           id: itemsList[1].ad_id ?? 0,
-                        //         ));
-                        //   },
-                        //   data: itemsList[1],
-                        // ),
-                        // HomeItemsWidget(
-                        //   onPress: () {
-                        //     DIManager.findNavigator()
-                        //         .pushNamed(ItemsDetailsPage.routeName,
-                        //         arguments: ItemsArgs(
-                        //           id: itemsList[2].ad_id ?? 0,
-                        //         ));
-                        //   },
-                        //   data: itemsList[2],
-                        // ),
+                          // HomeItemsWidget(
+                          //   onPress: () {
+                          //     DIManager.findNavigator()
+                          //         .pushNamed(ItemsDetailsPage.routeName,
+                          //         arguments: ItemsArgs(
+                          //           id: itemsList[1].ad_id ?? 0,
+                          //         ));
+                          //   },
+                          //   data: itemsList[1],
+                          // ),
+                          // HomeItemsWidget(
+                          //   onPress: () {
+                          //     DIManager.findNavigator()
+                          //         .pushNamed(ItemsDetailsPage.routeName,
+                          //         arguments: ItemsArgs(
+                          //           id: itemsList[2].ad_id ?? 0,
+                          //         ));
+                          //   },
+                          //   data: itemsList[2],
+                          // ),
 
-                        // List
+                          // List
 
-                        // message == ''
-                        //     ? Container()
-                        //     :
+                          // message == ''
+                          //     ? Container()
+                          //     :
 
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15.sp),
-                          child: InkWell(
-                            onTap: () {
-                              DIManager.findNavigator().pushNamed(
-                                ViewAllPage.routeName,
-                                arguments: ViewAllArgs(
-                                  category_id: widget.category_id,
-                                  type: widget.type,
-                                ),
-                              );
-                            },
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.arrow_circle_left_outlined,
-                                    color: AppColorsController().buttonRedColor,
-                                    size: 48.sp),
-                                Text(
-                                  // message,
-                                  'عرض الكل',
-                                  style: AppStyle.verySmallTitleStyle.copyWith(
-                                      color: AppColorsController()
-                                          .textPrimaryColor,
-                                      fontWeight: AppFontWeight.midLight,
-                                      fontSize: AppFontSize.fontSize_12),
-                                ),
-                              ],
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15.sp),
+                            child: InkWell(
+                              onTap: () {
+                                DIManager.findNavigator().pushNamed(
+                                  ViewAllPage.routeName,
+                                  arguments: ViewAllArgs(
+                                    category_id: widget.category_id,
+                                    type: widget.type,
+                                  ),
+                                );
+                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.arrow_circle_left_outlined,
+                                      color: AppColorsController().buttonRedColor,
+                                      size: 48.sp),
+                                  Text(
+                                    // message,
+                                    'عرض الكل',
+                                    style: AppStyle.verySmallTitleStyle.copyWith(
+                                        color: AppColorsController()
+                                            .textPrimaryColor,
+                                        fontWeight: AppFontWeight.midLight,
+                                        fontSize: AppFontSize.fontSize_12),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
+            ),
           ),
-        ),
-        // Text(
-        //   'عدد العناصر: ${numberOfItems}',
-        // ),
+          // Text(
+          //   'عدد العناصر: ${numberOfItems}',
+          // ),
 
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   children: List.generate(itemsList.length > 3 ? 3 : itemsList.length,
-        //       (index) {
-        //     return Container(
-        //       width: 6.5.sp,
-        //       height: 6.5.sp,
-        //       child: InkWell(
-        //           onTap: () {
-        //             print(index);
-        //           },
-        //           child: Text('print')),
-        //       margin: EdgeInsets.symmetric(horizontal: 1.5.sp),
-        //       decoration: BoxDecoration(
-        //           shape: BoxShape.circle,
-        //           color: selectedIndex == index
-        //               ? AppColorsController().buttonRedColor
-        //               : AppColorsController().grey),
-        //     );
-        //   }),
-        // ),
-      ],
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: List.generate(itemsList.length > 3 ? 3 : itemsList.length,
+          //       (index) {
+          //     return Container(
+          //       width: 6.5.sp,
+          //       height: 6.5.sp,
+          //       child: InkWell(
+          //           onTap: () {
+          //             print(index);
+          //           },
+          //           child: Text('print')),
+          //       margin: EdgeInsets.symmetric(horizontal: 1.5.sp),
+          //       decoration: BoxDecoration(
+          //           shape: BoxShape.circle,
+          //           color: selectedIndex == index
+          //               ? AppColorsController().buttonRedColor
+          //               : AppColorsController().grey),
+          //     );
+          //   }),
+          // ),
+        ],
+      ),
     );
   }
 }
 
 /// This is a Code
+
+/// Widget with SmartRefresher
+/*
+  return Container(
+      height:  260.sp,
+      // width: 400.sp,
+      child: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: true,
+        scrollDirection: Axis.horizontal,
+        controller: _refreshController,
+        onRefresh: _onRefresh,
+        header: ClassicHeader(
+          completeText: "",
+          refreshingText: "",
+          textStyle: TextStyle(color: AppColorsController().white),
+        ),
+        footer: ClassicFooter(
+          canLoadingText: "",
+          loadingText: "",
+          textStyle: TextStyle(color: AppColorsController().white),
+        ),
+        onLoading: _onLoading,
+        child: BlocConsumer<AdsCubit, AdsState>(
+          bloc: adsBloc,
+          listener: (context, state) {},
+          builder: (context, state) {
+            final adsState;
+
+            switch (widget.type) {
+              case 0:
+                adsState = state.getAllRecentAdsState;
+                break;
+              case 1:
+                adsState = state.getAllMostRatedAdsState;
+                break;
+              case 2:
+                adsState = state.getAllPopularAdsState;
+                break;
+              default:
+                adsState = state.getCategoryAdsState;
+                break;
+            }
+            // = widget.type == 0
+            //     ? state.getAllRecentAdsState
+            //     : widget.type == 1
+            //         ? state.getAllMostRatedAdsState
+            //         : widget.type == 2?state.getAllPopularAdsState:state.getCategoryAdsState;
+
+            if (adsState is BaseFailState) {
+              isFirstLoading = false;
+
+              return Column(
+                children: [
+                  VerticalPadding(3.sp),
+                  GeneralErrorWidget(
+                    error: adsState.error,
+                    callback: adsState.callback,
+                  ),
+                ],
+              );
+            }
+
+            if (loading &&
+                widget.type == 0 &&
+                adsState is GetAllRecentAdsSuccessState) {
+              final data =
+                  (state.getAllRecentAdsState as GetAllRecentAdsSuccessState)
+                      .ads;
+              itemsList.addAll(data.data!);
+              loading = false;
+              isFirstLoading = false;
+            } else if (loading &&
+                widget.type == 1 &&
+                adsState is GetAllMostRatedAdsSuccessState) {
+              final data = (state.getAllMostRatedAdsState
+                      as GetAllMostRatedAdsSuccessState)
+                  .ads;
+              itemsList.addAll(data.data!);
+              loading = false;
+              isFirstLoading = false;
+            } else if (loading &&
+                widget.type == 2 &&
+                adsState is GetAllPopularAdsSuccessState) {
+              final data =
+                  (state.getAllPopularAdsState as GetAllPopularAdsSuccessState)
+                      .ads;
+              itemsList.addAll(data.data!);
+              loading = false;
+              isFirstLoading = false;
+            } else if (loading && adsState is GetCategoryAdsSuccessState) {
+              final data =
+                  (state.getCategoryAdsState as GetCategoryAdsSuccessState).ads;
+              itemsList.addAll(data.data!);
+              loading = false;
+              isFirstLoading = false;
+
+              return itemsList.isEmpty
+                  ? Center(
+                      child: Text(
+                      translate("no_items_found"),
+                      style: AppStyle.midTitleStyle,
+                    ))
+                  : _buildBody();
+            }
+            return isFirstLoading == true
+                ? AdsShimmerWidget(
+                    name: widget.name,
+                    type: widget.type,
+                    is_category: widget.is_category,
+                  )
+                : _buildBody();
+          },
+        ),
+      ),
+    );
+
+ */
+
+
 
 /*
 

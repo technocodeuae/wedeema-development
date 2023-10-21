@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../../blocs/ads/ads_bloc.dart';
+import '../../../../blocs/ads/states/ads_state.dart';
 import '../../../../blocs/categories/categories_bloc.dart';
 import '../../../../blocs/categories/states/categories_state.dart';
 import '../../../../core/bloc/states/base_fail_state.dart';
@@ -14,12 +16,17 @@ import '../../../../core/di/di_manager.dart';
 import '../../../../core/utils/localization/app_localizations.dart';
 import '../../../../core/utils/ui/widgets/general_error_widget.dart';
 import '../../../../core/utils/ui/widgets/utils/vertical_padding.dart';
+import '../../../../data/models/ads/entity/ads_entity.dart';
 import '../../../../data/models/categories/entity/categories_entity.dart';
 import '../../general/app_bar/app_bar.dart';
 import '../../general/back_long_press_widget.dart';
 import '../../general/icons/back_icon.dart';
+import '../../general/progress_indicator/loading_column_overlay.dart';
 import '../arg/items_args.dart';
+import '../widget/ads_shimmer_widget.dart';
+import '../widget/build_items_ads.dart';
 import '../widget/build_items_widget.dart';
+import '../widget/looking_widget_shimmer.dart';
 
 class LookingForDetailsPage extends StatefulWidget {
   static const routeName = '/LookingForDetailsPage';
@@ -35,10 +42,43 @@ class _LookingForDetailsPageState extends State<LookingForDetailsPage> {
   final categoriesBloc = DIManager.findDep<CategoriesCubit>();
   final adsBloc = DIManager.findDep<AdsCubit>();
   int page = 1;
+  List<ItemsAdsEntity> items = [];
 
+  bool loading = false;
+  bool loadingLoader = false;
+  RefreshController _refreshController =
+  RefreshController(initialRefresh: false);
+  void _onRefresh() async {
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    loadingLoader = true;
+    // if failed,use refreshFailed()
+    page = 1;
+    loading = true;
+    // items = [];
+    items.clear();
+    // categoriesBloc.getSubCategories(widget.args!.id!);
+    // categoriesBloc.getPropertiesCategories(widget.args!.id!);
+    adsBloc.getCategoryAds(page,widget.args!.id!);
+    setState(() {});
+    _refreshController.refreshCompleted();
+  }
+  void _onLoading() async {
+    await Future.delayed(Duration(milliseconds: 30));
+      page++;
+    // categoriesBloc.getSubCategories(widget.args!.id!);
+    // categoriesBloc.getPropertiesCategories(widget.args!.id!);
+      adsBloc.getCategoryAds(page,widget.args!.id!);
+    if (mounted) setState(() {});
+    _refreshController.loadComplete();
+  }
+
+
+  //
   @override
   void initState() {
     categoriesBloc.getSubCategories(widget.args!.id!);
+    adsBloc.getCategoryAds(page,widget.args!.id!);
   }
 
 
@@ -46,146 +86,203 @@ class _LookingForDetailsPageState extends State<LookingForDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: SafeArea(
+
         child: BackLongPress(
 
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppBarWidget(
-                name: widget.args!.title ?? "",
-                child: InkWell(
-                  onTap: () {
-                    DIManager.findNavigator().pop();
-                  },
-                  child: BackIcon(
-                    width: 26.sp,
-                    height: 18.sp,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppBarWidget(
+                  name: widget.args!.title ?? "",
+                  child: InkWell(
+                    onTap: () {
+                      DIManager.findNavigator().pop();
+                    },
+                    child: BackIcon(
+                      width: 26.sp,
+                      height: 18.sp,
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(16.0.sp),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    BlocConsumer<CategoriesCubit, CategoriesState>(
-                      bloc: categoriesBloc,
-                      listener: (context, state) {},
-                      builder: (context, state) {
-                        final categoriesState = state.getSubCategoriesState;
 
-                        if (categoriesState is BaseFailState) {
-                          return Column(
-                            children: [
-                              VerticalPadding(3.0),
-                              GeneralErrorWidget(
-                                error: categoriesState.error,
-                                callback: categoriesState.callback,
+                Padding(
+                  padding: EdgeInsets.all(16.0.sp),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 280.sp,
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+
+                            BlocConsumer<CategoriesCubit, CategoriesState>(
+                              bloc: categoriesBloc,
+                              listener: (context, state) {},
+                              builder: (context, state) {
+                                final categoriesState = state.getSubCategoriesState;
+
+                                if (categoriesState is BaseFailState) {
+                                  return Column(
+                                    children: [
+                                      VerticalPadding(3.0),
+                                      GeneralErrorWidget(
+                                        error: categoriesState.error,
+                                        callback: categoriesState.callback,
+                                      ),
+                                    ],
+                                  );
+                                }
+
+                                if (categoriesState is GetSubCategoriesSuccessState) {
+                                  final data = (state.getSubCategoriesState
+                                          as GetSubCategoriesSuccessState)
+                                      .categories;
+
+                                  List<dynamic> firstList =
+                                      data.sublist(0, data.length ~/ 2);
+                                  List<dynamic> secondList =
+                                      data.sublist(data.length ~/ 2);
+                                  return Column(
+                                    children: [
+                                      firstList.length > 0
+                                          ? Container(
+                                              height: 100.sp,
+                                              child: ListView.separated(
+                                                scrollDirection: Axis.horizontal,
+                                                itemCount: firstList.length,
+                                                itemBuilder: (context, index) =>
+                                                    lookingItemsWidget(
+                                                        categories: firstList[index]),
+                                                separatorBuilder:
+                                                    (BuildContext context, int index) {
+                                                  return SizedBox(
+                                                    width: 8.sp,
+                                                  );
+                                                },
+                                              ),
+                                            )
+                                          : Container(),
+                                      firstList.length > 0
+                                          ? SizedBox(
+                                              height: 16.sp,
+                                            )
+                                          : Container(),
+                                      firstList.length > 0
+                                          ? Container(
+                                              height: 100.sp,
+                                              child: ListView.separated(
+                                                scrollDirection: Axis.horizontal,
+                                                itemCount: secondList.length,
+                                                itemBuilder: (context, index) =>
+                                                    lookingItemsWidget(
+                                                        categories: secondList[index]),
+                                                separatorBuilder:
+                                                    (BuildContext context, int index) {
+                                                  return SizedBox(
+                                                    width: 8.sp,
+                                                  );
+                                                },
+                                              ),
+                                            )
+                                          : Container(),
+                                                          ],
+                                  );
+                                }
+                                return LookingWidgetShimmer(name:  "ads");
+                              },
+                            ),
+                            SizedBox(
+                              height: 12.sp,
+                            ),
+                            Text(
+                              translate("ads_list") + ":",
+                              style: AppStyle.smallTitleStyle.copyWith(
+                                color: AppColorsController().black,
+                                fontWeight: FontWeight.bold,
                               ),
-                            ],
-                          );
-                        }
-
-                        if (categoriesState is GetSubCategoriesSuccessState) {
-                          final data = (state.getSubCategoriesState
-                                  as GetSubCategoriesSuccessState)
-                              .categories;
-
-                          List<dynamic> firstList =
-                              data.sublist(0, data.length ~/ 2);
-                          List<dynamic> secondList =
-                              data.sublist(data.length ~/ 2);
-                          return Column(
-                            children: [
-                              firstList.length > 0
-                                  ? Container(
-                                      height: 100.sp,
-                                      child: ListView.separated(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: firstList.length,
-                                        itemBuilder: (context, index) =>
-                                            lookingItemsWidget(
-                                                categories: firstList[index]),
-                                        separatorBuilder:
-                                            (BuildContext context, int index) {
-                                          return SizedBox(
-                                            width: 8.sp,
-                                          );
-                                        },
-                                      ),
-                                    )
-                                  : Container(),
-                              firstList.length > 0
-                                  ? SizedBox(
-                                      height: 16.sp,
-                                    )
-                                  : Container(),
-                              firstList.length > 0
-                                  ? Container(
-                                      height: 90.sp,
-                                      child: ListView.separated(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: secondList.length,
-                                        itemBuilder: (context, index) =>
-                                            lookingItemsWidget(
-                                                categories: secondList[index]),
-                                        separatorBuilder:
-                                            (BuildContext context, int index) {
-                                          return SizedBox(
-                                            width: 8.sp,
-                                          );
-                                        },
-                                      ),
-                                    )
-                                  : Container(),
-
-                              // Container(
-                              //   height: 120.sp,
-                              //   child: GridView.builder(
-                              //     itemCount: data.length,
-                              //     itemBuilder: (context, index) =>
-                              //         lookingItemsWidget(categories: data[index]),
-                              //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              //       crossAxisCount: 3,
-                              //       childAspectRatio: 0.75,
-                              //       crossAxisSpacing: 24.sp,
-                              //       mainAxisSpacing: 24.sp,
-                              //     ),
-                              //   ),
-                              // ),
-                            ],
-                          );
-                        }
-                        return Container();
-                      },
-                    ),
-                    SizedBox(
-                      height: 8.sp,
-                    ),
-                    Text(
-                      translate("ads_list") + ":",
-                      style: AppStyle.smallTitleStyle.copyWith(
-                        color: AppColorsController().black,
-                        fontWeight: FontWeight.bold,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(4.0.sp),
-                      child: BuildItemsWidget(
-                        name: translate(""),
-                        // type: 3,
-                        type: 10,
-                        category_id: widget.args!.id!,
-                        is_category: true,
+
+                      Container(
+                        height: 600.sp,
+                        child: SmartRefresher(
+                          enablePullDown: false,
+                          enablePullUp: true,
+                          scrollDirection: Axis.vertical,
+                          controller: _refreshController,
+                          onRefresh: _onRefresh,
+                          header: ClassicHeader(
+                            completeText: "",
+                            refreshingText: "",
+                            textStyle: TextStyle(color: AppColorsController().white),
+                          ),
+                          footer: ClassicFooter(
+                            canLoadingText: "",
+                            loadingText: "",
+                            textStyle: TextStyle(color: AppColorsController().white),
+                          ),
+                          onLoading: _onLoading,
+
+            child: BlocConsumer<CategoriesCubit, CategoriesState>(
+                            bloc: categoriesBloc,
+                            listener: (context, state) {},
+                            builder: (context, state) {
+                              final categoriesState = state.getSubCategoriesState;
+
+                              if (categoriesState is BaseFailState) {
+                                return Column(
+                                  children: [
+                                    VerticalPadding(3.0),
+                                    GeneralErrorWidget(
+                                      error: categoriesState.error,
+                                      callback: categoriesState.callback,
+                                    ),
+                                  ],
+                                );
+                              }
+
+                              if (categoriesState is GetSubCategoriesSuccessState) {
+                                final data = (state.getSubCategoriesState
+                                as GetSubCategoriesSuccessState)
+                                    .categories;
+
+                                loadingLoader = true;
+                                loading = true;
+                                return   Padding(
+                                  padding: EdgeInsets.all(4.0.sp),
+                                  child: BuildItemsAds(
+                                    name: translate('ads'),
+                                    // type: 3,
+                                    type: 10,
+                                    category_id: widget.args!.id!,
+                                    is_category: true,
+                                  ),
+                                );
+                              }
+                              return AdsShimmerWidget(
+                                name: translate('ads'),
+                                type: 10,
+                                is_category: true,
+                              );
+                            },
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+
+
+                    ],
+                  ),
                 ),
-              ),
-            ],
+
+              ],
+            ),
           ),
         ),
       ),

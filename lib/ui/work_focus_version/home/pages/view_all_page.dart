@@ -65,8 +65,8 @@ class _ViewAllPageState extends State<ViewAllPage> {
     // if failed,use refreshFailed()
     page = 1;
     loading = true;
-    // items = [];
-    items.clear();
+    items = [];
+    // items.clear();
     if (widget.arg.type == 0) {
       adsBloc.getAllRecentAds(page);
       loading = true;

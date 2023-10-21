@@ -56,10 +56,189 @@ class AdsShimmerWidget extends StatelessWidget {
               ),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 8.0.sp),
-          child: Container(
+          child:  name ==translate('ads')? GridView.builder(
+            itemCount: 4,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return Container(
+                padding:
+                EdgeInsets.symmetric(vertical: 2.sp, horizontal: 10.sp),
+                height: 180.sp,
+                width: 190.sp,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      color: AppColorsController().black, width: 0.2),
+                  color: AppColorsController().containerPrimaryColor,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12.sp),
+                  ),
+                ),
+                child: Shimmer.fromColors(
+                  baseColor: Color(0x99FED0D3),
+                  highlightColor: Color(0x99DE0F17),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Flexible(
+                            flex: 1,
+                            child: Shimmer.fromColors(
+                              baseColor: Color(0x99FED0D3),
+                              highlightColor: Color(0x99DE0F17),
+                              child: Container(
+                                child: ClipOval(
+                                  child: Container(
+                                    color: AppColorsController().containerPrimaryColor,
+
+                                    width: 32.sp,
+                                    height: 32.sp,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 4.sp,
+                          ),
+                          Flexible(
+                            flex: 2,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 2.sp),
+                              height: 2.sp,
+                              width: 12.sp,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: AppColorsController().containerPrimaryColor, width: 0.2),
+                                color: AppColorsController().containerPrimaryColor,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(12.sp),
+                                ),
+                              ),
+                            ),
+
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 2.sp),
+                            height: 2.sp,
+                            width: 40.sp,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: AppColorsController().containerPrimaryColor, width: 0.2),
+                              color: AppColorsController().containerPrimaryColor,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(12.sp),
+                              ),
+                            ),
+                          ),
+
+                        ],
+                      ),
+                      SizedBox(
+                        height: 4.sp,
+                      ),
+                      Column(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(15),
+                            ),
+                            child: Container(
+                              width: 154.sp,
+                              height: 102.sp,
+                              color: AppColorsController().containerPrimaryColor,
+
+                            ),
+                          ),
+                          SizedBox(
+                            height: 4.sp,
+                          ),
+                          Padding(
+                            padding:
+                            EdgeInsets.symmetric(horizontal: 16.sp),
+                            child: Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  flex: 1,
+                                  child:  Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 2.sp),
+                                    height: 2.sp,
+                                    width: 40.sp,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: AppColorsController().containerPrimaryColor, width: 0.2),
+                                      color: AppColorsController().containerPrimaryColor,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(12.sp),
+                                      ),
+                                    ),
+                                  ),
+
+                                ),
+                                Flexible(
+                                  flex: 1,
+                                  child:                               Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 2.sp),
+                                    height: 2.sp,
+                                    width: 40.sp,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: AppColorsController().containerPrimaryColor, width: 0.2),
+                                      color: AppColorsController().containerPrimaryColor,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(12.sp),
+                                      ),
+                                    ),
+                                  ),
+
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 4.sp,
+                          ),
+                          Padding(
+                            padding:
+                            EdgeInsets.symmetric(horizontal: 16.sp),
+                            child:                               Container(
+                              padding: EdgeInsets.symmetric(horizontal: 2.sp),
+                              height: 2.sp,
+                              width: 40.sp,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: AppColorsController().containerPrimaryColor, width: 0.2),
+                                color: AppColorsController().containerPrimaryColor,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(12.sp),
+                                ),
+                              ),
+                            ),
+
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+            gridDelegate:
+            SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisExtent: 210.sp,
+              crossAxisSpacing: 6.sp,
+              mainAxisSpacing: 18.sp,
+            ),
+            physics: NeverScrollableScrollPhysics(),
+          ):Container(
             width: MediaQuery.of(context).size.width,
-            height: 190.sp,
-            child: ListView.separated(
+            height:  190.sp,
+            child:  ListView.separated(
               itemBuilder: (context, index) {
                 return Container(
                   padding:
@@ -234,7 +413,7 @@ class AdsShimmerWidget extends StatelessWidget {
                 );
               },
               itemCount: 4,
-              scrollDirection: Axis.horizontal,
+              scrollDirection:  Axis.horizontal,
             ),
           ),
         ),

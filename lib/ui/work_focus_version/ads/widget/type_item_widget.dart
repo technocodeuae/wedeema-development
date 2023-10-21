@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wadeema/core/constants/app_font.dart';
 import 'package:wadeema/data/models/properties/entity/properties_entity.dart';
 import 'package:wadeema/ui/work_focus_version/ads/widget/divider_item.dart';
 
@@ -31,15 +33,15 @@ class _TypeItemWidgetState extends State<TypeItemWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding:  EdgeInsets.symmetric(vertical: 4.sp),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
+            padding:  EdgeInsets.symmetric(horizontal: 12.sp),
             child: Text(
               widget.title,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold,fontSize: AppFontSize.fontSize_14),
             ),
           ),
           SizedBox(

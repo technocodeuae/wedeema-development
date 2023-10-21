@@ -24,7 +24,7 @@ class OptionItem extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(title, style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColorsController().black,fontWeight: FontWeight.bold,fontSize: AppFontSize.fontSize_16)),
+                Text(title, style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColorsController().black,fontWeight: FontWeight.bold,fontSize: AppFontSize.fontSize_14)),
                 SizedBox(width: 8,),
                 Expanded(
                   child: Row(
