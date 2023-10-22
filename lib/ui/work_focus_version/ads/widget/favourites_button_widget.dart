@@ -17,11 +17,12 @@ import '../../general/buttons/app_button.dart';
 import '../../general/icons/favourites_icon.dart';
 
 class FavouritesButtonWidget extends StatefulWidget {
-  bool? isFavourite;
+  final bool? isFavourite;
   final Function(bool, int)? onChanged;
   final Function(bool)? onChangedLoader;
   final int? adsId;
   final int? index;
+
 
   FavouritesButtonWidget(
       {Key? key, this.isFavourite, this.onChanged, this.adsId, this.index,this.onChangedLoader})
@@ -49,7 +50,9 @@ class _FavouritesButtonWidgetState extends State<FavouritesButtonWidget> {
           bloc: adsBloc,
           child: Column(
             children: [
-              SizedBox(
+              widget.isFavourite == true ? SizedBox(
+          height: 8.sp,
+          ):   SizedBox(
                 height: 18.sp,
               ),
               InkWell(

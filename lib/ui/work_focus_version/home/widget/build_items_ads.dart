@@ -28,6 +28,7 @@ import 'home_items_widget.dart';
 
 class BuildItemsAds extends StatefulWidget {
   final String name;
+  final String nameType ;
 
   final int type;
   final int? category_id;
@@ -38,6 +39,7 @@ class BuildItemsAds extends StatefulWidget {
       required this.name,
       required this.type,
       this.category_id,
+        required  this.nameType,
       this.is_category})
       : super(key: key);
 
@@ -97,7 +99,7 @@ class _BuildItemsAdsState extends State<BuildItemsAds> {
 
   @override
   Widget build(BuildContext context) {
-    print('--------------------------------------------------${widget.name}');
+    print('--------------------------------------------------${widget.type}');
     return BlocConsumer<AdsCubit, AdsState>(
       bloc: adsBloc,
       listener: (context, state) {},
@@ -132,10 +134,44 @@ class _BuildItemsAdsState extends State<BuildItemsAds> {
                 translate("no_items_found"),
                 style: AppStyle.midTitleStyle,
               ))
-              : GridView.builder(
+              : widget.nameType == 'وظائف'? ListView.builder(
+            primary: false,
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              return JobAdCard(
+                data: itemsList[index],
+                onPress: () {
+                  DIManager.findNavigator().pushNamed(
+                    ItemsDetailsPage.routeName,
+                    arguments: ItemsArgs(id: itemsList[index].ad_id ?? 0),
+                  );
+                },
+              );
+
+            },
+            itemCount: itemsList.length,
+          ): GridView.builder(
             itemCount: itemsList.length,
             shrinkWrap: true,
             itemBuilder: (context, index) {
+              // if (categoriesBloc.isJobs(
+              //     itemsList[index].category_title ?? '')) {
+              //   return SizedBox(
+              //     child: JobAdCard(
+              //       width:
+              //       MediaQuery.sizeOf(context).width * 0.85,
+              //       data: itemsList[index],
+              //       onPress: () {
+              //         DIManager.findNavigator().pushNamed(
+              //           ItemsDetailsPage.routeName,
+              //           arguments: ItemsArgs(
+              //               id: itemsList[index].ad_id ?? 0),
+              //         );
+              //       },
+              //     ),
+              //   );
+              // }
               if (categoriesBloc.isJobs(
                   itemsList[index].category_title ?? '')) {
                 return SizedBox(
@@ -175,13 +211,34 @@ class _BuildItemsAdsState extends State<BuildItemsAds> {
             physics: NeverScrollableScrollPhysics(),
           );
         }
-        return isFirstLoading == true
+        return isFirstLoading == true && widget.nameType == 'وظائف'
             ? AdsShimmerWidget(
-          name: translate('ads'),
+          name: translate('adsJob'),
           type: widget.type,
           is_category: widget.is_category,
         )
-            :  GridView.builder(
+            : isFirstLoading == true && widget.nameType != 'وظائف'? AdsShimmerWidget(
+          name: translate('ads'),
+          type: widget.type,
+          is_category: widget.is_category,
+        ) :isFirstLoading == false && widget.nameType == 'وظائف' ? ListView.builder(
+          primary: false,
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            return JobAdCard(
+              data: itemsList[index],
+              onPress: () {
+                DIManager.findNavigator().pushNamed(
+                  ItemsDetailsPage.routeName,
+                  arguments: ItemsArgs(id: itemsList[index].ad_id ?? 0),
+                );
+              },
+            );
+
+          },
+          itemCount: itemsList.length,
+        ): GridView.builder(
           itemCount: itemsList.length,
           shrinkWrap: true,
           itemBuilder: (context, index) {

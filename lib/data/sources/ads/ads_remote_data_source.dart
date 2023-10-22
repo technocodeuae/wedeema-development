@@ -89,6 +89,7 @@ class AdsRemoteDataSourceImpl implements AdsRemoteDataSource {
     );
   }
 
+
   Future<Result<AdsModel>> getMyFavouriteAds(int page) async {
     return await RemoteDataSource.request<AdsModel>(
       converter: (model) => AdsModel.fromJson(model),

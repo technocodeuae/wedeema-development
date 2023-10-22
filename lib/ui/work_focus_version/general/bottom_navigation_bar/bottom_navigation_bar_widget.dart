@@ -29,6 +29,10 @@ class _bottomNavigationBarWidgetState extends State<bottomNavigationBarWidget>
 
   late double widthC, heightC;
   PageStorageKey homeKey = PageStorageKey('HomePage');
+  PageStorageKey chatKey = PageStorageKey('ChatPage');
+  PageStorageKey adsKey = PageStorageKey('AdsPage');
+  PageStorageKey favouriteKey = PageStorageKey('FavouritePage');
+  PageStorageKey settingKey = PageStorageKey('SettingPage');
 
 
   static late TabController tabController;
@@ -36,11 +40,15 @@ class _bottomNavigationBarWidgetState extends State<bottomNavigationBarWidget>
   @override
   void initState() {
     super.initState();
-    tabController = TabController(length: 5, vsync: this);
+    tabController = TabController(length: 5, vsync: this,);
   }
+
 
   @override
   Widget build(BuildContext context) {
+
+    PagesEnum pagesEnum ;
+
     return Container(
       width: MediaQuery.of(context).size.width,
  color: Colors.transparent,
@@ -76,11 +84,20 @@ class _bottomNavigationBarWidgetState extends State<bottomNavigationBarWidget>
                             onTap: () {
 
 
-                              DIManager.findNavigator().pushNamed(
-                                HomePage.routeName,
-                                arguments: homeKey,
 
-                              );
+
+
+    DIManager.findNavigator().pushNamed(
+      HomePage.routeName,
+      arguments: homeKey,
+
+    );
+
+
+
+
+
+
                               // Navigator.of(context)
                               //     .pushNamedAndRemoveUntil(Routes.homePage,(route) => false,)
                               //     .then((value) => {
@@ -94,11 +111,27 @@ class _bottomNavigationBarWidgetState extends State<bottomNavigationBarWidget>
                           ),
                           InkWell(
                             onTap: () {
-                              if (!AppUtils.checkIfGuest(context)) {
-                                DIManager.findNavigator().pushNamed(
-                                  ChatsPage.routeName,
-                                );
-                              }
+
+                              print('-----------------------------------------------------------');
+                              print(tabController.previousIndex);
+                              print('-----------------------------------------------------------');
+                              // if(tabController.index==1){
+                              //
+                              // }else{
+                                if (!AppUtils.checkIfGuest(context)) {
+                                  DIManager.findNavigator().pushNamed(
+                                    ChatsPage.routeName,
+                                    // arguments: chatKey,
+                                  );
+                                }
+
+
+                              // }
+
+
+
+
+
                             },
                             child: _buildTabItem(
                                 text: "",
@@ -122,6 +155,7 @@ class _bottomNavigationBarWidgetState extends State<bottomNavigationBarWidget>
                               if (!AppUtils.checkIfGuest(context)) {
                                 DIManager.findNavigator().pushNamed(
                                   MyFavouritePage.routeName,
+                                    // arguments: favouriteKey
                                 );
                               }
 
@@ -136,6 +170,7 @@ class _bottomNavigationBarWidgetState extends State<bottomNavigationBarWidget>
                             onTap: () {
                               DIManager.findNavigator().pushNamed(
                                 MyProfilePage.routeName,
+                                  // arguments: settingKey
                               );
                               // Navigator.of(context)
                               //     .pushNamedAndRemoveUntil(Routes.myProfilePage,(route) => false,)

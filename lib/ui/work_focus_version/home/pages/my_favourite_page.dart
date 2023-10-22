@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
+import 'package:wadeema/ui/work_focus_version/home/widget/home_items_favourite.dart';
 import '../../../../blocs/ads/ads_bloc.dart';
 import '../../../../blocs/ads/states/ads_state.dart';
-import '../../../../blocs/application/application_bloc.dart';
+import '../../../../blocs/categories/categories_bloc.dart';
 import '../../../../core/bloc/states/base_fail_state.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_font.dart';
@@ -21,9 +21,11 @@ import '../../general/back_long_press_widget.dart';
 import '../../general/bottom_navigation_bar/bottom_navigation_bar_widget.dart';
 import '../../general/icons/back_icon.dart';
 import '../../general/progress_indicator/loading_column_overlay.dart';
+import '../arg/items_args.dart';
 import '../widget/build_circular_image_user.dart';
 import '../widget/details_body_filter_widget.dart';
-import '../widget/home_items_widget.dart';
+import '../widget/job_ad_card.dart';
+import 'items_details_page.dart';
 
 class MyFavouritePage extends StatefulWidget {
   static const routeName = '/MyFavouritePage';
@@ -36,9 +38,10 @@ class MyFavouritePage extends StatefulWidget {
 
 class _MyFavouritePageState extends State<MyFavouritePage> {
   final adsBloc = DIManager.findDep<AdsCubit>();
+  final categoriesBloc = DIManager.findDep<CategoriesCubit>();
   int page = 1;
   List<ItemsAdsEntity> items = [];
-
+ late AdsEntity data;
   bool loading = false;
   bool loadingLodar = false;
   RefreshController _refreshController =
@@ -177,14 +180,14 @@ class _MyFavouritePageState extends State<MyFavouritePage> {
                               if (loading == true &&
                                   (adsState
                                       is GetAllMyFavouriteAdsSuccessState)) {
-                                final data = (state.getMyFavouriteAdsState
+                                 data = (state.getMyFavouriteAdsState
                                         as GetAllMyFavouriteAdsSuccessState)
                                     .ads;
                                 items.addAll(data.data!);
                                 loading = false;
-                                return _buildBody();
+                                return _buildWithGridViewBody();
                               }
-                              return _buildBody();
+                              return _buildWithGridViewBody();
                             }),
                       ),
                     ),
@@ -201,96 +204,165 @@ class _MyFavouritePageState extends State<MyFavouritePage> {
       bottomSheet: bottomNavigationBarWidget(),
     );
   }
+  //
+  // _buildBody() {
+  //   return ListView.separated(
+  //     primary: false,
+  //     shrinkWrap: true,
+  //     physics: NeverScrollableScrollPhysics(),
+  //     itemBuilder: (context, index) {
+  //       return Column(
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           Padding(
+  //             padding: EdgeInsets.symmetric(horizontal: 16.sp),
+  //             child: Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //               children: [
+  //                 Row(
+  //                   mainAxisAlignment: MainAxisAlignment.center,
+  //                   children: [
+  //                     BuildCircularImageUser(
+  //                       size: 48.sp,
+  //                       url: items![index]?.profile_pic,
+  //                       id: items![index]?.user_id,
+  //                     ),
+  //                     SizedBox(
+  //                       width: 4.sp,
+  //                     ),
+  //                     Text(
+  //                       "${items![index]!.user_name} , ",
+  //                       style: AppStyle.smallTitleStyle.copyWith(
+  //                         color: AppColorsController().black,
+  //                         fontWeight: AppFontWeight.midLight,
+  //                       ),
+  //                     ),
+  //                     Text(
+  //                       items![index]!.date_ad != null
+  //                           ? getComparedTime(items![index]!.date_ad!)
+  //                               .toString()!
+  //                           : "",
+  //                       style: AppStyle.smallTitleStyle.copyWith(
+  //                         color: AppColorsController().black,
+  //                         fontWeight: AppFontWeight.midLight,
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //                 Container(
+  //                   child: RatingBarIndicator(
+  //                     rating: items![index]!.average?.toDouble() ?? 0,
+  //                     itemCount: 5,
+  //                     itemSize: 17.sp,
+  //                     unratedColor: AppColorsController().darkGreyTextColor,
+  //                     direction: Axis.horizontal,
+  //                     itemBuilder: (context, _) => Icon(
+  //                       Icons.star,
+  //                       size: 13.sp,
+  //                       color: Colors.amber,
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //           SizedBox(
+  //             height: 18.sp,
+  //           ),
+  //           DetailsBodyFilterWidget(
+  //             onPressedLike: _makeLikeChanged,
+  //             onPressedFavourite: _makeFavouriteChanged,
+  //             onPressedLoader: _makeLoaderChanged,
+  //             id: items![index]?.id!,
+  //             data: items![index],
+  //             index: index,
+  //           ),
+  //           SizedBox(
+  //             height: 16.sp,
+  //           ),
+  //           Container(
+  //             height: 1.sp,
+  //             width: MediaQuery.of(context).size.width,
+  //             color: AppColorsController().black,
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //     itemCount: items!.length!,
+  //     separatorBuilder: (BuildContext context, int index) {
+  //       return SizedBox(
+  //         height: 8.sp,
+  //       );
+  //     },
+  //   );
+  // }
 
-  _buildBody() {
-    return ListView.separated(
-      primary: false,
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemBuilder: (context, index) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.sp),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      BuildCircularImageUser(
-                        size: 48.sp,
-                        url: items![index]?.profile_pic,
-                        id: items![index]?.user_id,
-                      ),
-                      SizedBox(
-                        width: 4.sp,
-                      ),
-                      Text(
-                        "${items![index]!.user_name} , ",
-                        style: AppStyle.smallTitleStyle.copyWith(
-                          color: AppColorsController().black,
-                          fontWeight: AppFontWeight.midLight,
-                        ),
-                      ),
-                      Text(
-                        items![index]!.date_ad != null
-                            ? getComparedTime(items![index]!.date_ad!)
-                                .toString()!
-                            : "",
-                        style: AppStyle.smallTitleStyle.copyWith(
-                          color: AppColorsController().black,
-                          fontWeight: AppFontWeight.midLight,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    child: RatingBarIndicator(
-                      rating: items![index]!.average?.toDouble() ?? 0,
-                      itemCount: 5,
-                      itemSize: 17.sp,
-                      unratedColor: AppColorsController().darkGreyTextColor,
-                      direction: Axis.horizontal,
-                      itemBuilder: (context, _) => Icon(
-                        Icons.star,
-                        size: 13.sp,
-                        color: Colors.amber,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 18.sp,
-            ),
-            DetailsBodyFilterWidget(
-              onPressedLike: _makeLikeChanged,
-              onPressedFavourite: _makeFavouriteChanged,
-              onPressedLoader: _makeLoaderChanged,
-              id: items![index]?.id!,
-              data: items![index],
-              index: index,
-            ),
-            SizedBox(
-              height: 16.sp,
-            ),
-            Container(
-              height: 1.sp,
-              width: MediaQuery.of(context).size.width,
-              color: AppColorsController().black,
-            ),
-          ],
-        );
-      },
-      itemCount: items!.length!,
-      separatorBuilder: (BuildContext context, int index) {
-        return SizedBox(
-          height: 8.sp,
-        );
-      },
+  _buildWithGridViewBody() {
+    return Padding(
+      padding:  EdgeInsets.all(12.sp),
+      child:  GridView.builder(
+        itemCount:  items.length,
+        shrinkWrap: true,
+
+        itemBuilder: (context, index) {
+          // if (categoriesBloc.isJobs(data?.?[index].category_title ?? '')) {
+          //
+          //   return JobAdCard(
+          //     weNeedJustImage: true,
+          //     // height: MediaQuery.sizeOf(context).height * 0.23,
+          //     // height: 250.sp,
+          //     width: MediaQuery.sizeOf(context).width * 0.85,
+          //     data: data?.active_ads?[index],
+          //     onPress: () {
+          //       DIManager.findNavigator().pushNamed(
+          //         ItemsDetailsPage.routeName,
+          //         arguments: ItemsArgs(id: data?.active_ads?[index].ad_id ?? 0),
+          //       );
+          //     },
+          //   );
+          // }     // if (categoriesBloc.isJobs(data?.?[index].category_title ?? '')) {
+          //
+          //   return JobAdCard(
+          //     weNeedJustImage: true,
+          //     // height: MediaQuery.sizeOf(context).height * 0.23,
+          //     // height: 250.sp,
+          //     width: MediaQuery.sizeOf(context).width * 0.85,
+          //     data: data?.active_ads?[index],
+          //     onPress: () {
+          //       DIManager.findNavigator().pushNamed(
+          //         ItemsDetailsPage.routeName,
+          //         arguments: ItemsArgs(id: data?.active_ads?[index].ad_id ?? 0),
+          //       );
+          //     },
+          //   );
+          // }
+        return HomeItemsFavorite(
+onChangedLoaderFavourite: _makeLoaderChanged,
+            adsIdFavourite: items[index].id!,
+            onChangedFavourite:_makeFavouriteChanged ,
+            indexFavourite: index,
+
+            onPress: () {
+              DIManager.findNavigator()
+                  .pushNamed(ItemsDetailsPage.routeName,
+                  arguments: ItemsArgs(
+                    id: items[index].ad_id??0,
+                  ));
+            },
+            data: items[index],
+          );
+        },
+        gridDelegate:
+        SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisExtent: 210.sp,
+          crossAxisSpacing: 6.sp,
+          mainAxisSpacing: 18.sp,
+        ),
+        physics: NeverScrollableScrollPhysics(),
+      ),
     );
   }
+
+
 }

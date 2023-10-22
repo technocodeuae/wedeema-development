@@ -73,6 +73,7 @@ class AppEndpoints {
   static const String evaluate =  'evaluate';
 
   /// my favourite
+  ///
   static const String myFavouriteAds =  'user/my_favorite_ads';
 
 

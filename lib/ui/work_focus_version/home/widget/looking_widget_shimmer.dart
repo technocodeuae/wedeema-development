@@ -31,145 +31,142 @@ class LookingWidgetShimmer extends StatelessWidget {
             ],
           ),
 
-          name == 'ads'? Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0.sp),
-            child: Column(
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 95.sp,
-                  child: ListView.separated(
-                    itemBuilder: (context, index) {
-                      return Container(
-                        padding: EdgeInsets.symmetric(horizontal: 2.sp),
-                        height:  90.sp,
-                        width: 100.sp,
-                        decoration: BoxDecoration(
-                          border:
-                          Border.all(color: AppColorsController().black, width: 0.2),
-                          color: AppColorsController().containerPrimaryColor,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(12.sp),
-                          ),
+          name == 'ads'? Column(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 95.sp,
+                child: ListView.separated(
+                  itemBuilder: (context, index) {
+                    return Container(
+                      padding: EdgeInsets.symmetric(horizontal: 2.sp),
+                      height:  90.sp,
+                      width: 100.sp,
+                      decoration: BoxDecoration(
+                        border:
+                        Border.all(color: AppColorsController().black, width: 0.2),
+                        color: AppColorsController().containerPrimaryColor,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(12.sp),
                         ),
-                        child: Shimmer.fromColors(
-                          baseColor: Color(0x99FED0D3),
-                          highlightColor: Color(0x99DE0F17),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 2.sp),
-                                height: 34.sp,
-                                width: 34.sp,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: AppColorsController().containerPrimaryColor, width: 0.2),
-                                  color: AppColorsController().containerPrimaryColor,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(12.sp),
-                                  ),
+                      ),
+                      child: Shimmer.fromColors(
+                        baseColor: Color(0x99FED0D3),
+                        highlightColor: Color(0x99DE0F17),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 2.sp),
+                              height: 34.sp,
+                              width: 34.sp,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: AppColorsController().containerPrimaryColor, width: 0.2),
+                                color: AppColorsController().containerPrimaryColor,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(12.sp),
                                 ),
                               ),
-                              SizedBox(height: 8.sp,),
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 2.sp),
-                                height: 2.sp,
-                                width: 30.sp,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: AppColorsController().containerPrimaryColor, width: 0.2),
-                                  color: AppColorsController().containerPrimaryColor,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(12.sp),
-                                  ),
+                            ),
+                            SizedBox(height: 8.sp,),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 2.sp),
+                              height: 2.sp,
+                              width: 30.sp,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: AppColorsController().containerPrimaryColor, width: 0.2),
+                                color: AppColorsController().containerPrimaryColor,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(12.sp),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return SizedBox(
-                        width: 16.sp,
-                      );
-                    },
-                    itemCount: 4,
-                    scrollDirection: Axis.horizontal,
-                  ),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return SizedBox(
+                      width: 16.sp,
+                    );
+                  },
+                  itemCount: 4,
+                  scrollDirection: Axis.horizontal,
                 ),
-                SizedBox(
-                  height: 12.sp,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 95.sp,
-                  child: ListView.separated(
-                    itemBuilder: (context, index) {
-                      return Container(
-                        padding: EdgeInsets.symmetric(horizontal: 2.sp),
-                        height:  90.sp,
-                        width: 100.sp,
-                        decoration: BoxDecoration(
-                          border:
-                          Border.all(color: AppColorsController().black, width: 0.2),
-                          color: AppColorsController().containerPrimaryColor,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(12.sp),
-                          ),
+              ),
+              SizedBox(
+                height: 12.sp,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 95.sp,
+                child: ListView.separated(
+                  itemBuilder: (context, index) {
+                    return Container(
+                      padding: EdgeInsets.symmetric(horizontal: 2.sp),
+                      height:  90.sp,
+                      width: 100.sp,
+                      decoration: BoxDecoration(
+                        border:
+                        Border.all(color: AppColorsController().black, width: 0.2),
+                        color: AppColorsController().containerPrimaryColor,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(12.sp),
                         ),
-                        child: Shimmer.fromColors(
-                          baseColor: Color(0x99FED0D3),
-                          highlightColor: Color(0x99DE0F17),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 2.sp),
-                                height: 34.sp,
-                                width: 34.sp,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: AppColorsController().containerPrimaryColor, width: 0.2),
-                                  color: AppColorsController().containerPrimaryColor,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(12.sp),
-                                  ),
+                      ),
+                      child: Shimmer.fromColors(
+                        baseColor: Color(0x99FED0D3),
+                        highlightColor: Color(0x99DE0F17),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 2.sp),
+                              height: 34.sp,
+                              width: 34.sp,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: AppColorsController().containerPrimaryColor, width: 0.2),
+                                color: AppColorsController().containerPrimaryColor,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(12.sp),
                                 ),
                               ),
-                              SizedBox(height: 30.sp,),
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 2.sp),
-                                height: 2.sp,
-                                width: 40.sp,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: AppColorsController().containerPrimaryColor, width: 0.2),
-                                  color: AppColorsController().containerPrimaryColor,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(12.sp),
-                                  ),
+                            ),
+                            SizedBox(height: 30.sp,),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 2.sp),
+                              height: 2.sp,
+                              width: 40.sp,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: AppColorsController().containerPrimaryColor, width: 0.2),
+                                color: AppColorsController().containerPrimaryColor,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(12.sp),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return SizedBox(
-                        width: 16.sp,
-                      );
-                    },
-                    itemCount: 4,
-                    scrollDirection: Axis.horizontal,
-                  ),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return SizedBox(
+                      width: 16.sp,
+                    );
+                  },
+                  itemCount: 4,
+                  scrollDirection: Axis.horizontal,
                 ),
-              ],
-            ),
+              ),
+            ],
           ): Padding(
             padding: EdgeInsets.symmetric(vertical: 8.0.sp),
             child: Column(

@@ -87,201 +87,212 @@ class _LookingForDetailsPageState extends State<LookingForDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      body: SafeArea(
+      body: NestedScrollView(
+        headerSliverBuilder: (context,innerBoxIsScrolled){
+          return <Widget>[
+SliverAppBar(
+  automaticallyImplyLeading: false,
+  expandedHeight: 320,backgroundColor: AppColorsController().white,
+  // actions: [Container()],
+  centerTitle: true,pinned: true,leadingWidth: 0,
+  flexibleSpace: FlexibleSpaceBar(
+    // title: Container(
+    //   color: Colors.white,
+    //   width: MediaQuery.of(context).size.width,
+    //   // height: 50,
+    //   child: Text(
+    //         translate("ads_list") + ":",
+    //         style: AppStyle.smallTitleStyle.copyWith(
+    //         color: AppColorsController().black,
+    //         fontWeight: FontWeight.bold,fontSize: AppFontSize.fontSize_18
+    //         ),
+    //         maxLines: 2,
+    //         overflow: TextOverflow.ellipsis,
+    //         ),
+    // ),
+    background:     Column(
+      children: [
+        AppBarWidget(
+          name: widget.args!.title ?? "",
+          child: InkWell(
+            onTap: () {
+              DIManager.findNavigator().pop();
+            },
+            child: BackIcon(
+              width: 26.sp,
+              height: 18.sp,
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(right: 16.0.sp,left: 16.0.sp,top: 16.0.sp),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
 
-        child: BackLongPress(
+              BlocConsumer<CategoriesCubit, CategoriesState>(
+                bloc: categoriesBloc,
+                listener: (context, state) {},
+                builder: (context, state) {
+                  final categoriesState = state.getSubCategoriesState;
 
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AppBarWidget(
-                  name: widget.args!.title ?? "",
-                  child: InkWell(
-                    onTap: () {
-                      DIManager.findNavigator().pop();
-                    },
-                    child: BackIcon(
-                      width: 26.sp,
-                      height: 18.sp,
-                    ),
-                  ),
-                ),
-
-                Padding(
-                  padding: EdgeInsets.all(16.0.sp),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 280.sp,
-                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-
-                            BlocConsumer<CategoriesCubit, CategoriesState>(
-                              bloc: categoriesBloc,
-                              listener: (context, state) {},
-                              builder: (context, state) {
-                                final categoriesState = state.getSubCategoriesState;
-
-                                if (categoriesState is BaseFailState) {
-                                  return Column(
-                                    children: [
-                                      VerticalPadding(3.0),
-                                      GeneralErrorWidget(
-                                        error: categoriesState.error,
-                                        callback: categoriesState.callback,
-                                      ),
-                                    ],
-                                  );
-                                }
-
-                                if (categoriesState is GetSubCategoriesSuccessState) {
-                                  final data = (state.getSubCategoriesState
-                                          as GetSubCategoriesSuccessState)
-                                      .categories;
-
-                                  List<dynamic> firstList =
-                                      data.sublist(0, data.length ~/ 2);
-                                  List<dynamic> secondList =
-                                      data.sublist(data.length ~/ 2);
-                                  return Column(
-                                    children: [
-                                      firstList.length > 0
-                                          ? Container(
-                                              height: 100.sp,
-                                              child: ListView.separated(
-                                                scrollDirection: Axis.horizontal,
-                                                itemCount: firstList.length,
-                                                itemBuilder: (context, index) =>
-                                                    lookingItemsWidget(
-                                                        categories: firstList[index]),
-                                                separatorBuilder:
-                                                    (BuildContext context, int index) {
-                                                  return SizedBox(
-                                                    width: 8.sp,
-                                                  );
-                                                },
-                                              ),
-                                            )
-                                          : Container(),
-                                      firstList.length > 0
-                                          ? SizedBox(
-                                              height: 16.sp,
-                                            )
-                                          : Container(),
-                                      firstList.length > 0
-                                          ? Container(
-                                              height: 100.sp,
-                                              child: ListView.separated(
-                                                scrollDirection: Axis.horizontal,
-                                                itemCount: secondList.length,
-                                                itemBuilder: (context, index) =>
-                                                    lookingItemsWidget(
-                                                        categories: secondList[index]),
-                                                separatorBuilder:
-                                                    (BuildContext context, int index) {
-                                                  return SizedBox(
-                                                    width: 8.sp,
-                                                  );
-                                                },
-                                              ),
-                                            )
-                                          : Container(),
-                                                          ],
-                                  );
-                                }
-                                return LookingWidgetShimmer(name:  "ads");
-                              },
-                            ),
-                            SizedBox(
-                              height: 12.sp,
-                            ),
-                            Text(
-                              translate("ads_list") + ":",
-                              style: AppStyle.smallTitleStyle.copyWith(
-                                color: AppColorsController().black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
+                  if (categoriesState is BaseFailState) {
+                    return Column(
+                      children: [
+                        VerticalPadding(3.0),
+                        GeneralErrorWidget(
+                          error: categoriesState.error,
+                          callback: categoriesState.callback,
                         ),
-                      ),
+                      ],
+                    );
+                  }
 
-                      Container(
-                        height: 600.sp,
-                        child: SmartRefresher(
-                          enablePullDown: false,
-                          enablePullUp: true,
-                          scrollDirection: Axis.vertical,
-                          controller: _refreshController,
-                          onRefresh: _onRefresh,
-                          header: ClassicHeader(
-                            completeText: "",
-                            refreshingText: "",
-                            textStyle: TextStyle(color: AppColorsController().white),
-                          ),
-                          footer: ClassicFooter(
-                            canLoadingText: "",
-                            loadingText: "",
-                            textStyle: TextStyle(color: AppColorsController().white),
-                          ),
-                          onLoading: _onLoading,
+                  if (categoriesState is GetSubCategoriesSuccessState) {
+                    final data = (state.getSubCategoriesState
+                    as GetSubCategoriesSuccessState)
+                        .categories;
 
-            child: BlocConsumer<CategoriesCubit, CategoriesState>(
-                            bloc: categoriesBloc,
-                            listener: (context, state) {},
-                            builder: (context, state) {
-                              final categoriesState = state.getSubCategoriesState;
-
-                              if (categoriesState is BaseFailState) {
-                                return Column(
-                                  children: [
-                                    VerticalPadding(3.0),
-                                    GeneralErrorWidget(
-                                      error: categoriesState.error,
-                                      callback: categoriesState.callback,
-                                    ),
-                                  ],
-                                );
-                              }
-
-                              if (categoriesState is GetSubCategoriesSuccessState) {
-                                final data = (state.getSubCategoriesState
-                                as GetSubCategoriesSuccessState)
-                                    .categories;
-
-                                loadingLoader = true;
-                                loading = true;
-                                return   Padding(
-                                  padding: EdgeInsets.all(4.0.sp),
-                                  child: BuildItemsAds(
-                                    name: translate('ads'),
-                                    // type: 3,
-                                    type: 10,
-                                    category_id: widget.args!.id!,
-                                    is_category: true,
-                                  ),
-                                );
-                              }
-                              return AdsShimmerWidget(
-                                name: translate('ads'),
-                                type: 10,
-                                is_category: true,
+                    List<dynamic> firstList =
+                    data.sublist(0, data.length ~/ 2);
+                    List<dynamic> secondList =
+                    data.sublist(data.length ~/ 2);
+                    return Column(
+                      children: [
+                        firstList.length > 0
+                            ? Container(
+                          height: 100.sp,
+                          child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: firstList.length,
+                            itemBuilder: (context, index) =>
+                                lookingItemsWidget(
+                                    categories: firstList[index]),
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              return SizedBox(
+                                width: 8.sp,
                               );
                             },
                           ),
-                        ),
-                      ),
-
-
-                    ],
-                  ),
+                        )
+                            : Container(),
+                        firstList.length > 0
+                            ? SizedBox(
+                          height: 16.sp,
+                        )
+                            : Container(),
+                        firstList.length > 0
+                            ? Container(
+                          height: 100.sp,
+                          child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: secondList.length,
+                            itemBuilder: (context, index) =>
+                                lookingItemsWidget(
+                                    categories: secondList[index]),
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              return SizedBox(
+                                width: 8.sp,
+                              );
+                            },
+                          ),
+                        )
+                            : Container(),
+                      ],
+                    );
+                  }
+                  return LookingWidgetShimmer(name:  "ads");
+                },
+              ),
+              // SizedBox(
+              //   height: 25.sp,
+              // ),
+              Text(
+                translate("ads_list") + ":",
+                style: AppStyle.smallTitleStyle.copyWith(
+                  color: AppColorsController().black,
+                  fontWeight: FontWeight.bold,fontSize: AppFontSize.fontSize_18
                 ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
 
-              ],
+  ),
+),
+          
+          ];
+        },
+        body: SafeArea(
+          child: SmartRefresher(
+            enablePullDown: false,
+            enablePullUp: true,
+            scrollDirection: Axis.vertical,
+            controller: _refreshController,
+            onRefresh: _onRefresh,
+            // header: ClassicHeader(
+            //   completeText: "",
+            //   refreshingText: "",
+            //   textStyle: TextStyle(color: AppColorsController().white),
+            // ),
+            footer: ClassicFooter(
+              canLoadingText: "",
+              loadingText: "",
+              textStyle: TextStyle(color: AppColorsController().white),
+            ),
+            onLoading: _onLoading,
+            child: BlocConsumer<CategoriesCubit, CategoriesState>(
+              bloc: categoriesBloc,
+              listener: (context, state) {},
+              builder: (context, state) {
+                final categoriesState = state.getSubCategoriesState;
+
+                if (categoriesState is BaseFailState) {
+                  return Column(
+                    children: [
+                      VerticalPadding(3.0),
+                      GeneralErrorWidget(
+                        error: categoriesState.error,
+                        callback: categoriesState.callback,
+                      ),
+                    ],
+                  );
+                }
+
+                if (categoriesState is GetSubCategoriesSuccessState) {
+                  final data = (state.getSubCategoriesState
+                  as GetSubCategoriesSuccessState)
+                      .categories;
+
+                  loadingLoader = true;
+                  loading = true;
+                  return   Padding(
+                    padding: EdgeInsets.all(4.0.sp),
+                    child: BuildItemsAds(
+                      name: translate('ads'),
+                      // type: 3,
+                      nameType: widget.args!.title!,
+                      type: 10,
+                      category_id: widget.args!.id!,
+                      is_category: true,
+                    ),
+                  );
+                }
+                return widget.args!.title! =='وظائف'?AdsShimmerWidget(
+                  name: translate('adsJob'),
+                  type: 10,
+                  is_category: true,
+                ) : AdsShimmerWidget(
+                  name: translate('ads'),
+                  type: 10,
+                  is_category: true,
+                );
+              },
             ),
           ),
         ),
