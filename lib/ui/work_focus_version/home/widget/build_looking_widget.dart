@@ -57,6 +57,7 @@ class _BuildLookingWidgetState extends State<BuildLookingWidget> {
                 width: MediaQuery.of(context).size.width,
                 height: 72.sp,
                 child: ListView.separated(
+                  physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
                     return LookingForWidget(
                       onPressed: () {
@@ -87,6 +88,7 @@ class _BuildLookingWidgetState extends State<BuildLookingWidget> {
                 width: MediaQuery.of(context).size.width,
                 height: 72.sp,
                 child: ListView.separated(
+                  physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
                     return LookingForWidget(
                       onPressed: () {

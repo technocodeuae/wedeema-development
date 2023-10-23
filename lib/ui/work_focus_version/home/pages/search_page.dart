@@ -149,7 +149,7 @@ class _SearchPageState extends State<SearchPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Text(translate('last_search'),textAlign: TextAlign.start, style: TextStyle(color: AppColorsController().black, fontSize: 16.sp)),
                 ),
-                ListView.separated(
+                ListView.separated( physics: BouncingScrollPhysics(),
                   itemCount: searchHistory.length,
                   padding: EdgeInsets.symmetric(horizontal: 8),
                   shrinkWrap: true,
@@ -331,7 +331,7 @@ class _SearchPageState extends State<SearchPage> {
             ),
             color: AppColorsController().containerPrimaryColor,
           ),
-          child: ListView.separated(
+          child: ListView.separated( physics: BouncingScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 return Padding(

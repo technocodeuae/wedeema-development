@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
-import '../../../../blocs/application/application_bloc.dart';
 import '../../../../blocs/profile/profile_bloc.dart';
 import '../../../../blocs/profile/states/profile_state.dart';
 import '../../../../core/bloc/states/base_fail_state.dart';
-import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_style.dart';
 import '../../../../core/constants/dimens.dart';
@@ -147,11 +144,22 @@ class _FollowFollowerBlockUserState extends State<FollowFollowerBlockUser> {
                     controller: _refreshController,
                     onRefresh: _onRefresh,
                     header: ClassicHeader(
+                      refreshingIcon: Container(
+                          width: 20.sp,height: 20.sp,child: CircularProgressIndicator(color: AppColorsController().buttonRedColor,strokeWidth: 1.5,)),
+                      idleIcon: Center(child: Icon(Icons.arrow_downward,color: AppColorsController().buttonRedColor,),),
+                      completeIcon: Center(child: Icon(Icons.check,color: AppColorsController().buttonRedColor,size: 30.sp,),),
+                      releaseIcon: Center(child: Icon(Icons.change_circle_sharp,color: AppColorsController().buttonRedColor,size: 30.sp,),),
                       completeText: "",
                       refreshingText: "",
                       textStyle: TextStyle(color: AppColorsController().white),
                     ),
                     footer: ClassicFooter(
+                      height: 80,
+                      noMoreIcon: Center(child: Icon(Icons.arrow_upward,color: AppColorsController().buttonRedColor,),),
+                      idleIcon: Center(child: Icon(Icons.arrow_upward,color: AppColorsController().buttonRedColor,),),
+                      loadingIcon:  Container(
+                          width: 20.sp,height: 20.sp,child: CircularProgressIndicator(color: AppColorsController().buttonRedColor,strokeWidth: 1.5,)),
+                      canLoadingIcon: Center(child: Icon(Icons.change_circle_sharp,color: AppColorsController().buttonRedColor,size: 30.sp,),),
                       canLoadingText: "",
                       loadingText: "",
                       textStyle: TextStyle(color: AppColorsController().white),

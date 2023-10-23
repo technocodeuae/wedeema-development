@@ -38,9 +38,10 @@ class _FollowButtonWidgetState extends State<FollowButtonWidget> {
     follow = widget.isFollow!;
     print(widget.isFollow);
   }
-bool isLoading = true;
+
   @override
   Widget build(BuildContext context) {
+    bool isLoading = false;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 15.sp),
       child: Column(
@@ -65,12 +66,10 @@ bool isLoading = true;
               }
 
 
-              if(widget.isFollow! && followState is BaseLoadingState){
-                print('----------------------');
-                print('----------------------');
-                print('----------------------');
-              }
               if (widget.isFollow! && followState is UnFollowUserSuccessState) {
+                print('----------------------');
+                print('----------------------');
+                print('----------------------');
                 setState(() {
                   widget.isFollow = false;
                 });
@@ -86,28 +85,48 @@ bool isLoading = true;
           SizedBox(
             height: 18.sp,
           ),
+
           AppButton(
-             width: 800,borderRadiusCircular: 18.sp,height: 50.sp,
+             width: 800.sp,borderRadiusCircular: 18.sp,height: 50.sp,
             buttonColor: AppColorsController().buttonRedColor,
-            child: Text(
-              widget.isFollow == true
-                  ? translate("un_follow")
-                  : translate("follow"),
-              style: AppStyle.lightSubtitle.copyWith(
-                color: AppColorsController().white,
-                fontWeight: FontWeight.w800,fontSize: AppFontSize.fontSize_16
-              ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+            child:   Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+
+                Text(
+                  widget.isFollow == true
+                      ? translate("un_follow")
+                      : translate("follow"),
+                  style: AppStyle.lightSubtitle.copyWith(
+                    color: AppColorsController().white,
+                    fontWeight: FontWeight.w800,fontSize: AppFontSize.fontSize_16
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(width: 10.sp,),
+                profileBloc.isLoading ?Container(
+                  width: 18.sp,height: 18.sp,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 1.2,
+                    color: AppColorsController().white,),
+                ): Container(),
+              ],
             ),
             onPressed: () async {
               if (!AppUtils.checkIfGuest(context)) {
-                print(widget.isFollow);
+                print('------------------------');
+                print(isLoading);
                 if (widget.isFollow == true) {
                   await profileBloc.userUnFollow(widget.userId!);
+
                 } else {
                   await profileBloc.userFollow(widget.userId!);
+
                 }
+                print('------------------------');
+                print(isLoading);
                 widget.onChanged!(widget.isFollow!);
               }
             },

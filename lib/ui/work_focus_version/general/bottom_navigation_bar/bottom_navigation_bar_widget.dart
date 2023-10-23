@@ -49,47 +49,44 @@ class _bottomNavigationBarWidgetState extends State<bottomNavigationBarWidget>
 
     PagesEnum pagesEnum ;
 
-    return Container(
-      width: MediaQuery.of(context).size.width,
- color: Colors.transparent,
+    return Padding(
+      padding: EdgeInsets.only(left: 40.sp,right: 40.sp,bottom: 25.sp,top: 5.sp),
 
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 42.sp,vertical: 10.sp),
-        child: Stack(
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(Dimens.containerBorderRadius),
-                ),
-                border: Border.all(color: AppColorsController().borderColor, width: 0.2.sp),
-                color: AppColorsController().white,
+      child: Stack(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(Dimens.containerBorderRadius),
               ),
+              border: Border.all(color: AppColorsController().borderColor, width: 0.2.sp),
+              color: AppColorsController().white,
+            ),
 
-              padding: EdgeInsets.only(left: 2.sp, right: 2.sp, top: 2.sp),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 30.sp,
-                      child: TabBar(
-                        controller: tabController,
-                        indicatorWeight: 0.1,
-                        indicatorColor: AppColorsController().black,
-                        indicatorPadding: EdgeInsets.all(0.0),
-                        labelPadding: EdgeInsets.all(0.0),
-                        indicatorSize: TabBarIndicatorSize.label,
-                        tabs: <Widget>[
-                          InkWell(
-                            onTap: () {
+            padding: EdgeInsets.only(left: 2.sp, right: 2.sp, top: 2.sp),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 30.sp,
+                    child: TabBar(
+                      controller: tabController,
+                      indicatorWeight: 0.1,
+                      indicatorColor: AppColorsController().black,
+                      indicatorPadding: EdgeInsets.all(0.0),
+                      labelPadding: EdgeInsets.all(0.0),
+                      indicatorSize: TabBarIndicatorSize.label,
+                      tabs: <Widget>[
+                        InkWell(
+                          onTap: () {
 
 
 
 
 
-    DIManager.findNavigator().pushNamed(
-      HomePage.routeName,
-      arguments: homeKey,
+    DIManager.findNavigator().pushReplacementNamed(
+    HomePage.routeName,
+    arguments: homeKey,
 
     );
 
@@ -98,100 +95,99 @@ class _bottomNavigationBarWidgetState extends State<bottomNavigationBarWidget>
 
 
 
-                              // Navigator.of(context)
-                              //     .pushNamedAndRemoveUntil(Routes.homePage,(route) => false,)
-                              //     .then((value) => {
-                              //             tabController.index = 0
-                              //         });
-                            },
-                            child: _buildTabItem(
-                                text: "",
-                                iconPath: AppAssets.homeIcons,
-                                page: PagesEnum.PAGE_1),
-                          ),
-                          InkWell(
-                            onTap: () {
+                            // Navigator.of(context)
+                            //     .pushNamedAndRemoveUntil(Routes.homePage,(route) => false,)
+                            //     .then((value) => {
+                            //             tabController.index = 0
+                            //         });
+                          },
+                          child: _buildTabItem(
+                              text: "",
+                              iconPath: AppAssets.homeIcons,
+                              page: PagesEnum.PAGE_1),
+                        ),
+                        InkWell(
+                          onTap: () {
 
-                              print('-----------------------------------------------------------');
-                              print(tabController.previousIndex);
-                              print('-----------------------------------------------------------');
-                              // if(tabController.index==1){
-                              //
-                              // }else{
-                                if (!AppUtils.checkIfGuest(context)) {
-                                  DIManager.findNavigator().pushNamed(
-                                    ChatsPage.routeName,
-                                    // arguments: chatKey,
-                                  );
-                                }
-
-
-                              // }
-
-
-
-
-
-                            },
-                            child: _buildTabItem(
-                                text: "",
-                                iconPath: AppAssets.messengerIcons,
-                                page: PagesEnum.PAGE_2),
-                          ),
-                          InkWell(
-                            onTap: () {
+                            print('-----------------------------------------------------------');
+                            print(tabController.previousIndex);
+                            print('-----------------------------------------------------------');
+                            // if(tabController.index==1){
+                            //
+                            // }else{
                               if (!AppUtils.checkIfGuest(context)) {
-                                DIManager.findNavigator()
-                                    .pushNamed(SelectListingPage.routeName, arguments: {'city_id': -1});
-                              }
-                            },
-                            child: _buildTabItem(
-                                text: "",
-                                iconPath: AppAssets.addIcons,
-                                page: PagesEnum.PAGE_3),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              if (!AppUtils.checkIfGuest(context)) {
-                                DIManager.findNavigator().pushNamed(
-                                  MyFavouritePage.routeName,
-                                    // arguments: favouriteKey
+                                DIManager.findNavigator().pushReplacementNamed(
+                                  ChatsPage.routeName,
+                                  // arguments: chatKey,
                                 );
                               }
 
 
-                            },
-                            child: _buildTabItem(
-                                text: "",
-                                iconPath: AppAssets.favouritesIcons,
-                                page: PagesEnum.PAGE_4),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              DIManager.findNavigator().pushNamed(
-                                MyProfilePage.routeName,
-                                  // arguments: settingKey
+                            // }
+
+
+
+
+
+                          },
+                          child: _buildTabItem(
+                              text: "",
+                              iconPath: AppAssets.messengerIcons,
+                              page: PagesEnum.PAGE_2),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            if (!AppUtils.checkIfGuest(context)) {
+                              DIManager.findNavigator()
+                                  .pushReplacementNamed(SelectListingPage.routeName, arguments: {'city_id': -1});
+                            }
+                          },
+                          child: _buildTabItem(
+                              text: "",
+                              iconPath: AppAssets.addIcons,
+                              page: PagesEnum.PAGE_3),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            if (!AppUtils.checkIfGuest(context)) {
+                              DIManager.findNavigator().pushReplacementNamed(
+                                MyFavouritePage.routeName,
+                                  // arguments: favouriteKey
                               );
-                              // Navigator.of(context)
-                              //     .pushNamedAndRemoveUntil(Routes.myProfilePage,(route) => false,)
-                              //     .then((value) => {
-                              //             tabController.index = 2
-                              //         });
-                            },
-                            child: _buildTabItem(
-                                text: "",
-                                iconPath: AppAssets.menuIcons,
-                                page: PagesEnum.PAGE_5),
-                          ),
-                        ],
-                      ),
+                            }
+
+
+                          },
+                          child: _buildTabItem(
+                              text: "",
+                              iconPath: AppAssets.favouritesIcons,
+                              page: PagesEnum.PAGE_4),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            DIManager.findNavigator().pushReplacementNamed(
+                              MyProfilePage.routeName,
+                                // arguments: settingKey
+                            );
+                            // Navigator.of(context)
+                            //     .pushNamedAndRemoveUntil(Routes.myProfilePage,(route) => false,)
+                            //     .then((value) => {
+                            //             tabController.index = 2
+                            //         });
+                          },
+                          child: _buildTabItem(
+                              text: "",
+                              iconPath: AppAssets.menuIcons,
+                              page: PagesEnum.PAGE_5),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -163,12 +163,19 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
+  bool isLoading = false;
+  bool isFollow = false;
   Future<void> userFollow(int userId) async {
+    isLoading = true;
     emit(state.copyWith(followUserState: BaseLoadingState()));
     final result = await profileRepo.userFollow(userId);
     if (result.hasDataOnly) {
-      emit(state.copyWith(
+
+      emit( state.copyWith(
           followUserState: FollowUserSuccessState(result.data!)));
+      Future.delayed(Duration(milliseconds: 100))..then((value) {
+        isLoading = false;
+      });
     } else {
       emit(
         state.copyWith(
@@ -177,16 +184,23 @@ class ProfileCubit extends Cubit<ProfileState> {
             callback: () => this.userFollow(userId),
           ),
         ),
+
       );
+      isLoading = false;
     }
   }
 
   Future<void> userUnFollow(int userId) async {
+    isLoading = true;
     emit(state.copyWith(unfollowUserState: BaseLoadingState()));
     final result = await profileRepo.userUnFollow(userId);
     if (result.hasDataOnly) {
+
       emit(state.copyWith(
           unfollowUserState: UnFollowUserSuccessState(result.data!)));
+      Future.delayed(Duration(milliseconds: 100))..then((value) {
+        isLoading = false;
+      });
     } else {
       emit(
         state.copyWith(
@@ -195,7 +209,7 @@ class ProfileCubit extends Cubit<ProfileState> {
             callback: () => this.userUnFollow(userId),
           ),
         ),
-      );
+      );    isLoading = false;
     }
   }
 

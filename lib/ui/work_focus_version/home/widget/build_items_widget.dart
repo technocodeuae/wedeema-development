@@ -176,114 +176,96 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
     return Container(
       height:  260.sp,
       // width: 400.sp,
-      child: SmartRefresher(
-        enablePullDown: true,
-        enablePullUp: true,
-        scrollDirection: Axis.horizontal,
-        controller: _refreshController,
-        onRefresh: _onRefresh,
-        header: ClassicHeader(
-          completeText: "",
-          refreshingText: "",
-          textStyle: TextStyle(color: AppColorsController().white),
-        ),
-        footer: ClassicFooter(
-          canLoadingText: "",
-          loadingText: "",
-          textStyle: TextStyle(color: AppColorsController().white),
-        ),
-        onLoading: _onLoading,
-        child: BlocConsumer<AdsCubit, AdsState>(
-          bloc: adsBloc,
-          listener: (context, state) {},
-          builder: (context, state) {
-            final adsState;
+      child: BlocConsumer<AdsCubit, AdsState>(
+        bloc: adsBloc,
+        listener: (context, state) {},
+        builder: (context, state) {
+          final adsState;
 
-            switch (widget.type) {
-              case 0:
-                adsState = state.getAllRecentAdsState;
-                break;
-              case 1:
-                adsState = state.getAllMostRatedAdsState;
-                break;
-              case 2:
-                adsState = state.getAllPopularAdsState;
-                break;
-              default:
-                adsState = state.getCategoryAdsState;
-                break;
-            }
-            // = widget.type == 0
-            //     ? state.getAllRecentAdsState
-            //     : widget.type == 1
-            //         ? state.getAllMostRatedAdsState
-            //         : widget.type == 2?state.getAllPopularAdsState:state.getCategoryAdsState;
+          switch (widget.type) {
+            case 0:
+              adsState = state.getAllRecentAdsState;
+              break;
+            case 1:
+              adsState = state.getAllMostRatedAdsState;
+              break;
+            case 2:
+              adsState = state.getAllPopularAdsState;
+              break;
+            default:
+              adsState = state.getCategoryAdsState;
+              break;
+          }
+          // = widget.type == 0
+          //     ? state.getAllRecentAdsState
+          //     : widget.type == 1
+          //         ? state.getAllMostRatedAdsState
+          //         : widget.type == 2?state.getAllPopularAdsState:state.getCategoryAdsState;
 
-            if (adsState is BaseFailState) {
-              isFirstLoading = false;
+          if (adsState is BaseFailState) {
+            isFirstLoading = false;
 
-              return Column(
-                children: [
-                  VerticalPadding(3.sp),
-                  GeneralErrorWidget(
-                    error: adsState.error,
-                    callback: adsState.callback,
-                  ),
-                ],
-              );
-            }
+            return Column(
+              children: [
+                VerticalPadding(3.sp),
+                GeneralErrorWidget(
+                  error: adsState.error,
+                  callback: adsState.callback,
+                ),
+              ],
+            );
+          }
 
-            if (loading &&
-                widget.type == 0 &&
-                adsState is GetAllRecentAdsSuccessState) {
-              final data =
-                  (state.getAllRecentAdsState as GetAllRecentAdsSuccessState)
-                      .ads;
-              itemsList.addAll(data.data!);
-              loading = false;
-              isFirstLoading = false;
-            } else if (loading &&
-                widget.type == 1 &&
-                adsState is GetAllMostRatedAdsSuccessState) {
-              final data = (state.getAllMostRatedAdsState
-                      as GetAllMostRatedAdsSuccessState)
-                  .ads;
-              itemsList.addAll(data.data!);
-              loading = false;
-              isFirstLoading = false;
-            } else if (loading &&
-                widget.type == 2 &&
-                adsState is GetAllPopularAdsSuccessState) {
-              final data =
-                  (state.getAllPopularAdsState as GetAllPopularAdsSuccessState)
-                      .ads;
-              itemsList.addAll(data.data!);
-              loading = false;
-              isFirstLoading = false;
-            } else if (loading && adsState is GetCategoryAdsSuccessState) {
-              final data =
-                  (state.getCategoryAdsState as GetCategoryAdsSuccessState).ads;
-              itemsList.addAll(data.data!);
-              loading = false;
-              isFirstLoading = false;
+          if (loading &&
+              widget.type == 0 &&
+              adsState is GetAllRecentAdsSuccessState) {
+            final data =
+                (state.getAllRecentAdsState as GetAllRecentAdsSuccessState)
+                    .ads;
+            itemsList.addAll(data.data!);
+            loading = false;
+            isFirstLoading = false;
+          } else if (loading &&
+              widget.type == 1 &&
+              adsState is GetAllMostRatedAdsSuccessState) {
+            final data = (state.getAllMostRatedAdsState
+                    as GetAllMostRatedAdsSuccessState)
+                .ads;
+            itemsList.addAll(data.data!);
+            loading = false;
+            isFirstLoading = false;
+          } else if (loading &&
+              widget.type == 2 &&
+              adsState is GetAllPopularAdsSuccessState) {
+            final data =
+                (state.getAllPopularAdsState as GetAllPopularAdsSuccessState)
+                    .ads;
+            itemsList.addAll(data.data!);
+            loading = false;
+            isFirstLoading = false;
+          } else if (loading && adsState is GetCategoryAdsSuccessState) {
+            final data =
+                (state.getCategoryAdsState as GetCategoryAdsSuccessState).ads;
+            itemsList.addAll(data.data!);
+            loading = false;
+            isFirstLoading = false;
 
-              return itemsList.isEmpty
-                  ? Center(
-                      child: Text(
-                      translate("no_items_found"),
-                      style: AppStyle.midTitleStyle,
-                    ))
-                  : _buildBody();
-            }
-            return isFirstLoading == true
-                ? AdsShimmerWidget(
-                    name: widget.name,
-                    type: widget.type,
-                    is_category: widget.is_category,
-                  )
+            return itemsList.isEmpty
+                ? Center(
+                    child: Text(
+                    translate("no_items_found"),
+                    style: AppStyle.midTitleStyle,
+                  ))
                 : _buildBody();
-          },
-        ),
+          }
+          return isFirstLoading == true
+              ? AdsShimmerWidget(
+                  name: widget.name,
+                  type: widget.type,
+                  is_category: widget.is_category,
+                )
+              : _buildBody();
+        },
       ),
     );
   }
@@ -339,6 +321,7 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                   ? 200.sp
                   : 190.sp,
               child:SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
@@ -347,6 +330,8 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                             Row(
                               children: [
                                 if (widget.name == "الإعلانات الأكثر شيوعاً") ...[
+
+
                                   HomeItemsWidget(
                                     onPress: () {
                                       DIManager.findNavigator()
@@ -358,42 +343,21 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                                     data: itemsList[0],
                                   ),
                                 ] else ...[
-                                  HomeItemsWidget(
-                                    onPress: () {
-                                      DIManager.findNavigator()
-                                          .pushNamed(ItemsDetailsPage.routeName,
-                                              arguments: ItemsArgs(
-                                                id: itemsList[0].ad_id ?? 0,
-                                              ));
-                                    },
-                                    data: itemsList[0],
-                                  ),
-                                  SizedBox(
-                                    width: 10.sp,
-                                  ),
-                                  HomeItemsWidget(
-                                    onPress: () {
-                                      DIManager.findNavigator()
-                                          .pushNamed(ItemsDetailsPage.routeName,
-                                              arguments: ItemsArgs(
-                                                id: itemsList[1].ad_id ?? 0,
-                                              ));
-                                    },
-                                    data: itemsList[1],
-                                  ),
-                                  SizedBox(
-                                    width: 10.sp,
-                                  ),
-                                  HomeItemsWidget(
-                                    onPress: () {
-                                      DIManager.findNavigator()
-                                          .pushNamed(ItemsDetailsPage.routeName,
-                                              arguments: ItemsArgs(
-                                                id: itemsList[2].ad_id ?? 0,
-                                              ));
-                                    },
-                                    data: itemsList[2],
-                                  ),
+                                  for(int i =0;i<7;i++)...[
+                                    HomeItemsWidget(
+                                      onPress: () {
+                                        DIManager.findNavigator()
+                                            .pushNamed(ItemsDetailsPage.routeName,
+                                            arguments: ItemsArgs(
+                                              id: itemsList[i].ad_id ?? 0,
+                                            ));
+                                      },
+                                      data: itemsList[i],
+                                    ),
+                                    SizedBox(
+                                      width: 10.sp,
+                                    ),
+                                  ],
                                 ],
                               ],
                             ),

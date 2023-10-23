@@ -156,6 +156,9 @@ class _MoreInfoPageState extends State<MoreInfoPage> {
                     title: translate("blocked_users"),
                   ),
                 ),
+                SizedBox(
+                  height: 35.sp,
+                ),
               ],
             );
           }

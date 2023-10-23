@@ -1,13 +1,11 @@
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:cross_file/cross_file.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wadeema/core/bloc/states/base_init_state.dart';
 
 import '../../../../blocs/auth/states/auth_state.dart';
 import '../../../../core/bloc/states/base_fail_state.dart';
-import '../../../../core/bloc/states/base_success_state.dart';
 import '../../../../core/bloc/states/base_wait_state.dart';
 import '../../../../core/di/di_manager.dart';
 import '../../../../core/shared_prefs/shared_prefs.dart';
@@ -113,6 +111,7 @@ class AuthCubit extends Cubit<AuthState> {
     );
     if (result.hasDataOnly) {
       var fcmToken = DIManager.findDep<SharedPrefs>().getFCMToken();
+
       // if(fcmToken != null ) await authRepo.firebase(token: fcmToken);
       // await DIManager.findDep<ProfileCubit>().getUserProfile();
       DIManager.findDep<SharedPrefs>()..setToken(result.data?.access_token!);

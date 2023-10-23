@@ -151,6 +151,8 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
     final words = _controller.text.split(' ');
     wordCount = words.length;
   }
+
+  bool isLoading=false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -207,11 +209,13 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
                           .propertiesCategories;
 
                       return SingleChildScrollView(
-                        child: Column(
+                        child: Stack(
+                          alignment: Alignment.bottomCenter,
                           children: [
                             Container(
-                              height: 650.sp,
+                              height: 700.sp,
                               child: SingleChildScrollView(
+                                physics: BouncingScrollPhysics(),
                                 keyboardDismissBehavior:
                                     ScrollViewKeyboardDismissBehavior.onDrag,
                                 controller: _scrollController,
@@ -237,6 +241,7 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
                                         categoriesBloc.refresh();
                                       },
                                     ),
+
                                     SubCategoriesDropdownWidget(
                                       child: OptionItem(
                                           title: translate('category'),
@@ -262,6 +267,7 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
                                         categoriesBloc.refresh();
                                       },
                                     ),
+
                                     Column(
                                       children: List.generate(
                                           1 + subcategoriesLength(), (index) {
@@ -296,12 +302,14 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
                                                       'sub_category_ids']?[index]
                                                   : null,
                                           onSelected: (value) {
+
                                             _selectSubcategory(
                                                 value: value, index: index);
                                           },
                                         );
                                       }),
                                     ),
+                        isLoading ? LinearProgressIndicator(color: AppColorsController().buttonRedColor,backgroundColor: AppColorsController().colorBarRed,):Container(),
                                     ListView.builder(
                                         padding: EdgeInsets.only(
                                             bottom: MediaQuery.of(context)
@@ -472,13 +480,13 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
                                       // Text('عدد الكلمات المسموح به: $maxWordCount'),
 
                                       buildTextField(
-                                          // controller: _controller2,
-                                          //
-                                          // inputFormatters: [
-                                          //   LengthLimitingTextInputFormatter(
-                                          //       maxWordCount * 8),
-                                          //   // الضرب في 10 لمعالجة عدد الأحرف بدلاً من الكلمات
-                                          // ],
+                                          controller: _controller2,
+
+                                          inputFormatters: [
+                                            LengthLimitingTextInputFormatter(
+                                                maxWordCount * 100),
+                                            // الضرب في 10 لمعالجة عدد الأحرف بدلاً من الكلمات
+                                          ],
                                           hintText: "أكتب وصف قصير للإعلان",
                                           propertyId: "short_description",
                                           title: translate(
@@ -510,12 +518,9 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
                                       ),
                                       PrivacyWidget(),
                                     ],
-                                    SizedBox(
-                                      height: 16.sp,
-                                    ),
 
                                     SizedBox(
-                                      height: 30.sp,
+                                      height: 60.sp,
                                     ),
                                     // _oldWidget()
                                   ],
@@ -984,7 +989,7 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
             padding: EdgeInsets.symmetric(horizontal: 12.sp),
             child: Text((title ?? '') + '${(isRequired) ? ' * ' : ''}' + ": ",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColorsController().black,fontSize: AppFontSize.fontSize_16,
+                    color: AppColorsController().black,fontSize: AppFontSize.fontSize_13,
                     fontWeight: FontWeight.bold)),
           ),
         ],
@@ -1020,7 +1025,7 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
                               ": ",
                           style: AppStyle.smallTitleTextStyle.copyWith(
                               color: AppColorsController().black,
-                              fontWeight: FontWeight.bold),
+                              fontWeight: FontWeight.bold,fontSize: AppFontSize.fontSize_13),
                         ),
                   hint: isProperty ? hintText : '',
                   onTap: onTap,
@@ -1094,6 +1099,10 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
 
   void _selectSubcategory(
       {required CategoriesEntity? value, required int index}) {
+    isLoading = true;
+    Future.delayed(Duration(milliseconds: 5)).then((value) {
+      isLoading = false;
+    });
     widget.argumentCategory?.dataMap?['sub_category_ids'] ??= [];
     widget.argumentCategory?.dataMap?['subcategory_names'] ??= [];
 

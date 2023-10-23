@@ -117,7 +117,7 @@ class _SelectListingPageState extends State<SelectListingPage> {
                                     height: 20.sp,
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 40.sp),
+                                    padding: EdgeInsets.symmetric(horizontal: 35.sp),
                                     child: GridView.builder(
                                       itemCount: data.length,
                                       shrinkWrap: true,

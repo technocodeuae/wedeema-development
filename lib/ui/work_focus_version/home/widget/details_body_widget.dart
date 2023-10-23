@@ -372,7 +372,7 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
                         ),
                       ),
                       SizedBox(
-                        width: 40.sp,
+                        width: 25.sp,
                       ),
                       ChatIcon(
                       ),

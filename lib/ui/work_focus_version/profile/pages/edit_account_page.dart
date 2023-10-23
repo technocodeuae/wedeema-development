@@ -152,310 +152,307 @@ void dispose(){
           new TextEditingController().clear();
         },
         child: SafeArea(
-          child: LoadingColumnOverlay(
-            isLoading: _isLoader,
-            child: BackLongPress(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  AppBarWidget(
-                    name: translate("profile"),
-                    child: InkWell(
-                      onTap: () {
-                        DIManager.findNavigator().pop();
-                      },
-                      child: BackIcon(
-                        width: 26.sp,
-                        height: 18.sp,
-                      ),
+          child: BackLongPress(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                AppBarWidget(
+                  name: translate("profile"),
+                  child: InkWell(
+                    onTap: () {
+                      DIManager.findNavigator().pop();
+                    },
+                    child: BackIcon(
+                      width: 26.sp,
+                      height: 18.sp,
                     ),
                   ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          BlocConsumer<UpdateProfileCubit, UpdateProfileState>(
-                            bloc: _profileBloc,
-                            listener: (_, state) {
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        BlocConsumer<UpdateProfileCubit, UpdateProfileState>(
+                          bloc: _profileBloc,
+                          listener: (_, state) {
 
-                              final editProfileState = state.editProfileState;
-                              if (editProfileState is BaseFailState) {
-                                CustomSnackbar.showErrorSnackbar(
-                                  editProfileState.error!,
-                                );
-                                setState(() {
-                                  _isLoader = false;
-                                });
-                              }
-                              if (editProfileState is EditProfileSuccessState) {
-                                final profileEntity = editProfileState.user;
-                                DIManager.findDep<SharedPrefs>()
-                                    .setImageProfile(profileEntity.profile_pic);
-                                DIManager.findNavigator().pushNamed(
-                                  MyAccountPage.routeName,
-                                );
-                                setState(() {
-                                  _isLoader = false;
-                                });
-                              }
-                            },
-                            builder: (_, state) {
-                              return Container(
+                            final editProfileState = state.editProfileState;
+                            if (editProfileState is BaseFailState) {
+                              CustomSnackbar.showErrorSnackbar(
+                                editProfileState.error!,
+                              );
+                              setState(() {
+                                _isLoader = false;
+                              });
+                            }
+                            if (editProfileState is EditProfileSuccessState) {
+                              final profileEntity = editProfileState.user;
+                              DIManager.findDep<SharedPrefs>()
+                                  .setImageProfile(profileEntity.profile_pic);
+                              DIManager.findNavigator().pushReplacementNamed(
+                                MyAccountPage.routeName,
+                              );
+                              setState(() {
+                                _isLoader = false;
+                              });
+                            }
+                          },
+                          builder: (_, state) {
+                            return Container(
 
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 20.sp, vertical: 8.sp),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: 16.sp,
-                                    ),
-                                    _buildEditImage(),
-                                    SizedBox(
-                                      height: 10.sp,
-                                    ),
-                                    BuildTextField(
-                                      label: translate("user_name"),suffix: Icon(Icons.person,color: Colors.grey),
-                                      isRequired: false,
-                                      hint: userNameValue,
-                                      controller: userNameController,
-                                      onTextChanged: (value) {
-                                        setState(() {
-                                          userNameValue = value;
-                                        });
-                                      },
-                                    ),
-                                    BuildTextField(
-                                      label: translate("email"),
-                                      isRequired: false,
-                                      hint: emailValue,
-                                      controller: emailController,suffix: Icon(Icons.email_outlined,color: Colors.grey,),
-                                      onTextChanged: (value) {
-                                        setState(() {
-                                          emailValue = value;
-                                        });
-                                      },
-                                    ),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20.sp, vertical: 8.sp),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 16.sp,
+                                  ),
+                                  _buildEditImage(),
+                                  SizedBox(
+                                    height: 10.sp,
+                                  ),
+                                  BuildTextField(
+                                    label: translate("user_name"),suffix: Icon(Icons.person,color: Colors.grey),
+                                    isRequired: false,
+                                    hint: userNameValue,
+                                    controller: userNameController,
+                                    onTextChanged: (value) {
+                                      setState(() {
+                                        userNameValue = value;
+                                      });
+                                    },
+                                  ),
+                                  BuildTextField(
+                                    label: translate("email"),
+                                    isRequired: false,
+                                    hint: emailValue,
+                                    controller: emailController,suffix: Icon(Icons.email_outlined,color: Colors.grey,),
+                                    onTextChanged: (value) {
+                                      setState(() {
+                                        emailValue = value;
+                                      });
+                                    },
+                                  ),
 
 
-                                    Row(
-                                     crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: [
-                                        Expanded(
-                                          child: BuildTextField(
-                                            label: translate("phone_number"),
-                                            isRequired: false,
+                                  Row(
+                                   crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Expanded(
+                                        child: BuildTextField(
+                                          label: translate("phone_number"),
+                                          isRequired: false,
 
-                                            keyboardType: TextInputType.phone,fontSizeText: 15.sp,
-                                            hint: phoneNumberValue,readOnly: !_isEditable,colorText: !_isEditable?Colors.grey:Colors.black  ,
-                                            prefixIcon: Padding(
-                                              padding: const EdgeInsets.only(top: 3.5, ),
-                                              child: Text(
-                                                AppConsts.countryCodeWithEmoji,
-                                                style: AppStyle.smallTitleStyle.copyWith(
-                                                    color: Colors.grey, fontWeight: FontWeight.w500,fontSize: 16.sp),
-                                              ),
+                                          keyboardType: TextInputType.phone,fontSizeText: 15.sp,
+                                          hint: phoneNumberValue,readOnly: !_isEditable,colorText: !_isEditable?Colors.grey:Colors.black  ,
+                                          prefixIcon: Padding(
+                                            padding: const EdgeInsets.only(top: 3.5, ),
+                                            child: Text(
+                                              AppConsts.countryCodeWithEmoji,
+                                              style: AppStyle.smallTitleStyle.copyWith(
+                                                  color: Colors.grey, fontWeight: FontWeight.w500,fontSize: 16.sp),
                                             ),
-                                            controller: phoneNumberController,
-                                            onTextChanged: (value) {
-                                              setState(() {
-                                                phoneNumberValue = value;
-                                              });
-                                            },
+                                          ),
+                                          controller: phoneNumberController,
+                                          onTextChanged: (value) {
+                                            setState(() {
+                                              phoneNumberValue = value;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: InkWell(
+                                          onTap: () {
+                                            toggleEditable();
+                                            // Future.delayed(Duration(milliseconds: 100),(){
+                                            //   FocusScope.of(context).requestFocus(FocusNode());
+                                            // });
+                                          },
+                                          child: EditIcon(
+                                            height: 25.sp,
+                                            width: 24.sp,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+
+                                  BlocListener<CitiesCubit, CitiesState>(
+                                    bloc: citiesBloc,
+                                    listener: (context, state) {
+                                      final citiesState = state.getCitiesState;
+
+                                      if (isLoaderCity == true &&
+                                          citiesState is CitiesSuccessState) {
+                                        cityData = (state.getCitiesState
+                                                as CitiesSuccessState)
+                                            .cities;
+                                        for (int i = 0;
+                                            i < cityData.length;
+                                            i++) {
+                                          if (cityData[i].id ==
+                                              widget.data?.user?.city_id) {
+                                            print("YEEEEEEEs");
+                                            cityValue = cityData[i];
+                                            break;
+                                          }
+                                        }
+                                        isLoaderCity = true;
+                                      }
+                                      setState(() {});
+                                    },
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.all(6.0.sp),
+                                          child: Text(
+                                            translate("city") + " :",
+                                            style: AppStyle.verySmallTitleStyle.copyWith(
+                                              color: AppColorsController()
+                                                  .textPrimaryColor,fontSize: 15.sp
+                                            ),
                                           ),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.all(12.0),
-                                          child: InkWell(
-                                            onTap: () {
-                                              toggleEditable();
-                                              // Future.delayed(Duration(milliseconds: 100),(){
-                                              //   FocusScope.of(context).requestFocus(FocusNode());
-                                              // });
-                                            },
-                                            child: EditIcon(
-                                              height: 25.sp,
-                                              width: 24.sp,
+                                          padding:  EdgeInsets.only(left: 19.sp),
+                                          child: TextFieldDecorator(
+                                            child: Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 24.sp),
+                                              child: DropdownButton<CitiesEntity>(
+                                                value: cityValue,
+                                                dropdownColor: AppColorsController().white,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    cityValue = value!;
+                                                  });
+                                                },
+                                                isExpanded: true,
+                                                underline: Container(),
+                                                items: cityData
+                                                    ?.map((CitiesEntity item) {
+                                                  return DropdownMenuItem<
+                                                      CitiesEntity>(
+                                                    value: item,
+                                                    child: Text(item.title!,
+                                                        style: AppFontStyle
+                                                            .formFieldStyle
+                                                            .copyWith(
+                                                          color:
+                                                              AppColorsController()
+                                                                  .black,
+                                                          fontWeight:
+                                                              AppFontWeight
+                                                                  .midLight,
+                                                        )),
+                                                  );
+                                                }).toList(),
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ],
                                     ),
+                                  ),
 
+                                  // BuildTextField(
+                                  //   label: translate("city"),
+                                  //   isRequired: false,
+                                  //   hint: cityValue,
+                                  //   controller: cityController,
+                                  //   onTextChanged: (value) {
+                                  //     setState(() {
+                                  //       cityValue = value;
+                                  //     });
+                                  //   },
+                                  // ),
 
-                                    BlocListener<CitiesCubit, CitiesState>(
-                                      bloc: citiesBloc,
-                                      listener: (context, state) {
-                                        final citiesState = state.getCitiesState;
-
-                                        if (isLoaderCity == true &&
-                                            citiesState is CitiesSuccessState) {
-                                          cityData = (state.getCitiesState
-                                                  as CitiesSuccessState)
-                                              .cities;
-                                          for (int i = 0;
-                                              i < cityData.length;
-                                              i++) {
-                                            if (cityData[i].id ==
-                                                widget.data?.user?.city_id) {
-                                              print("YEEEEEEEs");
-                                              cityValue = cityData[i];
-                                              break;
-                                            }
-                                          }
-                                          isLoaderCity = true;
-                                        }
-                                        setState(() {});
-                                      },
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.all(6.0.sp),
-                                            child: Text(
-                                              translate("city") + " :",
-                                              style: AppStyle.verySmallTitleStyle.copyWith(
-                                                color: AppColorsController()
-                                                    .textPrimaryColor,fontSize: 15.sp
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:  EdgeInsets.only(left: 19.sp),
-                                            child: TextFieldDecorator(
-                                              child: Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 24.sp),
-                                                child: DropdownButton<CitiesEntity>(
-                                                  value: cityValue,
-                                                  dropdownColor: AppColorsController().white,
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      cityValue = value!;
-                                                    });
-                                                  },
-                                                  isExpanded: true,
-                                                  underline: Container(),
-                                                  items: cityData
-                                                      ?.map((CitiesEntity item) {
-                                                    return DropdownMenuItem<
-                                                        CitiesEntity>(
-                                                      value: item,
-                                                      child: Text(item.title!,
-                                                          style: AppFontStyle
-                                                              .formFieldStyle
-                                                              .copyWith(
-                                                            color:
-                                                                AppColorsController()
-                                                                    .black,
-                                                            fontWeight:
-                                                                AppFontWeight
-                                                                    .midLight,
-                                                          )),
-                                                    );
-                                                  }).toList(),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-
-                                    // BuildTextField(
-                                    //   label: translate("city"),
-                                    //   isRequired: false,
-                                    //   hint: cityValue,
-                                    //   controller: cityController,
-                                    //   onTextChanged: (value) {
-                                    //     setState(() {
-                                    //       cityValue = value;
-                                    //     });
-                                    //   },
-                                    // ),
-
-                                    // BuildTextField(
-                                    //   label: translate("about_me"),
-                                    //   isRequired: false,
-                                    //   hint: aboutMeValue,
-                                    //   controller: aboutMeController,
-                                    //   textDirection: DIManager.findDep<ApplicationCubit>().appLanguage.languageCode == AppConsts.LANG_AR? TextDirection.rtl:TextDirection.ltr,
-                                    //   onTextChanged: (value) {
-                                    //     setState(() {
-                                    //       aboutMeValue = value;
-                                    //     });
-                                    //   },
-                                    // ),
+                                  // BuildTextField(
+                                  //   label: translate("about_me"),
+                                  //   isRequired: false,
+                                  //   hint: aboutMeValue,
+                                  //   controller: aboutMeController,
+                                  //   textDirection: DIManager.findDep<ApplicationCubit>().appLanguage.languageCode == AppConsts.LANG_AR? TextDirection.rtl:TextDirection.ltr,
+                                  //   onTextChanged: (value) {
+                                  //     setState(() {
+                                  //       aboutMeValue = value;
+                                  //     });
+                                  //   },
+                                  // ),
 SizedBox(height: 14.sp,),
-                                    Padding(
-                                      padding:  EdgeInsets.only(right: 7.sp,bottom: 12.sp),
-                                      child: Text(
-                                        translate("about_me"),
-                                        style: AppStyle.verySmallTitleStyle.copyWith(
-                                          color: AppColorsController().textPrimaryColor,fontSize: 15.sp,
-                                        ),
+                                  Padding(
+                                    padding:  EdgeInsets.only(right: 7.sp,bottom: 12.sp),
+                                    child: Text(
+                                      translate("about_me"),
+                                      style: AppStyle.verySmallTitleStyle.copyWith(
+                                        color: AppColorsController().textPrimaryColor,fontSize: 15.sp,
                                       ),
                                     ),
-                                    Padding(
-                                      padding:  EdgeInsets.only(left: 18.sp),
-                                      child: TextFormField(
-                                        controller: aboutMeController, textDirection: DIManager.findDep<ApplicationCubit>().appLanguage.languageCode == AppConsts.LANG_AR? TextDirection.rtl:TextDirection.ltr,
-                                        maxLines: null,    cursorColor: AppColorsController().scaffoldBGColor,
-                                        decoration: InputDecoration(
-                                          hintText: 'شرح قصير',
-                                          filled: true,hintStyle:TextStyle(fontSize: 14.sp,),
-                                          fillColor:AppColorsController().containerPrimaryColor,// لون الخلفية
-                                          enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                width: 0.1,color: AppColorsController().borderColor,// عرض البوردر
-                                            ),
-                                            borderRadius: BorderRadius.circular(Dimens.containerBorderRadius), // تعديل شكل الحقل
+                                  ),
+                                  Padding(
+                                    padding:  EdgeInsets.only(left: 18.sp),
+                                    child: TextFormField(
+                                      controller: aboutMeController, textDirection: DIManager.findDep<ApplicationCubit>().appLanguage.languageCode == AppConsts.LANG_AR? TextDirection.rtl:TextDirection.ltr,
+                                      maxLines: null,    cursorColor: AppColorsController().scaffoldBGColor,
+                                      decoration: InputDecoration(
+                                        hintText: 'شرح قصير',
+                                        filled: true,hintStyle:TextStyle(fontSize: 14.sp,),
+                                        fillColor:AppColorsController().containerPrimaryColor,// لون الخلفية
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 0.1,color: AppColorsController().borderColor,// عرض البوردر
                                           ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                width: 0.1,color: AppColorsController().borderColor,// عرض البوردر
-                                            ),
-                                            borderRadius: BorderRadius.circular(Dimens.containerBorderRadius), // تعديل شكل الحقل عند التركيز
-                                          ),
-                                          contentPadding: EdgeInsets.symmetric(vertical: 2.0,horizontal: 20), // زيادة التباعد الرأسي لزيادة ارتفاع الحقل
+                                          borderRadius: BorderRadius.circular(Dimens.containerBorderRadius), // تعديل شكل الحقل
                                         ),
-                                        onChanged: (value) {
-                                          setState(() {
-                                            aboutMeValue = value;
-                                          });
-                                        },
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              width: 0.1,color: AppColorsController().borderColor,// عرض البوردر
+                                          ),
+                                          borderRadius: BorderRadius.circular(Dimens.containerBorderRadius), // تعديل شكل الحقل عند التركيز
+                                        ),
+                                        contentPadding: EdgeInsets.symmetric(vertical: 2.0,horizontal: 20), // زيادة التباعد الرأسي لزيادة ارتفاع الحقل
                                       ),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          aboutMeValue = value;
+                                        });
+                                      },
                                     ),
+                                  ),
 
 
-                                    // SizedBox(
-                                    //   height: 8.sp,
-                                    // ),
-                                    // _buildAddress(),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
+                                  // SizedBox(
+                                  //   height: 8.sp,
+                                  // ),
+                                  // _buildAddress(),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
 
-                          SizedBox(
-                            height: 24.sp,
-                          ),
+                        SizedBox(
+                          height: 24.sp,
+                        ),
 
 
-                          _buttonBuild(),
+                        _buttonBuild(),
 
-                          SizedBox(
-                            height: 24.sp + paddingBottom,
-                          ),
-                        ],
-                      ),
+                        SizedBox(
+                          height: 24.sp + paddingBottom,
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -678,14 +675,23 @@ SizedBox(height: 14.sp,),
           AppButton(
             width: 160.sp,buttonColor: DIManager.findDep<AppColorsController>().buttonRedColor,
             height: 50.sp,
-            child: Text(
-              translate("save"),
-              style: AppStyle.lightSubtitle.copyWith(
-                color: AppColorsController().white,
-                fontWeight: FontWeight.w800,fontSize: 16.5.sp
-              ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  translate("save"),
+                  style: AppStyle.lightSubtitle.copyWith(
+                    color: AppColorsController().white,
+                    fontWeight: FontWeight.w800,fontSize: 16.5.sp
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                _isLoader ?SizedBox(width: 8.sp,):Container(),
+                _isLoader ?Container(
+                    width: 20.sp,height: 20.sp,child: CircularProgressIndicator(color: AppColorsController().white,strokeWidth: 1.5,)):Container()
+              ],
             ),
             onPressed: () {
               Map<String, dynamic> data = {};

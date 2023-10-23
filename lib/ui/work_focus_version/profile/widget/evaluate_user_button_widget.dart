@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wadeema/core/constants/app_colors.dart';
+import 'package:wadeema/core/constants/app_font.dart';
 import 'package:wadeema/core/constants/app_style.dart';
 import 'package:wadeema/core/utils/app_general_utils.dart';
 
@@ -24,7 +25,12 @@ class EvaluateUserButtonWidget extends StatefulWidget {
   final bool? isAds;
 
   EvaluateUserButtonWidget(
-      {Key? key, this.onChanged, this.userId, this.adId, this.isAds = false,this.onChangedLoader})
+      {Key? key,
+      this.onChanged,
+      this.userId,
+      this.adId,
+      this.isAds = false,
+      this.onChangedLoader})
       : super(key: key);
 
   @override
@@ -37,7 +43,6 @@ class _EvaluateUserButtonWidgetState extends State<EvaluateUserButtonWidget> {
   int value = 0;
   String comment = "";
   TextEditingController commentController = TextEditingController();
-
 
   final evaluateBloc = DIManager.findDep<EvaluateCubit>();
 
@@ -54,7 +59,6 @@ class _EvaluateUserButtonWidgetState extends State<EvaluateUserButtonWidget> {
           bloc: evaluateBloc,
           child: Container(),
           listener: (_, state) {
-
             widget.onChangedLoader!(false);
             final evaluateAdState = widget.isAds == true
                 ? state.evaluateAdsState
@@ -85,7 +89,6 @@ class _EvaluateUserButtonWidgetState extends State<EvaluateUserButtonWidget> {
             }
           },
         ),
-
         InkWell(
           child: RateIcon(
             height: 21.sp,
@@ -96,24 +99,23 @@ class _EvaluateUserButtonWidgetState extends State<EvaluateUserButtonWidget> {
             if (!AppUtils.checkIfGuest(context)) {
               showDialog(
                 context: context,
-
                 builder: (BuildContext context) {
                   double rating = 0.0;
                   comment = "";
                   return AlertDialog(
-contentPadding: EdgeInsets.symmetric(horizontal:
-25,vertical: 5),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 25.sp, vertical: 5.sp),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(20.sp),
                       side: BorderSide(
-                        color:AppColorsController().buttonRedColor,
-                        width: 1.0,
+                        color: AppColorsController().buttonRedColor,
+                        width: 1.sp,
                       ),
                     ),
                     title: Text(
                       widget.isAds == true
-                          ? translate("rate_ads") +":"
-                          : translate("rate_user") +":",
+                          ? translate("rate_ads") + ":"
+                          : translate("rate_user") + ":",
                       style: AppStyle.smallTextStyle,
                     ),
                     content: Column(
@@ -121,7 +123,7 @@ contentPadding: EdgeInsets.symmetric(horizontal:
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         RatingBar(
-itemSize: 32.sp,
+                          itemSize: 32.sp,
                           initialRating: rating,
                           minRating: 1,
                           direction: Axis.horizontal,
@@ -134,58 +136,62 @@ itemSize: 32.sp,
                           ratingWidget: RatingWidget(
                             full: Icon(Icons.star, color: Colors.amber),
                             half: Transform(
-                              alignment: Alignment.center,
+                                alignment: Alignment.center,
                                 transform: Matrix4.identity()..rotateZ(186),
-                                child: Icon(Icons.star_half, color: Colors.amber)),
+                                child:
+                                    Icon(Icons.star_half, color: Colors.amber)),
                             empty: Icon(Icons.star_border, color: Colors.amber),
                           ),
                         ),
-                        SizedBox(height: 8.sp,),
-                        widget.isAds == true? BuildTextField(
-                          width: 250.sp,
-                          label: translate("comment"),
-                          isRequired: false,
-                           textDirection: TextDirection.rtl,
-                          controller: commentController,
-                          onTextChanged: (value) {
-                            setState(() {
-                              comment = value;
-                            });
-                          },
-                        )
-                          :Container()
+                        SizedBox(
+                          height: 8.sp,
+                        ),
+                        widget.isAds == true
+                            ? BuildTextField(
+                                width: 250.sp,
+                                label: translate("comment"),
+                                isRequired: false,
+                                textDirection: TextDirection.rtl,
+                                controller: commentController,
+                                onTextChanged: (value) {
+                                  setState(() {
+                                    comment = value;
+                                  });
+                                },
+                              )
+                            : Container()
                       ],
                     ),
                     actions: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      buttonBuild(
-                          text: 'cancel',
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            // Navigator.of(context).pop();
-                          },
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          buttonBuild(
+                            fontSize: AppFontSize.fontSize_14,
+                            text: 'cancel',
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              // Navigator.of(context).pop();
+                            },
+                          ),
+                          buttonBuild(      fontSize: AppFontSize.fontSize_14,
+                            text: 'ok',
+                            onPressed: () async {
+                              // Save the rating                        // and close the dialog box
+                              Navigator.of(context).pop();
+
+                              if (widget.isAds == false)
+                                await evaluateBloc.evaluateUser(
+                                    widget.userId!, rating);
+                              else
+                                await evaluateBloc.evaluateAd(
+                                    widget.adId!, comment, rating);
+
+                              widget.onChanged!(evaluate);
+                            },
+                          ),
+                        ],
                       ),
-                      buttonBuild(
-                          text: 'ok',
-                          onPressed: () async {
-                            // Save the rating                        // and close the dialog box
-                            Navigator.of(context).pop();
-
-                            if (widget.isAds == false)
-                              await evaluateBloc.evaluateUser(
-                                  widget.userId!, rating);
-                            else
-                              await evaluateBloc.evaluateAd(
-                                  widget.adId!, comment, rating);
-
-                            widget.onChanged!(evaluate);
-                          },
-
-                      ),
-                    ],
-                  ),
                       // TextButton(
                       //   child: Text(translate('cancel')),
                       //   onPressed: () {
@@ -211,13 +217,11 @@ itemSize: 32.sp,
                     ],
                     backgroundColor: AppColorsController().pobColor,
                   );
-
                 },
               );
             }
           },
         ),
-
       ],
     );
   }

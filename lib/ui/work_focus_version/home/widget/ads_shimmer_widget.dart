@@ -699,7 +699,7 @@ class AdsShimmerWidget extends StatelessWidget {
                     : Container(
                         width: MediaQuery.of(context).size.width,
                         height: 190.sp,
-                        child: ListView.separated(
+                        child: ListView.separated( physics: BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
                             return Container(
                               padding: EdgeInsets.symmetric(

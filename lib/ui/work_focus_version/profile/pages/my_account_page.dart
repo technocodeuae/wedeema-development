@@ -63,7 +63,10 @@ class _MyAccountPageState extends State<MyAccountPage> {
           isLoading: _isLoader,
           child: BackLongPress(
             child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   AppBarWidget(
                     name: translate("my_profile"),
@@ -108,7 +111,14 @@ class _MyAccountPageState extends State<MyAccountPage> {
                                   .profile;
                           return _buildBody();
                         }
-                        return data == null ? Container() : _buildBody();
+                        return data == null ? Padding(
+                          padding:  EdgeInsets.only(top: MediaQuery.of(context).size.height/3.2),
+                          child: Center(child: Image.asset(
+                            "assets/images/wadeema_loader.gif",
+                            height: 125.0,
+                            width: 125.0,
+                          )),
+                        ) : _buildBody();
                       }),
                   seeMore == true ? MoreInfoPage() : Container(),
                 ],
@@ -309,6 +319,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
             height: 2.sp,
           ),
           _buttonBuild(),
+
         ],
       ),
     );

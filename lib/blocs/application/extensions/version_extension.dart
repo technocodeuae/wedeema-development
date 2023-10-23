@@ -8,7 +8,6 @@ extension VersioningExtension on ApplicationCubit {
     emit(state.copyWith(versionState: VersionState.loadingAll()));
 
      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-
     String appName = packageInfo.appName;
     String packageName = packageInfo.packageName;
     /// get current version

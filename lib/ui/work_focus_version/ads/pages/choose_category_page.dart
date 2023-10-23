@@ -133,7 +133,7 @@ class _ChooseCategoryPageState extends State<ChooseCategoryPage> {
                                     color: AppColorsController()
                                         .containerPrimaryColor,
                                   ),
-                                  child: ListView.separated(
+                                  child: ListView.separated( physics: BouncingScrollPhysics(),
                                       shrinkWrap: true,
                                       itemBuilder: (context, index) {
                                         return Padding(

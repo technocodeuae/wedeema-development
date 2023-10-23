@@ -36,7 +36,7 @@ class LookingWidgetShimmer extends StatelessWidget {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: 95.sp,
-                child: ListView.separated(
+                child: ListView.separated( physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
                     return Container(
                       padding: EdgeInsets.symmetric(horizontal: 2.sp),
@@ -104,7 +104,7 @@ class LookingWidgetShimmer extends StatelessWidget {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: 95.sp,
-                child: ListView.separated(
+                child: ListView.separated( physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
                     return Container(
                       padding: EdgeInsets.symmetric(horizontal: 2.sp),
@@ -174,7 +174,7 @@ class LookingWidgetShimmer extends StatelessWidget {
                 Container(
                   width: MediaQuery.of(context).size.width,
                   height: 71.sp,
-                  child: ListView.separated(
+                  child: ListView.separated( physics: BouncingScrollPhysics(),
                     itemBuilder: (context, index) {
                       return Container(
                         padding: EdgeInsets.symmetric(horizontal: 2.sp),
@@ -242,7 +242,7 @@ class LookingWidgetShimmer extends StatelessWidget {
                 Container(
                   width: MediaQuery.of(context).size.width,
                   height: 71.sp,
-                  child: ListView.separated(
+                  child: ListView.separated( physics: BouncingScrollPhysics(),
                     itemBuilder: (context, index) {
                       return Container(
                         padding: EdgeInsets.symmetric(horizontal: 2.sp),

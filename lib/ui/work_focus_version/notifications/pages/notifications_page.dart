@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../../../blocs/application/application_bloc.dart';
+import 'package:wadeema/core/constants/app_font.dart';
 import '../../../../blocs/notifications/notifications_bloc.dart';
 import '../../../../blocs/notifications/states/notifications_state.dart';
 import '../../../../core/bloc/states/base_fail_state.dart';
@@ -76,6 +75,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
             ),
             Expanded(
               child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
                 child: Column(
                   children: [
                     BlocConsumer<NotificationsCubit, NotificationsState>(
@@ -217,11 +217,16 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                 SizedBox(
                                   height: 8.sp,
                                 ),
-                                Text(
-                                  data[index].body.toString(),
-                                  style: AppStyle.lightSubtitle.copyWith(
-                                    color: AppColorsController().black,
-                                    fontWeight: FontWeight.w400,
+                                Container(
+                                  width: 250.sp,
+                                  child: Text(
+                                    data[index].body.toString(),
+                                    style: AppStyle.lightSubtitle.copyWith(
+                                      color: AppColorsController().black,
+                                      fontWeight: FontWeight.w400,fontSize: AppFontSize.fontSize_11,
+
+                                    ),
+                                    overflow: TextOverflow.ellipsis,maxLines: 4,
                                   ),
                                 ),
                               ],

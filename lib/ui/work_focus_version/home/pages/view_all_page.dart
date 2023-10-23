@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:wadeema/blocs/categories/categories_bloc.dart';
 import 'package:wadeema/ui/work_focus_version/ads/pages/add_main_details_page.dart';
+import 'package:wadeema/ui/work_focus_version/app.dart';
 import 'package:wadeema/ui/work_focus_version/home/pages/search_page.dart';
 import 'package:wadeema/ui/work_focus_version/home/widget/job_ad_card.dart' as card;
 import '../../../../blocs/ads/ads_bloc.dart';
@@ -339,17 +340,32 @@ SizedBox(
               Expanded(
                 child: Container(
                   child: SmartRefresher(
-                    enablePullDown: true,
+                    enablePullDown: false,
                     enablePullUp: true,
                     scrollDirection: Axis.vertical,
+
                     controller: _refreshController,
                     onRefresh: _onRefresh,
-                    header: ClassicHeader(
-                      completeText: "",
-                      refreshingText: "",
-                      textStyle: TextStyle(color: AppColorsController().white),
-                    ),
+                    physics: BouncingScrollPhysics(),
+
+                    // header: ClassicHeader(
+                    //   refreshingIcon: Container(
+                    //       width: 20.sp,height: 20.sp,child: CircularProgressIndicator(color: AppColorsController().buttonRedColor,strokeWidth: 1.5,)),
+                    //   idleIcon: Center(child: Icon(Icons.arrow_downward,color: AppColorsController().buttonRedColor,),),
+                    //   completeIcon: Center(child: Icon(Icons.check,color: AppColorsController().buttonRedColor,size: 30.sp,),),
+                    //   releaseIcon: Center(child: Icon(Icons.change_circle_sharp,color: AppColorsController().buttonRedColor,size: 30.sp,),),
+                    //   completeText: "",
+                    //   refreshingText: "",
+                    //   textStyle: TextStyle(color: AppColorsController().white),
+                    // ),
                     footer: ClassicFooter(
+                      height: 80,
+                      noMoreIcon: Container(
+                          width: 20.sp,height: 20.sp,child: CircularProgressIndicator(color: AppColorsController().buttonRedColor,strokeWidth: 1.5,)),
+                      idleIcon: Center(child: Icon(Icons.arrow_upward,color: AppColorsController().buttonRedColor,),),
+                      loadingIcon:  Container(
+                        width: 20.sp,height: 20.sp,child: CircularProgressIndicator(color: AppColorsController().buttonRedColor,strokeWidth: 1.5,)),
+                      canLoadingIcon: Center(child: Icon(Icons.change_circle_sharp,color: AppColorsController().buttonRedColor,size: 30.sp,),),
                       canLoadingText: "",
                       loadingText: "",
                       textStyle: TextStyle(color: AppColorsController().white),

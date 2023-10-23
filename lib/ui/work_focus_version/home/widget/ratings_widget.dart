@@ -28,7 +28,7 @@ class RatingsWidget extends StatelessWidget {
             height: 8.sp,
           ),
           Container(
-            child: ListView.separated(
+            child: ListView.separated( physics: BouncingScrollPhysics(),
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {

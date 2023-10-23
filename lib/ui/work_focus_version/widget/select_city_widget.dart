@@ -58,26 +58,26 @@ class _SelectCityWidgetState extends State<SelectCityWidget> {
             final data = (state.getCitiesState as CitiesSuccessState).cities;
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: 60.sp),
-              child: Container(
-                padding: EdgeInsets.only(bottom: 0.sp, left: 30.sp,right: 30.sp),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: AppColorsController().borderColor,
-                    width: 0.2,
+              child: InkWell(
+                onTap: (){
+                _showBottomSheet(context,data);
+                },
+                child: Container(
+                  padding: EdgeInsets.only(bottom: 0.sp, left: 30.sp,right: 30.sp),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: AppColorsController().borderColor,
+                      width: 0.2,
+                    ),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(Dimens.containerBorderRadius),
+                    ),
+                    color: AppColorsController().containerPrimaryColor,
                   ),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(Dimens.containerBorderRadius),
-                  ),
-                  color: AppColorsController().containerPrimaryColor,
-                ),
-                child: city == null? Row(
-                  children: [
-                    // _dropdownMenu(data),
-                    InkWell(
-                      onTap: (){
-                        _showBottomSheet(context,data);
-                      },
-                      child: Row(
+                  child: city == null? Row(
+                    children: [
+                      // _dropdownMenu(data),
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -91,34 +91,29 @@ class _SelectCityWidgetState extends State<SelectCityWidget> {
                           ),
                         ],
                       ),
-                    ),
-                    // selectItems != -1
-                    //     ? Container(
-                    //   padding: EdgeInsets.all(16),
-                    //   child: Text('${data[selectItems].title}'),
-                    // )
-                    //     : Container(),
-                    if ((city?.isEmpty ?? true) && !widget.isFilter) ...[
-                      SizedBox(
-                        width: 12.sp,
-                      ),
-                      Text(
-                        translate("Where_should_we_place_your_ads"),
-                        style: AppStyle.verySmallTitleStyle.copyWith(
-                          color: AppColorsController().black,
-                          fontWeight: AppFontWeight.midLight,
+                      // selectItems != -1
+                      //     ? Container(
+                      //   padding: EdgeInsets.all(16),
+                      //   child: Text('${data[selectItems].title}'),
+                      // )
+                      //     : Container(),
+                      if ((city?.isEmpty ?? true) && !widget.isFilter) ...[
+                        SizedBox(
+                          width: 12.sp,
                         ),
-                      ),
-                                  ],
-                  ],
-                ):
+                        Text(
+                          translate("Where_should_we_place_your_ads"),
+                          style: AppStyle.verySmallTitleStyle.copyWith(
+                            color: AppColorsController().black,
+                            fontWeight: AppFontWeight.midLight,
+                          ),
+                        ),
+                                    ],
+                    ],
+                  ):
 
-                    // _dropdownMenu(data),
-                    Center(
-                      child: InkWell(
-                        onTap: (){
-                          _showBottomSheet(context,data);
-                        },
+                      // _dropdownMenu(data),
+                      Center(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
@@ -134,27 +129,27 @@ class _SelectCityWidgetState extends State<SelectCityWidget> {
                           ],
                         ),
                       ),
-                    ),
-                    // selectItems != -1
-                    //     ? Container(
-                    //   padding: EdgeInsets.all(16),
-                    //   child: Text('${data[selectItems].title}'),
-                    // )
-                    //     : Container(),
-                    // if ((city?.isEmpty ?? true) && !widget.isFilter) ...[
-                    //   SizedBox(
-                    //     width: 12.sp,
-                    //   ),
-                    //   Text(
-                    //     translate("Where_should_we_place_your_ads"),
-                    //     style: AppStyle.verySmallTitleStyle.copyWith(
-                    //       color: AppColorsController().black,
-                    //       fontWeight: AppFontWeight.midLight,
-                    //     ),
-                    //   ),
-                    // ],
+                      // selectItems != -1
+                      //     ? Container(
+                      //   padding: EdgeInsets.all(16),
+                      //   child: Text('${data[selectItems].title}'),
+                      // )
+                      //     : Container(),
+                      // if ((city?.isEmpty ?? true) && !widget.isFilter) ...[
+                      //   SizedBox(
+                      //     width: 12.sp,
+                      //   ),
+                      //   Text(
+                      //     translate("Where_should_we_place_your_ads"),
+                      //     style: AppStyle.verySmallTitleStyle.copyWith(
+                      //       color: AppColorsController().black,
+                      //       fontWeight: AppFontWeight.midLight,
+                      //     ),
+                      //   ),
+                      // ],
 
 
+                ),
               ),
             );
           }

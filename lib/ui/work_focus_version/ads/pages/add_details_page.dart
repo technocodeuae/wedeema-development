@@ -331,7 +331,7 @@ class _AddDetailsPageState extends State<AddDetailsPage> {
   }
 
   _buildBody() {
-    return ListView.separated(
+    return ListView.separated( physics: BouncingScrollPhysics(),
         shrinkWrap: true,
         primary: false,
         itemBuilder: (context, index) {

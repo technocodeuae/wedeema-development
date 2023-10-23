@@ -115,7 +115,8 @@ class _SubCategoriesDropdownWidgetState extends State<SubCategoriesDropdownWidge
                                 color: AppColorsController().white,
                                 height: 0,
                               )
-                            ]
+                            ],
+
                           ],
                         ),
                       ));

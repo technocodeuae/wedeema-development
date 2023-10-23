@@ -8,21 +8,21 @@ import '../utils/localization/app_localizations.dart';
 import 'app_colors.dart';
 import 'app_style.dart';
 
-Widget buttonBuild({String? text, dynamic Function()? onPressed,double horizontal =24}) {
+Widget buttonBuild({String? text, dynamic Function()? onPressed,double horizontal =24,double? fontSize}) {
   return Padding(
     padding: EdgeInsets.symmetric(
       horizontal: horizontal,
     ),
     child: AppButton(
-      buttonColor: AppColorsController().buttonRedColor,width: 100,
-      height: 48,
+      buttonColor: AppColorsController().buttonRedColor,width: 100.sp,
+      height: 48.sp,
       child: Center(
         child: Text(
           translate(text!),
           style: AppStyle.lightSubtitle.copyWith(
               color: AppColorsController().white,
               fontWeight: FontWeight.w800,
-              fontSize: AppFontSize.fontSize_20),
+              fontSize:fontSize?? AppFontSize.fontSize_20),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),

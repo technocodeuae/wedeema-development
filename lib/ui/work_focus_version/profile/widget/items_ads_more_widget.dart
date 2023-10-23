@@ -61,7 +61,7 @@ class _ItemsAdsMoreWidgetState extends State<ItemsAdsMoreWidget> {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: 195.sp,
-                  child: ListView.separated(
+                  child: ListView.separated( physics: BouncingScrollPhysics(),
                     itemBuilder: (context, index) {
                       if (categoriesBloc.isJobs(widget.items?[index].category_title ?? '')) {
                         return JobAdCard(
