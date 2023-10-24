@@ -67,7 +67,7 @@ class _BuildLookingWidgetState extends State<BuildLookingWidget> {
                             arguments:
                             ItemsArgs(title: firstList[index].title,
                                 id: firstList[index].category_id,
-                                childCount: firstList[index].hasChild),
+                                childCount: firstList[index].hasChild,indexPage: 0),
                           );
                         }
                       },
@@ -96,9 +96,10 @@ class _BuildLookingWidgetState extends State<BuildLookingWidget> {
                           DIManager.findNavigator().pushNamed(
                             LookingForDetailsPage.routeName,
                             arguments:
-                            ItemsArgs(title: secondList[index].title,
+                            ItemsArgs(
+                                title: secondList[index].title,
                                 id: secondList[index].category_id,
-                                childCount: secondList[index].hasChild),
+                                childCount: secondList[index].hasChild,indexPage: 0),
                           );
                         }
                       },

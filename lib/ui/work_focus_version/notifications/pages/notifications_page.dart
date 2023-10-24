@@ -56,91 +56,101 @@ class _NotificationsPageState extends State<NotificationsPage> {
       body: SafeArea(
       child: LoadingColumnOverlay(
       isLoading: _isLoadingLodar,
-      child: BackLongPress(
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          BackLongPress(
 
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AppBarWidget(
-              name: translate("notifications"),
-              child: InkWell(
-                onTap: () {
-                  DIManager.findNavigator().pop();
-                },
-                child: BackIcon(
-                  width: 26.sp,
-                  height: 18.sp,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppBarWidget(
+                  name: translate("notifications"),
+                  child: InkWell(
+                    onTap: () {
+                      DIManager.findNavigator().pop();
+                    },
+                    child: BackIcon(
+                      width: 26.sp,
+                      height: 18.sp,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    BlocConsumer<NotificationsCubit, NotificationsState>(
-                        bloc: notificationsBloc,
-                        listener: (_, state) {
-                          setState(() {
-                            _isLoadingLodar = false;
-                          });
-                        },
-                        builder: (context, state) {
-                          final getNotificationsState = _isLoadingRead == true
-                              ? state.readNotificationState
-                              : _isLoadingDelete == true? state.removeNotificationState:state.getAllNotificationsState;
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        BlocConsumer<NotificationsCubit, NotificationsState>(
+                            bloc: notificationsBloc,
+                            listener: (_, state) {
+                              setState(() {
+                                _isLoadingLodar = false;
+                              });
+                            },
+                            builder: (context, state) {
+                              final getNotificationsState = _isLoadingRead == true
+                                  ? state.readNotificationState
+                                  : _isLoadingDelete == true? state.removeNotificationState:state.getAllNotificationsState;
 
-                          if (getNotificationsState is BaseFailState) {
-                            return Column(
-                              children: [
-                                VerticalPadding(3.0),
-                                GeneralErrorWidget(
-                                  error: getNotificationsState.error,
-                                  callback: getNotificationsState.callback,
-                                ),
-                              ],
-                            );
-                          }
+                              if (getNotificationsState is BaseFailState) {
+                                return Column(
+                                  children: [
+                                    VerticalPadding(3.0),
+                                    GeneralErrorWidget(
+                                      error: getNotificationsState.error,
+                                      callback: getNotificationsState.callback,
+                                    ),
+                                  ],
+                                );
+                              }
 
-                          if (_isLoading &&
-                              (getNotificationsState
-                                  is GetAllNotificationsSuccessState)) {
-                            data = (state.getAllNotificationsState
-                                    as GetAllNotificationsSuccessState)
-                                .notifications;
-                            _isLoading = false;
-                            return _buildBody();
-                          }
+                              if (_isLoading &&
+                                  (getNotificationsState
+                                      is GetAllNotificationsSuccessState)) {
+                                data = (state.getAllNotificationsState
+                                        as GetAllNotificationsSuccessState)
+                                    .notifications;
+                                _isLoading = false;
+                                return _buildBody();
+                              }
 
-                          if (_isLoadingRead &&
-                              (getNotificationsState
-                                  is ReadNotificationSuccessState)) {
-                            _isLoadingRead = false;
-                            return _buildBody();
-                          }
+                              if (_isLoadingRead &&
+                                  (getNotificationsState
+                                      is ReadNotificationSuccessState)) {
+                                _isLoadingRead = false;
+                                return _buildBody();
+                              }
 
-                          if (_isLoadingDelete &&
-                              (getNotificationsState
-                              is RemoveNotificationSuccessState)) {
-                            _isLoadingDelete = false;
-                            return _buildBody();
-                          }
+                              if (_isLoadingDelete &&
+                                  (getNotificationsState
+                                  is RemoveNotificationSuccessState)) {
+                                _isLoadingDelete = false;
+                                return _buildBody();
+                              }
 
-                          return Container(
-                            child: _buildBody(),
-                          );
-                        }),
-                    SizedBox(
-                      height: 30.sp,
-                    )
-                  ],
+                              return Container(
+                                child: _isLoadingDelete == true?Padding(
+                                  padding:  EdgeInsets.only(top: MediaQuery.of(context).size.height/3.2),
+                                  child: Center(child: Container(
+                                      width: 30.sp,height: 30.sp,child: CircularProgressIndicator(color: AppColorsController().buttonRedColor,strokeWidth: 1.5,)),),
+                                ): _buildBody(),
+                              );
+                            }),
+                        SizedBox(
+                          height: 30.sp,
+                        )
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+          bottomNavigationBarWidget(indexPage: 10),
+        ],
       ),),),
-      bottomSheet: bottomNavigationBarWidget(),
+      // bottomSheet: bottomNavigationBarWidget(),
     );
   }
 
@@ -191,7 +201,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                       );
                     }
                   },
-                  child: Column(
+                  child:  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -231,7 +241,10 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                 ),
                               ],
                             )
-                          : Container(),
+                          : Padding(
+                            padding:  EdgeInsets.only(top: MediaQuery.of(context).size.height/3.2),
+                            child: Container(child: Text('sads'),),
+                          ),
                     ],
                   ),
                 ),

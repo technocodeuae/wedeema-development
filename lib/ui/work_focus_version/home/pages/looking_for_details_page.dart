@@ -47,7 +47,8 @@ class _LookingForDetailsPageState extends State<LookingForDetailsPage> {
   bool loading = false;
   bool loadingLoader = false;
   RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
+
   void _onRefresh() async {
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
@@ -59,179 +60,194 @@ class _LookingForDetailsPageState extends State<LookingForDetailsPage> {
     items.clear();
     // categoriesBloc.getSubCategories(widget.args!.id!);
     // categoriesBloc.getPropertiesCategories(widget.args!.id!);
-    adsBloc.getCategoryAds(page,widget.args!.id!);
+    adsBloc.getCategoryAds(page, widget.args!.id!);
     setState(() {});
     _refreshController.refreshCompleted();
   }
+
   void _onLoading() async {
     await Future.delayed(Duration(milliseconds: 30));
-      page++;
+    page++;
     // categoriesBloc.getSubCategories(widget.args!.id!);
     // categoriesBloc.getPropertiesCategories(widget.args!.id!);
-      adsBloc.getCategoryAds(page,widget.args!.id!);
+    adsBloc.getCategoryAds(page, widget.args!.id!);
     if (mounted) setState(() {});
     _refreshController.loadComplete();
   }
-
 
   //
   @override
   void initState() {
     categoriesBloc.getSubCategories(widget.args!.id!);
-    adsBloc.getCategoryAds(page,widget.args!.id!);
+    adsBloc.getCategoryAds(page, widget.args!.id!);
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: NestedScrollView(
-        headerSliverBuilder: (context,innerBoxIsScrolled){
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
           return <Widget>[
-SliverAppBar(
-  automaticallyImplyLeading: false,
-  expandedHeight: MediaQuery.of(context).size.height / 2.5,backgroundColor: AppColorsController().white,
-  // actions: [Container()],
-  // centerTitle: true,pinned: true,leadingWidth: 0,
-  flexibleSpace: FlexibleSpaceBar(
-    // title: Container(
-    //   color: Colors.white,
-    //   width: MediaQuery.of(context).size.width,
-    //   // height: 50,
-    //   child: Text(
-    //         translate("ads_list") + ":",
-    //         style: AppStyle.smallTitleStyle.copyWith(
-    //         color: AppColorsController().black,
-    //         fontWeight: FontWeight.bold,fontSize: AppFontSize.fontSize_18
-    //         ),
-    //         maxLines: 2,
-    //         overflow: TextOverflow.ellipsis,
-    //         ),
-    // ),
-    background:     Column(
-      children: [
-        AppBarWidget(
-          name: widget.args!.title ?? "",
-          child: InkWell(
-            onTap: () {
-              DIManager.findNavigator().pop();
-            },
-            child: BackIcon(
-              width: 26.sp,
-              height: 18.sp,
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(right: 16.0.sp,left: 16.0.sp,top: 16.0.sp),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-              BlocConsumer<CategoriesCubit, CategoriesState>(
-                bloc: categoriesBloc,
-                listener: (context, state) {},
-                builder: (context, state) {
-                  final categoriesState = state.getSubCategoriesState;
-
-                  if (categoriesState is BaseFailState) {
-                    return Column(
-                      children: [
-                        VerticalPadding(3.0),
-                        GeneralErrorWidget(
-                          error: categoriesState.error,
-                          callback: categoriesState.callback,
+            SliverAppBar(
+              automaticallyImplyLeading: false,
+              expandedHeight: MediaQuery.of(context).size.height / 2.2,
+              backgroundColor: AppColorsController().white,
+              // actions: [Container()],
+              // centerTitle: true,pinned: true,leadingWidth: 0,
+              flexibleSpace: FlexibleSpaceBar(
+                // title: Container(
+                //   color: Colors.white,
+                //   width: MediaQuery.of(context).size.width,
+                //   // height: 50,
+                //   child: Text(
+                //         translate("ads_list") + ":",
+                //         style: AppStyle.smallTitleStyle.copyWith(
+                //         color: AppColorsController().black,
+                //         fontWeight: FontWeight.bold,fontSize: AppFontSize.fontSize_18
+                //         ),
+                //         maxLines: 2,
+                //         overflow: TextOverflow.ellipsis,
+                //         ),
+                // ),
+                background: Column(
+                  children: [
+                    AppBarWidget(
+                      name: widget.args!.title ?? "",
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          categoriesBloc.getSubCategories(widget.args!.idPast!);
+                          // DIManager.findNavigator().pushReplacementNamed(
+                          //   LookingForDetailsPage.routeName,
+                          //   arguments: ItemsArgs(
+                          //       // idPast: widget.args!.id,
+                          //       // childCountPast: widget.args!.childCount,
+                          //       // titlePast: widget.args!.title,
+                          //       title: widget.args!.title,
+                          //       id: widget.args!.id,
+                          //       childCount: widget.args!.childCount,indexPage: 1),
+                          // );
+                        },
+                        child: BackIcon(
+                          width: 26.sp,
+                          height: 18.sp,
                         ),
-                      ],
-                    );
-                  }
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          right: 16.0.sp, left: 16.0.sp, top: 16.0.sp),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          BlocConsumer<CategoriesCubit, CategoriesState>(
+                            bloc: categoriesBloc,
+                            listener: (context, state) {},
+                            builder: (context, state) {
+                              final categoriesState =
+                                  state.getSubCategoriesState;
 
-                  if (categoriesState is GetSubCategoriesSuccessState) {
-                    final data = (state.getSubCategoriesState
-                    as GetSubCategoriesSuccessState)
-                        .categories;
+                              if (categoriesState is BaseFailState) {
+                                return Column(
+                                  children: [
+                                    VerticalPadding(3.0),
+                                    GeneralErrorWidget(
+                                      error: categoriesState.error,
+                                      callback: categoriesState.callback,
+                                    ),
+                                  ],
+                                );
+                              }
 
-                    List<dynamic> firstList =
-                    data.sublist(0, data.length ~/ 2);
-                    List<dynamic> secondList =
-                    data.sublist(data.length ~/ 2);
-                    return Column(
-                      children: [
-                        firstList.length > 0
-                            ? Container(
-                          height: 100.sp,
-                          child: ListView.separated(
-                            physics: BouncingScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: firstList.length,
-                            itemBuilder: (context, index) =>
-                                lookingItemsWidget(
-                                    categories: firstList[index]),
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return SizedBox(
-                                width: 8.sp,
-                              );
+                              if (categoriesState
+                                  is GetSubCategoriesSuccessState) {
+                                final data = (state.getSubCategoriesState
+                                        as GetSubCategoriesSuccessState)
+                                    .categories;
+
+                                List<dynamic> firstList =
+                                    data.sublist(0, data.length ~/ 2);
+                                List<dynamic> secondList =
+                                    data.sublist(data.length ~/ 2);
+                                return Column(
+                                  children: [
+                                    firstList.length > 0
+                                        ? Container(
+                                            height: 100.sp,
+                                            child: ListView.separated(
+                                              physics: BouncingScrollPhysics(),
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: firstList.length,
+                                              itemBuilder: (context, index) =>
+                                                  lookingItemsWidget(
+                                                      categories:
+                                                          firstList[index]),
+                                              separatorBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return SizedBox(
+                                                  width: 8.sp,
+                                                );
+                                              },
+                                            ),
+                                          )
+                                        : Container(),
+                                    firstList.length > 0
+                                        ? SizedBox(
+                                            height: 16.sp,
+                                          )
+                                        : Container(),
+                                    firstList.length > 0
+                                        ? Container(
+                                            height: 100.sp,
+                                            child: ListView.separated(
+                                              physics: BouncingScrollPhysics(),
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: secondList.length,
+                                              itemBuilder: (context, index) =>
+                                                  lookingItemsWidget(
+                                                      categories:
+                                                          secondList[index]),
+                                              separatorBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return SizedBox(
+                                                  width: 8.sp,
+                                                );
+                                              },
+                                            ),
+                                          )
+                                        : Container(),
+                                  ],
+                                );
+                              }
+                              return LookingWidgetShimmer(name: "ads");
                             },
                           ),
-                        )
-                            : Container(),
-                        firstList.length > 0
-                            ? SizedBox(
-                          height: 16.sp,
-                        )
-                            : Container(),
-                        firstList.length > 0
-                            ? Container(
-                          height: 100.sp,
-                          child: ListView.separated(
-                            physics: BouncingScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: secondList.length,
-                            itemBuilder: (context, index) =>
-                                lookingItemsWidget(
-                                    categories: secondList[index]),
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return SizedBox(
-                                width: 8.sp,
-                              );
-                            },
+                          // SizedBox(
+                          //   height: 25.sp,
+                          // ),
+                          Text(
+                            translate("ads_list") + ":",
+                            style: AppStyle.smallTitleStyle.copyWith(
+                                color: AppColorsController().black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: AppFontSize.fontSize_18),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                        )
-                            : Container(),
-                      ],
-                    );
-                  }
-                  return LookingWidgetShimmer(name:  "ads");
-                },
-              ),
-              // SizedBox(
-              //   height: 25.sp,
-              // ),
-              Text(
-                translate("ads_list") + ":",
-                style: AppStyle.smallTitleStyle.copyWith(
-                  color: AppColorsController().black,
-                  fontWeight: FontWeight.bold,fontSize: AppFontSize.fontSize_18
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
               ),
-            ],
-          ),
-        ),
-      ],
-    ),
-
-  ),
-),
-          
+            ),
           ];
         },
         body: SafeArea(
-          child: SmartRefresher(physics: BouncingScrollPhysics(),
+          child: SmartRefresher(
+            physics: BouncingScrollPhysics(),
             enablePullDown: false,
             enablePullUp: true,
             scrollDirection: Axis.vertical,
@@ -244,21 +260,64 @@ SliverAppBar(
             // ),
             header: ClassicHeader(
               refreshingIcon: Container(
-                  width: 20.sp,height: 20.sp,child: CircularProgressIndicator(color: AppColorsController().buttonRedColor,strokeWidth: 1.5,)),
-              idleIcon: Center(child: Icon(Icons.arrow_downward,color: AppColorsController().buttonRedColor,),),
-              completeIcon: Center(child: Icon(Icons.check,color: AppColorsController().buttonRedColor,size: 30.sp,),),
-              releaseIcon: Center(child: Icon(Icons.change_circle_sharp,color: AppColorsController().buttonRedColor,size: 30.sp,),),
+                  width: 20.sp,
+                  height: 20.sp,
+                  child: CircularProgressIndicator(
+                    color: AppColorsController().buttonRedColor,
+                    strokeWidth: 1.5,
+                  )),
+              idleIcon: Center(
+                child: Icon(
+                  Icons.arrow_downward,
+                  color: AppColorsController().buttonRedColor,
+                ),
+              ),
+              completeIcon: Center(
+                child: Icon(
+                  Icons.check,
+                  color: AppColorsController().buttonRedColor,
+                  size: 30.sp,
+                ),
+              ),
+              releaseIcon: Center(
+                child: Icon(
+                  Icons.change_circle_sharp,
+                  color: AppColorsController().buttonRedColor,
+                  size: 30.sp,
+                ),
+              ),
               completeText: "",
               refreshingText: "",
               textStyle: TextStyle(color: AppColorsController().white),
             ),
             footer: ClassicFooter(
               height: 80,
-              noMoreIcon: Center(child: Icon(Icons.arrow_upward,color: AppColorsController().buttonRedColor,),),
-              idleIcon: Center(child: Icon(Icons.arrow_upward,color: AppColorsController().buttonRedColor,),),
-              loadingIcon:  Container(
-                  width: 20.sp,height: 20.sp,child: CircularProgressIndicator(color: AppColorsController().buttonRedColor,strokeWidth: 1.5,)),
-              canLoadingIcon: Center(child: Icon(Icons.change_circle_sharp,color: AppColorsController().buttonRedColor,size: 30.sp,),),
+              noMoreIcon: Center(
+                child: Icon(
+                  Icons.arrow_upward,
+                  color: AppColorsController().buttonRedColor,
+                ),
+              ),
+              idleIcon: Center(
+                child: Icon(
+                  Icons.arrow_upward,
+                  color: AppColorsController().buttonRedColor,
+                ),
+              ),
+              loadingIcon: Container(
+                  width: 20.sp,
+                  height: 20.sp,
+                  child: CircularProgressIndicator(
+                    color: AppColorsController().buttonRedColor,
+                    strokeWidth: 1.5,
+                  )),
+              canLoadingIcon: Center(
+                child: Icon(
+                  Icons.change_circle_sharp,
+                  color: AppColorsController().buttonRedColor,
+                  size: 30.sp,
+                ),
+              ),
               canLoadingText: "",
               loadingText: "",
               textStyle: TextStyle(color: AppColorsController().white),
@@ -284,12 +343,12 @@ SliverAppBar(
 
                 if (categoriesState is GetSubCategoriesSuccessState) {
                   final data = (state.getSubCategoriesState
-                  as GetSubCategoriesSuccessState)
+                          as GetSubCategoriesSuccessState)
                       .categories;
 
                   loadingLoader = true;
                   loading = true;
-                  return   Padding(
+                  return Padding(
                     padding: EdgeInsets.all(4.0.sp),
                     child: BuildItemsAds(
                       name: translate('ads'),
@@ -301,15 +360,17 @@ SliverAppBar(
                     ),
                   );
                 }
-                return widget.args!.title! =='وظائف'?AdsShimmerWidget(
-                  name: translate('adsJob'),
-                  type: 10,
-                  is_category: true,
-                ) : AdsShimmerWidget(
-                  name: translate('ads'),
-                  type: 10,
-                  is_category: true,
-                );
+                return widget.args!.title! == 'وظائف'
+                    ? AdsShimmerWidget(
+                        name: translate('adsJob'),
+                        type: 10,
+                        is_category: true,
+                      )
+                    : AdsShimmerWidget(
+                        name: translate('ads'),
+                        type: 10,
+                        is_category: true,
+                      );
               },
             ),
           ),
@@ -324,7 +385,8 @@ SliverAppBar(
       height: height ?? 90.sp,
       width: width ?? 100.sp,
       decoration: BoxDecoration(
-        border: Border.all(color: AppColorsController().black.withOpacity(0.5), width: 0.2),
+        border: Border.all(
+            color: AppColorsController().black.withOpacity(0.5), width: 0.2),
         color: AppColorsController().containerPrimaryColor,
         borderRadius: BorderRadius.all(
           Radius.circular(12.sp),
@@ -335,9 +397,12 @@ SliverAppBar(
           DIManager.findNavigator().pushNamed(
             LookingForDetailsPage.routeName,
             arguments: ItemsArgs(
-                title: categories.title,
+                idPast: widget.args!.id,
+                childCountPast: widget.args!.childCount,
+                titlePast: widget.args!.title,
+                           title: categories.title,
                 id: categories.category_id,
-                childCount: categories.hasChild),
+                childCount: categories.hasChild,indexPage: 1),
           );
           // DIManager.findNavigator().pushNamed(ItemsDetailsPage.routeName,
           //     arguments: ItemsArgs(id: categories.category_id!));
@@ -346,28 +411,28 @@ SliverAppBar(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             Center(
               child: categories.icon.toString().endsWith(".svg") == true
                   ? SvgPicture.network(
                       AppConsts.IMAGE_URL + categories.icon.toString()!,
                       width: 34.sp,
                       height: 34.sp,
-                  placeholderBuilder: (BuildContext context) => Container(
-                    width: 18.sp,height: 18.sp,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 1.2,
-                      color: AppColorsController().buttonRedColor,),
-                  )
-
-              )
+                      placeholderBuilder: (BuildContext context) => Container(
+                            width: 18.sp,
+                            height: 18.sp,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 1.2,
+                              color: AppColorsController().buttonRedColor,
+                            ),
+                          ))
                   : Image.network(
                       AppConsts.IMAGE_URL + categories.icon.toString()!,
                       width: 34.sp,
                       height: 34.sp,
-                      fit: BoxFit.fill,errorBuilder:  (context, error, stackTrace){
+                      fit: BoxFit.fill,
+                      errorBuilder: (context, error, stackTrace) {
                         return Container();
-              },
+                      },
                     ),
             ),
             Center(
@@ -376,9 +441,9 @@ SliverAppBar(
                 child: Text(
                   categories.title.toString(),
                   style: AppStyle.tinySmallTitleStyle.copyWith(
-                    color: AppColorsController().black,
-                    fontWeight: AppFontWeight.bold,fontSize: AppFontSize.fontSize_13
-                  ),
+                      color: AppColorsController().black,
+                      fontWeight: AppFontWeight.bold,
+                      fontSize: AppFontSize.fontSize_13),
                   maxLines: 1,
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,

@@ -109,87 +109,84 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
           new TextEditingController().clear();
         },
         child: BackLongPress(
-          child: LoadingColumnOverlay(
-            isLoading: _isLoading,
-            child: SingleChildScrollView(
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              child: Column(
-                children: [
-                  AppBarWidget(
-                    flip: true,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: InkWell(
-                        onTap: () {
-                          DIManager.findNavigator().pop();
-                        },
-                        child: BackIcon(
-                          width: 26.sp,
-                          height: 18.sp,
-                        ),
+          child: SingleChildScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            child: Column(
+              children: [
+                AppBarWidget(
+                  flip: true,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: InkWell(
+                      onTap: () {
+                        DIManager.findNavigator().pop();
+                      },
+                      child: BackIcon(
+                        width: 26.sp,
+                        height: 18.sp,
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 20.sp,
-                  ),
-                  Form(
-                    key: _formKey,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.sp),
-                      child: BlocListener<AuthCubit, AuthState>(
-                        bloc: _authBloc,
-                        listener: (_, state) {
-                          final registerState = state.registerState;
+                ),
+                SizedBox(
+                  height: 20.sp,
+                ),
+                Form(
+                  key: _formKey,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.sp),
+                    child: BlocListener<AuthCubit, AuthState>(
+                      bloc: _authBloc,
+                      listener: (_, state) {
+                        final registerState = state.registerState;
 
-                          if (_isLoading == true &&registerState is BaseFailState) {
-                            CustomSnackbar.showErrorSnackbar(
-                              registerState.error!,
-                            );
-                            setState(() {
-                              _isLoading = false;
-                            });
-                          }
-                          if (_isLoading == true &&registerState is RegisterSuccessState) {
-                            setState(() {
-                              _isLoading = false;
-                            });
-                            var snackBar = SnackBar(
-                              content: Text(translate('sign_up_success')),
-                              behavior: SnackBarBehavior.floating,
-                              duration: Duration(seconds: 1),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                            DIManager.findNavigator().pushNamedAndRemoveUntil(
-                              HomePage.routeName,
-                            );
-                          }
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _profileIcon(),
-                            SizedBox(height: 24,),
-                            _usernameField(),
-                            SizedBox(height: 12,),
-                            _emailField(),
-                            SizedBox(height: 12,),
-                            _emirateDropdown(),
-                            SizedBox(height: 12,),
-                            _passwordField(),
-                            SizedBox(height: 32,),
-                            PrivacyWidget(color: AppColorsController().black),
-                            SizedBox(height: 16,),
-                            _buildButton(),
-                            _signInWidget(),
-                          ],
-                        ),
+                        if (_isLoading == true &&registerState is BaseFailState) {
+                          CustomSnackbar.showErrorSnackbar(
+                            registerState.error!,
+                          );
+                          setState(() {
+                            _isLoading = false;
+                          });
+                        }
+                        if (_isLoading == true &&registerState is RegisterSuccessState) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          var snackBar = SnackBar(
+                            content: Text(translate('sign_up_success')),
+                            behavior: SnackBarBehavior.floating,
+                            duration: Duration(seconds: 1),
+                          );
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(snackBar);
+                          DIManager.findNavigator().pushNamedAndRemoveUntil(
+                            HomePage.routeName,
+                          );
+                        }
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _profileIcon(),
+                          SizedBox(height: 24,),
+                          _usernameField(),
+                          SizedBox(height: 12,),
+                          _emailField(),
+                          SizedBox(height: 12,),
+                          _emirateDropdown(),
+                          SizedBox(height: 12,),
+                          _passwordField(),
+                          SizedBox(height: 32,),
+                          PrivacyWidget(color: AppColorsController().black),
+                          SizedBox(height: 16,),
+                          _buildButton(),
+                          _signInWidget(),
+                        ],
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -202,7 +199,7 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
       width: MediaQuery.sizeOf(context).width - 24.sp,
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 8.sp, horizontal: 12.sp),
-        child: NewButton(
+        child: NewButton(isLoading: _isLoading,
             text: translate('complete_registration'),
             textStyle: AppStyle.titleStyle.copyWith(
                 color: AppColorsController().white, fontWeight: AppFontWeight.bold, overflow: TextOverflow.ellipsis),

@@ -201,305 +201,311 @@ class _ViewAllPageState extends State<ViewAllPage> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: SafeArea(
-        child: LoadingColumnOverlay(
-          isLoading: loadingLoader,
-          child: BackLongPress(
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          SafeArea(
+            child: LoadingColumnOverlay(
+              isLoading: loadingLoader,
+              child: BackLongPress(
 
-          child: Column(
-            children: [
-              Container(
-                height: 170.sp,
-                decoration:  ThemeProvider().appMode == "light"?BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(AppAssets.appBarBackgroundImage),
-                      fit: BoxFit.fill),
-                ):BoxDecoration(
-                  color: AppColorsController().white
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 10.sp),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20.sp),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
+              child: Column(
+                children: [
+                  Container(
+                    height: 170.sp,
+                    decoration:  ThemeProvider().appMode == "light"?BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(AppAssets.appBarBackgroundImage),
+                          fit: BoxFit.fill),
+                    ):BoxDecoration(
+                      color: AppColorsController().white
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 10.sp),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 20.sp),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
 
-                            InkWell(
-                              onTap: () {
-                                DIManager.findNavigator().pop();
-                              },
-                              child: BackIcon(
-                                width: 26.sp,
-                                height: 18.sp,
-                              ),
-                            ),
+                                InkWell(
+                                  onTap: () {
+                                    DIManager.findNavigator().pop();
+                                  },
+                                  child: BackIcon(
+                                    width: 26.sp,
+                                    height: 18.sp,
+                                  ),
+                                ),
 SizedBox(
   width: MediaQuery.of(context).size.width/4.8,
 ),
-                            Center(
-                              child: Text(
-                                translate("view_all"),
-                                style: AppStyle.midTitleStyle.copyWith(
-                                  color: AppColorsController().black,
-                                  fontWeight: FontWeight.bold,fontSize: AppFontSize.fontSize_22,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-
-
-                          Container(),
-
-                          SizedBox(width: 12.sp,),
-                          InkWell(
-                            onTap: (){
-                              DIManager.findNavigator().pushNamed(
-                                SearchPage.routeName,
-                              );
-                            },
-                            child: Container(
-                              width: 286.sp,
-                              height: 50.sp,
-                              padding: EdgeInsets.symmetric(horizontal: 16.sp),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(20.sp),),
-                                border: Border.all(
-                                    color: AppColorsController().borderColor,
-                                    width: 0.2.sp
-                                ),
-                                color: Color.fromRGBO(255,255,255,0.1),
-
-                              ),
-                              child: Row(
-                                children: [
-                                  SearchIcon(
-                                    height: 26.sp,
-                                    width: 26.sp,
+                                Center(
+                                  child: Text(
+                                    translate("view_all"),
+                                    style: AppStyle.midTitleStyle.copyWith(
+                                      color: AppColorsController().black,
+                                      fontWeight: FontWeight.bold,fontSize: AppFontSize.fontSize_22,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  SizedBox(width: 8.sp,),
-                                    Text(
-                                      widget.arg.title ?? translate("search"),
-                                      style: AppStyle.verySmallTitleStyle.copyWith(
-                                          color: widget.arg.title != null
-                                              ? AppColorsController().black
-                                              : AppColorsController().greyTextColor,
-                                          fontWeight: AppFontWeight.regular,
-                                  ),)
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
-                          SizedBox(width: 12.sp,),
 
-                          InkWell(
-                            onTap: (){
-                              final Map<String, dynamic>? dataMap = {
-                                "filter":true
-                              };
-                              // DIManager.findNavigator().pushNamed(
-                              //     SelectListingPage.routeName,
-                              //     arguments: dataMap);
-                                DIManager.findNavigator().pushNamed(AddMainDetailsPage.routeName,
-                                    arguments: ArgumentCategory(dataMap: dataMap));
-                              },
-                            child: Container(
-                              width: 50.sp,
-                              height: 52.sp,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: AppColorsController().black.withOpacity(0.5), width: 0.2),
-                                color: AppColorsController().containerPrimaryColor,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(20.sp),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+
+
+                              Container(),
+
+                              SizedBox(width: 12.sp,),
+                              InkWell(
+                                onTap: (){
+                                  DIManager.findNavigator().pushNamed(
+                                    SearchPage.routeName,
+                                  );
+                                },
+                                child: Container(
+                                  width: 286.sp,
+                                  height: 50.sp,
+                                  padding: EdgeInsets.symmetric(horizontal: 16.sp),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(20.sp),),
+                                    border: Border.all(
+                                        color: AppColorsController().borderColor,
+                                        width: 0.2.sp
+                                    ),
+                                    color: Color.fromRGBO(255,255,255,0.1),
+
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      SearchIcon(
+                                        height: 26.sp,
+                                        width: 26.sp,
+                                      ),
+                                      SizedBox(width: 8.sp,),
+                                        Text(
+                                          widget.arg.title ?? translate("search"),
+                                          style: AppStyle.verySmallTitleStyle.copyWith(
+                                              color: widget.arg.title != null
+                                                  ? AppColorsController().black
+                                                  : AppColorsController().greyTextColor,
+                                              fontWeight: AppFontWeight.regular,
+                                      ),)
+                                    ],
+                                  ),
                                 ),
                               ),
-                              child: Center(
-                                child: FilterIcon(
-                                  width: 32.sp,
-                                  height: 32.sp,
+                              SizedBox(width: 12.sp,),
+
+                              InkWell(
+                                onTap: (){
+                                  final Map<String, dynamic>? dataMap = {
+                                    "filter":true
+                                  };
+                                  // DIManager.findNavigator().pushNamed(
+                                  //     SelectListingPage.routeName,
+                                  //     arguments: dataMap);
+                                    DIManager.findNavigator().pushNamed(AddMainDetailsPage.routeName,
+                                        arguments: ArgumentCategory(dataMap: dataMap));
+                                  },
+                                child: Container(
+                                  width: 50.sp,
+                                  height: 52.sp,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: AppColorsController().black.withOpacity(0.5), width: 0.2),
+                                    color: AppColorsController().containerPrimaryColor,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(20.sp),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: FilterIcon(
+                                      width: 32.sp,
+                                      height: 32.sp,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  child: SmartRefresher(
-                    enablePullDown: false,
-                    enablePullUp: true,
-                    scrollDirection: Axis.vertical,
-
-                    controller: _refreshController,
-                    onRefresh: _onRefresh,
-                    physics: BouncingScrollPhysics(),
-
-                    // header: ClassicHeader(
-                    //   refreshingIcon: Container(
-                    //       width: 20.sp,height: 20.sp,child: CircularProgressIndicator(color: AppColorsController().buttonRedColor,strokeWidth: 1.5,)),
-                    //   idleIcon: Center(child: Icon(Icons.arrow_downward,color: AppColorsController().buttonRedColor,),),
-                    //   completeIcon: Center(child: Icon(Icons.check,color: AppColorsController().buttonRedColor,size: 30.sp,),),
-                    //   releaseIcon: Center(child: Icon(Icons.change_circle_sharp,color: AppColorsController().buttonRedColor,size: 30.sp,),),
-                    //   completeText: "",
-                    //   refreshingText: "",
-                    //   textStyle: TextStyle(color: AppColorsController().white),
-                    // ),
-                    footer: ClassicFooter(
-                      height: 80,
-                      noMoreIcon: Container(
-                          width: 20.sp,height: 20.sp,child: CircularProgressIndicator(color: AppColorsController().buttonRedColor,strokeWidth: 1.5,)),
-                      idleIcon: Center(child: Icon(Icons.arrow_upward,color: AppColorsController().buttonRedColor,),),
-                      loadingIcon:  Container(
-                        width: 20.sp,height: 20.sp,child: CircularProgressIndicator(color: AppColorsController().buttonRedColor,strokeWidth: 1.5,)),
-                      canLoadingIcon: Center(child: Icon(Icons.change_circle_sharp,color: AppColorsController().buttonRedColor,size: 30.sp,),),
-                      canLoadingText: "",
-                      loadingText: "",
-                      textStyle: TextStyle(color: AppColorsController().white),
-                    ),
-                    onLoading: _onLoading,
-                    child: BlocConsumer<AdsCubit, AdsState>(
-                      bloc: adsBloc,
-                      listener: (context, state) {
-                        setState(() {
-                          loadingLoader = false;
-                        });
-                      },
-                      builder: (context, state) {
-
-                        print("Here"+state.toString());
-
-                        final adsState = widget.arg.type == 0
-                            ? state.getAllRecentAdsState
-                            : widget.arg.type == 1
-                                ? state.getAllMostRatedAdsState : widget.arg.type == 2?
-                                 // state.getAllPopularAdsState:widget.arg.type  == 3?state.getAllSearchAdsState:state.getAllFilterAdsState;
-                                 state.getAllPopularAdsState:widget.arg.type  == 3?state.getCategoryAdsState:state.getAllFilterAdsState;
-
-                        print("Here"+adsState.toString());
-                        if (adsState is BaseFailState) {
-                          return Column(
-                            children: [
-                              VerticalPadding(3.sp),
-                              GeneralErrorWidget(
-                                error: adsState.error,
-                                callback: adsState.callback,
-                              ),
-                            ],
-                          );
-                        }
-
-
-                        // final adsState;
-
-                        // switch(widget.type){
-                        //   case 0:
-                        //     adsState = state.getAllRecentAdsState;
-                        //     break;
-                        //   case 1:
-                        //     adsState = state.getAllMostRatedAdsState;
-                        //     break;
-                        //   case 2:
-                        //     adsState = state.getAllPopularAdsState;
-                        //     break;
-                        //   default:
-                        //     adsState = state.getCategoryAdsState;
-                        //     break;
-                        // }
-
-                        if (loading == true&&
-                            widget.arg.type == 0 &&
-                            (adsState is GetAllRecentAdsSuccessState)) {
-                          final data = (state.getAllRecentAdsState
-                                  as GetAllRecentAdsSuccessState)
-                              .ads;
-                          items.addAll(data.data!);
-                          loading = false;
-                          return _buildWithGridViewBody();
-                        } else if (loading &&
-                            widget.arg.type == 1 &&
-                            (adsState is GetAllMostRatedAdsSuccessState)) {
-                          final data = (state.getAllMostRatedAdsState
-                                  as GetAllMostRatedAdsSuccessState)
-                              .ads;
-                          items.addAll(data.data!);
-                          loading = false;
-                         return _buildWithGridViewBody();
-                        }
-                        else if (loading &&
-                            widget.arg.type == 2 &&
-                            adsState is GetAllPopularAdsSuccessState) {
-                          final data = (state.getAllPopularAdsState
-                                  as GetAllPopularAdsSuccessState)
-                              .ads;
-                          items.addAll(data.data!);
-                          loading = false;
-                          return _buildWithGridViewBody();
-
-                        }
-                        // else if (loading &&
-                        //     widget.arg.type == 3 &&
-                        //     adsState is GetSearchFilterAdsSuccessState) {
-                        //   final data = (state.getAllSearchAdsState
-                        //   as GetSearchFilterAdsSuccessState)
-                        //       .ads;
-                        //   items.addAll(data.data!);
-                        //   loading = false;
-                        //   return _buildWithGridViewBody();
-                        // }
-                        //
-                        // else if (loading &&
-                        //     widget.arg.type == 4 &&
-                        //     adsState is GetAllFilterAdsSuccessState) {
-                        //   final data = (state.getAllFilterAdsState
-                        //   as GetAllFilterAdsSuccessState)
-                        //       .ads;
-                        //   items.addAll(data.data!);
-                        //   loading = false;
-                        //   return _buildWithGridViewBody();
-                        //
-                        // }
-
-
-                        // هذه الحالة من الصفحو الرئيسية ولانستطيع الفلترة عليها
-                        else if (loading &&
-                            widget.arg.type == 3 &&
-                            adsState is GetCategoryAdsSuccessState) {
-                          final data = (state.getCategoryAdsState
-                          as GetCategoryAdsSuccessState)
-                              .ads;
-                          items.addAll(data.data!);
-                          // loading = false;
-                          return items.isEmpty?  Center(child: Text(translate("no_items_found"),style: AppStyle.midTitleStyle,)):_buildAds() ;
-
-
-                        }
-
-                        return _buildWithGridViewBody() ;
-                      },
                     ),
                   ),
-                ),
+                  Expanded(
+                    child: Container(
+                      child: SmartRefresher(
+                        enablePullDown: false,
+                        enablePullUp: true,
+                        scrollDirection: Axis.vertical,
+
+                        controller: _refreshController,
+                        onRefresh: _onRefresh,
+                        physics: BouncingScrollPhysics(),
+
+                        // header: ClassicHeader(
+                        //   refreshingIcon: Container(
+                        //       width: 20.sp,height: 20.sp,child: CircularProgressIndicator(color: AppColorsController().buttonRedColor,strokeWidth: 1.5,)),
+                        //   idleIcon: Center(child: Icon(Icons.arrow_downward,color: AppColorsController().buttonRedColor,),),
+                        //   completeIcon: Center(child: Icon(Icons.check,color: AppColorsController().buttonRedColor,size: 30.sp,),),
+                        //   releaseIcon: Center(child: Icon(Icons.change_circle_sharp,color: AppColorsController().buttonRedColor,size: 30.sp,),),
+                        //   completeText: "",
+                        //   refreshingText: "",
+                        //   textStyle: TextStyle(color: AppColorsController().white),
+                        // ),
+                        footer: ClassicFooter(
+                          height: 80,
+                          noMoreIcon: Container(
+                              width: 20.sp,height: 20.sp,child: CircularProgressIndicator(color: AppColorsController().buttonRedColor,strokeWidth: 1.5,)),
+                          idleIcon: Center(child: Icon(Icons.arrow_upward,color: AppColorsController().buttonRedColor,),),
+                          loadingIcon:  Container(
+                            width: 20.sp,height: 20.sp,child: CircularProgressIndicator(color: AppColorsController().buttonRedColor,strokeWidth: 1.5,)),
+                          canLoadingIcon: Center(child: Icon(Icons.change_circle_sharp,color: AppColorsController().buttonRedColor,size: 30.sp,),),
+                          canLoadingText: "",
+                          loadingText: "",
+                          textStyle: TextStyle(color: AppColorsController().white),
+                        ),
+                        onLoading: _onLoading,
+                        child: BlocConsumer<AdsCubit, AdsState>(
+                          bloc: adsBloc,
+                          listener: (context, state) {
+                            setState(() {
+                              loadingLoader = false;
+                            });
+                          },
+                          builder: (context, state) {
+
+                            print("Here"+state.toString());
+
+                            final adsState = widget.arg.type == 0
+                                ? state.getAllRecentAdsState
+                                : widget.arg.type == 1
+                                    ? state.getAllMostRatedAdsState : widget.arg.type == 2?
+                                     // state.getAllPopularAdsState:widget.arg.type  == 3?state.getAllSearchAdsState:state.getAllFilterAdsState;
+                                     state.getAllPopularAdsState:widget.arg.type  == 3?state.getCategoryAdsState:state.getAllFilterAdsState;
+
+                            print("Here"+adsState.toString());
+                            if (adsState is BaseFailState) {
+                              return Column(
+                                children: [
+                                  VerticalPadding(3.sp),
+                                  GeneralErrorWidget(
+                                    error: adsState.error,
+                                    callback: adsState.callback,
+                                  ),
+                                ],
+                              );
+                            }
+
+
+                            // final adsState;
+
+                            // switch(widget.type){
+                            //   case 0:
+                            //     adsState = state.getAllRecentAdsState;
+                            //     break;
+                            //   case 1:
+                            //     adsState = state.getAllMostRatedAdsState;
+                            //     break;
+                            //   case 2:
+                            //     adsState = state.getAllPopularAdsState;
+                            //     break;
+                            //   default:
+                            //     adsState = state.getCategoryAdsState;
+                            //     break;
+                            // }
+
+                            if (loading == true&&
+                                widget.arg.type == 0 &&
+                                (adsState is GetAllRecentAdsSuccessState)) {
+                              final data = (state.getAllRecentAdsState
+                                      as GetAllRecentAdsSuccessState)
+                                  .ads;
+                              items.addAll(data.data!);
+                              loading = false;
+                              return _buildWithGridViewBody();
+                            } else if (loading &&
+                                widget.arg.type == 1 &&
+                                (adsState is GetAllMostRatedAdsSuccessState)) {
+                              final data = (state.getAllMostRatedAdsState
+                                      as GetAllMostRatedAdsSuccessState)
+                                  .ads;
+                              items.addAll(data.data!);
+                              loading = false;
+                             return _buildWithGridViewBody();
+                            }
+                            else if (loading &&
+                                widget.arg.type == 2 &&
+                                adsState is GetAllPopularAdsSuccessState) {
+                              final data = (state.getAllPopularAdsState
+                                      as GetAllPopularAdsSuccessState)
+                                  .ads;
+                              items.addAll(data.data!);
+                              loading = false;
+                              return _buildWithGridViewBody();
+
+                            }
+                            // else if (loading &&
+                            //     widget.arg.type == 3 &&
+                            //     adsState is GetSearchFilterAdsSuccessState) {
+                            //   final data = (state.getAllSearchAdsState
+                            //   as GetSearchFilterAdsSuccessState)
+                            //       .ads;
+                            //   items.addAll(data.data!);
+                            //   loading = false;
+                            //   return _buildWithGridViewBody();
+                            // }
+                            //
+                            // else if (loading &&
+                            //     widget.arg.type == 4 &&
+                            //     adsState is GetAllFilterAdsSuccessState) {
+                            //   final data = (state.getAllFilterAdsState
+                            //   as GetAllFilterAdsSuccessState)
+                            //       .ads;
+                            //   items.addAll(data.data!);
+                            //   loading = false;
+                            //   return _buildWithGridViewBody();
+                            //
+                            // }
+
+
+                            // هذه الحالة من الصفحو الرئيسية ولانستطيع الفلترة عليها
+                            else if (loading &&
+                                widget.arg.type == 3 &&
+                                adsState is GetCategoryAdsSuccessState) {
+                              final data = (state.getCategoryAdsState
+                              as GetCategoryAdsSuccessState)
+                                  .ads;
+                              items.addAll(data.data!);
+                              // loading = false;
+                              return items.isEmpty?  Center(child: Text(translate("no_items_found"),style: AppStyle.midTitleStyle,)):_buildAds() ;
+
+
+                            }
+
+                            return _buildWithGridViewBody() ;
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 30.sp,),
+                ],
               ),
-              SizedBox(height: 30.sp,),
-            ],
+            ),),
           ),
-        ),),
+          bottomNavigationBarWidget(indexPage: 10),
+        ],
       ),
-      bottomSheet: bottomNavigationBarWidget(),
+      // bottomSheet: bottomNavigationBarWidget(),
 
     );
   }

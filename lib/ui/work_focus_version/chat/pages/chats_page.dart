@@ -49,63 +49,69 @@ class _ChatsPageState extends State<ChatsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColorsController().white,
-      body: SafeArea(
-        child: LoadingColumnOverlay(
-          isLoading: _isLoading,
-          child: BackLongPress(
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          SafeArea(
+            child: LoadingColumnOverlay(
+              isLoading: _isLoading,
+              child: BackLongPress(
 
-            child: Container(
-              child: Column(
-                children: [
-                  AppBarWidget(
-                    name: translate("chat"),
-                    child: InkWell(
-                      onTap: () {
-                        DIManager.findNavigator().pop();
-                      },
-                      child: BackIcon(
-                        width: 26.sp,
-                        height: 18.sp,
+                child: Container(
+                  child: Column(
+                    children: [
+                      AppBarWidget(
+                        name: translate("chat"),
+                        child: InkWell(
+                          onTap: () {
+                            DIManager.findNavigator().pop();
+                          },
+                          child: BackIcon(
+                            width: 26.sp,
+                            height: 18.sp,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  BlocConsumer<ChatCubit, ChatState>(
-                      bloc: chatBloc,
-                      listener: (_, state) {
-                        setState(() {
-                          _isLoading = false;
-                        });
-                      },
-                      builder: (context, state) {
-                        final getAllChatState = state.getAllChatsState;
+                      BlocConsumer<ChatCubit, ChatState>(
+                          bloc: chatBloc,
+                          listener: (_, state) {
+                            setState(() {
+                              _isLoading = false;
+                            });
+                          },
+                          builder: (context, state) {
+                            final getAllChatState = state.getAllChatsState;
 
-                        if (getAllChatState is BaseFailState) {
-                          return Column(
-                            children: [
-                              VerticalPadding(3.0),
-                              GeneralErrorWidget(
-                                error: getAllChatState.error,
-                                callback: getAllChatState.callback,
-                              ),
-                            ],
-                          );
-                        }
-                        if (isLoading == true && getAllChatState is GetAllChatsSuccessState) {
-                          data =
-                              (state.getAllChatsState as GetAllChatsSuccessState)
-                                  .massages;
-                          return _buildBody();
-                        }
-                        return _buildBody();
-                      })
-                ],
+                            if (getAllChatState is BaseFailState) {
+                              return Column(
+                                children: [
+                                  VerticalPadding(3.0),
+                                  GeneralErrorWidget(
+                                    error: getAllChatState.error,
+                                    callback: getAllChatState.callback,
+                                  ),
+                                ],
+                              );
+                            }
+                            if (isLoading == true && getAllChatState is GetAllChatsSuccessState) {
+                              data =
+                                  (state.getAllChatsState as GetAllChatsSuccessState)
+                                      .massages;
+                              return _buildBody();
+                            }
+                            return _buildBody();
+                          })
+                    ],
+                  ),
+                ),
               ),
+
             ),
           ),
-
-        ),
+          bottomNavigationBarWidget(indexPage: 1),
+        ],
       ),
-      bottomSheet: bottomNavigationBarWidget(),
+      // bottomSheet: bottomNavigationBarWidget(),
     );
   }
 

@@ -55,69 +55,66 @@ class _ChangePasswordPageNewState extends State<ChangePasswordPageNew> {
           new TextEditingController().clear();
         },
         child: BackLongPress(
-          child: LoadingColumnOverlay(
-            isLoading: _isLoading,
-            child: SingleChildScrollView(
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    AppBarWidget(
-                      flip: true,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: InkWell(
-                          onTap: () {
-                            DIManager.findNavigator().pop();
-                          },
-                          child: BackIcon(
-                            width: 26.sp,
-                            height: 18.sp,
-                          ),
+          child: SingleChildScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  AppBarWidget(
+                    flip: true,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: InkWell(
+                        onTap: () {
+                          DIManager.findNavigator().pop();
+                        },
+                        child: BackIcon(
+                          width: 26.sp,
+                          height: 18.sp,
                         ),
                       ),
                     ),
-                    BlocConsumer<AuthCubit, AuthState>(
-                        bloc: _authBloc,
-                        listener: (_, state) {
+                  ),
+                  BlocConsumer<AuthCubit, AuthState>(
+                      bloc: _authBloc,
+                      listener: (_, state) {
 
-                          final loginState = state.loginState;
-                          if (_isLoading == true &&loginState is BaseFailState) {
-                            setState(() {
-                              _isLoading = false;
-                            });
-                            CustomSnackbar.showErrorSnackbar(
-                              loginState.error!,
-                            );
-                          }
-                          if (_isLoading == true &&loginState is LoginSuccessState) {
-                            setState(() {
-                              _isLoading = false;
-                            });
-                            DIManager.findNavigator().pushNamedAndRemoveUntil(
-                              HomePage.routeName,
-                            );
-                          }
-                        },
-                        builder: (_, state) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 12.sp),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _titleWidget(),
-                                SizedBox(height: 24,),
-                                _passwordField(),
-                                SizedBox(height: 24,),
-                                _buildButton()
-                              ],
-                            ),
+                        final loginState = state.loginState;
+                        if (_isLoading == true &&loginState is BaseFailState) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          CustomSnackbar.showErrorSnackbar(
+                            loginState.error!,
                           );
-                        }),
-                  ],
-                ),
+                        }
+                        if (_isLoading == true &&loginState is LoginSuccessState) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          DIManager.findNavigator().pushNamedAndRemoveUntil(
+                            HomePage.routeName,
+                          );
+                        }
+                      },
+                      builder: (_, state) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 12.sp),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _titleWidget(),
+                              SizedBox(height: 24,),
+                              _passwordField(),
+                              SizedBox(height: 24,),
+                              _buildButton()
+                            ],
+                          ),
+                        );
+                      }),
+                ],
               ),
             ),
           ),
@@ -187,7 +184,7 @@ class _ChangePasswordPageNewState extends State<ChangePasswordPageNew> {
       width: MediaQuery.sizeOf(context).width - 24.sp,
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 8.sp, horizontal: 12.sp),
-        child: NewButton(
+        child: NewButton(isLoading: _isLoading,
             text: translate('change_password'),
             textStyle: AppStyle.titleStyle.copyWith(
                 color: AppColorsController().white, fontWeight: AppFontWeight.bold, overflow: TextOverflow.ellipsis),

@@ -127,7 +127,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
           ),
         ),
       ),
-      bottomSheet: bottomNavigationBarWidget(),
+      // bottomSheet: bottomNavigationBarWidget(),
     );
   }
 

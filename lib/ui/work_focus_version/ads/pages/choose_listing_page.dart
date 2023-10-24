@@ -60,96 +60,101 @@ class _SelectListingPageState extends State<SelectListingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomSheet: bottomNavigationBarWidget(),
+        // bottomSheet: bottomNavigationBarWidget(),
         backgroundColor: AppColorsController().greyBackground,
         body: LoadingColumnOverlay(
             isLoading: _isLoading,
-            child: BackLongPress(
-              child: Column(
-                children: [   SizedBox(height: 10.sp ,),
-                  AppBarForPages(
-                    name: translate(_isFilter() ? 'filter' : "place_ads"),
+            child: Stack(alignment: Alignment.bottomCenter,
+              children: [
+                BackLongPress(
+                  child: Column(
+                    children: [   SizedBox(height: 10.sp ,),
+                      AppBarForPages(
+                        name: translate(_isFilter() ? 'filter' : "place_ads"),
 
-                  ),
-                  Expanded(
-                    child: ListView(
-                      children: [
-                        SizedBox(
-                          height: 20.sp,
-                        ),
-                        SelectCityWidget(
-                            isFilter: _isFilter(),
-                            onSelected: (dataMap) {
-                              bool isFilter = _isFilter();
-                              widget.dataMap = dataMap;
-                              if (isFilter) {
-                                widget.dataMap?['filter'] = true;
-                              }
-                            }),
-                        BlocConsumer<CategoriesCubit, CategoriesState>(
-                          bloc: categoriesBloc,
-                          listener: (context, state) {
-                            setState(() {
-                              _isLoading = false;
-                            });
-                          },
-                          builder: (context, state) {
-                            final categoriesState = state.getMainCategoriesState;
+                      ),
+                      Expanded(
+                        child: ListView(
+                          children: [
+                            SizedBox(
+                              height: 20.sp,
+                            ),
+                            SelectCityWidget(
+                                isFilter: _isFilter(),
+                                onSelected: (dataMap) {
+                                  bool isFilter = _isFilter();
+                                  widget.dataMap = dataMap;
+                                  if (isFilter) {
+                                    widget.dataMap?['filter'] = true;
+                                  }
+                                }),
+                            BlocConsumer<CategoriesCubit, CategoriesState>(
+                              bloc: categoriesBloc,
+                              listener: (context, state) {
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                              },
+                              builder: (context, state) {
+                                final categoriesState = state.getMainCategoriesState;
 
-                            if (categoriesState is BaseFailState) {
-                              return Column(
-                                children: [
-                                  VerticalPadding(3.sp),
-                                  GeneralErrorWidget(
-                                    error: categoriesState.error,
-                                    callback: categoriesState.callback,
-                                  ),
-                                ],
-                              );
-                            }
-                            if (categoriesState is GetMainCategoriesSuccessState) {
-                              data = (state.getMainCategoriesState
-                              as GetMainCategoriesSuccessState)
-                                  .categories;
-                              return Column(
-                                children: [
-                                  SizedBox(
-                                    height: 20.sp,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 35.sp),
-                                    child: GridView.builder(
-                                      itemCount: data.length,
-                                      shrinkWrap: true,
-
-                                      itemBuilder: (context, index) =>
-                                          lookingItemsWidget(
-                                              categories: data[index], itemNo: index),
-                                      gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 3,
-                                        childAspectRatio: 0.9,
-                                        crossAxisSpacing: 30.sp,
-                                        mainAxisSpacing: 10.sp,
+                                if (categoriesState is BaseFailState) {
+                                  return Column(
+                                    children: [
+                                      VerticalPadding(3.sp),
+                                      GeneralErrorWidget(
+                                        error: categoriesState.error,
+                                        callback: categoriesState.callback,
                                       ),
-                                      physics: NeverScrollableScrollPhysics(),
-                                    ),
-                                  ),
-                                  // SizedBox(
-                                  //   height: 60.sp,
-                                  // ),
-                                ],
-                              );
+                                    ],
+                                  );
+                                }
+                                if (categoriesState is GetMainCategoriesSuccessState) {
+                                  data = (state.getMainCategoriesState
+                                  as GetMainCategoriesSuccessState)
+                                      .categories;
+                                  return Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 20.sp,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 35.sp),
+                                        child: GridView.builder(
+                                          itemCount: data.length,
+                                          shrinkWrap: true,
 
-                            }
-                            return Container();
-                          },
+                                          itemBuilder: (context, index) =>
+                                              lookingItemsWidget(
+                                                  categories: data[index], itemNo: index),
+                                          gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 3,
+                                            childAspectRatio: 0.9,
+                                            crossAxisSpacing: 30.sp,
+                                            mainAxisSpacing: 10.sp,
+                                          ),
+                                          physics: NeverScrollableScrollPhysics(),
+                                        ),
+                                      ),
+                                      // SizedBox(
+                                      //   height: 60.sp,
+                                      // ),
+                                    ],
+                                  );
+
+                                }
+                                return Container();
+                              },
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                bottomNavigationBarWidget(indexPage: 2),
+              ],
             )));
   }
 

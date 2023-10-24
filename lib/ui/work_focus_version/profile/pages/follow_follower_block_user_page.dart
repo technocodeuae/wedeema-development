@@ -114,127 +114,133 @@ class _FollowFollowerBlockUserState extends State<FollowFollowerBlockUser> {
       body: SafeArea(
         child: LoadingColumnOverlay(
             isLoading: loadingLoader,
-            child: BackLongPress(
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                BackLongPress(
 
           child: Column(
-            children: [
-              AppBarWidget(
-                name: widget.action == 0 ? translate("followers") : widget
-                    .action == 1 ? translate("following") : translate(
-                    "blocked_users"),
-                child: InkWell(
-                  onTap: (){
-                    Navigator.of(context).pop();
-                  },
-                  child: BackIcon(
-                    width: 26.sp,
-                    height: 18.sp,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 16.sp,
-              ),
-              Expanded(
-                child: Container(
-                  child: SmartRefresher(
-                    enablePullDown: true,
-                    enablePullUp: true,
-                    scrollDirection: Axis.vertical,
-                    controller: _refreshController,
-                    onRefresh: _onRefresh,
-                    header: ClassicHeader(
-                      refreshingIcon: Container(
-                          width: 20.sp,height: 20.sp,child: CircularProgressIndicator(color: AppColorsController().buttonRedColor,strokeWidth: 1.5,)),
-                      idleIcon: Center(child: Icon(Icons.arrow_downward,color: AppColorsController().buttonRedColor,),),
-                      completeIcon: Center(child: Icon(Icons.check,color: AppColorsController().buttonRedColor,size: 30.sp,),),
-                      releaseIcon: Center(child: Icon(Icons.change_circle_sharp,color: AppColorsController().buttonRedColor,size: 30.sp,),),
-                      completeText: "",
-                      refreshingText: "",
-                      textStyle: TextStyle(color: AppColorsController().white),
-                    ),
-                    footer: ClassicFooter(
-                      height: 80,
-                      noMoreIcon: Center(child: Icon(Icons.arrow_upward,color: AppColorsController().buttonRedColor,),),
-                      idleIcon: Center(child: Icon(Icons.arrow_upward,color: AppColorsController().buttonRedColor,),),
-                      loadingIcon:  Container(
-                          width: 20.sp,height: 20.sp,child: CircularProgressIndicator(color: AppColorsController().buttonRedColor,strokeWidth: 1.5,)),
-                      canLoadingIcon: Center(child: Icon(Icons.change_circle_sharp,color: AppColorsController().buttonRedColor,size: 30.sp,),),
-                      canLoadingText: "",
-                      loadingText: "",
-                      textStyle: TextStyle(color: AppColorsController().white),
-                    ),
-                    onLoading: _onLoading,
-                    child: BlocConsumer<ProfileCubit, ProfileState>(
-                      bloc: profileBloc,
-                      listener: (context, state) {
-                        setState(() {
-                          loadingLoader = false;
-                        });
+                children: [
+                  AppBarWidget(
+                    name: widget.action == 0 ? translate("followers") : widget
+                        .action == 1 ? translate("following") : translate(
+                        "blocked_users"),
+                    child: InkWell(
+                      onTap: (){
+                        Navigator.of(context).pop();
                       },
-                      builder: (context, state) {
-                        print("Here" + state.toString());
-
-                        final profileState = widget.action == 0
-                            ? state.getALLFollowersState
-                            : widget.action == 1
-                            ? state.getALLFollowingsState : state
-                            .getALLBlockersState;
-
-                        print("Here" + profileState.toString());
-                        if (profileState is BaseFailState) {
-                          return Column(
-                            children: [
-                              VerticalPadding(3.0),
-                              GeneralErrorWidget(
-                                error: profileState.error,
-                                callback: profileState.callback,
-                              ),
-                            ],
-                          );
-                        }
-
-                        if (loading == true &&
-                            widget.action == 0 &&
-                            (profileState is GetALLFollowersSuccessState)) {
-                          final data = (state.getALLFollowersState
-                          as GetALLFollowersSuccessState)
-                              .users;
-                          items.addAll(data.data!);
-                          loading = false;
-                        } else if (loading &&
-                            widget.action == 1 &&
-                            (profileState is GetALLFollowingsSuccessState)) {
-                          final data = (state.getALLFollowingsState
-                          as GetALLFollowingsSuccessState)
-                              .users;
-                          items.addAll(data.data!);
-                          loading = false;
-                          return _buildBody();
-                        }
-                        else if (loading &&
-                            widget.action == 2 &&
-                            profileState is GetALLBlockersSuccessState) {
-                          final data = (state.getALLBlockersState
-                          as GetALLBlockersSuccessState)
-                              .users;
-                          items.addAll(data.data!);
-                          loading = false;
-                          return _buildBody();
-                        }
-
-                        return _buildBody();
-                      },
+                      child: BackIcon(
+                        width: 26.sp,
+                        height: 18.sp,
+                      ),
                     ),
                   ),
-                ),
-              ),
-              SizedBox(height: 30.sp,),
-            ],
+                  SizedBox(
+                    height: 16.sp,
+                  ),
+                  Expanded(
+                    child: Container(
+                      child: SmartRefresher(
+                        enablePullDown: true,
+                        enablePullUp: true,
+                        scrollDirection: Axis.vertical,
+                        controller: _refreshController,
+                        onRefresh: _onRefresh,
+                        header: ClassicHeader(
+                          refreshingIcon: Container(
+                              width: 20.sp,height: 20.sp,child: CircularProgressIndicator(color: AppColorsController().buttonRedColor,strokeWidth: 1.5,)),
+                          idleIcon: Center(child: Icon(Icons.arrow_downward,color: AppColorsController().buttonRedColor,),),
+                          completeIcon: Center(child: Icon(Icons.check,color: AppColorsController().buttonRedColor,size: 30.sp,),),
+                          releaseIcon: Center(child: Icon(Icons.change_circle_sharp,color: AppColorsController().buttonRedColor,size: 30.sp,),),
+                          completeText: "",
+                          refreshingText: "",
+                          textStyle: TextStyle(color: AppColorsController().white),
+                        ),
+                        footer: ClassicFooter(
+                          height: 80,
+                          noMoreIcon: Center(child: Icon(Icons.arrow_upward,color: AppColorsController().buttonRedColor,),),
+                          idleIcon: Center(child: Icon(Icons.arrow_upward,color: AppColorsController().buttonRedColor,),),
+                          loadingIcon:  Container(
+                              width: 20.sp,height: 20.sp,child: CircularProgressIndicator(color: AppColorsController().buttonRedColor,strokeWidth: 1.5,)),
+                          canLoadingIcon: Center(child: Icon(Icons.change_circle_sharp,color: AppColorsController().buttonRedColor,size: 30.sp,),),
+                          canLoadingText: "",
+                          loadingText: "",
+                          textStyle: TextStyle(color: AppColorsController().white),
+                        ),
+                        onLoading: _onLoading,
+                        child: BlocConsumer<ProfileCubit, ProfileState>(
+                          bloc: profileBloc,
+                          listener: (context, state) {
+                            setState(() {
+                              loadingLoader = false;
+                            });
+                          },
+                          builder: (context, state) {
+                            print("Here" + state.toString());
+
+                            final profileState = widget.action == 0
+                                ? state.getALLFollowersState
+                                : widget.action == 1
+                                ? state.getALLFollowingsState : state
+                                .getALLBlockersState;
+
+                            print("Here" + profileState.toString());
+                            if (profileState is BaseFailState) {
+                              return Column(
+                                children: [
+                                  VerticalPadding(3.0),
+                                  GeneralErrorWidget(
+                                    error: profileState.error,
+                                    callback: profileState.callback,
+                                  ),
+                                ],
+                              );
+                            }
+
+                            if (loading == true &&
+                                widget.action == 0 &&
+                                (profileState is GetALLFollowersSuccessState)) {
+                              final data = (state.getALLFollowersState
+                              as GetALLFollowersSuccessState)
+                                  .users;
+                              items.addAll(data.data!);
+                              loading = false;
+                            } else if (loading &&
+                                widget.action == 1 &&
+                                (profileState is GetALLFollowingsSuccessState)) {
+                              final data = (state.getALLFollowingsState
+                              as GetALLFollowingsSuccessState)
+                                  .users;
+                              items.addAll(data.data!);
+                              loading = false;
+                              return _buildBody();
+                            }
+                            else if (loading &&
+                                widget.action == 2 &&
+                                profileState is GetALLBlockersSuccessState) {
+                              final data = (state.getALLBlockersState
+                              as GetALLBlockersSuccessState)
+                                  .users;
+                              items.addAll(data.data!);
+                              loading = false;
+                              return _buildBody();
+                            }
+
+                            return _buildBody();
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 30.sp,),
+                ],
           ),
         ),
+                loadingLoader?Container(): bottomNavigationBarWidget(indexPage: 4),
+              ],
+            ),
       ),),
-      bottomSheet: bottomNavigationBarWidget(),
+      // bottomSheet: bottomNavigationBarWidget(),
 
     );
   }

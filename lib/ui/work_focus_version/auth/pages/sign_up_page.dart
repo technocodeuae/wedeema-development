@@ -96,89 +96,84 @@ class _SignUpPageState extends State<SignUpPage> {
           FocusScope.of(context).unfocus();
           new TextEditingController().clear();
         },
-        child: BackLongPress(
-          child: LoadingColumnOverlay(
-            isLoading: _isLoading,
-            child: SingleChildScrollView(
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              child: Stack(
+        child: SingleChildScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          child: Stack(
+            children: [
+              Column(
                 children: [
-                  Column(
-                    children: [
-                      AppBarWidget(
-                        flip: true,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: InkWell(
-                            onTap: () {
-                              DIManager.findNavigator().pop();
-                            },
-                            child: BackIcon(
-                              width: 26.sp,
-                              height: 18.sp,
-                            ),
-                          ),
+                  AppBarWidget(
+                    flip: true,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: InkWell(
+                        onTap: () {
+                          DIManager.findNavigator().pop();
+                        },
+                        child: BackIcon(
+                          width: 26.sp,
+                          height: 18.sp,
                         ),
-                      ),
-                      SizedBox(
-                        height: 50.sp,
-                      ),
-                      Form(
-                        key: _formKey,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.sp),
-                          child: BlocListener<AuthCubit, AuthState>(
-                            bloc: _authBloc,
-                            listener: (_, state) {
-                              final registerState = state.registerState;
-
-                              if (_isLoading == true &&registerState is BaseFailState) {
-                                CustomSnackbar.showErrorSnackbar(
-                                  registerState.error!,
-                                );
-                                setState(() {
-                                  _isLoading = false;
-                                });
-                              }
-                              if (_isLoading == true &&registerState is VerificationCodeSuccessState) {
-
-                              }
-                            },
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _titleWidget(),
-                                SizedBox(height: 24,),
-                                _numberField(),
-                                SizedBox(height: 94,),
-                                PrivacyWidget(color: AppColorsController().black),
-                                SizedBox(height: 16,),
-                                _buildButton(),
-                                _signInWidget(),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Positioned(
-                    top: 60.sp,
-                    left: 131.sp,
-                    right: 131.sp,
-                    child: Hero(
-                      tag: 'logo',
-                      child: Image.asset(
-                        AppAssets.logoImage,
-                        height: 72.sp,
-                        fit: BoxFit.fill,
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: 50.sp,
+                  ),
+                  Form(
+                    key: _formKey,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.sp),
+                      child: BlocListener<AuthCubit, AuthState>(
+                        bloc: _authBloc,
+                        listener: (_, state) {
+                          final registerState = state.registerState;
 
+                          if (_isLoading == true &&registerState is BaseFailState) {
+                            CustomSnackbar.showErrorSnackbar(
+                              registerState.error!,
+                            );
+                            setState(() {
+                              _isLoading = false;
+                            });
+                          }
+                          if (_isLoading == true &&registerState is VerificationCodeSuccessState) {
+
+                          }
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _titleWidget(),
+                            SizedBox(height: 24,),
+                            _numberField(),
+                            SizedBox(height: 94,),
+                            PrivacyWidget(color: AppColorsController().black),
+                            SizedBox(height: 16,),
+                            _buildButton(),
+                            _signInWidget(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
-            ),
+              Positioned(
+                top: 60.sp,
+                left: 131.sp,
+                right: 131.sp,
+                child: Hero(
+                  tag: 'logo',
+                  child: Image.asset(
+                    AppAssets.logoImage,
+                    height: 72.sp,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+
+            ],
           ),
         ),
       ),
@@ -190,7 +185,7 @@ class _SignUpPageState extends State<SignUpPage> {
       width: MediaQuery.sizeOf(context).width - 24.sp,
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 8.sp, horizontal: 12.sp),
-        child: NewButton(
+        child: NewButton(isLoading: _isLoading,
             text: translate('next'),
             textStyle: AppStyle.titleStyle.copyWith(
                 color: AppColorsController().white, fontWeight: AppFontWeight.bold, overflow: TextOverflow.ellipsis),

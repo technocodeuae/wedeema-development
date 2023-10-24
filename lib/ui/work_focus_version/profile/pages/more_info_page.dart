@@ -169,7 +169,7 @@ class _MoreInfoPageState extends State<MoreInfoPage> {
 
 buildTabBar(){
   return Container(
-    height: 400,
+    height: 400.sp,
     child: DefaultTabController( length: 2,
 
       child: Scaffold(

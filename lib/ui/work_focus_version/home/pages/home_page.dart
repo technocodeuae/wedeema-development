@@ -107,256 +107,265 @@ class _HomePageState extends State<HomePage>
 
     return Scaffold(
       backgroundColor: AppColorsController().whiteBackground,
-      body: SafeArea(
-        child: BlocListener<SettingsCubit, SettingsState>(
-          bloc: settingsBloc,
-          listener: (context, state) {
-            final settingsState = state.getShareLinkState;
-            if (settingsState is BaseFailState) {}
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          SafeArea(
+            child: BlocListener<SettingsCubit, SettingsState>(
+              bloc: settingsBloc,
+              listener: (context, state) {
+                final settingsState = state.getShareLinkState;
+                if (settingsState is BaseFailState) {}
 
-            if (settingsState is GetShareLinkStateSuccessState) {
-              final data =
-                  (state.getShareLinkState as GetShareLinkStateSuccessState)
-                      .shareLink;
-              if (data.user != null) {
-                DIManager.findNavigator().pushNamed(ClientAccountPage.routeName,
-                    arguments: data.user?.id!);
-              } else {
-                DIManager.findNavigator().pushNamed(ItemsDetailsPage.routeName,
-                    arguments: ItemsArgs(
-                      id: data!.ad?.ad_id,
-                    ));
-              }
-            }
-          },
-          child: Stack(
-            children: [
-              Container(
-                child: SearchAppBarWidget(
-                  controller: searchController,
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 105.sp),
-                child: Column(
-                  children: [
-                    Expanded(
-                      flex: 3,
-                      child: RefreshIndicator(
-                       color: AppColorsController().buttonRedColor,
-                        backgroundColor: AppColorsController().defaultPrimaryColor,
-                        onRefresh: () => Future(()  {
-                          return Future.delayed(Duration(seconds: 1))..then((value) {
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+                if (settingsState is GetShareLinkStateSuccessState) {
+                  final data =
+                      (state.getShareLinkState as GetShareLinkStateSuccessState)
+                          .shareLink;
+                  if (data.user != null) {
+                    DIManager.findNavigator().pushNamed(ClientAccountPage.routeName,
+                        arguments: data.user?.id!);
+                  } else {
+                    DIManager.findNavigator().pushNamed(ItemsDetailsPage.routeName,
+                        arguments: ItemsArgs(
+                          id: data!.ad?.ad_id,
+                        ));
+                  }
+                }
+              },
+              child: Stack(
+                children: [
+                  Container(
+                    child: SearchAppBarWidget(
+                      controller: searchController,
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(top: 105.sp),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: RefreshIndicator(
+                           color: AppColorsController().buttonRedColor,
+                            backgroundColor: AppColorsController().defaultPrimaryColor,
+                            onRefresh: () => Future(()  {
+                              return Future.delayed(Duration(seconds: 1))..then((value) {
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
 
-                          });
-                             // return  _getData();
+                              });
+                                 // return  _getData();
 
-                        }),
-                        child: SingleChildScrollView(
-                          physics: BouncingScrollPhysics(),
-                          child: Column(
-                            children: [
-                              BlocConsumer<SponsorsCubit, SponsorsState>(
-                                bloc: sponsorBloc,
-                                listener: (context, state) {},
-                                builder: (context, state) {
-                                  final sponsorsState = state.getSponsorsState;
+                            }),
+                            child: SingleChildScrollView(
+                              physics: BouncingScrollPhysics(),
+                              child: Column(
+                                children: [
+                                  BlocConsumer<SponsorsCubit, SponsorsState>(
+                                    bloc: sponsorBloc,
+                                    listener: (context, state) {},
+                                    builder: (context, state) {
+                                      final sponsorsState = state.getSponsorsState;
 
-                                  if (sponsorsState is BaseFailState) {
-                                    return Column(
-                                      children: [
-                                        VerticalPadding(3.sp),
-                                        GeneralErrorWidget(
-                                          error: sponsorsState.error,
-                                          callback: sponsorsState.callback,
-                                        ),
-                                      ],
-                                    );
-                                  }
-
-                                  if (sponsorsState is SponsorsSuccessState) {
-                                    final data = (state.getSponsorsState
-                                                as SponsorsSuccessState)
-                                            .sponsor ??
-                                        [];
-                                    isLoadingSponsor = false;
-                                    return Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      height: 136.sp,
-                                      child: CarouselSlider(
-                                        options: CarouselOptions(
-                                          autoPlay: true,
-                                          viewportFraction: 0.6,
-                                          // Display three items at a time
-                                          aspectRatio: 3,
-                                          enlargeCenterPage: true,
-                                        ),
-                                        items: data
-                                            .map((item) => Container(
-                                                  width: 274.sp,
-                                                  height: 136.sp,
-                                                  child: ClipRRect(
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(15.sp)),
-                                                    child: Container(
-                                                      color: AppColorsController()
-                                                          .scaffoldBGColor,
-                                                      child: Image.network(
-                                                        AppConsts.IMAGE_URL +
-                                                            item.image.toString(),
-                                                        fit: BoxFit.fill,
-                                                        width: 274.sp,
-                                                        height: 136.sp,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ))
-                                            .toList(),
-                                      ),
-                                    );
-                                  }
-                                  return isLoadingSponsor == true?Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: 136.sp,
-                                    child: CarouselSlider(
-                                      options: CarouselOptions(
-                                        autoPlay: true,
-                                        viewportFraction: 0.6,
-                                        // Display three items at a time
-                                        aspectRatio: 3,
-                                        enlargeCenterPage: true,
-                                      ),
-
-                                      items: dataShimmer
-                                          .map((item) => Container(
-                                        width: 274.sp,
-                                        height: 136.sp,
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(15.sp)),
-                                          child: Container(
-                                            color: AppColorsController()
-                                                .scaffoldBGColor,
-                                            child: Shimmer.fromColors(
-                                              baseColor: Color(0x99FED0D3),
-                                              highlightColor: Color(0x99DE0F17),
-                                              child: Container(
-                                                width: 90.sp,
-                                                height: 90.sp,
-                                                color: Colors.amberAccent,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ))
-                                          .toList(),
-                                    ),
-                                  ):Container();
-                                },
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 12.sp),
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 8.sp,
-                                    ),
-                                    BlocConsumer<CategoriesCubit, CategoriesState>(
-                                      bloc: categoriesBloc,
-                                      listener: (context, state) {},
-                                      builder: (context, state) {
-                                        final categoriesState =
-                                            state.getMainCategoriesState;
-                                        if (categoriesState is BaseFailState) {
-                                          return Column(
-                                            children: [
-                                              VerticalPadding(3.sp),
-                                              GeneralErrorWidget(
-                                                error: categoriesState.error,
-                                                callback: categoriesState.callback,
-                                              ),
-                                            ],
-                                          );
-                                        }
-
-                                        if (isLoadingCategories == true &&
-                                            categoriesState
-                                                is GetMainCategoriesSuccessState) {
-                                           categories = (state.getMainCategoriesState
-                                                  as GetMainCategoriesSuccessState)
-                                              .categories;
-                                          isLoadingCategories = false;
-                                          return Column(
-                                            children: [
-                                              BuildLookingWidget(
-                                                name: translate(
-                                                    "are_you_looking_for"),
-                                                lookingList: categories
-                                              ),
-                                              SizedBox(height: 4.sp),
-                                            ],
-                                          );
-                                        }
-                                        return (isLoadingCategories == true)
-                                            ? LookingWidgetShimmer(
-                                         name: translate(
-                                              "are_you_looking_for"),
-                                        )
-                                            : Column(
+                                      if (sponsorsState is BaseFailState) {
+                                        return Column(
                                           children: [
-                                            BuildLookingWidget(
-                                              name: translate(
-                                                  "are_you_looking_for"),
-                                              lookingList: categories,
+                                            VerticalPadding(3.sp),
+                                            GeneralErrorWidget(
+                                              error: sponsorsState.error,
+                                              callback: sponsorsState.callback,
                                             ),
-                                            SizedBox(height: 4.sp),
                                           ],
                                         );
-                                      },
-                                    ),
-                                    Column(
+                                      }
+
+                                      if (sponsorsState is SponsorsSuccessState) {
+                                        final data = (state.getSponsorsState
+                                                    as SponsorsSuccessState)
+                                                .sponsor ??
+                                            [];
+                                        isLoadingSponsor = false;
+                                        return Container(
+                                          width: MediaQuery.of(context).size.width,
+                                          height: 136.sp,
+                                          child: CarouselSlider(
+                                            options: CarouselOptions(
+                                              autoPlay: true,
+                                              viewportFraction: 0.6,
+                                              // Display three items at a time
+                                              aspectRatio: 3,
+                                              enlargeCenterPage: true,
+                                            ),
+                                            items: data
+                                                .map((item) => Container(
+                                                      width: 274.sp,
+                                                      height: 136.sp,
+                                                      child: ClipRRect(
+                                                        borderRadius: BorderRadius.all(
+                                                            Radius.circular(15.sp)),
+                                                        child: Container(
+                                                          color: AppColorsController()
+                                                              .scaffoldBGColor,
+                                                          child: Image.network(
+                                                            AppConsts.IMAGE_URL +
+                                                                item.image.toString(),
+                                                            fit: BoxFit.fill,
+                                                            width: 274.sp,
+                                                            height: 136.sp,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ))
+                                                .toList(),
+                                          ),
+                                        );
+                                      }
+                                      return isLoadingSponsor == true?Container(
+                                        width: MediaQuery.of(context).size.width,
+                                        height: 136.sp,
+                                        child: CarouselSlider(
+                                          options: CarouselOptions(
+                                            autoPlay: true,
+                                            viewportFraction: 0.6,
+                                            // Display three items at a time
+                                            aspectRatio: 3,
+                                            enlargeCenterPage: true,
+                                          ),
+
+                                          items: dataShimmer
+                                              .map((item) => Container(
+                                            width: 274.sp,
+                                            height: 136.sp,
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(15.sp)),
+                                              child: Container(
+                                                color: AppColorsController()
+                                                    .scaffoldBGColor,
+                                                child: Shimmer.fromColors(
+                                                  baseColor: Color(0x99FED0D3),
+                                                  highlightColor: Color(0x99DE0F17),
+                                                  child: Container(
+                                                    width: 90.sp,
+                                                    height: 90.sp,
+                                                    color: Colors.amberAccent,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ))
+                                              .toList(),
+                                        ),
+                                      ):Container();
+                                    },
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 12.sp),
+                                    child: Column(
                                       children: [
-                                        BuildItemsWidget(
-                                          name: translate("recent_uploaded_items"),
-                                          type: 0,
-                                        ),
-                                        BuildItemsWidget(
-                                          name: translate("most_rate_items"),
-                                          type: 1,
-                                        ),
-                                        BuildItemsWidget(
-                                          name: translate("popular_items"),
-                                          type: 2,
-                                        ),
-                                        BuildItemsWidget(
-                                          name: translate("job_ads"),
-                                          type: 3,
-                                          category_id: AppConsts.jobCategoryId,
-                                        ),
                                         SizedBox(
-                                          height: 4.sp,
+                                          height: 8.sp,
+                                        ),
+                                        BlocConsumer<CategoriesCubit, CategoriesState>(
+                                          bloc: categoriesBloc,
+                                          listener: (context, state) {},
+                                          builder: (context, state) {
+                                            final categoriesState =
+                                                state.getMainCategoriesState;
+                                            if (categoriesState is BaseFailState) {
+                                              return Column(
+                                                children: [
+                                                  VerticalPadding(3.sp),
+                                                  GeneralErrorWidget(
+                                                    error: categoriesState.error,
+                                                    callback: categoriesState.callback,
+                                                  ),
+                                                ],
+                                              );
+                                            }
+
+                                            if (isLoadingCategories == true &&
+                                                categoriesState
+                                                    is GetMainCategoriesSuccessState) {
+                                               categories = (state.getMainCategoriesState
+                                                      as GetMainCategoriesSuccessState)
+                                                  .categories;
+                                              isLoadingCategories = false;
+                                              return Column(
+                                                children: [
+                                                  BuildLookingWidget(
+                                                    name: translate(
+                                                        "are_you_looking_for"),
+                                                    lookingList: categories
+                                                  ),
+                                                  SizedBox(height: 4.sp),
+                                                ],
+                                              );
+                                            }
+                                            return (isLoadingCategories == true)
+                                                ? LookingWidgetShimmer(
+                                             name: translate(
+                                                  "are_you_looking_for"),
+                                            )
+                                                : Column(
+                                              children: [
+                                                BuildLookingWidget(
+                                                  name: translate(
+                                                      "are_you_looking_for"),
+                                                  lookingList: categories,
+                                                ),
+                                                SizedBox(height: 4.sp),
+                                              ],
+                                            );
+                                          },
+                                        ),
+                                        Column(
+                                          children: [
+                                            BuildItemsWidget(
+                                              name: translate("recent_uploaded_items"),
+                                              type: 0,
+                                            ),
+                                            BuildItemsWidget(
+                                              name: translate("most_rate_items"),
+                                              type: 1,
+                                            ),
+                                            BuildItemsWidget(
+                                              name: translate("popular_items"),
+                                              type: 2,
+                                            ),
+                                            BuildItemsWidget(
+                                              name: translate("job_ads"),
+                                              type: 3,
+                                              category_id: AppConsts.jobCategoryId,
+                                            ),
+                                            SizedBox(
+                                              height: 4.sp,
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+          bottomNavigationBarWidget(
+            key: bottomSheetKey,
+            indexPage: 0,
+          )
+        ],
       ),
-      bottomNavigationBar: bottomNavigationBarWidget(
-        key: bottomSheetKey,
-      ),
+      // bottomNavigationBar: bottomNavigationBarWidget(
+      //   key: bottomSheetKey,
+      // ),
     );
   }
 }

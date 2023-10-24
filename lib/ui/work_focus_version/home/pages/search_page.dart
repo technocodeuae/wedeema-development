@@ -75,114 +75,120 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-          new TextEditingController().clear();
-        },
-        child: BackLongPress(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppBarWidget(
-                flip: true,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: InkWell(
-                    onTap: () {
-                      DIManager.findNavigator().pop();
-                    },
-                    child: BackIcon(
-                      width: 26.sp,
-                      height: 18.sp,
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+              new TextEditingController().clear();
+            },
+            child: BackLongPress(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppBarWidget(
+                    flip: true,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: InkWell(
+                        onTap: () {
+                          DIManager.findNavigator().pop();
+                        },
+                        child: BackIcon(
+                          width: 26.sp,
+                          height: 18.sp,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.sp),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      translate('search'),
-                      style: AppStyle.bigTitleStyle.copyWith(
-                          color: AppColorsController().black, fontSize: 20.sp, fontWeight: AppFontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 24.sp,
-                    ),
-                    Row(
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.sp),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(child: _searchWidget()),
-                        SizedBox(
-                          width: 20.sp,
+                        Text(
+                          translate('search'),
+                          style: AppStyle.bigTitleStyle.copyWith(
+                              color: AppColorsController().black, fontSize: 20.sp, fontWeight: AppFontWeight.bold),
                         ),
-                        TextButton(
-                            onPressed: () {
-                              final Map<String, dynamic>? dataMap = {"filter": true};
+                        SizedBox(
+                          height: 24.sp,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(child: _searchWidget()),
+                            SizedBox(
+                              width: 20.sp,
+                            ),
+                            TextButton(
+                                onPressed: () {
+                                  final Map<String, dynamic>? dataMap = {"filter": true};
 
-                              DIManager.findNavigator().pushNamed(AddMainDetailsPage.routeName,
-                                  arguments: ArgumentCategory(dataMap: dataMap)).then((value) => _getData());
-                            },
-                            style: TextButton.styleFrom(
-                                foregroundColor: AppColorsController().lightRed,
-                                backgroundColor: AppColorsController().card,
-                                padding: EdgeInsets.zero,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.sp),
-                                    side: BorderSide(color: AppColorsController().borderColor, width: 0.2))),
-                            child: SizedBox(
-                              height: 45,
-                              child: Icon(Icons.tune_outlined,
-                                  size: 28.sp, color: AppColorsController().darkRed.withOpacity(0.75)),
-                            )),
+                                  DIManager.findNavigator().pushNamed(AddMainDetailsPage.routeName,
+                                      arguments: ArgumentCategory(dataMap: dataMap)).then((value) => _getData());
+                                },
+                                style: TextButton.styleFrom(
+                                    foregroundColor: AppColorsController().lightRed,
+                                    backgroundColor: AppColorsController().card,
+                                    padding: EdgeInsets.zero,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10.sp),
+                                        side: BorderSide(color: AppColorsController().borderColor, width: 0.2))),
+                                child: SizedBox(
+                                  height: 45,
+                                  child: Icon(Icons.tune_outlined,
+                                      size: 28.sp, color: AppColorsController().darkRed.withOpacity(0.75)),
+                                )),
+                          ],
+                        ),
                       ],
                     ),
-                  ],
-                ),
-              ),
-
-              if(searchHistory.isNotEmpty)...[
-                SizedBox(height: 16,),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Text(translate('last_search'),textAlign: TextAlign.start, style: TextStyle(color: AppColorsController().black, fontSize: 16.sp)),
-                ),
-                ListView.separated( physics: BouncingScrollPhysics(),
-                  itemCount: searchHistory.length,
-                  padding: EdgeInsets.symmetric(horizontal: 8),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return _searchItem(index: index, value: searchHistory[index]);
-                  },
-                  separatorBuilder: (context, index) {
-                    return Divider(
-                      height: 0,
-                    );
-                  },
-                ),
-                Align(
-                  alignment: AlignmentDirectional.bottomEnd,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                    child: NewButton(
-                        text: translate('clear_all'),
-                        textStyle: AppStyle.titleStyle.copyWith(
-                            color: AppColorsController().white,fontSize: 12.sp, overflow: TextOverflow.ellipsis),
-                        textPadding: EdgeInsets.symmetric(horizontal: 16,vertical: 8),
-                        onPressed: () {
-                          _clearAll();
-                        }),
                   ),
-                ),
 
-              ]
-            ],
+                  if(searchHistory.isNotEmpty)...[
+                    SizedBox(height: 16,),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Text(translate('last_search'),textAlign: TextAlign.start, style: TextStyle(color: AppColorsController().black, fontSize: 16.sp)),
+                    ),
+                    ListView.separated( physics: BouncingScrollPhysics(),
+                      itemCount: searchHistory.length,
+                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return _searchItem(index: index, value: searchHistory[index]);
+                      },
+                      separatorBuilder: (context, index) {
+                        return Divider(
+                          height: 0,
+                        );
+                      },
+                    ),
+                    Align(
+                      alignment: AlignmentDirectional.bottomEnd,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 32),
+                        child: NewButton(
+                            text: translate('clear_all'),
+                            textStyle: AppStyle.titleStyle.copyWith(
+                                color: AppColorsController().white,fontSize: 12.sp, overflow: TextOverflow.ellipsis),
+                            textPadding: EdgeInsets.symmetric(horizontal: 16,vertical: 8),
+                            onPressed: () {
+                              _clearAll();
+                            }),
+                      ),
+                    ),
+
+                  ]
+                ],
+              ),
+            ),
           ),
-        ),
+          bottomNavigationBarWidget(indexPage: 10),
+        ],
       ),
-      bottomSheet: bottomNavigationBarWidget(),
+      // bottomSheet: bottomNavigationBarWidget(),
     );
   }
 

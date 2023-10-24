@@ -58,72 +58,77 @@ class _FAQPageState extends State<FAQPage> {
         child: LoadingColumnOverlay(
           isLoading: _isLoadingLoader,
           child: BackLongPress(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Stack(alignment: Alignment.bottomCenter,
               children: [
-                AppBarWidget(
-                  name: translate("faq"),
-                  child: InkWell(
-                    onTap: () {
-                      DIManager.findNavigator().pop();
-                    },
-                    child: BackIcon(
-                      width: 26.sp,
-                      height: 18.sp,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AppBarWidget(
+                      name: translate("faq"),
+                      child: InkWell(
+                        onTap: () {
+                          DIManager.findNavigator().pop();
+                        },
+                        child: BackIcon(
+                          width: 26.sp,
+                          height: 18.sp,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        BlocConsumer<SettingsCubit, SettingsState>(
-                            bloc: settingsBloc,
-                            listener: (_, state) {
-                              setState(() {
-                                _isLoadingLoader = false;
-                              });
-                            },
-                            builder: (context, state) {
-                              final getFAQState = state.getFAQState;
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            BlocConsumer<SettingsCubit, SettingsState>(
+                                bloc: settingsBloc,
+                                listener: (_, state) {
+                                  setState(() {
+                                    _isLoadingLoader = false;
+                                  });
+                                },
+                                builder: (context, state) {
+                                  final getFAQState = state.getFAQState;
 
-                              if (getFAQState is BaseFailState) {
-                                return Column(
-                                  children: [
-                                    VerticalPadding(3.0),
-                                    GeneralErrorWidget(
-                                      error: getFAQState.error,
-                                      callback: getFAQState.callback,
-                                    ),
-                                  ],
-                                );
-                              }
+                                  if (getFAQState is BaseFailState) {
+                                    return Column(
+                                      children: [
+                                        VerticalPadding(3.0),
+                                        GeneralErrorWidget(
+                                          error: getFAQState.error,
+                                          callback: getFAQState.callback,
+                                        ),
+                                      ],
+                                    );
+                                  }
 
-                              if (_isLoading &&
-                                  (getFAQState is GetFAQStateSuccessState)) {
-                                data.addAll(
-                                    (state.getFAQState as GetFAQStateSuccessState)
-                                        .faq
-                                        .data!);
-                                _isLoading = false;
-                                return _buildBody();
-                              }
+                                  if (_isLoading &&
+                                      (getFAQState is GetFAQStateSuccessState)) {
+                                    data.addAll(
+                                        (state.getFAQState as GetFAQStateSuccessState)
+                                            .faq
+                                            .data!);
+                                    _isLoading = false;
+                                    return _buildBody();
+                                  }
 
-                              return _buildBody();
-                            }),
-                        SizedBox(
-                          height: 30.sp,
-                        )
-                      ],
+                                  return _buildBody();
+                                }),
+                            SizedBox(
+                              height: 30.sp,
+                            )
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
+                _isLoadingLoader?Container(): bottomNavigationBarWidget(indexPage: 4),
               ],
             ),
           ),
         ),
       ),
-      bottomSheet: bottomNavigationBarWidget(),
+      // bottomSheet: bottomNavigationBarWidget(),
     );
   }
 

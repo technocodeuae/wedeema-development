@@ -83,74 +83,80 @@ class _ClientAccountPageState extends State<ClientAccountPage> {
         child: LoadingColumnOverlay(
           isLoading: _isLoader,
           child: BackLongPress(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Stack(
+              alignment: Alignment.bottomCenter,
               children: [
-                AppBarWidget(
-                  name: translate("profile"),
-                  child: InkWell(
-                    onTap: () {
-                      DIManager.findNavigator().pop();
-                    },
-                    child: BackIcon(
-                      width: 26.sp,
-                      height: 18.sp,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AppBarWidget(
+                      name: translate("profile"),
+                      child: InkWell(
+                        onTap: () {
+                          DIManager.findNavigator().pop();
+                        },
+                        child: BackIcon(
+                          width: 26.sp,
+                          height: 18.sp,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: Column(
-                      children: [
-                        BlocConsumer<ProfileCubit, ProfileState>(
-                            bloc: profileBloc,
-                            listener: (_, state) {
-                              setState(() {
-                                _isLoader = false;
-                              });
-                            },
-                            builder: (context, state) {
-                              final getOtherProfileState =
-                                  state.getOtherProfileState;
+                    Expanded(
+                      child: SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        child: Column(
+                          children: [
+                            BlocConsumer<ProfileCubit, ProfileState>(
+                                bloc: profileBloc,
+                                listener: (_, state) {
+                                  setState(() {
+                                    _isLoader = false;
+                                  });
+                                },
+                                builder: (context, state) {
+                                  final getOtherProfileState =
+                                      state.getOtherProfileState;
 
-                              if (getOtherProfileState is BaseFailState) {
-                                return Column(
-                                  children: [
-                                    VerticalPadding(3.0),
-                                    GeneralErrorWidget(
-                                      error: getOtherProfileState.error,
-                                      callback: getOtherProfileState.callback,
-                                    ),
-                                  ],
-                                );
-                              }
+                                  if (getOtherProfileState is BaseFailState) {
+                                    return Column(
+                                      children: [
+                                        VerticalPadding(3.0),
+                                        GeneralErrorWidget(
+                                          error: getOtherProfileState.error,
+                                          callback: getOtherProfileState.callback,
+                                        ),
+                                      ],
+                                    );
+                                  }
 
-                              if (getOtherProfileState
+                                  if (getOtherProfileState
                                   is GetOtherProfileSuccessState) {
-                                data = (state.getOtherProfileState
-                                        as GetOtherProfileSuccessState)
-                                    .profile;
-                                return _buildBody();
-                              }
-                              return Container(
-                                child:
+                                    data = (state.getOtherProfileState
+                                    as GetOtherProfileSuccessState)
+                                        .profile;
+                                    return _buildBody();
+                                  }
+                                  return Container(
+                                    child:
                                     data == null ? Container() : _buildBody(),
-                              );
-                            }),
-                        SizedBox(
-                          height: 30.sp,
-                        )
-                      ],
+                                  );
+                                }),
+                            SizedBox(
+                              height: 30.sp,
+                            )
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
+                _isLoader?Container(): bottomNavigationBarWidget(indexPage: 4),
               ],
             ),
           ),
         ),
       ),
-      bottomSheet: bottomNavigationBarWidget(),
+      // bottomSheet: bottomNavigationBarWidget(),
     );
   }
 

@@ -38,150 +38,166 @@ class _MyProfilePageState extends State<MyProfilePage>
   void initState() {
     super.initState();
   }
-
+  bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AppBarWidget(
-              name: translate("menu"),
-              child: Container(
-                width: 26.sp,
-                height: 18.sp,
-              ),
-            ),
-            SizedBox(
-              height: 16.sp,
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    (DIManager.findDep<SharedPrefs>().getToken() == null ||
-                            DIManager.findDep<SharedPrefs>().getToken()!.isEmpty)
-                        ? Container()
-                        : ItemProfileCardWidget(
-                            isProfile: true,
-                            title: translate("profile"),
-                            icon: AppAssets.accountIcons,
-                            onPressed: () {
-                              if (!AppUtils.checkIfGuest(context)) {
-                                DIManager.findNavigator().pushNamed(
-                                  MyAccountPage.routeName,
-                                );
-                              }
-                            }),
-                    ItemProfileCardWidget(
-                        title: translate("account_settings"),
-                        icon: AppAssets.settingIcon,
-                        onPressed: () {
-                            DIManager.findNavigator().pushNamed(
-                              AccountSettingsPage.routeName,
-                            );
-                        }),
-                    ItemProfileCardWidget(
-                        title: translate("set_lang"),
-                        icon: AppAssets.languageIcon,
-                        onPressed: () async {
-                          CustomDialogs.showSortBottomSheet(
-                              ['العربية', 'English'], onChange: (value) {
-                            if (value == 'English') {
-                              DIManager.findDep<ApplicationCubit>()
-                                  .changeLanguage(AppConsts.LANG_EN);
-                            } else {
-                              DIManager.findDep<ApplicationCubit>()
-                                  .changeLanguage(AppConsts.LANG_AR);
-                            }
-                            setState(() {});
-                          },
-                              value: AppUtils.localize(
-                                  whenArabic: 'العربية', whenEnglish: 'English'),
-                              title: translate('language'));
-                        }),
-                    ItemProfileCardWidget(
-                        title: translate("terms"),
-                        icon: AppAssets.termsAndConditionIcon,
-                        onPressed: () {
-                          DIManager.findNavigator().pushNamed(
-                            TermsPage.routeName,
-                          );
-                        }),
-                    ItemProfileCardWidget(
-                        title: translate("privacy"),
-                        icon: AppAssets.privacyPolicyIcon,
-                        onPressed: () {
-                          DIManager.findNavigator().pushNamed(
-                            PrivacyPolicyPage.routeName,
-                          );
-                        }),
-                    ItemProfileCardWidget(
-                        title: translate("faq"),
-                        icon: AppAssets.faqIcon,
-                        onPressed: () {
-                          DIManager.findNavigator().pushNamed(
-                            FAQPage.routeName,
-                          );
-                        }),
-                    ItemProfileCardWidget(
-                        title: translate("about_app"),
-                        icon: AppAssets.aboutAppIcon,
-                        onPressed: () {
-                          DIManager.findNavigator().pushNamed(
-                            AboutAppPage.routeName,
-                          );
-                        }),
-                    (DIManager.findDep<SharedPrefs>().getToken() != null &&
-                            DIManager.findDep<SharedPrefs>()
-                                .getToken()!
-                                .isNotEmpty)
-                        ? BlocListener<AuthCubit, AuthState>(
-                            bloc: DIManager.findDep<AuthCubit>(),
-                            listener: (_, state) {
-                              final registerState = state.logout;
-                              if (registerState is BaseFailState) {
-                                CustomSnackbar.showErrorSnackbar(
-                                  registerState.error!,
-                                );
-                                DIManager.findNavigator().pushNamedAndRemoveUntil(
-                                  SignInPage.routeName,
-                                );
-                              }
-                              if (registerState is LogOutSuccessState) {
-                                DIManager.findNavigator().pushNamedAndRemoveUntil(
-                                  SignInPage.routeName,
-                                );
-                              }
-                            },
-                            child: ItemProfileCardWidget(
-                              title: translate("sign_out"),
-                              icon: AppAssets.logOutIcon,
-                              onPressed: () {
-                                if (!AppUtils.checkIfGuest(context)) {
-                                  DIManager.findDep<AuthCubit>().logout();
-                                }
-                              },
-                            ),
-                          )
-                        : ItemProfileCardWidget(
-                            title: translate("sign_in"),
-                            icon: AppAssets.enterIcons,
-                            onPressed: () {
-                              DIManager.findNavigator().pushNamedAndRemoveUntil(
-                                SignInPage.routeName,
-                              );
-                            },
-                          ),
-                  ],
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppBarWidget(
+                  name: translate("menu"),
+                  child: Container(
+                    width: 26.sp,
+                    height: 18.sp,
+                  ),
                 ),
-              ),
+                SizedBox(
+                  height: 16.sp,
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        (DIManager.findDep<SharedPrefs>().getToken() == null ||
+                                DIManager.findDep<SharedPrefs>().getToken()!.isEmpty)
+                            ? Container()
+                            : ItemProfileCardWidget(
+                                isProfile: true,
+                                title: translate("profile"),
+                                icon: AppAssets.accountIcons,
+                                onPressed: () {
+                                  if (!AppUtils.checkIfGuest(context)) {
+                                    DIManager.findNavigator().pushNamed(
+                                      MyAccountPage.routeName,
+                                    );
+                                  }
+                                }),
+                        ItemProfileCardWidget(
+                            title: translate("account_settings"),
+                            icon: AppAssets.settingIcon,
+                            onPressed: () {
+                                DIManager.findNavigator().pushNamed(
+                                  AccountSettingsPage.routeName,
+                                );
+                            }),
+                        ItemProfileCardWidget(
+                            title: translate("set_lang"),
+                            icon: AppAssets.languageIcon,
+                            onPressed: () async {
+                              CustomDialogs.showSortBottomSheet(
+                                  ['العربية', 'English'], onChange: (value) {
+                                if (value == 'English') {
+                                  DIManager.findDep<ApplicationCubit>()
+                                      .changeLanguage(AppConsts.LANG_EN);
+                                } else {
+                                  DIManager.findDep<ApplicationCubit>()
+                                      .changeLanguage(AppConsts.LANG_AR);
+                                }
+                                setState(() {});
+                              },
+                                  value: AppUtils.localize(
+                                      whenArabic: 'العربية', whenEnglish: 'English'),
+                                  title: translate('language'));
+                            }),
+                        ItemProfileCardWidget(
+                            title: translate("terms"),
+                            icon: AppAssets.termsAndConditionIcon,
+                            onPressed: () {
+                              DIManager.findNavigator().pushNamed(
+                                TermsPage.routeName,
+                              );
+                            }),
+                        ItemProfileCardWidget(
+                            title: translate("privacy"),
+                            icon: AppAssets.privacyPolicyIcon,
+                            onPressed: () {
+                              DIManager.findNavigator().pushNamed(
+                                PrivacyPolicyPage.routeName,
+                              );
+                            }),
+                        ItemProfileCardWidget(
+                            title: translate("faq"),
+                            icon: AppAssets.faqIcon,
+                            onPressed: () {
+                              DIManager.findNavigator().pushNamed(
+                                FAQPage.routeName,
+                              );
+                            }),
+                        ItemProfileCardWidget(
+                            title: translate("about_app"),
+                            icon: AppAssets.aboutAppIcon,
+                            onPressed: () {
+                              DIManager.findNavigator().pushNamed(
+                                AboutAppPage.routeName,
+                              );
+                            }),
+                        (DIManager.findDep<SharedPrefs>().getToken() != null &&
+                                DIManager.findDep<SharedPrefs>()
+                                    .getToken()!
+                                    .isNotEmpty)
+                            ? BlocListener<AuthCubit, AuthState>(
+                                bloc: DIManager.findDep<AuthCubit>(),
+                                listener: (_, state) {
+                                  final registerState = state.logout;
+                                  if (_isLoading == true &&registerState is BaseFailState) {
+                                    setState(() {
+                                      _isLoading = false;
+                                    });
+                                    CustomSnackbar.showErrorSnackbar(
+                                      registerState.error!,
+                                    );
+                                    DIManager.findNavigator().pushNamedAndRemoveUntil(
+                                      SignInPage.routeName,
+                                    );
+                                  }
+                                  if (_isLoading == true && registerState is LogOutSuccessState) {
+                                    setState(() {
+                                      _isLoading = false;
+                                    });
+                                    DIManager.findNavigator().pushNamedAndRemoveUntil(
+                                      SignInPage.routeName,
+                                    );
+                                  }
+                                },
+                                child:  ItemProfileCardWidget(
+                                  isLoading: _isLoading,
+                                  title: translate("sign_out"),
+                                  icon: AppAssets.logOutIcon,
+                                  onPressed: () {
+                                    setState(() {
+                                      _isLoading = true;
+                                    });
+                                    if (!AppUtils.checkIfGuest(context)) {
+                                      DIManager.findDep<AuthCubit>().logout();
+                                    }
+                                  },
+                                ),
+                              )
+                            : ItemProfileCardWidget(
+                                title: translate("sign_in"),
+                                icon: AppAssets.enterIcons,
+                                onPressed: () {
+                                  DIManager.findNavigator().pushNamedAndRemoveUntil(
+                                    SignInPage.routeName,
+                                  );
+                                },
+                              ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          bottomNavigationBarWidget(indexPage: 4),
+        ],
       ),
-      bottomNavigationBar: bottomNavigationBarWidget(),
+      // bottomNavigationBar: bottomNavigationBarWidget(indexPage: 10),
     );
   }
 

@@ -269,9 +269,9 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
                                     ),
 
                                     Column(
-                                      children: List.generate(
+                                      children:  List.generate(
                                           1 + subcategoriesLength(), (index) {
-                                        return SubCategoriesDropdownWidget(
+                                        return  SubCategoriesDropdownWidget(
                                           child: OptionItem(
                                               title:
                                                   '${translate('subcategory')} ${index + 1}',
@@ -1100,13 +1100,14 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
   void _selectSubcategory(
       {required CategoriesEntity? value, required int index}) {
     isLoading = true;
-    Future.delayed(Duration(milliseconds: 5)).then((value) {
-      isLoading = false;
-    });
+
     widget.argumentCategory?.dataMap?['sub_category_ids'] ??= [];
     widget.argumentCategory?.dataMap?['subcategory_names'] ??= [];
 
     if (checkSubcategoriesList(index)) {
+      Future.delayed(Duration(milliseconds: 5)).then((value) {
+        isLoading = false;
+      });
       widget.argumentCategory?.dataMap?['sub_category_ids'][index] =
           value?.category_id;
       widget.argumentCategory?.dataMap?['subcategory_names'][index] =
@@ -1122,6 +1123,9 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
       (widget.argumentCategory?.dataMap?['sub_category_ids'] as List)
           .removeRange(index + 1, length);
     } else {
+      Future.delayed(Duration(milliseconds: 5)).then((value) {
+        isLoading = false;
+      });
       widget.argumentCategory?.dataMap?['sub_category_ids']
           .add(value?.category_id);
       widget.argumentCategory?.dataMap?['subcategory_names'].add(value?.title);
@@ -1131,5 +1135,6 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
     categoriesBloc.getPropertiesCategories(value?.category_id ?? -1);
 
     categoriesBloc.refresh();
+
   }
 }

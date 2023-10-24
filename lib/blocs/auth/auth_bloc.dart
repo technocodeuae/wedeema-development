@@ -47,12 +47,14 @@ class AuthCubit extends Cubit<AuthState> {
       password: password,
     );
     if (result.hasDataOnly) {
-
       var fcmToken = DIManager.findDep<SharedPrefs>().getFCMToken();
-      DIManager.findDep<SharedPrefs>()..setToken(result.data?.access_token ?? '');
+      DIManager.findDep<SharedPrefs>()
+        ..setToken(result.data?.access_token ?? '');
       DIManager.findDep<SharedPrefs>()..setUserID(result.data?.user?.id ?? -1);
-      DIManager.findDep<SharedPrefs>()..setNotificationsStatus(result.data?.user?.notification_status);
-      DIManager.findDep<SharedPrefs>()..setImageProfile(result.data?.user?.profile_pic ?? '');
+      DIManager.findDep<SharedPrefs>()
+        ..setNotificationsStatus(result.data?.user?.notification_status);
+      DIManager.findDep<SharedPrefs>()
+        ..setImageProfile(result.data?.user?.profile_pic ?? '');
 
       // if(fcmToken != null ) await authRepo.firebase(token: fcmToken);
       // await DIManager.findDep<ProfileCubit>().getUserProfile();
@@ -86,7 +88,7 @@ class AuthCubit extends Cubit<AuthState> {
     required String email,
     required String password,
     required String userName,
-     String? phoneNumber,
+    String? phoneNumber,
     required int city,
     // required String addressLatitude,
     // required String addressLongitude,
@@ -116,8 +118,10 @@ class AuthCubit extends Cubit<AuthState> {
       // await DIManager.findDep<ProfileCubit>().getUserProfile();
       DIManager.findDep<SharedPrefs>()..setToken(result.data?.access_token!);
       DIManager.findDep<SharedPrefs>()..setUserID(result.data?.user!.id!);
-      DIManager.findDep<SharedPrefs>()..setNotificationsStatus(result.data?.user?.notification_status);
-      DIManager.findDep<SharedPrefs>()..setImageProfile(result.data?.user?.profile_pic??"");
+      DIManager.findDep<SharedPrefs>()
+        ..setNotificationsStatus(result.data?.user?.notification_status);
+      DIManager.findDep<SharedPrefs>()
+        ..setImageProfile(result.data?.user?.profile_pic ?? "");
 
       // DIManager.findDep<SharedPrefs>().setLoginMode(LoginModeEnum.NORMAL_MODE);
       // DIManager.findDep<SharedPrefs>().setEmployeeMode(EmployeeModesEnum.SOCIAL_MODE);
@@ -171,63 +175,62 @@ class AuthCubit extends Cubit<AuthState> {
 // }
 //
 //
-Future<void> logout() async {
-  emit(state.copyWith(logout: BaseLoadingState()));
 
-  final result =  await authRepo.logout();
+  Future<void> logout() async {
+    emit(state.copyWith(logout: BaseLoadingState()));
 
-  if (result.hasDataOnly) {
-    DIManager.findDep<SharedPrefs>().logout();
-    emit(state.copyWith(logout: LogOutSuccessState(result.data!)));
-    DIManager.findNavigator().offAll(
-      SignInPage.routeName,
-    );
-  } else {
-    emit(
-      state.copyWith(
-        logout: BaseFailState(
-          result.error,
-          callback: () => this.logout(
+    final result = await authRepo.logout();
 
+    if (result.hasDataOnly) {
+      DIManager.findDep<SharedPrefs>().logout();
+
+      emit(state.copyWith(logout: LogOutSuccessState(result.data!)));
+      DIManager.findNavigator().offAll(
+        SignInPage.routeName,
+      );
+    } else {
+      emit(
+        state.copyWith(
+          logout: BaseFailState(
+            result.error,
+            callback: () => this.logout(),
           ),
         ),
-      ),
-    );
+      );
+    }
   }
 
-}
+  Future<void> changePassword(
+    String password, {
+    String? email,
+    String? mobile,
+    VoidCallback? onDone,
+    VoidCallback? onError,
+  }) async {
+    emit(state.copyWith(changePassword: BaseLoadingState()));
 
+    final result = await authRepo.changePassword(email, mobile, password);
 
-Future<void> changePassword(String password,{String? email,String? mobile,VoidCallback? onDone,VoidCallback? onError,}) async {
-  emit(state.copyWith(changePassword: BaseLoadingState()));
-
-  final result = await authRepo.changePassword(email,mobile, password);
-
-  if (result.hasDataOnly) {
-    if(onDone != null){
-      onDone();
-    }
-    emit(state.copyWith(changePassword: ChangePasswordSuccessState(result.data!)));
-  } else {
-    CustomSnackbar.showErrorSnackbar(result.error!);
-    if(onError != null){
-      onError();
-    }
-    emit(
-      state.copyWith(
-        changePassword: BaseFailState(
-          result.error,
-          callback:()=> this.changePassword(
-            password,email: email
-          )
+    if (result.hasDataOnly) {
+      if (onDone != null) {
+        onDone();
+      }
+      emit(state.copyWith(
+          changePassword: ChangePasswordSuccessState(result.data!)));
+    } else {
+      CustomSnackbar.showErrorSnackbar(result.error!);
+      if (onError != null) {
+        onError();
+      }
+      emit(
+        state.copyWith(
+          changePassword: BaseFailState(result.error,
+              callback: () => this.changePassword(password, email: email)),
         ),
-      ),
-    );
+      );
+    }
+    return null;
   }
-  return null;
-}
-
-
 
   Future<void> forgetPassword(String email) async {
     emit(state.copyWith(forgetPassword: BaseLoadingState()));
@@ -235,17 +238,45 @@ Future<void> changePassword(String password,{String? email,String? mobile,VoidCa
     final result = await authRepo.forgetPassword(email);
 
     if (result.hasDataOnly) {
-      emit(state.copyWith(forgetPassword: ForgetPasswordSuccessState(result.data!)));
+      emit(state.copyWith(
+          forgetPassword: ForgetPasswordSuccessState(result.data!)));
     } else {
       CustomSnackbar.showErrorSnackbar(result.error!);
 
       emit(
         state.copyWith(
-          forgetPassword: BaseFailState(
-              result.error,
-              callback:()=> this.forgetPassword(
-                  email
-              )
+          forgetPassword: BaseFailState(result.error,
+              callback: () => this.forgetPassword(email)),
+        ),
+      );
+    }
+    return null;
+  }
+
+  Future<void> validateMobileNumber(String otpCode, String mobile,
+      {bool isChangePassword = false,
+      VoidCallback? onDone,
+      VoidCallback? onError}) async {
+    emit(state.copyWith(verification: BaseLoadingState()));
+
+    final result =
+        await authRepo.validateMobileNumber(otpCode, mobile, isChangePassword);
+
+    if (result.hasDataOnly) {
+      if (onDone != null) {
+        onDone();
+      }
+      emit(state.copyWith(
+          verification: VerificationCodeSuccessState(EmptyEntity(''))));
+    } else {
+      CustomSnackbar.showErrorSnackbar(result.error!);
+      if (onError != null) {
+        onError();
+      }
+      emit(
+        state.copyWith(
+          verification: BaseFailState(
+            result.error,
           ),
         ),
       );
@@ -253,52 +284,30 @@ Future<void> changePassword(String password,{String? email,String? mobile,VoidCa
     return null;
   }
 
-  Future<void> validateMobileNumber(String otpCode,String mobile,{bool isChangePassword = false,VoidCallback? onDone,VoidCallback? onError}) async {
+  Future<void> sendVerificationCode(String countryCode, String mobile,
+      {VoidCallback? onDone,
+      VoidCallback? onError,
+      bool isChangePassword = false}) async {
     emit(state.copyWith(verification: BaseLoadingState()));
 
-    final result = await authRepo.validateMobileNumber(otpCode, mobile,isChangePassword);
+    final result = await authRepo.sendVerificationCode(
+        countryCode, mobile, isChangePassword);
 
     if (result.hasDataOnly) {
-      if(onDone != null) {
+      if (onDone != null) {
         onDone();
       }
-      emit(state.copyWith(verification: VerificationCodeSuccessState(EmptyEntity(''))));
+      emit(state.copyWith(
+          changePassword: VerificationCodeSuccessState(EmptyEntity(''))));
     } else {
       CustomSnackbar.showErrorSnackbar(result.error!);
-      if(onError != null) {
+      if (onError != null) {
         onError();
       }
       emit(
         state.copyWith(
           verification: BaseFailState(
-              result.error,
-          ),
-        ),
-      );
-    }
-    return null;
-  }
-
-
-  Future<void> sendVerificationCode(String countryCode,String mobile,{VoidCallback? onDone,VoidCallback? onError,bool isChangePassword = false}) async {
-    emit(state.copyWith(verification: BaseLoadingState()));
-
-    final result = await authRepo.sendVerificationCode(countryCode, mobile,isChangePassword);
-
-    if (result.hasDataOnly) {
-      if(onDone != null) {
-        onDone();
-      }
-      emit(state.copyWith(changePassword: VerificationCodeSuccessState(EmptyEntity(''))));
-    } else {
-      CustomSnackbar.showErrorSnackbar(result.error!);
-      if(onError != null) {
-        onError();
-      }
-      emit(
-        state.copyWith(
-          verification: BaseFailState(
-              result.error,
+            result.error,
           ),
         ),
       );
@@ -309,7 +318,6 @@ Future<void> changePassword(String password,{String? email,String? mobile,VoidCa
   refresh() {
     emit(state.copyWith(loginState: BaseLoadingState()));
     emit(state.copyWith(loginState: BaseInitState()));
-
   }
 
 //

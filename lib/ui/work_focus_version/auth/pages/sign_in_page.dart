@@ -62,78 +62,75 @@ class _SignInPageState extends State<SignInPage> {
           new TextEditingController().clear();
         },
         child: BackLongPress(
-          child: LoadingColumnOverlay(
-            isLoading: _isLoading,
-            child: SingleChildScrollView(
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              child: Stack(
-                children: [
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        AppBarWidget(
-                          flip: true,
-                        ),
-                        SizedBox(
-                          height: 50.sp,
-                        ),
-                        BlocConsumer<AuthCubit, AuthState>(
-                            bloc: _authBloc,
-                            listener: (_, state) {
+          child: SingleChildScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            child: Stack(
+              children: [
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      AppBarWidget(
+                        flip: true,
+                      ),
+                      SizedBox(
+                        height: 50.sp,
+                      ),
+                      BlocConsumer<AuthCubit, AuthState>(
+                          bloc: _authBloc,
+                          listener: (_, state) {
 
-                              final loginState = state.loginState;
-                              if (_isLoading == true &&loginState is BaseFailState) {
-                                setState(() {
-                                  _isLoading = false;
-                                });
-                                CustomSnackbar.showErrorSnackbar(
-                                  loginState.error!,
-                                );
-                              }
-                              if (_isLoading == true &&loginState is LoginSuccessState) {
-                                setState(() {
-                                  _isLoading = false;
-                                });
-                                DIManager.findNavigator().pushNamedAndRemoveUntil(
-                                  HomePage.routeName,
-                                );
-                              }
-                            },
-                            builder: (_, state) {
-                              return Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 12.sp),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    _titleWidget(),
-                                    SizedBox(height: 24,),
-                                    _numberField(),
-                                    SizedBox(height: 24,),
-                                    _passwordField(),
-                                    _forgotPasswordWidget(),
-                                    _buildButton(),
-                                    _registerWidget(),
-                                  ],
-                                ),
+                            final loginState = state.loginState;
+                            if (_isLoading == true &&loginState is BaseFailState) {
+                              setState(() {
+                                _isLoading = false;
+                              });
+                              CustomSnackbar.showErrorSnackbar(
+                                loginState.error!,
                               );
-                            }),
-                      ],
-                    ),
+                            }
+                            if (_isLoading == true &&loginState is LoginSuccessState) {
+                              setState(() {
+                                _isLoading = false;
+                              });
+                              DIManager.findNavigator().pushNamedAndRemoveUntil(
+                                HomePage.routeName,
+                              );
+                            }
+                          },
+                          builder: (_, state) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 12.sp),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  _titleWidget(),
+                                  SizedBox(height: 24,),
+                                  _numberField(),
+                                  SizedBox(height: 24,),
+                                  _passwordField(),
+                                  _forgotPasswordWidget(),
+                                  _buildButton(),
+                                  _registerWidget(),
+                                ],
+                              ),
+                            );
+                          }),
+                    ],
                   ),
-                  Positioned(
-                    top: 60.sp,
-                    left: 131.sp,
-                    right: 131.sp,
-                    child: Image.asset(
-                      AppAssets.logoImage,
-                      height: 72.sp,
-                      fit: BoxFit.fill,
-                    ),
+                ),
+                Positioned(
+                  top: 60.sp,
+                  left: 131.sp,
+                  right: 131.sp,
+                  child: Image.asset(
+                    AppAssets.logoImage,
+                    height: 72.sp,
+                    fit: BoxFit.fill,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -379,6 +376,7 @@ class _SignInPageState extends State<SignInPage> {
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 8.sp, horizontal: 12.sp),
             child: NewButton(
+              isLoading: _isLoading,
                 text: translate('sign_in'),
                 textStyle: AppStyle.titleStyle.copyWith(
                     color: AppColorsController().white, fontWeight: AppFontWeight.bold, overflow: TextOverflow.ellipsis),
@@ -388,7 +386,10 @@ class _SignInPageState extends State<SignInPage> {
                 }),
           ),
         ),
-        NewButton(text: translate('sign_in_as_guest'),
+        NewButton(
+
+
+            text: translate('sign_in_as_guest'),
             textStyle: AppStyle.titleStyle.copyWith(
                 color: AppColorsController().white, fontWeight: AppFontWeight.bold, overflow: TextOverflow.ellipsis),
             textPadding: EdgeInsets.symmetric(horizontal: 32,vertical: 4),
