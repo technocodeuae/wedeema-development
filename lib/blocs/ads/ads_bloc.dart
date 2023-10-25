@@ -34,9 +34,9 @@ class AdsCubit extends Cubit<AdsState> {
       );
     }
   }
-  Future<void> getSearchFilterAds(int page,String title,int categoryId) async {
+  Future<void> getSearchFilterAds(int page,String title) async {
     emit(state.copyWith(getAllSearchAdsState: BaseLoadingState()));
-    final result = await adsRepo.getSearchFilterAds(page, title, categoryId);
+    final result = await adsRepo.getSearchFilterAds(page, title);
     if (result.hasDataOnly) {
       emit(state.copyWith(getAllSearchAdsState: GetSearchFilterAdsSuccessState(result.data!)));
     } else {
@@ -44,7 +44,7 @@ class AdsCubit extends Cubit<AdsState> {
         state.copyWith(
           getAllSearchAdsState: BaseFailState(
             result.error,
-            callback: () => this.getSearchFilterAds(page, title, categoryId),
+            callback: () => this.getSearchFilterAds(page, title),
           ),
         ),
       );

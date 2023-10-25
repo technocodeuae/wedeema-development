@@ -338,7 +338,7 @@ class _HomePageState extends State<HomePage>
                                               category_id: AppConsts.jobCategoryId,
                                             ),
                                             SizedBox(
-                                              height: 4.sp,
+                                              height: 15.h,
                                             ),
                                           ],
                                         ),

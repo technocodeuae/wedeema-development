@@ -155,12 +155,12 @@ class _NotificationsPageState extends State<NotificationsPage> {
   }
 
   _buildBody() {
-    return ListView.builder(
+    return data.isEmpty?Center(child: Container(width: 30.sp,height: 30.sp,color: Colors.red, child: Text('Empty'),)): ListView.builder(
         physics: NeverScrollableScrollPhysics(),
         primary: false,
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          return Container(
+          return  Container(
             padding: EdgeInsets.all(16.sp),
             margin: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
             decoration: BoxDecoration(
@@ -241,10 +241,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                 ),
                               ],
                             )
-                          : Padding(
-                            padding:  EdgeInsets.only(top: MediaQuery.of(context).size.height/3.2),
-                            child: Container(child: Text('sads'),),
-                          ),
+                          : Container(),
                     ],
                   ),
                 ),

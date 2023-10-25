@@ -7,6 +7,8 @@ import 'package:wadeema/ui/work_focus_version/ads/pages/add_main_details_page.da
 import 'package:wadeema/ui/work_focus_version/ads/widget/post_ad_button.dart';
 import 'package:wadeema/ui/work_focus_version/general/app_bar/app_bar.dart';
 import 'package:wadeema/ui/work_focus_version/home/pages/view_all_page.dart';
+import 'package:wadeema/ui/work_focus_version/home/pages/view_all_search.dart';
+import 'package:wadeema/ui/work_focus_version/home/widget/build_looking_search.dart';
 
 import '../../../../blocs/categories/categories_bloc.dart';
 import '../../../../blocs/categories/states/categories_state.dart';
@@ -26,6 +28,8 @@ import '../../general/icons/back_icon.dart';
 import '../../general/icons/search_icon.dart';
 import '../../general/text_fields/text_field_widget.dart';
 import '../arg/view_all_args.dart';
+import '../widget/build_looking_widget.dart';
+import '../widget/looking_widget_shimmer.dart';
 
 class SearchPage extends StatefulWidget {
   static const routeName = '/SearchPage';
@@ -41,7 +45,7 @@ class _SearchPageState extends State<SearchPage> {
 
   String searchValue = "";
   final categoriesBloc = DIManager.findDep<CategoriesCubit>();
-  final List<CategoriesEntity> categories = [];
+   List<CategoriesEntity> categories = [];
 
   bool loading = false;
   bool loadingLoader = false;
@@ -65,6 +69,7 @@ class _SearchPageState extends State<SearchPage> {
       });
     });
   }
+  bool isLoadingCategories = true;
 
   @override
   void didUpdateWidget(covariant SearchPage oldWidget) {
@@ -87,8 +92,9 @@ class _SearchPageState extends State<SearchPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AppBarWidget(
-                    flip: true,
+                  SizedBox(height: 15.sp,),
+                  AppBarWidget(name: 'search',
+                    // flip: true,
                     child: Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: InkWell(
@@ -143,6 +149,62 @@ class _SearchPageState extends State<SearchPage> {
                           ],
                         ),
                       ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.sp),
+                    child: BlocConsumer<CategoriesCubit, CategoriesState>(
+                      bloc: categoriesBloc,
+                      listener: (context, state) {},
+                      builder: (context, state) {
+                        final categoriesState =
+                            state.getMainCategoriesState;
+                        if (categoriesState is BaseFailState) {
+                          return Column(
+                            children: [
+                              VerticalPadding(3.sp),
+                              GeneralErrorWidget(
+                                error: categoriesState.error,
+                                callback: categoriesState.callback,
+                              ),
+                            ],
+                          );
+                        }
+
+                        if (isLoadingCategories == true &&
+                            categoriesState
+                            is GetMainCategoriesSuccessState) {
+                          categories = (state.getMainCategoriesState
+                          as GetMainCategoriesSuccessState)
+                              .categories;
+                          isLoadingCategories = false;
+                          return Column(
+                            children: [
+                              BuildLookingSearch(
+                                  name: translate(
+                                      "are_you_looking_for"),
+                                  lookingList: categories
+                              ),
+                              SizedBox(height: 4.sp),
+                            ],
+                          );
+                        }
+                        return (isLoadingCategories == true)
+                            ? LookingWidgetShimmer(
+                          name:
+                              "search",
+                        )
+                            : Column(
+                          children: [
+                            BuildLookingSearch(
+                              name: translate(
+                                  "are_you_looking_for"),
+                              lookingList: categories,
+                            ),
+                            // SizedBox(height: 4.sp),
+                          ],
+                        );
+                      },
                     ),
                   ),
 
@@ -268,7 +330,7 @@ class _SearchPageState extends State<SearchPage> {
 
   Widget _searchWidget() {
     return Container(
-      height: 45,
+      height: 45.h,
       padding: EdgeInsets.symmetric(horizontal: 12.sp),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
@@ -294,6 +356,7 @@ class _SearchPageState extends State<SearchPage> {
           ),
           Expanded(
             child: TextFieldWidget(
+              textDirection: TextDirection.rtl,
               controller: searchController,
               keyboardType: TextInputType.name,
               textInputAction: TextInputAction.search,
@@ -301,13 +364,20 @@ class _SearchPageState extends State<SearchPage> {
               onFieldSubmitted: (value) {
                 _saveSearchValue(value);
 
-                DIManager.findNavigator().pushNamed(
-                  ViewAllPage.routeName,
-                  arguments: ViewAllArgs(
-                    type: 3,
-                    title: value,
-                  ),
-                ).then((value) => _getData());
+                Navigator.push(context, MaterialPageRoute(builder: (context){return ViewAllSearch(
+                  arg: ViewAllArgs(
+                  type: 6,
+                  title: value,
+
+                ),
+                );}));
+                // DIManager.findNavigator().pushNamed(
+                //   ViewAllSearch.routeName,
+                //   arguments: ViewAllArgs(
+                //     type: 6,
+                //     title: value,
+                //   ),
+                // ).then((value) => _getData());
               },
               onTextChanged: (value) {
                 setState(() {

@@ -40,10 +40,10 @@ class AppBarWidget extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 34.sp),
+                      padding:name=='search'?EdgeInsets.symmetric(horizontal: 15.sp): EdgeInsets.symmetric(horizontal: 34.sp),
                       child: child ?? Container()),
                 ),
-                Flexible(
+                name=='search'?Container(): Flexible(
                   flex: 1,
                   child: Center(
                     child: Text(
@@ -97,7 +97,7 @@ class AppBarForPages extends StatelessWidget {
                 style: AppStyle.smallTitleStyle.copyWith(
                   color: AppColorsController().black,
                   fontWeight: AppFontWeight.bold,
-                  fontSize: 22.sp,
+                  fontSize:AppFontSize.fontSize_20,
                 ),maxLines: 1,
                 textAlign: TextAlign.center,
               ),

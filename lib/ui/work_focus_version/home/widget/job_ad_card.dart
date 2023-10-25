@@ -61,45 +61,41 @@ class _JobAdCardState extends State<JobAdCard> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.sp),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.sp),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(child: _titleWidget()),
-                            Padding(
-                              padding:  EdgeInsets.only(top:0.0,left: 4.sp,right: 4.sp),
-                              child: widget.weNeedJustImage? widget.data?.profile_pic!=null && widget.data?.profile_pic != ''? ClipOval(
-                                child: Image.network(
-                                  AppConsts.IMAGE_URL+'${widget.data?.profile_pic}',
-                                  width: 32.sp,
-                                  height: 32.sp,
-                                  fit: BoxFit.fill,
-                                ),):AccountIcon(
-                                height: 32.sp,
-                                width: 32.sp,
-                              ): BuildCircularImageUser(
-                                url: widget.data?.profile_pic,
-                                id: widget.data?.user_id,
-                                size: 25.sp,
-                              ),
-                            ),
-                          ],
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.sp),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8.sp),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(child: _titleWidget()),
+                        Padding(
+                          padding:  EdgeInsets.only(top:0.0,left: 4.sp,right: 4.sp),
+                          child: widget.weNeedJustImage? widget.data?.profile_pic!=null && widget.data?.profile_pic != ''? ClipOval(
+                            child: Image.network(
+                              AppConsts.IMAGE_URL+'${widget.data?.profile_pic}',
+                              width: 32.sp,
+                              height: 32.sp,
+                              fit: BoxFit.fill,
+                            ),):AccountIcon(
+                            height: 32.sp,
+                            width: 32.sp,
+                          ): BuildCircularImageUser(
+                            url: widget.data?.profile_pic,
+                            id: widget.data?.user_id,
+                            size: 25.sp,
+                          ),
                         ),
-                      ),
-                      _descriptionWidget(),
-                      _priceAndDateWidget(),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                  _descriptionWidget(),
+                  _priceAndDateWidget(),
+                ],
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -259,6 +255,8 @@ class _JobAdCardState extends State<JobAdCard> {
         }
       },
       child: Container(
+        width: 100.sp,
+        height: 30.sp,
         decoration: BoxDecoration(
           // color: AppColorsController().white,
              color: Colors.white,
@@ -286,8 +284,8 @@ class _JobAdCardState extends State<JobAdCard> {
               Padding(
                 padding: EdgeInsetsDirectional.only(start: 4.sp, end: 8.sp),
                 child: ChatIcon(
-                  width: 18.sp,
-                  height: 18.sp,
+                  width: 18.w,
+                  height: 18.h,
                 ),
               ),
             ],

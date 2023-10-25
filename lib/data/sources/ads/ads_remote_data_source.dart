@@ -29,12 +29,11 @@ class AdsRemoteDataSourceImpl implements AdsRemoteDataSource {
     );
   }
 
-  Future<Result<AdsModel>> getSearchFilterAds(int page,String title,int categoryId) async {
+  Future<Result<AdsModel>> getSearchFilterAds(int page,String title) async {
     
-    print("categoryId:" + categoryId.toString());
+    // print("categoryId:" + categoryId.toString());
     FormData data = FormData.fromMap({
       "title":title,
-      "category_id":categoryId
     });
 
     debugPrint('data: ${data.fields}');
@@ -161,7 +160,7 @@ abstract class AdsRemoteDataSource {
   const AdsRemoteDataSource();
 
   Future<Result<AdsModel>> getAllFilterAds(int page, List<Map<String,dynamic>> formData, int categoryId);
-  Future<Result<AdsModel>> getSearchFilterAds(int page,String title,int categoryId);
+  Future<Result<AdsModel>> getSearchFilterAds(int page,String title);
   Future<Result<AdsModel>> getCategoryAds(int page,int categoryId);
   Future<Result<AdsModel>> getAllRecentAds(int page);
   Future<Result<AdsModel>> getAllPopularAds(int page);

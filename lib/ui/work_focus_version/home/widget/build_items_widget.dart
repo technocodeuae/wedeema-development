@@ -174,7 +174,7 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
   Widget build(BuildContext context) {
     print('--------------------------------------------------${widget.name}');
     return Container(
-      height:  260.sp,
+      height: 260.sp,
       // width: 400.sp,
       child: BlocConsumer<AdsCubit, AdsState>(
         bloc: adsBloc,
@@ -220,8 +220,7 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
               widget.type == 0 &&
               adsState is GetAllRecentAdsSuccessState) {
             final data =
-                (state.getAllRecentAdsState as GetAllRecentAdsSuccessState)
-                    .ads;
+                (state.getAllRecentAdsState as GetAllRecentAdsSuccessState).ads;
             itemsList.addAll(data.data!);
             loading = false;
             isFirstLoading = false;
@@ -312,7 +311,7 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                 ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 8.0.sp),
-            child:  Container(
+            child: Container(
               width: MediaQuery.of(context).size.width,
               height: itemsList.isNotEmpty &&
                       categoriesBloc
@@ -320,315 +319,286 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                       widget.category_id == AppConsts.jobCategoryId
                   ? 200.sp
                   : 190.sp,
-              child:SingleChildScrollView(
+              child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    if (!(categoriesBloc
+                        .isJobs(itemsList[0].category_title ?? '')))
+                      Row(
                         children: [
-                          if (!(categoriesBloc
-                              .isJobs(itemsList[0].category_title ?? '')))
-                            Row(
-                              children: [
-                                if (widget.name == "الإعلانات الأكثر شيوعاً") ...[
-
-
-                                  HomeItemsWidget(
-                                    onPress: () {
-                                      DIManager.findNavigator()
-                                          .pushNamed(ItemsDetailsPage.routeName,
-                                              arguments: ItemsArgs(
-                                                id: itemsList[0].ad_id ?? 0,
-                                              ));
-                                    },
-                                    data: itemsList[0],
-                                  ),
-                                ] else ...[
-                                  for(int i =0;i<7;i++)...[
-                                    HomeItemsWidget(
-                                      onPress: () {
-                                        DIManager.findNavigator()
-                                            .pushNamed(ItemsDetailsPage.routeName,
-                                            arguments: ItemsArgs(
-                                              id: itemsList[i].ad_id ?? 0,
-                                            ));
-                                      },
-                                      data: itemsList[i],
-                                    ),
-                                    SizedBox(
-                                      width: 10.sp,
-                                    ),
-                                  ],
-                                ],
-                              ],
+                          if (widget.name == "الإعلانات الأكثر شيوعاً") ...[
+                            HomeItemsWidget(
+                              onPress: () {
+                                DIManager.findNavigator()
+                                    .pushNamed(ItemsDetailsPage.routeName,
+                                        arguments: ItemsArgs(
+                                          id: itemsList[0].ad_id ?? 0,
+                                        ));
+                              },
+                              data: itemsList[0],
                             ),
-                          //               // if(widget.name == "الإعلانات التي تم رفعها مؤخراً"  )
-                          //               //   SizedBox(width: 10.sp,),
-                          //               // if(widget.name == "الإعلانات التي تم رفعها مؤخراً"  )
-                          //               //   HomeItemsWidget(
-                          //               //     onPress: () {
-                          //               //       DIManager.findNavigator()
-                          //               //           .pushNamed(ItemsDetailsPage.routeName,
-                          //               //           arguments: ItemsArgs(
-                          //               //             id: itemsList[  1].ad_id ?? 0,
-                          //               //           ));
-                          //               //     },
-                          //               //     data: itemsList[1],
-                          //               //   ),
-                          //               // if(widget.name == "الإعلانات التي تم رفعها مؤخراً"  )
-                          //               //    SizedBox(width: 10.sp,),
-                          //               // if(widget.name == "الإعلانات التي تم رفعها مؤخراً" )  HomeItemsWidget(
-                          //               //   onPress: () {
-                          //               //     DIManager.findNavigator()
-                          //               //         .pushNamed(ItemsDetailsPage.routeName,
-                          //               //         arguments: ItemsArgs(
-                          //               //           id: itemsList[2].ad_id ?? 0,
-                          //               //         ));
-                          //               //   },
-                          //               //   data: itemsList[2],
-                          //               // ),
-                          //
-
-                        if ((categoriesBloc
-                            .isJobs(itemsList[0].category_title ?? '')))
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: JobAdCard(
-                                  width:
-                                      MediaQuery.sizeOf(context).width * 0.85,
-                                  data: itemsList[0],
-                                  onPress: () {
-                                    DIManager.findNavigator().pushNamed(
-                                      ItemsDetailsPage.routeName,
-                                      arguments: ItemsArgs(
-                                          id: itemsList[0].ad_id ?? 0),
-                                    );
-                                  },
-                                ),
+                          ] else ...[
+                            for (int i = 0; i < 7; i++) ...[
+                              HomeItemsWidget(
+                                onPress: () {
+                                  DIManager.findNavigator()
+                                      .pushNamed(ItemsDetailsPage.routeName,
+                                          arguments: ItemsArgs(
+                                            id: itemsList[i].ad_id ?? 0,
+                                          ));
+                                },
+                                data: itemsList[i],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: JobAdCard(
-                                  width:
-                                      MediaQuery.sizeOf(context).width * 0.85,
-                                  data: itemsList[1],
-                                  onPress: () {
-                                    DIManager.findNavigator().pushNamed(
-                                      ItemsDetailsPage.routeName,
-                                      arguments: ItemsArgs(
-                                          id: itemsList[1].ad_id ?? 0),
-                                    );
-                                  },
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: JobAdCard(
-                                  width:
-                                      MediaQuery.sizeOf(context).width * 0.85,
-                                  data: itemsList[2],
-                                  onPress: () {
-                                    DIManager.findNavigator().pushNamed(
-                                      ItemsDetailsPage.routeName,
-                                      arguments: ItemsArgs(
-                                          id: itemsList[2].ad_id ?? 0),
-                                    );
-                                  },
-                                ),
+                              SizedBox(
+                                width: 10.sp,
                               ),
                             ],
-                          ),
-                        //
-
-                          // Expanded(
-                          //   child: ListView.separated(
-                          //     controller: _controller,
-                          //     physics: BouncingScrollPhysics(),
-                          //     itemBuilder: (context, index) {
-                          //
-                          //       selectedIndex = index -1;
-                          //
-                          //       if (categoriesBloc.isJobs(itemsList[index].category_title ?? '')) {
-                          //         return SizedBox(
-                          //           child: JobAdCard(
-                          //             width: MediaQuery.sizeOf(context).width * 0.85,
-                          //             data: itemsList[index],
-                          //             onPress: () {
-                          //               DIManager.findNavigator().pushNamed(
-                          //                 ItemsDetailsPage.routeName,
-                          //                 arguments: ItemsArgs(id: itemsList[index].ad_id ?? 0),
-                          //               );
-                          //             },
-                          //           ),
-                          //         );
-                          //       }
-                          //       return HomeItemsWidget(
-                          //
-                          //         onPress: () {
-                          //           DIManager.findNavigator()
-                          //               .pushNamed(ItemsDetailsPage.routeName,
-                          //               arguments: ItemsArgs(
-                          //                 id: itemsList[index].ad_id??0,
-                          //               ));
-                          //         },
-                          //         data: itemsList[index],
-                          //       );
-                          //     },
-                          //
-                          //     separatorBuilder: (context, index) {
-                          //
-                          //       return SizedBox(
-                          //         width: 8,
-                          //       );
-                          //     },
-                          //     itemCount: itemsList.length ,
-                          //     scrollDirection: Axis.horizontal,
-                          //
-                          //   ),
-                          // ),
-
-                          // // الإعلانات الأكثر شيوعاً
-                          //               //
-                          //               if(widget.name == "الإعلانات الأكثر شيوعاً" ||!(categoriesBloc.isJobs(itemsList[0].category_title ?? '')))
-                          //                 Row(
-                          //                   children: [
-                          //                     HomeItemsWidget(
-                          //                       onPress: () {
-                          //                         DIManager.findNavigator()
-                          //                             .pushNamed(ItemsDetailsPage.routeName,
-                          //                             arguments: ItemsArgs(
-                          //                               id: itemsList[0].ad_id ?? 0,
-                          //                             ));
-                          //                       },
-                          //                       data: itemsList[0],
-                          //                     ), SizedBox(width: 10.sp,),
-                          //
-                          //                   ],
-                          //                 ),
-                          //
-                          //               if(widget.name == "الإعلانات الأكثر تقييماً"  ||!(categoriesBloc.isJobs(itemsList[0].category_title ?? '')))
-                          //                 Row(
-                          //                   children: [
-                          //                     HomeItemsWidget(
-                          //                       onPress: () {
-                          //                         DIManager.findNavigator()
-                          //                             .pushNamed(ItemsDetailsPage.routeName,
-                          //                             arguments: ItemsArgs(
-                          //                               id: itemsList[0].ad_id ?? 0,
-                          //                             ));
-                          //                       },
-                          //                       data: itemsList[0],
-                          //                     ),  SizedBox(width: 10.sp,),HomeItemsWidget(
-                          //                       onPress: () {
-                          //                         DIManager.findNavigator()
-                          //                             .pushNamed(ItemsDetailsPage.routeName,
-                          //                             arguments: ItemsArgs(
-                          //                               id: itemsList[1].ad_id ?? 0,
-                          //                             ));
-                          //                       },
-                          //                       data: itemsList[1],
-                          //                     ),
-                          //                     SizedBox(width: 10.sp,),HomeItemsWidget(
-                          //                       onPress: () {
-                          //                         DIManager.findNavigator()
-                          //                             .pushNamed(ItemsDetailsPage.routeName,
-                          //                             arguments: ItemsArgs(
-                          //                               id: itemsList[2].ad_id ?? 0,
-                          //                             ));
-                          //                       },
-                          //                       data: itemsList[2],
-                          //                     ),
-                          //                   ],
-                          //                 ),
-
-                          //   SizedBox(width: 10.sp,),
-                          // if(widget.name == "الإعلانات الأكثر تقييماً"  )
-                          //   HomeItemsWidget(
-                          //     onPress: () {
-                          //       DIManager.findNavigator()
-                          //           .pushNamed(ItemsDetailsPage.routeName,
-                          //           arguments: ItemsArgs(
-                          //             id: itemsList[1].ad_id ?? 0,
-                          //           ));
-                          //     },
-                          //     data: itemsList[1],
-                          //   ),
-                          //   SizedBox(width: 10.sp,),
-                          // if(widget.name == "الإعلانات الأكثر تقييماً"  )
-                          //   HomeItemsWidget(
-                          //   onPress: () {
-                          //     DIManager.findNavigator()
-                          //         .pushNamed(ItemsDetailsPage.routeName,
-                          //         arguments: ItemsArgs(
-                          //           id: itemsList[2].ad_id ?? 0,
-                          //         ));
-                          //   },
-                          //   data: itemsList[2],
-                          // ),
-
-                          // HomeItemsWidget(
-                          //   onPress: () {
-                          //     DIManager.findNavigator()
-                          //         .pushNamed(ItemsDetailsPage.routeName,
-                          //         arguments: ItemsArgs(
-                          //           id: itemsList[1].ad_id ?? 0,
-                          //         ));
-                          //   },
-                          //   data: itemsList[1],
-                          // ),
-                          // HomeItemsWidget(
-                          //   onPress: () {
-                          //     DIManager.findNavigator()
-                          //         .pushNamed(ItemsDetailsPage.routeName,
-                          //         arguments: ItemsArgs(
-                          //           id: itemsList[2].ad_id ?? 0,
-                          //         ));
-                          //   },
-                          //   data: itemsList[2],
-                          // ),
-
-                          // List
-
-                          // message == ''
-                          //     ? Container()
-                          //     :
-
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 15.sp),
-                            child: InkWell(
-                              onTap: () {
-                                DIManager.findNavigator().pushNamed(
-                                  ViewAllPage.routeName,
-                                  arguments: ViewAllArgs(
-                                    category_id: widget.category_id,
-                                    type: widget.type,
-                                  ),
-                                );
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.arrow_circle_left_outlined,
-                                      color: AppColorsController().buttonRedColor,
-                                      size: 48.sp),
-                                  Text(
-                                    // message,
-                                    'عرض الكل',
-                                    style: AppStyle.verySmallTitleStyle.copyWith(
-                                        color: AppColorsController()
-                                            .textPrimaryColor,
-                                        fontWeight: AppFontWeight.midLight,
-                                        fontSize: AppFontSize.fontSize_12),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                          ],
                         ],
                       ),
+                    //               // if(widget.name == "الإعلانات التي تم رفعها مؤخراً"  )
+                    //               //   SizedBox(width: 10.sp,),
+                    //               // if(widget.name == "الإعلانات التي تم رفعها مؤخراً"  )
+                    //               //   HomeItemsWidget(
+                    //               //     onPress: () {
+                    //               //       DIManager.findNavigator()
+                    //               //           .pushNamed(ItemsDetailsPage.routeName,
+                    //               //           arguments: ItemsArgs(
+                    //               //             id: itemsList[  1].ad_id ?? 0,
+                    //               //           ));
+                    //               //     },
+                    //               //     data: itemsList[1],
+                    //               //   ),
+                    //               // if(widget.name == "الإعلانات التي تم رفعها مؤخراً"  )
+                    //               //    SizedBox(width: 10.sp,),
+                    //               // if(widget.name == "الإعلانات التي تم رفعها مؤخراً" )  HomeItemsWidget(
+                    //               //   onPress: () {
+                    //               //     DIManager.findNavigator()
+                    //               //         .pushNamed(ItemsDetailsPage.routeName,
+                    //               //         arguments: ItemsArgs(
+                    //               //           id: itemsList[2].ad_id ?? 0,
+                    //               //         ));
+                    //               //   },
+                    //               //   data: itemsList[2],
+                    //               // ),
+                    //
+
+                    if ((categoriesBloc
+                        .isJobs(itemsList[0].category_title ?? ''))) ...[
+                      Row(
+                        children: [
+                          for (int i = 0; i < 7; i++) ...[
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: JobAdCard(
+                                height: MediaQuery.sizeOf(context).height * 0.21,
+                                width: MediaQuery.sizeOf(context).width * 0.85,
+                                data: itemsList[i],
+                                onPress: () {
+                                  DIManager.findNavigator().pushNamed(
+                                    ItemsDetailsPage.routeName,
+                                    arguments:
+                                        ItemsArgs(id: itemsList[i].ad_id ?? 0),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ],
+
+                    //
+
+                    // Expanded(
+                    //   child: ListView.separated(
+                    //     controller: _controller,
+                    //     physics: BouncingScrollPhysics(),
+                    //     itemBuilder: (context, index) {
+                    //
+                    //       selectedIndex = index -1;
+                    //
+                    //       if (categoriesBloc.isJobs(itemsList[index].category_title ?? '')) {
+                    //         return SizedBox(
+                    //           child: JobAdCard(
+                    //             width: MediaQuery.sizeOf(context).width * 0.85,
+                    //             data: itemsList[index],
+                    //             onPress: () {
+                    //               DIManager.findNavigator().pushNamed(
+                    //                 ItemsDetailsPage.routeName,
+                    //                 arguments: ItemsArgs(id: itemsList[index].ad_id ?? 0),
+                    //               );
+                    //             },
+                    //           ),
+                    //         );
+                    //       }
+                    //       return HomeItemsWidget(
+                    //
+                    //         onPress: () {
+                    //           DIManager.findNavigator()
+                    //               .pushNamed(ItemsDetailsPage.routeName,
+                    //               arguments: ItemsArgs(
+                    //                 id: itemsList[index].ad_id??0,
+                    //               ));
+                    //         },
+                    //         data: itemsList[index],
+                    //       );
+                    //     },
+                    //
+                    //     separatorBuilder: (context, index) {
+                    //
+                    //       return SizedBox(
+                    //         width: 8,
+                    //       );
+                    //     },
+                    //     itemCount: itemsList.length ,
+                    //     scrollDirection: Axis.horizontal,
+                    //
+                    //   ),
+                    // ),
+
+                    // // الإعلانات الأكثر شيوعاً
+                    //               //
+                    //               if(widget.name == "الإعلانات الأكثر شيوعاً" ||!(categoriesBloc.isJobs(itemsList[0].category_title ?? '')))
+                    //                 Row(
+                    //                   children: [
+                    //                     HomeItemsWidget(
+                    //                       onPress: () {
+                    //                         DIManager.findNavigator()
+                    //                             .pushNamed(ItemsDetailsPage.routeName,
+                    //                             arguments: ItemsArgs(
+                    //                               id: itemsList[0].ad_id ?? 0,
+                    //                             ));
+                    //                       },
+                    //                       data: itemsList[0],
+                    //                     ), SizedBox(width: 10.sp,),
+                    //
+                    //                   ],
+                    //                 ),
+                    //
+                    //               if(widget.name == "الإعلانات الأكثر تقييماً"  ||!(categoriesBloc.isJobs(itemsList[0].category_title ?? '')))
+                    //                 Row(
+                    //                   children: [
+                    //                     HomeItemsWidget(
+                    //                       onPress: () {
+                    //                         DIManager.findNavigator()
+                    //                             .pushNamed(ItemsDetailsPage.routeName,
+                    //                             arguments: ItemsArgs(
+                    //                               id: itemsList[0].ad_id ?? 0,
+                    //                             ));
+                    //                       },
+                    //                       data: itemsList[0],
+                    //                     ),  SizedBox(width: 10.sp,),HomeItemsWidget(
+                    //                       onPress: () {
+                    //                         DIManager.findNavigator()
+                    //                             .pushNamed(ItemsDetailsPage.routeName,
+                    //                             arguments: ItemsArgs(
+                    //                               id: itemsList[1].ad_id ?? 0,
+                    //                             ));
+                    //                       },
+                    //                       data: itemsList[1],
+                    //                     ),
+                    //                     SizedBox(width: 10.sp,),HomeItemsWidget(
+                    //                       onPress: () {
+                    //                         DIManager.findNavigator()
+                    //                             .pushNamed(ItemsDetailsPage.routeName,
+                    //                             arguments: ItemsArgs(
+                    //                               id: itemsList[2].ad_id ?? 0,
+                    //                             ));
+                    //                       },
+                    //                       data: itemsList[2],
+                    //                     ),
+                    //                   ],
+                    //                 ),
+
+                    //   SizedBox(width: 10.sp,),
+                    // if(widget.name == "الإعلانات الأكثر تقييماً"  )
+                    //   HomeItemsWidget(
+                    //     onPress: () {
+                    //       DIManager.findNavigator()
+                    //           .pushNamed(ItemsDetailsPage.routeName,
+                    //           arguments: ItemsArgs(
+                    //             id: itemsList[1].ad_id ?? 0,
+                    //           ));
+                    //     },
+                    //     data: itemsList[1],
+                    //   ),
+                    //   SizedBox(width: 10.sp,),
+                    // if(widget.name == "الإعلانات الأكثر تقييماً"  )
+                    //   HomeItemsWidget(
+                    //   onPress: () {
+                    //     DIManager.findNavigator()
+                    //         .pushNamed(ItemsDetailsPage.routeName,
+                    //         arguments: ItemsArgs(
+                    //           id: itemsList[2].ad_id ?? 0,
+                    //         ));
+                    //   },
+                    //   data: itemsList[2],
+                    // ),
+
+                    // HomeItemsWidget(
+                    //   onPress: () {
+                    //     DIManager.findNavigator()
+                    //         .pushNamed(ItemsDetailsPage.routeName,
+                    //         arguments: ItemsArgs(
+                    //           id: itemsList[1].ad_id ?? 0,
+                    //         ));
+                    //   },
+                    //   data: itemsList[1],
+                    // ),
+                    // HomeItemsWidget(
+                    //   onPress: () {
+                    //     DIManager.findNavigator()
+                    //         .pushNamed(ItemsDetailsPage.routeName,
+                    //         arguments: ItemsArgs(
+                    //           id: itemsList[2].ad_id ?? 0,
+                    //         ));
+                    //   },
+                    //   data: itemsList[2],
+                    // ),
+
+                    // List
+
+                    // message == ''
+                    //     ? Container()
+                    //     :
+
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15.sp),
+                      child: InkWell(
+                        onTap: () {
+                          DIManager.findNavigator().pushNamed(
+                            ViewAllPage.routeName,
+                            arguments: ViewAllArgs(
+                              category_id: widget.category_id,
+                              type: widget.type,
+                            ),
+                          );
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.arrow_circle_left_outlined,
+                                color: AppColorsController().buttonRedColor,
+                                size: 48.sp),
+                            Text(
+                              // message,
+                              'عرض الكل',
+                              style: AppStyle.verySmallTitleStyle.copyWith(
+                                  color: AppColorsController().textPrimaryColor,
+                                  fontWeight: AppFontWeight.midLight,
+                                  fontSize: AppFontSize.fontSize_12),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
+                  ],
+                ),
+              ),
             ),
           ),
           // Text(
@@ -781,8 +751,6 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
     );
 
  */
-
-
 
 /*
 

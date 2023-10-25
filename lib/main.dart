@@ -122,8 +122,15 @@ void main() async {
 
 
   AppErrorHandler.dartErrorCatcher(
-        () => runApp(
 
+
+        () => runApp(
+// DevicePreview(
+//             enabled: true,
+//             // tools: [
+//             //   ...DevicePreview.defaultTools,
+//             // ],
+//             builder: (context) =>App(),)
             App()
 
     ),
