@@ -62,6 +62,7 @@ class HomeItemsFavorite extends StatelessWidget {
                 Stack(
                   alignment: AlignmentDirectional.bottomEnd,
                   children: [
+
                  // image == '/img/ad/default.png'?Container():
 
                  Column(
@@ -124,7 +125,8 @@ class HomeItemsFavorite extends StatelessWidget {
                                 boxShadow: [AppStyle.normalShadow]),
                             child: Center(
                               child: FavouritesButtonWidget(
-                                isFavourite: true,
+                                isFavourite: false,
+                                isFromPageFavourite: true,
                                 index: indexFavourite,
                                 onChanged: onChangedFavourite,
                                 adsId: adsIdFavourite,

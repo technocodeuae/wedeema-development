@@ -134,7 +134,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                   padding:  EdgeInsets.only(top: MediaQuery.of(context).size.height/3.2),
                                   child: Center(child: Container(
                                       width: 30.sp,height: 30.sp,child: CircularProgressIndicator(color: AppColorsController().buttonRedColor,strokeWidth: 1.5,)),),
-                                ): _buildBody(),
+                                ):  data.isEmpty? Center(child: Container(width: 30.sp,height: 30.sp,color: Colors.red, child: Text('Empty'),)): _buildBody(),
                               );
                             }),
                         SizedBox(
@@ -155,7 +155,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
   }
 
   _buildBody() {
-    return data.isEmpty?Center(child: Container(width: 30.sp,height: 30.sp,color: Colors.red, child: Text('Empty'),)): ListView.builder(
+    return ListView.builder(
         physics: NeverScrollableScrollPhysics(),
         primary: false,
         shrinkWrap: true,

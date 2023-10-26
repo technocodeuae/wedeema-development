@@ -131,7 +131,7 @@ class _ImageSliderShowWidgetState extends State<ImageSliderShowWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                FavouritesButtonWidget(
+                FavouritesButtonWidget(isFromPageFavourite: false,
                   onChanged: widget.onChanged,
                   onChangedLoader: widget.onChangedLoader,
                   adsId: widget.ad_id,

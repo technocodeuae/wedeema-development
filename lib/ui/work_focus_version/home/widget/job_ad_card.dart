@@ -141,41 +141,43 @@ class _JobAdCardState extends State<JobAdCard> {
       padding:  EdgeInsets.symmetric(vertical: 1.sp,),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _getTitle(PropType.SALARY, withTitle: true) ?? 'الراتب: غير معلن',
+          SingleChildScrollView(scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _getTitle(PropType.SALARY, withTitle: true) ?? 'الراتب: غير معلن',
+                      style: AppStyle.lightSubtitle.copyWith(
+                        color: AppColorsController().black,
+                        fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_12
+                      ),
+                    ),
+                    SizedBox(height: 2.sp,),
+                    Text(
+                      ("نوع الدوام: "+"${ _getTitle(PropType.EMP_TYPE) ?? "  غير معلن"}") ,
+                      style: AppStyle.lightSubtitle.copyWith(
+                        color: AppColorsController().black,
+                        fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_12
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  margin: EdgeInsets.only(bottom: 4.sp),
+                  child: Text(
+                    widget.data?.created_at != null ? getComparedTime(widget.data?.created_at ?? DateTime.now()).toString() : "",
                     style: AppStyle.lightSubtitle.copyWith(
-                      color: AppColorsController().black,
+                      color: AppColorsController().greyTextColor,
                       fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_12
                     ),
-                  ),
-                  SizedBox(height: 2.sp,),
-                  Text(
-                    ("نوع الدوام: "+"${ _getTitle(PropType.EMP_TYPE) ?? "  غير معلن"}") ,
-                    style: AppStyle.lightSubtitle.copyWith(
-                      color: AppColorsController().black,
-                      fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_12
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.only(bottom: 4.sp),
-                child: Text(
-                  widget.data?.created_at != null ? getComparedTime(widget.data?.created_at ?? DateTime.now()).toString() : "",
-                  style: AppStyle.lightSubtitle.copyWith(
-                    color: AppColorsController().greyTextColor,
-                    fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_12
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Row(
             children: [

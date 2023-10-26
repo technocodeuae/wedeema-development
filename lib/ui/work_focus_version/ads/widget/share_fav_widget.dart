@@ -14,7 +14,7 @@ class ShareFavWidget extends StatelessWidget {
     return  Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        FavouritesButtonWidget(
+        FavouritesButtonWidget(isFromPageFavourite: false,
           // onChanged: widget.onChanged,
           adsId: ad_id,
           isFavourite: is_favorite == 0 ? false:true,

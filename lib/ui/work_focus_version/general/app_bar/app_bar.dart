@@ -50,8 +50,8 @@ class AppBarWidget extends StatelessWidget {
                       name ?? "",
                       style: AppStyle.smallTitleStyle.copyWith(
                         color: AppColorsController().black,
-                        fontWeight: AppFontWeight.bold,
-                        fontSize: 22.sp,
+                        fontWeight: AppFontWeight.midBold,
+                        fontSize: AppFontSize.fontSize_20,
                       ),maxLines: 1,
                       textAlign: TextAlign.center,
                     ),

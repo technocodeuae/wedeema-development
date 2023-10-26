@@ -234,7 +234,7 @@ class _SelectListingPageState extends State<SelectListingPage> {
             Center(
               child: categories.icon.toString().endsWith(".svg") == true
                   ? SvgPicture.network(
-                      AppConsts.IMAGE_URL + categories.icon,
+                      AppConsts.IMAGE_URL + categories.icon ,
                       width: 34.sp,
                       height: 34.sp,placeholderBuilder: (BuildContext context) => Container(
                 width: 18.sp,height: 18.sp,
@@ -248,7 +248,9 @@ class _SelectListingPageState extends State<SelectListingPage> {
                       AppConsts.IMAGE_URL + categories.icon,
                       width: 34.sp,
                       height: 34.sp,
-                      fit: BoxFit.fill,
+                      fit: BoxFit.fill,errorBuilder: (context, error, stackTrace){
+                return Container();
+              },
                     ),
             ),
             SizedBox(

@@ -360,6 +360,14 @@ class _LookingForDetailsPageState extends State<LookingForDetailsPage> {
                     ),
                   );
                 }
+
+                return AdsShimmerWidget(
+                  name: translate('ads'),
+                  type: 10,
+                  is_category: true,
+                );
+
+                /*
                 return widget.args!.title! == 'وظائف'
                     ? AdsShimmerWidget(
                         name: translate('adsJob'),
@@ -371,6 +379,8 @@ class _LookingForDetailsPageState extends State<LookingForDetailsPage> {
                         type: 10,
                         is_category: true,
                       );
+                */
+
               },
             ),
           ),

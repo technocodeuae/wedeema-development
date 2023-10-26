@@ -37,6 +37,9 @@ class AdsCubit extends Cubit<AdsState> {
   Future<void> getSearchFilterAds(int page,String title) async {
     emit(state.copyWith(getAllSearchAdsState: BaseLoadingState()));
     final result = await adsRepo.getSearchFilterAds(page, title);
+    print('02198398129083901283098129038920183098129038012830981209382109321908');
+    print(result.data!.data!);
+    print('02198398129083901283098129038920183098129038012830981209382109321908');
     if (result.hasDataOnly) {
       emit(state.copyWith(getAllSearchAdsState: GetSearchFilterAdsSuccessState(result.data!)));
     } else {

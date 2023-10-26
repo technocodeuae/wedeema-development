@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:share/share.dart';
 import 'package:wadeema/core/utils/app_general_utils.dart';
 import 'package:wadeema/ui/work_focus_version/home/widget/ratings_widget.dart';
 import 'package:wadeema/ui/work_focus_version/home/widget/see_more_properties_widget.dart';
@@ -11,11 +12,13 @@ import '../../../../core/constants/dimens.dart';
 import '../../../../core/di/di_manager.dart';
 import '../../../../core/utils/localization/app_localizations.dart';
 import '../../../../data/models/ads_details/entity/ads_details_entity.dart';
+import '../../ads/widget/favourites_button_widget.dart';
 import '../../ads/widget/like_button_widget.dart';
 import '../../chat/args/argument_message.dart';
 import '../../chat/pages/chat_messages_page.dart';
 import '../../general/buttons/app_button.dart';
 import '../../general/icons/chat_icon.dart';
+import '../../general/icons/share_icon.dart';
 import '../../profile/widget/evaluate_user_button_widget.dart';
 import 'home_items_widget.dart';
 import 'image_slider_show_widget.dart';
@@ -24,6 +27,7 @@ class DetailsBodyWidget extends StatefulWidget {
   final AdsDetailsEntity? data;
   final int? id;
   final int? index;
+  final String? typeAds;
   final Function(bool, int)? onPressedLike;
   final Function(bool, int)? onPressedFavourite;
   final Function(bool)? onPressedLoader;
@@ -37,7 +41,7 @@ class DetailsBodyWidget extends StatefulWidget {
     this.data,
     this.id,
     this.index,
-    this.onPressedAddComment,
+    this.onPressedAddComment, this.typeAds,
   }) : super(key: key);
 
   @override
@@ -56,7 +60,7 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ImageSliderShowWidget(
+        widget.typeAds == 'jobAds'? Container(): ImageSliderShowWidget(
           images: widget.data?.images,
           is_favorite: widget.data?.ad?.is_favorite,
           ad_id: widget.data?.ad?.ad_id,
@@ -65,9 +69,13 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
           onChangedLoader: widget.onPressedLoader,
           adsUrlShare: widget.data?.sharing_link,
         ),
+
+
+
+
         Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: 20.sp,
+            horizontal: 20.sp,  vertical: widget.typeAds == 'jobAds'? 40.sp:0.sp
           ),
           child: Column(
             children: [
@@ -87,6 +95,8 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -97,7 +107,7 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
                             fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_14
                           ),
                         ),
-                        Text(
+                        widget.typeAds == 'jobAds'? Container():    Text(
                           widget.data!.ad!.price.toString() + " درهم إماراتي",
                           style: AppStyle.smallTitleStyle.copyWith(
                             color: AppColorsController().textPrimaryColor,
@@ -164,7 +174,39 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
                                 color: AppColorsController().black,
                                 fontWeight: AppFontWeight.midLight,
                               ),
+
                             ),
+                            Spacer(),
+                            widget.typeAds == 'jobAds'?  Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                FavouritesButtonWidget(
+
+                                  isFromPageFavourite: true,
+                                  onChanged: widget.onPressedFavourite,
+                                  onChangedLoader: widget.onPressedLoader,
+                                  adsId: widget.data?.ad?.ad_id,
+                                  isFavourite: widget.data?.ad?.is_favorite == 0 ? false:true,
+                                  index: widget.index,
+                                ),
+                                SizedBox(
+                                  width: 4.sp,
+                                ),
+                                Padding(
+                                  padding:  EdgeInsets.only(top: 4.sp),
+                                  child: InkWell(
+                                    onTap: (){
+                                      Share.share(widget.data!.sharing_link ??'');
+                                    },
+                                    child: ShareIcon(
+                                      height: 21.sp,
+                                      width: 21.sp,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ) :Container(),
                           ],
                         ),
 
@@ -192,6 +234,7 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
                     //   ],
                     // ),
 
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -215,12 +258,14 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
                             fontWeight: AppFontWeight.midLight,
                           ),
                         ),
+
                       ],
                     ),
+
                     SizedBox(
                       height: 2.sp,
                     ),
-                    (widget.data?.properties?.length??0) == 0
+                    (widget.data?.properties?.length??0) == 0 || widget.typeAds == 'jobAds'
                         ? Container()
                         : _isSeeMore == false
                         ? InkWell(
@@ -296,7 +341,10 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
 
               //see_less
 
-              SeeMorePropertiesWidget(
+              widget.typeAds == 'jobAds'?  SeeMorePropertiesWidget(
+                isSeeMore: true,
+                properties: widget.data?.properties,
+              ) : SeeMorePropertiesWidget(
                 isSeeMore: _isSeeMore,
                 properties: widget.data?.properties,
               ),

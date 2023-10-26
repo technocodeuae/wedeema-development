@@ -82,11 +82,11 @@ class _ViewAllPageState extends State<ViewAllPage> {
       adsBloc.getSearchFilterAds(page,widget.arg.title!,);
       loading = true;
     }
-    //
-    // else if(widget.arg.type == 4){
-    //   adsBloc.getAllFilterAds(page,widget.arg.formData!,widget.arg.category_id!);
-    //   loading = true;
-    // }
+
+    else if(widget.arg.type == 4){
+      adsBloc.getAllFilterAds(page,widget.arg.formData!,widget.arg.category_id!);
+      loading = true;
+    }
 
 
 
@@ -118,11 +118,11 @@ class _ViewAllPageState extends State<ViewAllPage> {
       adsBloc.getSearchFilterAds(page, widget.arg.title ?? '', );
       loading = true;
     }
-    //
-    // else if(widget.arg.type == 4){
-    //   adsBloc.getAllFilterAds(page, widget.arg.formData ?? {}, widget.arg.category_id ?? -1);
-    //   loading = true;
-    // }
+
+    else if(widget.arg.type == 4){
+      adsBloc.getAllFilterAds(page, widget.arg.formData ?? {}, widget.arg.category_id ?? -1);
+      loading = true;
+    }
 
     else if(widget.arg.type == 3){
       adsBloc.getCategoryAds(page, widget.arg.category_id ?? -1);
@@ -177,11 +177,11 @@ class _ViewAllPageState extends State<ViewAllPage> {
       adsBloc.getSearchFilterAds(page, widget.arg.title ?? '', );
       loading = true;
     }
-    //
-    // else if(widget.arg.type == 4){
-    //   adsBloc.getAllFilterAds(page, widget.arg.formData??{}, widget.arg.category_id ?? -1);
-    //   loading = true;
-    // }
+
+    else if(widget.arg.type == 4){
+      adsBloc.getAllFilterAds(page, widget.arg.formData??{}, widget.arg.category_id ?? -1);
+      loading = true;
+    }
 
     else if(widget.arg.type == 3){
       adsBloc.getCategoryAds(page, widget.arg.category_id ?? -1);
@@ -464,17 +464,17 @@ SizedBox(
                               return _buildWithGridViewBody();
                             }
 
-                            // else if (loading &&
-                            //     widget.arg.type == 4 &&
-                            //     adsState is GetAllFilterAdsSuccessState) {
-                            //   final data = (state.getAllFilterAdsState
-                            //   as GetAllFilterAdsSuccessState)
-                            //       .ads;
-                            //   items.addAll(data.data!);
-                            //   loading = false;
-                            //   return _buildWithGridViewBody();
-                            //
-                            // }
+                            else if (loading &&
+                                widget.arg.type == 4 &&
+                                adsState is GetAllFilterAdsSuccessState) {
+                              final data = (state.getAllFilterAdsState
+                              as GetAllFilterAdsSuccessState)
+                                  .ads;
+                              items.addAll(data.data!);
+                              loading = false;
+                              return _buildWithGridViewBody();
+
+                            }
 
 
                             // هذه الحالة من الصفحو الرئيسية ولانستطيع الفلترة عليها
@@ -664,6 +664,7 @@ SizedBox(
                   arguments: ItemsArgs(
                     id: items[index].ad_id??0,
                   ));
+              print(items);
             },
             data: items[index],
           );
@@ -819,6 +820,7 @@ HomeItemsWidget(
                   arguments: ItemsArgs(
                     id: items[index].ad_id??0,
                   ));
+              print(items);
             },
             data: items[index],
           ),

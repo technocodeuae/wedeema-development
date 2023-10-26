@@ -130,9 +130,9 @@ class _ItemsDetailsPageState extends State<ItemsDetailsPage> {
                               (state.getAdsDetailsState as AdsDetailsSuccessState)
                                   .ads;
                           Loading = false;
-                          return _buildBody();
+                          return _buildBody(widget.args!.type ??'');
                         }
-                        return data == null ? Container() : _buildBody();
+                        return data == null ? Container() : _buildBody(widget.args!.type ??'');
                       },
                     ),
                   ],
@@ -143,7 +143,7 @@ class _ItemsDetailsPageState extends State<ItemsDetailsPage> {
         ));
   }
 
-  _buildBody() {
+  _buildBody(typeAds) {
     return DetailsBodyWidget(
       onPressedAddComment: _makeChanged,
       onPressedLike: _makeLikeChanged,
@@ -152,6 +152,7 @@ class _ItemsDetailsPageState extends State<ItemsDetailsPage> {
       id: widget.args?.id!,
       data: data,
       index: -1,
+      typeAds: typeAds,
     );
   }
 }

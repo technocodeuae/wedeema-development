@@ -170,15 +170,16 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
                 name: translate(_isFilter() ? 'filter' : "place_ads"),
                 child: InkWell(
                   onTap: () {
-                    if (_isFilter()) {
-                      DIManager.findNavigator().pop();
-                    } else {
-                      if (!AppUtils.checkIfGuest(context)) {
-                        DIManager.findNavigator().pushReplacementNamed(
-                            SelectListingPage.routeName,
-                            arguments: {'city_id': -1});
-                      }
-                    }
+                    DIManager.findNavigator().pop();
+                    // if (_isFilter()) {
+                    //   DIManager.findNavigator().pop();
+                    // } else {
+                    //   if (!AppUtils.checkIfGuest(context)) {
+                    //     DIManager.findNavigator().pushReplacementNamed(
+                    //         SelectListingPage.routeName,
+                    //         arguments: {'city_id': -1});
+                    //   }
+                    // }
                   },
                   child: BackIcon(
                     width: 26.sp,

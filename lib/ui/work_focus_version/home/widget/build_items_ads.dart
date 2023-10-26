@@ -134,7 +134,9 @@ class _BuildItemsAdsState extends State<BuildItemsAds> {
                 translate("no_items_found"),
                 style: AppStyle.midTitleStyle,
               ))
-              : widget.nameType == 'وظائف'? ListView.builder(
+              :
+          /*
+          widget.nameType == 'وظائف'? ListView.builder(
             primary: false,
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
@@ -151,7 +153,10 @@ class _BuildItemsAdsState extends State<BuildItemsAds> {
 
             },
             itemCount: itemsList.length,
-          ): GridView.builder(
+          ):
+
+          */
+          GridView.builder(
             itemCount: itemsList.length,
             shrinkWrap: true,
             itemBuilder: (context, index) {
@@ -211,7 +216,13 @@ class _BuildItemsAdsState extends State<BuildItemsAds> {
             physics: NeverScrollableScrollPhysics(),
           );
         }
-        return isFirstLoading == true && widget.nameType == 'وظائف'
+        return isFirstLoading == true ? AdsShimmerWidget(
+          name: translate('ads'),
+          type: widget.type,
+          is_category: widget.is_category,):
+        /*
+
+          isFirstLoading == true && widget.nameType == 'وظائف'
             ? AdsShimmerWidget(
           name: translate('adsJob'),
           type: widget.type,
@@ -221,7 +232,10 @@ class _BuildItemsAdsState extends State<BuildItemsAds> {
           name: translate('ads'),
           type: widget.type,
           is_category: widget.is_category,
-        ) :isFirstLoading == false && widget.nameType == 'وظائف' ? ListView.builder(
+        ) :isFirstLoading == false && widget.nameType == 'وظائف' ?
+
+
+          ListView.builder(
           primary: false,
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
@@ -238,7 +252,11 @@ class _BuildItemsAdsState extends State<BuildItemsAds> {
 
           },
           itemCount: itemsList.length,
-        ): GridView.builder(
+        ):
+
+         */
+
+        GridView.builder(
           itemCount: itemsList.length,
           shrinkWrap: true,
           itemBuilder: (context, index) {

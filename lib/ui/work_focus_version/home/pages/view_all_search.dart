@@ -133,6 +133,7 @@ class _ViewAllSearchState extends State<ViewAllSearch> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: SafeArea(
         child: LoadingColumnOverlay(
@@ -407,107 +408,6 @@ class _ViewAllSearchState extends State<ViewAllSearch> {
     );
   }
 
-  _buildBody() {
-    return ListView.builder(
-      primary: false,
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemBuilder: (context, index) {
-        if (categoriesBloc.isJobs(items[index].category_title ?? '')) {
-          return card.JobAdCard(
-            data: items[index],
-            onPress: () {
-              DIManager.findNavigator().pushNamed(
-                ItemsDetailsPage.routeName,
-                arguments: ItemsArgs(id: items[index].ad_id ?? 0),
-              );
-            },
-          );
-        }
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.sp),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      BuildCircularImageUser(
-                        size: 40.sp,
-                        url: items![index]?.profile_pic,
-                        id: items![index]?.user_id,
-                      ),
-                      SizedBox(
-                        width: 10.sp,
-                      ),
-                      Text(
-                        "${items![index]!.user_name} , ",
-                        style: AppStyle.smallTitleStyle.copyWith(
-                          color: AppColorsController().black,
-                          fontWeight: AppFontWeight.midLight,
-                        ),
-                      ),
-                      Text(
-                        items![index]!.date_ad != null
-                            ? getComparedTime(items![index]!.date_ad!)
-                                .toString()!
-                            : "",
-                        style: AppStyle.smallTitleStyle.copyWith(
-                          color: AppColorsController().black,
-                          fontWeight: AppFontWeight.midLight,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    child: RatingBarIndicator(
-                      rating: items![index]!.average?.toDouble() ?? 0,
-                      itemCount: 5,
-                      itemSize: 17.sp,
-                      unratedColor: AppColorsController().darkGreyTextColor,
-                      direction: Axis.horizontal,
-                      itemBuilder: (context, _) => Icon(
-                        Icons.star,
-                        size: 13.sp,
-                        color: Colors.amber,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 4.sp,
-            ),
-            DetailsBodyFilterWidget(
-              onPressedLike: _makeLikeChanged,
-              onPressedFavourite: _makeFavouriteChanged,
-              onPressedLoader: _makeLoaderChanged,
-              id: items![index]?.id!,
-              data: items![index],
-              index: index,
-            ),
-            SizedBox(
-              height: 6.sp,
-            ),
-            Container(
-              height: 1.sp,
-              width: MediaQuery.of(context).size.width,
-              color: AppColorsController().defaultPrimaryColor,
-            ),
-            SizedBox(
-              height: 5.sp,
-            ),
-          ],
-        );
-      },
-      itemCount: items!.length!,
-    );
-  }
-
   _buildWithGridViewBody() {
     return  Padding(
             padding: EdgeInsets.all(12.sp),
@@ -515,24 +415,32 @@ class _ViewAllSearchState extends State<ViewAllSearch> {
               itemCount: items.length,
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                if (categoriesBloc.isJobs(items[index].category_title ?? '')) {
-                  return card.JobAdCard(
-                    data: items[index],
-                    onPress: () {
-                      DIManager.findNavigator().pushNamed(
-                        ItemsDetailsPage.routeName,
-                        arguments: ItemsArgs(id: items[index].ad_id ?? 0),
-                      );
-                    },
-                  );
-                }
+                // if (categoriesBloc.isJobs(items[index].category_title ?? '')) {
+                //   return card.JobAdCard(
+                //     data: items[index],
+                //     onPress: () {
+                //       print('------------------------------------------------------------');
+                //       print(items[index].user_name);
+                //       print('------------------------------------------------------------');
+                //       DIManager.findNavigator().pushNamed(
+                //         ItemsDetailsPage.routeName,
+                //         arguments: ItemsArgs(id: items[index].ad_id ?? 0),
+                //       );
+                //     },
+                //   );
+                // }
                 return  HomeItemsWidget(
                         onPress: () {
                           DIManager.findNavigator()
                               .pushNamed(ItemsDetailsPage.routeName,
                                   arguments: ItemsArgs(
+
                                     id: items[index].ad_id ?? 0,
                                   ));
+
+                          print('------------------------------------------------------------');
+                          print(items);
+                          print('------------------------------------------------------------');
                         },
                         data: items[index],
                       );

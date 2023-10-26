@@ -22,9 +22,10 @@ class HomeItemsWidget extends StatelessWidget {
   final Function() onPress;
   final double? width;
   final bool weNeedJustImage;
+  final bool weDontHaveImage;
 
   const HomeItemsWidget(
-      {Key? key, this.data, this.width, this.height, required this.onPress,this.weNeedJustImage = false})
+      {Key? key, this.data, this.width, this.height, required this.onPress,this.weNeedJustImage = false,this.weDontHaveImage =false})
       : super(key: key);
 
   @override
@@ -46,7 +47,66 @@ class HomeItemsWidget extends StatelessWidget {
             padding: EdgeInsets.zero,
             foregroundColor: AppColorsController().dropdown,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16)))),
-        child: Column(
+        child:weDontHaveImage? Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+
+          children: [
+            Column(
+              children: [
+
+                Padding(
+                  padding:  EdgeInsets.all(5.sp),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _titleWidgetDontHaveImage(),
+                      weNeedJustImage?
+                      data?.profile_pic!=null &&data?.profile_pic != ''?
+                      ClipOval(
+                        child: Image.network(
+                          AppConsts.IMAGE_URL+'${data?.profile_pic}',
+                          width: 32.sp,
+                          height: 32.sp,
+                          fit: BoxFit.fill,
+                        ),):
+                      AccountIcon(
+                        height: 32.sp,
+                        width: 32.sp,
+                      ):
+                      BuildCircularImageUser(
+                        url: data?.profile_pic,
+                        id: data?.user_id,
+                      ),
+                    ],
+                  ),
+                ),
+
+              ],
+            ),
+            _priceAndDateWidgetDontHaveImage(),
+            Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.sp),
+                    child: Text(
+                      data?.city ?? '',
+                      style: AppStyle.lightSubtitle.copyWith(
+                          color: AppColorsController().black,
+                          fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_12,
+                          overflow: TextOverflow.ellipsis),
+                      maxLines: 1,
+                    ),
+                  ),
+                ),
+                _chatButton(context)
+              ],
+            ),
+
+          ],
+        ): Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -136,6 +196,62 @@ class HomeItemsWidget extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _priceAndDateWidgetDontHaveImage() {
+    return Padding(
+      padding: EdgeInsets.all(4.sp),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(height: 67.h,
+            child: Text(
+              data?.short_description ??'',maxLines: 3,overflow: TextOverflow.ellipsis,
+              style: AppStyle.lightSubtitle.copyWith(
+                  color: AppColorsController().black,
+                  fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_12
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                data?.date_ad != null ? getComparedTime(data?.date_ad ?? DateTime.now()).toString() : "",
+                style: AppStyle.lightSubtitle.copyWith(
+                    color: AppColorsController().black,
+                    fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_12
+                ),
+              ),
+
+              Text(
+                (data?.price??0) > 0
+                    ? '${data?.price?.toString() ?? ''} ${data?.currency ?? ''}'
+                    : '${translate('price_not_announced')}',
+                style: AppStyle.lightSubtitle.copyWith(
+                    color: AppColorsController().selectIconColor,
+                    fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_10
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+  Widget _titleWidgetDontHaveImage() {
+    return Text(
+      data?.title ?? '',
+      style: AppStyle.defaultStyle.copyWith(
+          color: AppColorsController().black,
+          fontWeight: AppFontWeight.bold,
+          overflow: TextOverflow.ellipsis,fontSize: AppFontSize.fontSize_14
+      ),
+      maxLines: 1,
     );
   }
 
