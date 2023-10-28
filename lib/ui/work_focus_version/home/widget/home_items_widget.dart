@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wadeema/blocs/application/application_bloc.dart';
 import 'package:wadeema/core/di/di_manager.dart';
 import 'package:wadeema/core/utils/app_general_utils.dart';
 import 'package:wadeema/core/utils/localization/app_localizations.dart';
+import 'package:wadeema/ui/work_focus_version/app.dart';
 import 'package:wadeema/ui/work_focus_version/chat/pages/chat_messages_page.dart';
 import 'package:wadeema/ui/work_focus_version/general/icons/chat_icon.dart';
 
@@ -25,14 +27,14 @@ class HomeItemsWidget extends StatelessWidget {
   final bool weDontHaveImage;
 
   const HomeItemsWidget(
-      {Key? key, this.data, this.width, this.height, required this.onPress,this.weNeedJustImage = false,this.weDontHaveImage =false})
+      {Key? key, this.data, this.width, this.height, required this.onPress, this.weNeedJustImage = false, this.weDontHaveImage = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: height ?? 190.sp,
-      width: width ?? (376/2).sp,
+      width: width ?? (376 / 2).sp,
       decoration: BoxDecoration(
         border: Border.all(
             color: AppColorsController().black, width: 0.2.sp),
@@ -46,67 +48,12 @@ class HomeItemsWidget extends StatelessWidget {
         style: TextButton.styleFrom(
             padding: EdgeInsets.zero,
             foregroundColor: AppColorsController().dropdown,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16)))),
-        child:weDontHaveImage? Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(16)))),
+        child: weDontHaveImage ?
 
-          children: [
-            Column(
-              children: [
 
-                Padding(
-                  padding:  EdgeInsets.all(5.sp),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _titleWidgetDontHaveImage(),
-                      weNeedJustImage?
-                      data?.profile_pic!=null &&data?.profile_pic != ''?
-                      ClipOval(
-                        child: Image.network(
-                          AppConsts.IMAGE_URL+'${data?.profile_pic}',
-                          width: 32.sp,
-                          height: 32.sp,
-                          fit: BoxFit.fill,
-                        ),):
-                      AccountIcon(
-                        height: 32.sp,
-                        width: 32.sp,
-                      ):
-                      BuildCircularImageUser(
-                        url: data?.profile_pic,
-                        id: data?.user_id,
-                      ),
-                    ],
-                  ),
-                ),
-
-              ],
-            ),
-            _priceAndDateWidgetDontHaveImage(),
-            Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.sp),
-                    child: Text(
-                      data?.city ?? '',
-                      style: AppStyle.lightSubtitle.copyWith(
-                          color: AppColorsController().black,
-                          fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_12,
-                          overflow: TextOverflow.ellipsis),
-                      maxLines: 1,
-                    ),
-                  ),
-                ),
-                _chatButton(context)
-              ],
-            ),
-
-          ],
-        ): Column(
+        Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -117,8 +64,44 @@ class HomeItemsWidget extends StatelessWidget {
                   children: [
                     Column(
                       children: [
-                        _imageWidget(),
-                        SizedBox(height: 10.sp,),
+                        Center(
+                          child: Column(
+
+                            children: [
+                              SizedBox(height: 4.sp,),
+                              Container(
+                                width: 150.sp,
+                                height: 95.sp,
+                                child: SvgPicture.asset(
+                                  "assets/images/trace.svg",
+                                  width: 50.sp,
+                                  height: 101.sp, fit: BoxFit.fill,
+                                ),
+                              ),
+                              SizedBox(height: 6.sp,),
+
+
+                              // SizedBox(height: 4.sp,),
+                              // SvgPicture.asset(
+                              //   "assets/images/trace0.svg",
+                              //   width: 50.sp,
+                              //   height: 101.sp,
+                              // ),
+                              // SizedBox(height: 6.sp,),
+
+
+
+                            ],
+                          ),
+                        ),
+                        // Center(
+                        //   child: Image.asset( "assets/images/logo.png",  width: 150.sp,
+                        //     height: 101.sp,),
+                        // ),
+                        Container(width: 400.sp,
+                          height: 1.sp,
+                          color: AppColorsController().defaultPrimaryColor,),
+                        SizedBox(height: 6.sp,),
                       ],
                     ),
                     Align(
@@ -128,20 +111,23 @@ class HomeItemsWidget extends StatelessWidget {
                           SizedBox(height: 20.sp,),
 
                           Padding(
-                            padding:  EdgeInsets.only(top:0.0,left: 4.sp,right: 4.sp),
-                            child: weNeedJustImage?
-                            data?.profile_pic!=null &&data?.profile_pic != ''?
+                            padding: EdgeInsets.only(
+                                top: 0.0, left: 4.sp, right: 4.sp),
+                            child: weNeedJustImage ?
+                            data?.profile_pic != null && data?.profile_pic != ''
+                                ?
                             ClipOval(
                               child: Image.network(
-                                AppConsts.IMAGE_URL+'${data?.profile_pic}',
+                                AppConsts.IMAGE_URL + '${data?.profile_pic}',
                                 width: 32.sp,
                                 height: 32.sp,
                                 fit: BoxFit.fill,
-                              ),):
+                              ),)
+                                :
                             AccountIcon(
                               height: 32.sp,
                               width: 32.sp,
-                            ):
+                            ) :
                             BuildCircularImageUser(
                               url: data?.profile_pic,
                               id: data?.user_id,
@@ -183,7 +169,100 @@ class HomeItemsWidget extends StatelessWidget {
                       data?.city ?? '',
                       style: AppStyle.lightSubtitle.copyWith(
                           color: AppColorsController().black,
-                          fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_12,
+                          fontWeight: AppFontWeight.midLight,
+                          fontSize: AppFontSize.fontSize_12,
+                          overflow: TextOverflow.ellipsis),
+                      maxLines: 1,
+                    ),
+                  ),
+                ),
+                _chatButton(context)
+              ],
+            ),
+
+          ],
+        ) : Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              children: [
+                Stack(
+                  alignment: AlignmentDirectional.bottomEnd,
+                  children: [
+                    Column(
+                      children: [
+                        _imageWidget(),
+                        SizedBox(height: 10.sp,),
+                      ],
+                    ),
+                    Align(
+                      alignment: AlignmentDirectional.bottomEnd,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 20.sp,),
+
+                          Padding(
+                            padding: EdgeInsets.only(
+                                top: 0.0, left: 4.sp, right: 4.sp),
+                            child: weNeedJustImage ?
+                            data?.profile_pic != null && data?.profile_pic != ''
+                                ?
+                            ClipOval(
+                              child: Image.network(
+                                AppConsts.IMAGE_URL + '${data?.profile_pic}',
+                                width: 32.sp,
+                                height: 32.sp,
+                                fit: BoxFit.fill,
+                              ),)
+                                :
+                            AccountIcon(
+                              height: 32.sp,
+                              width: 32.sp,
+                            ) :
+                            BuildCircularImageUser(
+                              url: data?.profile_pic,
+                              id: data?.user_id,
+                            ),
+                          ),
+
+
+                          // Padding(
+                          //   padding: const EdgeInsets.only(top:0.0,left: 4,right: 4),
+                          //   child: BuildCircularImageUser(
+                          //     url: data?.profile_pic,
+                          //     id: data?.user_id,
+                          //   ),
+                          // ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10.sp),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _priceAndDateWidget(),
+                      _titleWidget(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.sp),
+                    child: Text(
+                      data?.city ?? '',
+                      style: AppStyle.lightSubtitle.copyWith(
+                          color: AppColorsController().black,
+                          fontWeight: AppFontWeight.midLight,
+                          fontSize: AppFontSize.fontSize_12,
                           overflow: TextOverflow.ellipsis),
                       maxLines: 1,
                     ),
@@ -199,42 +278,105 @@ class HomeItemsWidget extends StatelessWidget {
     );
   }
 
+
+  /*
+  Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+
+          children: [
+            Column(
+              children: [
+Image.asset( "assets/images/logo.png",height: 95.h,width: 130.w,),
+                Padding(
+                  padding:  EdgeInsets.all(5.sp),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _titleWidgetDontHaveImage(),
+                      weNeedJustImage?
+                      data?.profile_pic!=null &&data?.profile_pic != ''?
+                      ClipOval(
+                        child: Image.network(
+                          AppConsts.IMAGE_URL+'${data?.profile_pic}',
+                          width: 32.sp,
+                          height: 32.sp,
+                          fit: BoxFit.fill,
+                        ),):
+                      AccountIcon(
+                        height: 32.sp,
+                        width: 32.sp,
+                      ):
+                      BuildCircularImageUser(
+                        url: data?.profile_pic,
+                        id: data?.user_id,
+                      ),
+                    ],
+                  ),
+                ),
+
+              ],
+            ),
+
+            _priceAndDateWidgetDontHaveImage(),
+            Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.sp),
+                    child: Text(
+                      data?.city ?? '',
+                      style: AppStyle.lightSubtitle.copyWith(
+                          color: AppColorsController().black,
+                          fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_12,
+                          overflow: TextOverflow.ellipsis),
+                      maxLines: 1,
+                    ),
+                  ),
+                ),
+                _chatButton(context)
+              ],
+            ),
+
+          ],
+        )
+  * */
   Widget _priceAndDateWidgetDontHaveImage() {
     return Padding(
-      padding: EdgeInsets.all(4.sp),
+      padding: EdgeInsets.only(left: 4.sp, right: 4.sp),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(height: 67.h,
-            child: Text(
-              data?.short_description ??'',maxLines: 3,overflow: TextOverflow.ellipsis,
-              style: AppStyle.lightSubtitle.copyWith(
-                  color: AppColorsController().black,
-                  fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_12
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
+          // Text(
+          //   data?.short_description ??'',maxLines: 1,overflow: TextOverflow.ellipsis,
+          //   style: AppStyle.lightSubtitle.copyWith(
+          //       color: AppColorsController().black,
+          //       fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_10
+          //   ),
+          // ),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                data?.date_ad != null ? getComparedTime(data?.date_ad ?? DateTime.now()).toString() : "",
+                data?.date_ad != null ? getComparedTime(
+                    data?.date_ad ?? DateTime.now()).toString() : "",
                 style: AppStyle.lightSubtitle.copyWith(
                     color: AppColorsController().black,
-                    fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_12
+                    fontWeight: AppFontWeight.midLight,
+                    fontSize: AppFontSize.fontSize_10
                 ),
               ),
 
               Text(
-                (data?.price??0) > 0
+                (data?.price ?? 0) > 0
                     ? '${data?.price?.toString() ?? ''} ${data?.currency ?? ''}'
                     : '${translate('price_not_announced')}',
                 style: AppStyle.lightSubtitle.copyWith(
                     color: AppColorsController().selectIconColor,
-                    fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_10
+                    fontWeight: AppFontWeight.midLight,
+                    fontSize: AppFontSize.fontSize_10
                 ),
               ),
             ],
@@ -243,13 +385,14 @@ class HomeItemsWidget extends StatelessWidget {
       ),
     );
   }
+
   Widget _titleWidgetDontHaveImage() {
     return Text(
       data?.title ?? '',
       style: AppStyle.defaultStyle.copyWith(
           color: AppColorsController().black,
           fontWeight: AppFontWeight.bold,
-          overflow: TextOverflow.ellipsis,fontSize: AppFontSize.fontSize_14
+          overflow: TextOverflow.ellipsis, fontSize: AppFontSize.fontSize_14
       ),
       maxLines: 1,
     );
@@ -260,10 +403,12 @@ class HomeItemsWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          data?.date_ad != null ? getComparedTime(data?.date_ad ?? DateTime.now()).toString() : "",
+          data?.date_ad != null ? getComparedTime(
+              data?.date_ad ?? DateTime.now()).toString() : "",
           style: AppStyle.lightSubtitle.copyWith(
-            color: AppColorsController().black,
-            fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_12
+              color: AppColorsController().black,
+              fontWeight: AppFontWeight.midLight,
+              fontSize: AppFontSize.fontSize_12
           ),
         ),
         Flexible(
@@ -271,12 +416,13 @@ class HomeItemsWidget extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 4.sp),
             child: Text(
-              (data?.price??0) > 0
+              (data?.price ?? 0) > 0
                   ? '${data?.price?.toString() ?? ''} ${data?.currency ?? ''}'
                   : '${translate('price_not_announced')}',
               style: AppStyle.lightSubtitle.copyWith(
-                color: AppColorsController().selectIconColor,
-                fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_10
+                  color: AppColorsController().selectIconColor,
+                  fontWeight: AppFontWeight.midLight,
+                  fontSize: AppFontSize.fontSize_10
               ),
             ),
           ),
@@ -287,17 +433,18 @@ class HomeItemsWidget extends StatelessWidget {
 
   Widget _imageWidget() {
     return ClipRRect(
-      borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16), topRight: Radius.circular(16)),
       child: Container(
-        width: width ?? ((376/2)).sp,
+        width: width ?? ((376 / 2)).sp,
         height: 102.sp,
         child: (data!.ad_images != null && (data?.ad_images?.length ?? 0) > 0)
             ? Image.network(
-                AppConsts.IMAGE_URL + (data?.ad_images?[0].name?.toString() ?? ''),
-                width: width ?? 200.sp,
-                height: 102.sp,
-                fit: BoxFit.cover,
-              )
+          AppConsts.IMAGE_URL + (data?.ad_images?[0].name?.toString() ?? ''),
+          width: width ?? 200.sp,
+          height: 102.sp,
+          fit: BoxFit.cover,
+        )
             : Container(),
       ),
     );
@@ -307,9 +454,9 @@ class HomeItemsWidget extends StatelessWidget {
     return Text(
       data?.title ?? '',
       style: AppStyle.defaultStyle.copyWith(
-        color: AppColorsController().black,
-        fontWeight: AppFontWeight.bold,
-        overflow: TextOverflow.ellipsis,fontSize: AppFontSize.fontSize_12
+          color: AppColorsController().black,
+          fontWeight: AppFontWeight.bold,
+          overflow: TextOverflow.ellipsis, fontSize: AppFontSize.fontSize_12
       ),
       maxLines: 1,
     );
@@ -320,32 +467,48 @@ class HomeItemsWidget extends StatelessWidget {
       onTap: () {
         if (!AppUtils.checkIfGuest(context)) {
           DIManager.findNavigator().pushNamed(ChatMessagesPage.routeName,
-              arguments: ArgumentMessage(user_id_2: data?.user_id, ad_id: data?.ad_id));
+              arguments: ArgumentMessage(
+                  user_id_2: data?.user_id, ad_id: data?.ad_id));
         }
       },
       child: Container(
         decoration: BoxDecoration(
           // color: AppColorsController().white,
-             color: Colors.white,
-            border: Border.all(color: AppColorsController().dropdown, width: 0.5.sp),
+            color: Colors.white,
+            border: Border.all(
+                color: AppColorsController().dropdown, width: 0.5.sp),
             borderRadius: BorderRadius.only(
                 bottomRight: Radius.circular(
-                    DIManager.findDep<ApplicationCubit>().appLanguage.languageCode == AppConsts.LANG_AR ? 0 : 16.sp),
+                    DIManager
+                        .findDep<ApplicationCubit>()
+                        .appLanguage
+                        .languageCode == AppConsts.LANG_AR ? 0 : 16.sp),
                 topLeft: Radius.circular(
-                    DIManager.findDep<ApplicationCubit>().appLanguage.languageCode == AppConsts.LANG_AR ? 0 : 16.sp),
+                    DIManager
+                        .findDep<ApplicationCubit>()
+                        .appLanguage
+                        .languageCode == AppConsts.LANG_AR ? 0 : 16.sp),
                 topRight: Radius.circular(
-                    DIManager.findDep<ApplicationCubit>().appLanguage.languageCode == AppConsts.LANG_AR ? 16.sp : 0),
+                    DIManager
+                        .findDep<ApplicationCubit>()
+                        .appLanguage
+                        .languageCode == AppConsts.LANG_AR ? 16.sp : 0),
                 bottomLeft: Radius.circular(
-                    DIManager.findDep<ApplicationCubit>().appLanguage.languageCode == AppConsts.LANG_AR ? 16.sp : 0))),
+                    DIManager
+                        .findDep<ApplicationCubit>()
+                        .appLanguage
+                        .languageCode == AppConsts.LANG_AR ? 16.sp : 0))),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 4.sp,vertical: 2.sp),
+          padding: EdgeInsets.symmetric(horizontal: 4.sp, vertical: 2.sp),
           child: Row(
             children: [
               Padding(
                 padding: EdgeInsetsDirectional.only(start: 8.sp, end: 4.sp),
-                child: Text(translate("chat"), style: AppStyle.lightSubtitle.copyWith(
+                child: Text(
+                    translate("chat"), style: AppStyle.lightSubtitle.copyWith(
                     color: AppColorsController().dropdown,
-                    fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_14,
+                    fontWeight: AppFontWeight.midLight,
+                    fontSize: AppFontSize.fontSize_14,
                     overflow: TextOverflow.ellipsis)),
               ),
               Padding(

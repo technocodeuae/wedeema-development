@@ -35,6 +35,7 @@ import '../../general/progress_indicator/loading_column_overlay.dart';
 import '../../general/text_fields/text_field_widget.dart';
 import '../arg/view_all_args.dart';
 import '../widget/build_looking_widget.dart';
+import '../widget/looking_for_widget_search.dart';
 import '../widget/looking_widget_shimmer.dart';
 
 class SearchPage extends StatefulWidget {
@@ -144,8 +145,13 @@ String titleSearch ='';
     super.didUpdateWidget(oldWidget);
   }
 
+
+  bool isSelectAll = true;
+
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: GestureDetector(
         onTap: () {
@@ -238,6 +244,7 @@ String titleSearch ='';
                       as GetMainCategoriesSuccessState)
                           .categories;
                       isLoadingCategories = false;
+
                       return Column(
                         children: [
                           BuildLookingSearch(
@@ -254,9 +261,95 @@ String titleSearch ='';
                       name:
                           "search",
                     )
-                        : Column(
+                        :
+
+                    // Column(
+                    //   children: [
+                    //     Padding(
+                    //       padding: EdgeInsets.symmetric(vertical: 8.0.sp),
+                    //       child: Column(
+                    //         children: [
+                    //           Container(
+                    //             width: MediaQuery.of(context).size.width,
+                    //             height: 40.sp,
+                    //             // child: ListView.separated(
+                    //             //   physics: BouncingScrollPhysics(),
+                    //             //   itemBuilder: (context, index) {
+                    //             //     return LookingForWidgetSearch(
+                    //             //       onPressed: () {
+                    //             //         if(firstList[index].hasChild !=0) {
+                    //             //           DIManager.findNavigator().pushNamed(
+                    //             //             LookingForDetailsPage.routeName,
+                    //             //             arguments:
+                    //             //             ItemsArgs(title: firstList[index].title,
+                    //             //                 id: firstList[index].category_id,
+                    //             //                 childCount: firstList[index].hasChild,indexPage: 0),
+                    //             //           );
+                    //             //         }
+                    //             //       },
+                    //             //       data: firstList[index],
+                    //             //     );
+                    //             //   },
+                    //             //   separatorBuilder: (context, index) {
+                    //             //     return SizedBox(
+                    //             //       width: 5.sp,
+                    //             //     );
+                    //             //   },
+                    //             //   itemCount: firstList.length,
+                    //             //   scrollDirection: Axis.horizontal,
+                    //             // ),
+                    //             child: SingleChildScrollView(
+                    //               physics: BouncingScrollPhysics(),
+                    //               scrollDirection: Axis.horizontal,
+                    //               child: Row(
+                    //                 children: [
+                    //                   LookingForWidgetSearch(
+                    //                     currentSelect: currentSelect,
+                    //                     isSelectAll: isSelectAll,
+                    //                     onPressed: () {
+                    //                       setState(() {
+                    //                         currentSelect = 0;
+                    //                         isSelectAll = true;
+                    //                       });
+                    //                       print(currentSelect);
+                    //                     },
+                    //                     data: CategoriesEntity(title: "الجميع"),
+                    //                   ),
+                    //                   SizedBox(
+                    //                     width: 7.sp,
+                    //                   ),
+                    //                   for (int index = 0;
+                    //                   index < firstList.length;
+                    //                   index++) ...[
+                    //                     LookingForWidgetSearch(
+                    //                       currentSelect: currentSelect,
+                    //                       onPressed: () {
+                    //                         setState(() {
+                    //                           currentSelect = firstList[index].category_id!;
+                    //                           isSelectAll = false;
+                    //                         });
+                    //                         print(currentSelect);
+                    //                       },
+                    //                       data: firstList[index],
+                    //                     ),
+                    //                     SizedBox(
+                    //                       width: 7.sp,
+                    //                     ),
+                    //                   ]
+                    //                 ],
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ],
+                    // );
+
+                    Column(
                       children: [
                         BuildLookingSearch(
+
                           name: translate(
                               "are_you_looking_for"),
                           lookingList: categories,
@@ -267,8 +360,7 @@ String titleSearch ='';
                   },
                 ),
               ),
-
-              Expanded(
+Expanded(
                 child: Container(
                   child: SmartRefresher(
                     enablePullDown: false,
@@ -324,7 +416,7 @@ String titleSearch ='';
                       TextStyle(color: AppColorsController().white),
                     ),
                     onLoading: _onLoading,
-                    child: BlocConsumer<AdsCubit, AdsState>(
+                    child:  BlocConsumer<AdsCubit, AdsState>(
                       bloc: adsBloc,
                       listener: (context, state) {
                         setState(() {
@@ -356,10 +448,19 @@ String titleSearch ='';
                               .ads;
                           items.addAll(data.data!);
                           loading = false;
-                          return _bodySearchItems();
+                          return
+                            loading?LinearProgressIndicator(
+                              color: AppColorsController().buttonRedColor,
+                             backgroundColor: AppColorsController().greyBackground,
+                              minHeight: 2,
+                            ): _bodySearchItems();
                         }
 
-                        return _bodySearchItems();
+                        return
+                          loading?LinearProgressIndicator(
+                            color: AppColorsController().buttonRedColor,
+                            backgroundColor: AppColorsController().greyBackground,minHeight: 2,
+                          ): _bodySearchItems();
                       },
                     ),
                   ),
@@ -413,7 +514,7 @@ String titleSearch ='';
   }
 
   Widget _bodySearchItems(){
-    return   ListView.builder(
+    return ListView.builder(
         scrollDirection: Axis.vertical,
         itemCount: items.length,shrinkWrap: true,padding: const EdgeInsets.all(8.0),
         physics: BouncingScrollPhysics(),
@@ -421,6 +522,7 @@ String titleSearch ='';
 
           return InkWell(
             onTap: (){
+              print(categoriesBloc.currentSelect2);
             },
             child: Column(
               children: [
@@ -449,13 +551,20 @@ String titleSearch ='';
   Widget _searchItem({required int index,required String value}) {
     return TextButton(
       onPressed: () {
-        DIManager.findNavigator().pushNamed(
-          ViewAllPage.routeName,
-          arguments: ViewAllArgs(
-            type: 3,
-            title: value,
-          ),
-        ).then((value) => _getData());
+
+        // DIManager.findNavigator().pushNamed(
+        //   ViewAllPage.routeName,
+        //   arguments: ViewAllArgs(
+        //     type: 3,
+        //     title: value,
+        //   ),
+        // ).then((value) => _getData());
+        setState(() {
+          titleSearch =value;
+          _onRefresh();
+
+        });
+
       },
       style: TextButton.styleFrom(foregroundColor: AppColorsController().primaryColor,),
       child: Row(

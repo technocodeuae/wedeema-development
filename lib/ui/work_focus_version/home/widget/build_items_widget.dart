@@ -324,71 +324,73 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
+                    if (!(categoriesBloc
+                        .isJobs(itemsList[0].category_title ?? '')))
+                      Row(
+                        children: [
+                          if (itemsList.length <= 7) ...[
+                            for (int i = 0; i < itemsList.length; i++) ...[
+                              itemsList[i].ad_images?[0].name?.toString() ==
+                                      '/img/ad/default.png'
+                                  ? HomeItemsWidget(
+                                      weDontHaveImage: true,
+                                      onPress: () {
+                                        DIManager.findNavigator().pushNamed(
+                                            ItemsDetailsPage.routeName,
+                                            arguments: ItemsArgs(
+                                              id: itemsList[i].ad_id ?? 0,
+                                              type: 'adsWithoutImage' ,                                            ));
+                                      },
+                                      data: itemsList[i],
+                                    )
+                                  :
 
-                      if (!(categoriesBloc
-                          .isJobs(itemsList[0].category_title ?? '')))
-                        Row(
-                          children: [
-                            if (itemsList.length <= 7) ...[
-                              for (int i = 0; i < itemsList.length; i++) ...[
-                                itemsList[i].ad_images?[0].name?.toString() ==
-                                    '/img/ad/default.png'
-                                    ? HomeItemsWidget(weDontHaveImage: true,
-    onPress: () {
-    DIManager.findNavigator().pushNamed(
-    ItemsDetailsPage.routeName,
-    arguments: ItemsArgs(
-    id: itemsList[i].ad_id ?? 0,
-    ));
-    },
-    data: itemsList[i],
-    )
-                                    : HomeItemsWidget(
-                                  onPress: () {
-                                    DIManager.findNavigator().pushNamed(
-                                        ItemsDetailsPage.routeName,
-                                        arguments: ItemsArgs(
-                                          id: itemsList[i].ad_id ?? 0,
-                                        ));
-                                  },
-                                  data: itemsList[i],
-                                ),
-                                SizedBox(
-                                  width: 10.sp,
-                                ),
-                              ],
-                            ] else ...[
-                              for (int i = 0; i < 7; i++) ...[
-                                itemsList[i].ad_images?[0].name?.toString() ==
-                                    '/img/ad/default.png'
-                                    ? HomeItemsWidget(weDontHaveImage: true,
-                                  onPress: () {
-                                    DIManager.findNavigator().pushNamed(
-                                        ItemsDetailsPage.routeName,
-                                        arguments: ItemsArgs(
-                                          id: itemsList[i].ad_id ?? 0,
-                                        ));
-                                  },
-                                  data: itemsList[i],
-                                )
-                                    : HomeItemsWidget(
-                                  onPress: () {
-                                    DIManager.findNavigator().pushNamed(
-                                        ItemsDetailsPage.routeName,
-                                        arguments: ItemsArgs(
-                                          id: itemsList[i].ad_id ?? 0,
-                                        ));
-                                  },
-                                  data: itemsList[i],
-                                ),
-                                SizedBox(
-                                  width: 10.sp,
-                                ),
-                              ],
-                              Container(),
+                              HomeItemsWidget(
+                                      onPress: () {
+                                        DIManager.findNavigator().pushNamed(
+                                            ItemsDetailsPage.routeName,
+                                            arguments: ItemsArgs(
+                                              id: itemsList[i].ad_id ?? 0,                                              ));
+                                      },
+                                      data: itemsList[i],
+                                    ),
+                              SizedBox(
+                                width: 10.sp,
+                              ),
                             ],
+                          ] else ...[
+                            for (int i = 0; i < 7; i++) ...[
+                              itemsList[i].ad_images?[0].name?.toString() ==
+                                      '/img/ad/default.png'
+                                  ? HomeItemsWidget(
+                                      weDontHaveImage: true,
+                                      onPress: () {
+                                        DIManager.findNavigator().pushNamed(
+                                            ItemsDetailsPage.routeName,
+                                            arguments: ItemsArgs(
+                                              id: itemsList[i].ad_id ?? 0, type: 'adsWithoutImage'
+                                            ));
+                                      },
+                                      data: itemsList[i],
+                                    )
+                                  : HomeItemsWidget(
+                                      onPress: () {
+                                        DIManager.findNavigator().pushNamed(
+                                            ItemsDetailsPage.routeName,
+                                            arguments: ItemsArgs(
+                                              id: itemsList[i].ad_id ?? 0,
+                                            ));
+                                      },
+                                      data: itemsList[i],
+                                    ),
+                              SizedBox(
+                                width: 10.sp,
+                              ),
+                            ],
+                            Container(),
                           ],
-                        ),
+                        ],
+                      ),
                     //               // if(widget.name == "الإعلانات التي تم رفعها مؤخراً"  )
                     //               //   SizedBox(width: 10.sp,),
                     //               // if(widget.name == "الإعلانات التي تم رفعها مؤخراً"  )
@@ -420,45 +422,49 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                         .isJobs(itemsList[0].category_title ?? ''))) ...[
                       Row(
                         children: [
-    if (itemsList.length <= 7) ...[
-      for (int i = 0; i < itemsList.length; i++) ...[
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: JobAdCard(
-            height: MediaQuery.sizeOf(context).height * 0.21,
-            width: MediaQuery.sizeOf(context).width * 0.85,
-            data: itemsList[i],
-            onPress: () {
-              DIManager.findNavigator().pushNamed(
-                ItemsDetailsPage.routeName,
-                arguments:
-                ItemsArgs(id: itemsList[i].ad_id ?? 0,type: 'jobAds'),
-              );
-            },
-          ),
-        ),
-      ],
-    ]else ...[
-      for (int i = 0; i < 7; i++) ...[
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: JobAdCard(
-            height: MediaQuery.sizeOf(context).height * 0.21,
-            width: MediaQuery.sizeOf(context).width * 0.85,
-            data: itemsList[i],
-            onPress: () {
-              DIManager.findNavigator().pushNamed(
-                ItemsDetailsPage.routeName,
-                arguments:
-                ItemsArgs(id: itemsList[i].ad_id ?? 0,type: 'jobAds'),
-              );
-            },
-          ),
-        ),
-      ],
-
-    ]
-
+                          if (itemsList.length <= 7) ...[
+                            for (int i = 0; i < itemsList.length; i++) ...[
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: JobAdCard(
+                                  height:
+                                      MediaQuery.sizeOf(context).height * 0.21,
+                                  width:
+                                      MediaQuery.sizeOf(context).width * 0.85,
+                                  data: itemsList[i],
+                                  onPress: () {
+                                    DIManager.findNavigator().pushNamed(
+                                      ItemsDetailsPage.routeName,
+                                      arguments: ItemsArgs(
+                                          id: itemsList[i].ad_id ?? 0,
+                                          type: 'jobAds'),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ] else ...[
+                            for (int i = 0; i < 7; i++) ...[
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: JobAdCard(
+                                  height:
+                                      MediaQuery.sizeOf(context).height * 0.21,
+                                  width:
+                                      MediaQuery.sizeOf(context).width * 0.85,
+                                  data: itemsList[i],
+                                  onPress: () {
+                                    DIManager.findNavigator().pushNamed(
+                                      ItemsDetailsPage.routeName,
+                                      arguments: ItemsArgs(
+                                          id: itemsList[i].ad_id ?? 0,
+                                          type: 'jobAds'),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ]
                         ],
                       ),
                     ],

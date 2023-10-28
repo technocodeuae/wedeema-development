@@ -20,7 +20,7 @@ class AppBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // SizedBox(height: 12.sp,),
+        // SizedBox(height: 12.h,),
         Container(
           height: 85.sp,
           decoration: ThemeProvider().appMode == "light"
@@ -77,7 +77,7 @@ class AppBarForPages extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // SizedBox(height: 12.sp,),
+        SizedBox(height: 12.sp,),
         Container(
           height: 85.sp,
           decoration: ThemeProvider().appMode == "light"
@@ -96,7 +96,7 @@ class AppBarForPages extends StatelessWidget {
                 name ?? "",
                 style: AppStyle.smallTitleStyle.copyWith(
                   color: AppColorsController().black,
-                  fontWeight: AppFontWeight.bold,
+                  fontWeight: AppFontWeight.midLight,
                   fontSize:AppFontSize.fontSize_20,
                 ),maxLines: 1,
                 textAlign: TextAlign.center,

@@ -58,9 +58,10 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
 
   @override
   Widget build(BuildContext context) {
+    print('widget.typeAds :${widget.typeAds}');
     return Column(
       children: [
-        widget.typeAds == 'jobAds'? Container(): ImageSliderShowWidget(
+        widget.typeAds == 'jobAds' || widget.typeAds == 'adsWithoutImage'? Container(): ImageSliderShowWidget(
           images: widget.data?.images,
           is_favorite: widget.data?.ad?.is_favorite,
           ad_id: widget.data?.ad?.ad_id,
@@ -75,7 +76,7 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
 
         Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: 20.sp,  vertical: widget.typeAds == 'jobAds'? 40.sp:0.sp
+            horizontal: 20.sp,  vertical: widget.typeAds == 'jobAds' || widget.typeAds == 'adsWithoutImage'? 40.sp:0.sp
           ),
           child: Column(
             children: [
@@ -177,7 +178,7 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
 
                             ),
                             Spacer(),
-                            widget.typeAds == 'jobAds'?  Row(
+                            widget.typeAds == 'jobAds'|| widget.typeAds == 'adsWithoutImage'?  Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
@@ -265,7 +266,7 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
                     SizedBox(
                       height: 2.sp,
                     ),
-                    (widget.data?.properties?.length??0) == 0 || widget.typeAds == 'jobAds'
+                    (widget.data?.properties?.length??0) == 0 || widget.typeAds == 'jobAds' || widget.typeAds == 'adsWithoutImage'
                         ? Container()
                         : _isSeeMore == false
                         ? InkWell(
@@ -341,7 +342,7 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
 
               //see_less
 
-              widget.typeAds == 'jobAds'?  SeeMorePropertiesWidget(
+              widget.typeAds == 'jobAds'|| widget.typeAds == 'adsWithoutImage'?  SeeMorePropertiesWidget(
                 isSeeMore: true,
                 properties: widget.data?.properties,
               ) : SeeMorePropertiesWidget(

@@ -18,7 +18,7 @@ import '../../general/bottom_navigation_bar/bottom_navigation_bar_widget.dart';
 import '../../general/icons/back_icon.dart';
 import '../../general/progress_indicator/loading_column_overlay.dart';
 import '../args/argument_message.dart';
-import '../widget/received_message_widget.dart';
+import '../widget/main_page_chats.dart';
 import 'chat_messages_page.dart';
 
 class ChatsPage extends StatefulWidget {
@@ -48,7 +48,7 @@ class _ChatsPageState extends State<ChatsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColorsController().white,
+      backgroundColor: AppColorsController().card.withOpacity(0.8),
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -62,14 +62,9 @@ class _ChatsPageState extends State<ChatsPage> {
                     children: [
                       AppBarWidget(
                         name: translate("chat"),
-                        child: InkWell(
-                          onTap: () {
-                            DIManager.findNavigator().pop();
-                          },
-                          child: BackIcon(
-                            width: 26.sp,
-                            height: 18.sp,
-                          ),
+                        child: Container(
+                          width: 26.sp,
+                          height: 18.sp,
                         ),
                       ),
                       BlocConsumer<ChatCubit, ChatState>(
@@ -128,21 +123,8 @@ class _ChatsPageState extends State<ChatsPage> {
                         user_id_2: data[index].user_id_2,
                         ad_id: data[index].ad_id));
               },
-              child: Container(
-                padding:
-                    EdgeInsets.symmetric(horizontal: 16.sp, vertical: 16.sp),
-                margin: EdgeInsets.symmetric(horizontal: 22.sp),
-                decoration: BoxDecoration(
-                    color: AppColorsController().containerPrimaryColor,
-                    border: Border.all(
-                      color: AppColorsController().borderColor,
-                      width: 0.2,
-                    ),
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(Dimens.bigBorderRadius))),
-                child: ReceivedMessageWidget(
-                  data: data[index],
-                ),
+              child: MainPageChat(
+                data: data[index],
               ),
             );
           },

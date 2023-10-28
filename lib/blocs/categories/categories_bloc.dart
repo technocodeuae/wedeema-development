@@ -75,6 +75,12 @@ class CategoriesCubit extends Cubit<CategoriesState> {
     }
   }
 
+  int currentSelect2 =0;
+  void sendData({required int currentSelect}){
+    currentSelect2= currentSelect;
+    emit(state.copyWith(SendCurrentSelect: SendCurrentSelectSuccessState()));
+  }
+
   Future<void> getSubCategories(int id) async {
     emit(state.copyWith(getSubCategoriesState: BaseLoadingState()));
     final result = await categoriesRepo.getSubCategories(id);

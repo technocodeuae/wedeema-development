@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:wadeema/core/constants/app_assets.dart';
 import '../../../../blocs/ads/ads_bloc.dart';
 import '../../../../blocs/ads/states/ads_state.dart';
 import '../../../../blocs/categories/categories_bloc.dart';
@@ -85,12 +86,57 @@ class _LookingForDetailsPageState extends State<LookingForDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar:  AppBar(
+        backgroundColor: AppColorsController().white,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage(AppAssets.appBarBackgroundImage),
+                fit: BoxFit.fill),
+          ),
+        ),
+        centerTitle: true,elevation: 0,
+        title: Text(widget.args!.title ?? "",  style: AppStyle.smallTitleStyle.copyWith(
+          color: AppColorsController().black,
+          fontWeight: AppFontWeight.midBold,
+          fontSize: AppFontSize.fontSize_20,
+        ),maxLines: 1,),
+        leading:Transform.scale(
+          scale: 0.6,
+          child: InkWell(
+            onTap: () {
+              Navigator.of(context).pop();
+              categoriesBloc.getSubCategories(widget.args!.idPast!);
+              // DIManager.findNavigator().pushReplacementNamed(
+              //   LookingForDetailsPage.routeName,
+              //   arguments: ItemsArgs(
+              //       // idPast: widget.args!.id,
+              //       // childCountPast: widget.args!.childCount,
+              //       // titlePast: widget.args!.title,
+              //       title: widget.args!.title,
+              //       id: widget.args!.id,
+              //       childCount: widget.args!.childCount,indexPage: 1),
+              // );
+            },
+            child: BackIcon(
+              width: 26.sp,
+              height: 18.sp,
+            ),
+          ),
+        ), iconTheme: IconThemeData(
+        size: 20.0, // تحديد حجم الأيقونة في الـ leading
+      ),
+        actions: [
+
+        ],
+      ),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return <Widget>[
+
             SliverAppBar(
               automaticallyImplyLeading: false,
-              expandedHeight: MediaQuery.of(context).size.height / 2.2,
+              expandedHeight: MediaQuery.of(context).size.height / 2.9,
               backgroundColor: AppColorsController().white,
               // actions: [Container()],
               // centerTitle: true,pinned: true,leadingWidth: 0,
@@ -111,30 +157,7 @@ class _LookingForDetailsPageState extends State<LookingForDetailsPage> {
                 // ),
                 background: Column(
                   children: [
-                    AppBarWidget(
-                      name: widget.args!.title ?? "",
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          categoriesBloc.getSubCategories(widget.args!.idPast!);
-                          // DIManager.findNavigator().pushReplacementNamed(
-                          //   LookingForDetailsPage.routeName,
-                          //   arguments: ItemsArgs(
-                          //       // idPast: widget.args!.id,
-                          //       // childCountPast: widget.args!.childCount,
-                          //       // titlePast: widget.args!.title,
-                          //       title: widget.args!.title,
-                          //       id: widget.args!.id,
-                          //       childCount: widget.args!.childCount,indexPage: 1),
-                          // );
-                        },
-                        child: BackIcon(
-                          width: 26.sp,
-                          height: 18.sp,
-                        ),
-                      ),
-                    ),
-                    Padding(
+                                     Padding(
                       padding: EdgeInsets.only(
                           right: 16.0.sp, left: 16.0.sp, top: 16.0.sp),
                       child: Column(
@@ -169,11 +192,31 @@ class _LookingForDetailsPageState extends State<LookingForDetailsPage> {
                                     data.sublist(0, data.length ~/ 2);
                                 List<dynamic> secondList =
                                     data.sublist(data.length ~/ 2);
-                                return Column(
+                                return data.length<=7?Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 72.sp,
+                                  child: ListView.separated(
+                                    physics: BouncingScrollPhysics(),
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: data.length,
+                                    itemBuilder: (context, index) =>
+                                        lookingItemsWidget(
+                                            categories:
+                                            data[index]),
+                                    separatorBuilder:
+                                        (BuildContext context,
+                                        int index) {
+                                      return SizedBox(
+                                        width: 8.sp,
+                                      );
+                                    },
+                                  ),
+                                ): Column(
                                   children: [
                                     firstList.length > 0
                                         ? Container(
-                                            height: 100.sp,
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 72.sp,
                                             child: ListView.separated(
                                               physics: BouncingScrollPhysics(),
                                               scrollDirection: Axis.horizontal,
@@ -199,7 +242,8 @@ class _LookingForDetailsPageState extends State<LookingForDetailsPage> {
                                         : Container(),
                                     firstList.length > 0
                                         ? Container(
-                                            height: 100.sp,
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 72.sp,
                                             child: ListView.separated(
                                               physics: BouncingScrollPhysics(),
                                               scrollDirection: Axis.horizontal,
@@ -291,7 +335,7 @@ class _LookingForDetailsPageState extends State<LookingForDetailsPage> {
               textStyle: TextStyle(color: AppColorsController().white),
             ),
             footer: ClassicFooter(
-              height: 80,
+              height: 80.sp,
               noMoreIcon: Center(
                 child: Icon(
                   Icons.arrow_upward,
@@ -392,8 +436,8 @@ class _LookingForDetailsPageState extends State<LookingForDetailsPage> {
   Widget lookingItemsWidget(
       {required CategoriesEntity categories, double? height, double? width}) {
     return Container(
-      height: height ?? 90.sp,
-      width: width ?? 100.sp,
+      height: height ?? 71.sp,
+      width: width ?? 71.sp,
       decoration: BoxDecoration(
         border: Border.all(
             color: AppColorsController().black.withOpacity(0.5), width: 0.2),
@@ -447,13 +491,13 @@ class _LookingForDetailsPageState extends State<LookingForDetailsPage> {
             ),
             Center(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.sp),
+                padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 4.sp),
                 child: Text(
                   categories.title.toString(),
                   style: AppStyle.tinySmallTitleStyle.copyWith(
                       color: AppColorsController().black,
                       fontWeight: AppFontWeight.bold,
-                      fontSize: AppFontSize.fontSize_13),
+                      fontSize: AppFontSize.fontSize_12),
                   maxLines: 1,
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,

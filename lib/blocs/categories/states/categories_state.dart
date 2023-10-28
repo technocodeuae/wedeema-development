@@ -31,6 +31,7 @@ class CategoriesState {
     GeneralState? getMainCategoriesState,
     GeneralState? getSubCategoriesState,
     GeneralState? getPropertiesCategories,
+    GeneralState? SendCurrentSelect,
 
   }) {
     return CategoriesState(
@@ -56,6 +57,12 @@ class GetSubCategoriesSuccessState extends BaseSuccessState {
   final List<CategoriesEntity> categories;
 
   GetSubCategoriesSuccessState(this.categories);
+}
+
+class SendCurrentSelectSuccessState extends BaseSuccessState {
+
+
+  SendCurrentSelectSuccessState();
 }
 
 class GetPropertiesCategoriesSuccessState extends BaseSuccessState {

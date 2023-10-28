@@ -36,14 +36,14 @@ class LookingWidgetShimmer extends StatelessWidget {
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 95.sp,
+                      height: 72.sp,
                       child: ListView.separated(
                         physics: BouncingScrollPhysics(),
                         itemBuilder: (context, index) {
                           return Container(
                             padding: EdgeInsets.symmetric(horizontal: 2.sp),
-                            height: 90.sp,
-                            width: 100.sp,
+                            width: 72.sp,
+                            height: 72.sp,
                             decoration: BoxDecoration(
                               border: Border.all(
                                   color: AppColorsController().black,
@@ -117,14 +117,14 @@ class LookingWidgetShimmer extends StatelessWidget {
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 95.sp,
+                      height: 72.sp,
                       child: ListView.separated(
                         physics: BouncingScrollPhysics(),
                         itemBuilder: (context, index) {
                           return Container(
                             padding: EdgeInsets.symmetric(horizontal: 2.sp),
-                            height: 90.sp,
-                            width: 100.sp,
+                            height: 72.sp,
+                            width: 72.sp,
                             decoration: BoxDecoration(
                               border: Border.all(
                                   color: AppColorsController().black,

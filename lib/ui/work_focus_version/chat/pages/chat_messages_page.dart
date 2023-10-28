@@ -27,6 +27,7 @@ import '../../general/icons/back_icon.dart';
 import '../../general/icons/send_message.dart';
 import '../../general/progress_indicator/loading_column_overlay.dart';
 import '../args/argument_message.dart';
+import '../widget/main_page_chats.dart';
 import '../widget/received_message_widget.dart';
 import '../widget/sender_message_widget.dart';
 
@@ -183,10 +184,10 @@ class _ChatMessagesPageState extends State<ChatMessagesPage>  with WidgetsBindin
 
         child: Column(
           children: [
+            SizedBox(height: 12.h,),
             AppBarWidget(
-              name: translate("chat"),
-              flip: true,
-              child: InkWell(
+              name: translate(""),
+                        child: InkWell(
                 onTap: () {
                   setState(() {
                     isLoading = false;
@@ -200,7 +201,7 @@ class _ChatMessagesPageState extends State<ChatMessagesPage>  with WidgetsBindin
                 ),
               ),
             ),
-            Flexible(
+            Expanded(
               child: ListView(
                 children: [
                   BlocConsumer<ChatCubit, ChatState>(
@@ -230,9 +231,9 @@ class _ChatMessagesPageState extends State<ChatMessagesPage>  with WidgetsBindin
                         }
                         return _buildBody();
                       }),
-                  SizedBox(
-                    height: 70.sp,
-                  ),
+                  // SizedBox(
+                  //   height: 70.sp,
+                  // ),
                 ],
               ),
             ),
@@ -243,7 +244,7 @@ class _ChatMessagesPageState extends State<ChatMessagesPage>  with WidgetsBindin
       ),
       bottomSheet: Container(
         height: 48.sp,
-        margin: EdgeInsets.symmetric(horizontal: 32.sp, vertical: 12.sp)
+        margin: EdgeInsets.symmetric(horizontal: 20.sp, vertical: 12.sp)
             .copyWith(bottom: MediaQuery.of(context).viewInsets.bottom + 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -354,8 +355,8 @@ class _ChatMessagesPageState extends State<ChatMessagesPage>  with WidgetsBindin
         primary: false,
         itemBuilder: (context, index) {
           return Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
-            margin: EdgeInsets.symmetric(horizontal: 22.sp),
+            padding: EdgeInsets.symmetric(horizontal: 10.sp, vertical: 5.sp),
+            // margin: EdgeInsets.symmetric(horizontal: 22.sp),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

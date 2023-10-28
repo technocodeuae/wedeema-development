@@ -30,7 +30,7 @@ MessagesModel _$MessagesModelFromJson(Map<String, dynamic> json) =>
       message: json['message'] as String?,
       channel: json['channel'] as int?,
       user_name_2: json['user_name_2'],
-      user_name_1: json['user_name_1'] as String?,
+      user_name_1: json['user_name'] as String?,
       user_id_2: json['user_id_2'],
       user_id_1: json['user_id_1'],
       ad_name: json['ad_name'] as String?,

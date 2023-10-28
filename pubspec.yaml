@@ -161,6 +161,7 @@ dependencies:
   flutter_avif: ^1.4.0
   blur: ^3.1.0
   device_preview: ^1.0.0
+  flutter_chat_bubble: ^2.0.2
 
 
 

@@ -58,8 +58,8 @@ class _JobAdCardState extends State<JobAdCard> {
             foregroundColor: AppColorsController().dropdown,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16.sp)))),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.sp),
@@ -94,6 +94,7 @@ class _JobAdCardState extends State<JobAdCard> {
                   ),
                   _descriptionWidget(),
                   _priceAndDateWidget(),
+                  SizedBox(height: 4.sp,),
                 ],
               ),
             ),
@@ -140,10 +141,12 @@ class _JobAdCardState extends State<JobAdCard> {
     return Padding(
       padding:  EdgeInsets.symmetric(vertical: 1.sp,),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SingleChildScrollView(scrollDirection: Axis.horizontal,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Column(
@@ -166,6 +169,7 @@ class _JobAdCardState extends State<JobAdCard> {
                     ),
                   ],
                 ),
+                SizedBox(width: 160.w,),
                 Container(
                   margin: EdgeInsets.only(bottom: 4.sp),
                   child: Text(

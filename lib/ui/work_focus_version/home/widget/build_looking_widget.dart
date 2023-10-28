@@ -35,7 +35,7 @@ class _BuildLookingWidgetState extends State<BuildLookingWidget> {
 
     firstList = widget.lookingList.sublist(0, widget.lookingList.length ~/ 2);
     secondList = widget.lookingList.sublist(widget.lookingList.length ~/ 2);
-    return Column(
+    return  Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
