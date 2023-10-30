@@ -74,17 +74,20 @@ class _BuildItemsAdsState extends State<BuildItemsAds> {
     setState(() {});
     _refreshController.refreshCompleted();
   }
-
+bool isLoadingFooter = false;
   void _onLoading() async {
     // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 30));
+    isLoadingFooter = false;
+    await Future.delayed(Duration(seconds: 1));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     page++;
     adsBloc.getCategoryAds(page, widget.category_id!);
+
     loading = true;
 
     if (mounted) setState(() {});
     _refreshController.loadComplete();
+    isLoadingFooter = true;
   }
 
 
@@ -156,64 +159,94 @@ class _BuildItemsAdsState extends State<BuildItemsAds> {
           ):
 
           */
-          GridView.builder(
-            itemCount: itemsList.length,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              // if (categoriesBloc.isJobs(
-              //     itemsList[index].category_title ?? '')) {
-              //   return SizedBox(
-              //     child: JobAdCard(
-              //       width:
-              //       MediaQuery.sizeOf(context).width * 0.85,
-              //       data: itemsList[index],
-              //       onPress: () {
-              //         DIManager.findNavigator().pushNamed(
-              //           ItemsDetailsPage.routeName,
-              //           arguments: ItemsArgs(
-              //               id: itemsList[index].ad_id ?? 0),
-              //         );
-              //       },
-              //     ),
-              //   );
-              // }
-              if (categoriesBloc.isJobs(
-                  itemsList[index].category_title ?? '')) {
-                return SizedBox(
-                  child: JobAdCard(
-                    width:
-                    MediaQuery.sizeOf(context).width * 0.85,
-                    data: itemsList[index],
-                    onPress: () {
-                      DIManager.findNavigator().pushNamed(
-                        ItemsDetailsPage.routeName,
-                        arguments: ItemsArgs(
-                            id: itemsList[index].ad_id ?? 0),
-                      );
-                    },
-                  ),
-                );
-              }
-              return HomeItemsWidget(
-
-                onPress: () {
-                  DIManager.findNavigator()
-                      .pushNamed(ItemsDetailsPage.routeName,
-                      arguments: ItemsArgs(
-                        id: itemsList[index].ad_id ?? 0,
-                      ));
-                },
-                data: itemsList[index],
-              );
-            },
-            gridDelegate:
-            SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisExtent: 210.sp,
-              crossAxisSpacing: 6.sp,
-              mainAxisSpacing: 18.sp,
+          SmartRefresher(
+            physics: BouncingScrollPhysics(),
+            enablePullDown: false,
+            enablePullUp: true,
+            scrollDirection: Axis.vertical,
+            controller: _refreshController,
+            onRefresh: _onRefresh,
+            footer: ClassicFooter(
+              height: 80.sp,
+              noMoreIcon: Center(
+                child: Icon(
+                  Icons.arrow_upward,
+                  color: AppColorsController().buttonRedColor,
+                ),
+              ),
+              idleIcon: itemsList.length != 8? Center(
+                child: Icon(
+                  Icons.arrow_upward,
+                  color: AppColorsController().buttonRedColor,
+                ),
+              ):Center(
+                child: Icon(
+                  Icons.arrow_downward,
+                  color: AppColorsController().buttonRedColor,
+                ),
+              ),
+              loadingIcon: Container(
+                  width: 20.sp,
+                  height: 20.sp,
+                  child: CircularProgressIndicator(
+                    color: AppColorsController().buttonRedColor,
+                    strokeWidth: 1.5,
+                  )),
+              canLoadingIcon: Center(
+                child: Icon(
+                  Icons.change_circle_sharp,
+                  color: AppColorsController().buttonRedColor,
+                  size: 30.sp,
+                ),
+              ),
+              canLoadingText: "",
+              loadingText: "",
+              textStyle: TextStyle(color: AppColorsController().white),
             ),
-            physics: NeverScrollableScrollPhysics(),
+            onLoading: _onLoading,
+            child: GridView.builder(
+              itemCount: itemsList.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                          if (categoriesBloc.isJobs(
+                    itemsList[index].category_title ?? '')) {
+                  return SizedBox(
+                    child: JobAdCard(
+                      isUseGridView: true,
+                      width:
+                      MediaQuery.sizeOf(context).width * 0.85,
+                      data: itemsList[index],
+                      onPress: () {
+                        DIManager.findNavigator().pushNamed(
+                          ItemsDetailsPage.routeName,
+                          arguments: ItemsArgs(
+                              id: itemsList[index].ad_id ?? 0),
+                        );
+                      },
+                    ),
+                  );
+                }
+                return HomeItemsWidget(
+
+                  onPress: () {
+                    DIManager.findNavigator()
+                        .pushNamed(ItemsDetailsPage.routeName,
+                        arguments: ItemsArgs(
+                          id: itemsList[index].ad_id ?? 0,categoryId: itemsList[index].category_id ?? 0
+                        ));
+                  },
+                  data: itemsList[index],
+                );
+              },
+              gridDelegate:
+              SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisExtent: 200.sp,
+                crossAxisSpacing: 6.sp,
+                mainAxisSpacing: 18.sp,
+              ),
+              physics: NeverScrollableScrollPhysics(),
+            ),
           );
         }
         return isFirstLoading == true ? AdsShimmerWidget(
@@ -256,47 +289,93 @@ class _BuildItemsAdsState extends State<BuildItemsAds> {
 
          */
 
-        GridView.builder(
-          itemCount: itemsList.length,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            if (categoriesBloc.isJobs(
-                itemsList[index].category_title ?? '')) {
-              return SizedBox(
-                child: JobAdCard(
-                  width:
-                  MediaQuery.sizeOf(context).width * 0.85,
-                  data: itemsList[index],
-                  onPress: () {
-                    DIManager.findNavigator().pushNamed(
-                      ItemsDetailsPage.routeName,
-                      arguments: ItemsArgs(
-                          id: itemsList[index].ad_id ?? 0),
-                    );
-                  },
-                ),
-              );
-            }
-            return HomeItemsWidget(
-
-              onPress: () {
-                DIManager.findNavigator()
-                    .pushNamed(ItemsDetailsPage.routeName,
-                    arguments: ItemsArgs(
-                      id: itemsList[index].ad_id ?? 0,
-                    ));
-              },
-              data: itemsList[index],
-            );
-          },
-          gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisExtent: 210.sp,
-            crossAxisSpacing: 6.sp,
-            mainAxisSpacing: 18.sp,
+        SmartRefresher(
+          physics: BouncingScrollPhysics(),
+          enablePullDown: false,
+          enablePullUp: true,
+          scrollDirection: Axis.vertical,
+          controller: _refreshController,
+          onRefresh: _onRefresh,
+          footer: ClassicFooter(
+            height: 80.sp,
+            noMoreIcon: Center(
+              child: Icon(
+                Icons.arrow_upward,
+                color: AppColorsController().buttonRedColor,
+              ),
+            ),
+            idleIcon: itemsList.length != 8? Center(
+              child: Icon(
+                Icons.arrow_upward,
+                color: AppColorsController().buttonRedColor,
+              ),
+            ):Center(
+              child: Icon(
+                Icons.arrow_downward,
+                color: AppColorsController().buttonRedColor,
+              ),
+            ),
+            loadingIcon: Container(
+                width: 20.sp,
+                height: 20.sp,
+                child: CircularProgressIndicator(
+                  color: AppColorsController().buttonRedColor,
+                  strokeWidth: 1.5,
+                )),
+            canLoadingIcon: Center(
+              child: Icon(
+                Icons.change_circle_sharp,
+                color: AppColorsController().buttonRedColor,
+                size: 30.sp,
+              ),
+            ),
+            canLoadingText: "",
+            loadingText: "",
+            textStyle: TextStyle(color: AppColorsController().white),
           ),
-          physics: NeverScrollableScrollPhysics(),
+          onLoading: _onLoading,
+          child: GridView.builder(
+            itemCount: itemsList.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              if (categoriesBloc.isJobs(
+                  itemsList[index].category_title ?? '')) {
+                return SizedBox(
+                  child: JobAdCard(     isUseGridView: true,
+                    width:
+                    MediaQuery.sizeOf(context).width * 0.85,
+                    data: itemsList[index],
+                    onPress: () {
+                      DIManager.findNavigator().pushNamed(
+                        ItemsDetailsPage.routeName,
+                        arguments: ItemsArgs(
+                            id: itemsList[index].ad_id ?? 0),
+                      );
+                    },
+                  ),
+                );
+              }
+              return HomeItemsWidget(
+
+                onPress: () {
+                  DIManager.findNavigator()
+                      .pushNamed(ItemsDetailsPage.routeName,
+                      arguments: ItemsArgs(
+                        id: itemsList[index].ad_id ?? 0,categoryId: itemsList[index].category_id ??0,
+                      ));
+                },
+                data: itemsList[index],
+              );
+            },
+            gridDelegate:
+            SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisExtent: 200.sp,
+              crossAxisSpacing: 6.sp,
+              mainAxisSpacing: 18.sp,
+            ),
+            physics: NeverScrollableScrollPhysics(),
+          ),
         );
       },
     );  }

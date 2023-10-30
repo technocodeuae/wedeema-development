@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:wadeema/blocs/categories/categories_bloc.dart';
 import 'package:wadeema/ui/work_focus_version/ads/pages/add_main_details_page.dart';
-import 'package:wadeema/ui/work_focus_version/app.dart';
 import 'package:wadeema/ui/work_focus_version/home/pages/search_page.dart';
 import 'package:wadeema/ui/work_focus_version/home/widget/job_ad_card.dart'
     as card;
@@ -77,7 +76,7 @@ class _ViewAllSearchState extends State<ViewAllSearch> {
 
   void _onLoading() async {
     // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 30));
+    await Future.delayed(Duration(seconds: 1));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     page++;
 
@@ -434,7 +433,7 @@ class _ViewAllSearchState extends State<ViewAllSearch> {
                           DIManager.findNavigator()
                               .pushNamed(ItemsDetailsPage.routeName,
                                   arguments: ItemsArgs(
-
+categoryId: items[index].category_id ?? 0,
                                     id: items[index].ad_id ?? 0,
                                   ));
 
@@ -592,7 +591,7 @@ HomeItemsWidget(
             onPress: () {
               DIManager.findNavigator().pushNamed(ItemsDetailsPage.routeName,
                   arguments: ItemsArgs(
-                    id: items[index].ad_id ?? 0,
+                    id: items[index].ad_id ?? 0,categoryId: items[index].category_id ??0
                   ));
             },
             data: items[index],

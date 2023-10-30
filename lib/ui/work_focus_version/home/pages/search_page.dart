@@ -6,12 +6,9 @@ import 'package:wadeema/core/shared_prefs/data_store.dart';
 import 'package:wadeema/ui/work_focus_version/ads/args/argument_category.dart';
 import 'package:wadeema/ui/work_focus_version/ads/pages/add_main_details_page.dart';
 import 'package:wadeema/ui/work_focus_version/ads/widget/post_ad_button.dart';
-import 'package:wadeema/ui/work_focus_version/app.dart';
 import 'package:wadeema/ui/work_focus_version/general/app_bar/app_bar.dart';
 import 'package:wadeema/ui/work_focus_version/home/pages/view_all_page.dart';
-import 'package:wadeema/ui/work_focus_version/home/pages/view_all_search.dart';
 import 'package:wadeema/ui/work_focus_version/home/widget/build_looking_search.dart';
-
 import '../../../../blocs/ads/ads_bloc.dart';
 import '../../../../blocs/ads/states/ads_state.dart';
 import '../../../../blocs/categories/categories_bloc.dart';
@@ -28,15 +25,14 @@ import '../../../../core/utils/ui/widgets/utils/vertical_padding.dart';
 import '../../../../data/models/ads/entity/ads_entity.dart';
 import '../../../../data/models/categories/entity/categories_entity.dart';
 import '../../general/back_long_press_widget.dart';
-import '../../general/bottom_navigation_bar/bottom_navigation_bar_widget.dart';
 import '../../general/icons/back_icon.dart';
 import '../../general/icons/search_icon.dart';
-import '../../general/progress_indicator/loading_column_overlay.dart';
 import '../../general/text_fields/text_field_widget.dart';
+import '../arg/items_args.dart';
 import '../arg/view_all_args.dart';
-import '../widget/build_looking_widget.dart';
-import '../widget/looking_for_widget_search.dart';
+
 import '../widget/looking_widget_shimmer.dart';
+import 'items_details_page.dart';
 
 class SearchPage extends StatefulWidget {
   static const routeName = '/SearchPage';
@@ -55,6 +51,7 @@ class _SearchPageState extends State<SearchPage> {
    List<CategoriesEntity> categories = [];
 
   bool loading = false;
+  bool loadingLiner = false;
   bool loadingLoader = false;
 
   final adsBloc = DIManager.findDep<AdsCubit>();
@@ -72,6 +69,7 @@ class _SearchPageState extends State<SearchPage> {
     // if failed,use refreshFailed()
     page = 1;
     loading = true;
+    loadingLiner = true;
     items = [];
 
     adsBloc.getSearchFilterAds(
@@ -90,6 +88,7 @@ class _SearchPageState extends State<SearchPage> {
     adsBloc.getSearchFilterAds(
         page, titleSearch);
     loading = true;
+    loadingLiner = true;
 
     if (mounted) setState(() {});
     _refreshController.loadComplete();
@@ -115,7 +114,7 @@ class _SearchPageState extends State<SearchPage> {
 
 
 
-String titleSearch ='';
+  String titleSearch ='';
 
 
   List<String> searchHistory = [];
@@ -125,6 +124,7 @@ String titleSearch ='';
     super.initState();
     loading = true;
     loadingLoader = true;
+    loadingLiner = false;
     // categoriesBloc.getMainCategories();
     _getData();
   }
@@ -448,18 +448,29 @@ Expanded(
                               .ads;
                           items.addAll(data.data!);
                           loading = false;
+                          loadingLiner = false;
+
                           return
-                            loading?LinearProgressIndicator(
+                            loadingLiner?LinearProgressIndicator(
                               color: AppColorsController().buttonRedColor,
-                             backgroundColor: AppColorsController().greyBackground,
+                              backgroundColor: AppColorsController().greyBackground,
                               minHeight: 2,
+                            ):items.length ==0?Column(
+                              children: [
+                                Text('لايوجد ${searchHistory.last}'),
+                              ],
                             ): _bodySearchItems();
                         }
 
                         return
-                          loading?LinearProgressIndicator(
+                          loadingLiner?LinearProgressIndicator(
                             color: AppColorsController().buttonRedColor,
-                            backgroundColor: AppColorsController().greyBackground,minHeight: 2,
+                            backgroundColor: AppColorsController().greyBackground,
+                            minHeight: 2,
+                          ): items.length ==0?Column(
+                            children: [
+                              Text('لايوجد ${searchHistory.last}'),
+                            ],
                           ): _bodySearchItems();
                       },
                     ),
@@ -513,6 +524,15 @@ Expanded(
     );
   }
 
+  /*
+
+   loading?LinearProgressIndicator(
+                              color: AppColorsController().buttonRedColor,
+                             backgroundColor: AppColorsController().greyBackground,
+                              minHeight: 2,
+                            ):
+   */
+
   Widget _bodySearchItems(){
     return ListView.builder(
         scrollDirection: Axis.vertical,
@@ -522,9 +542,15 @@ Expanded(
 
           return InkWell(
             onTap: (){
+              DIManager.findNavigator()
+                  .pushNamed(ItemsDetailsPage.routeName,
+                  arguments: ItemsArgs(
+categoryId: items[index].category_id??0,
+                    id: items[index].ad_id ?? 0,
+                  ));
               print(categoriesBloc.currentSelect2);
             },
-            child: Column(
+            child:  Column(
               children: [
                 Row(
 
@@ -533,12 +559,10 @@ Expanded(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(items[index].title.toString() ,style: TextStyle(color: AppColorsController().black,fontSize: AppFontSize.fontSize_12,)),
-                        Text('موتورات',style: TextStyle(color: AppColorsController().greyTextColor,fontSize: AppFontSize.fontSize_14,)),
+                        Text(items[index].category_title.toString(),style: TextStyle(color: AppColorsController().greyTextColor,fontSize: AppFontSize.fontSize_14,)),
                       ],
 
                     ),
-                    Spacer(),
-                    Text('٢٠٠١ إعلانات',style: TextStyle(color: AppColorsController().buttonRedColor,fontSize: AppFontSize.fontSize_12,fontWeight: AppFontWeight.bold)),
 
                   ],),
                 Divider(color: AppColorsController().buttonRedColor,height: 4),

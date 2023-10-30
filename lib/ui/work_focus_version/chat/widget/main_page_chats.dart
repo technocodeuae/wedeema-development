@@ -24,6 +24,9 @@ class MainPageChat extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // IconButton(onPressed: (){
+          //   print(data);
+          // }, icon: Icon(Icons.abc)),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,7 +61,7 @@ class MainPageChat extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    data!.user_name_1.toString() ,
+                    data!.user_name_2.toString() ,
                     style: AppStyle.defaultStyle.copyWith(
                         color: AppColorsController().black,
                         fontWeight: FontWeight.w400,
@@ -92,7 +95,7 @@ SizedBox(height: 10.sp,),
                 data?.type == "text"
                     ? Container(width: 200.sp,
                       child: Text(
-                          data!.message.toString(),
+                          data!.user_id_2.toString(),
                           // 'data!.message.toString()data!.message.toString()data!.message.toString()data!.message.toString()data!.message.toString()data!.message.toString()',
                           style: AppStyle.defaultStyle.copyWith(
                             color: AppColorsController().greyTextColor,

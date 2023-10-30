@@ -52,88 +52,10 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
 
   bool loading = false;
   bool isFirstLoading = false;
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
-
-  void _onRefresh() async {
-    // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use refreshFailed()
-    page = 1;
-    loading = true;
-    isFirstLoading = true;
-    itemsList = [];
-    if (widget.type == 0) {
-      adsBloc.getAllRecentAds(page);
-      loading = true;
-    } else if (widget.type == 1) {
-      adsBloc.getAllMostRatedAds(page);
-      loading = true;
-    } else if (widget.type == 2) {
-      adsBloc.getAllPopularAds(page);
-      loading = true;
-    } else {
-      adsBloc.getCategoryAds(page, widget.category_id!);
-      loading = true;
-    }
-
-    setState(() {});
-    _refreshController.refreshCompleted();
-  }
-
-  void _onLoading() async {
-    // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 30));
-    // if failed,use loadFailed(),if no data return,use LoadNodata()
-    page++;
-    if (widget.type == 0) {
-      adsBloc.getAllRecentAds(page);
-      loading = true;
-    } else if (widget.type == 1) {
-      adsBloc.getAllMostRatedAds(page);
-      loading = true;
-    } else if (widget.type == 2) {
-      adsBloc.getAllPopularAds(page);
-      loading = true;
-    } else {
-      adsBloc.getCategoryAds(page, widget.category_id!);
-      loading = true;
-    }
-
-    if (mounted) setState(() {});
-    _refreshController.loadComplete();
-  }
-
-  final int itemsToShow = 3; // عدد العناصر لعرضها أولاً
-  int visibleItemCount = 0; // عدد العناصر المرئية في القائمة
-  bool showAll = false; // يتحقق إذا تم النقر على "مشاهدة الكل"
-  ScrollController _controller = ScrollController();
-  String message = '';
-
-  _scrollListener() {
-    if (_controller.offset >= _controller.position.maxScrollExtent &&
-        !_controller.position.outOfRange) {
-      setState(() {
-        // message = translate("view_all");
-        message = 'عرض الكل';
-      });
-    }
-    if (_controller.offset <= _controller.position.minScrollExtent &&
-        !_controller.position.outOfRange) {
-      setState(() {
-        message = "";
-      });
-    }
-  }
-
-  ScrollController _scrollController = ScrollController();
-  int numberOfItems = 0;
 
   @override
   void initState() {
     super.initState();
-    visibleItemCount = itemsToShow;
-    _controller.addListener(_scrollListener);
 
     if (widget.type == 0) {
       adsBloc.getAllRecentAds(page);
@@ -159,17 +81,6 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
     // });
   }
 
-  // void _showAllItems() {
-  //   setState(() {
-  //     visibleItemCount = itemsList.length;
-  //     showAll = true;
-  //   });
-  // }
-  // @override
-  // void dispose() {
-  //   _scrollController.dispose();
-  //   super.dispose();
-  // }
   @override
   Widget build(BuildContext context) {
     print('--------------------------------------------------${widget.name}');
@@ -208,7 +119,7 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
             return Column(
               children: [
                 VerticalPadding(3.sp),
-                GeneralErrorWidget(
+                itemsList.length == 0?Container():   GeneralErrorWidget(
                   error: adsState.error,
                   callback: adsState.callback,
                 ),
@@ -269,7 +180,6 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
     );
   }
 
-  int selectedIndex = -1;
 
   _buildBody() {
     return SingleChildScrollView(

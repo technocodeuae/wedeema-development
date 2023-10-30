@@ -19,6 +19,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
       headers: {RemoteDataSource.requiresToken: true},
       url: AppEndpoints.allChats,
     );
+
   }
 
   Future<Result<MessagesAllDataModel>> getChatMessages(int id) async {

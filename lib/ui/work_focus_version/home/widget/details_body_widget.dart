@@ -26,6 +26,7 @@ import 'image_slider_show_widget.dart';
 class DetailsBodyWidget extends StatefulWidget {
   final AdsDetailsEntity? data;
   final int? id;
+  final int categoryId;
   final int? index;
   final String? typeAds;
   final Function(bool, int)? onPressedLike;
@@ -40,6 +41,7 @@ class DetailsBodyWidget extends StatefulWidget {
     this.onPressedLoader,
     this.data,
     this.id,
+   required this.categoryId,
     this.index,
     this.onPressedAddComment, this.typeAds,
   }) : super(key: key);
@@ -61,7 +63,7 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
     print('widget.typeAds :${widget.typeAds}');
     return Column(
       children: [
-        widget.typeAds == 'jobAds' || widget.typeAds == 'adsWithoutImage'? Container(): ImageSliderShowWidget(
+        widget.typeAds == 'jobAds' || widget.typeAds == 'adsWithoutImage' || widget.categoryId ==27? Container(): ImageSliderShowWidget(
           images: widget.data?.images,
           is_favorite: widget.data?.ad?.is_favorite,
           ad_id: widget.data?.ad?.ad_id,
@@ -76,7 +78,7 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
 
         Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: 20.sp,  vertical: widget.typeAds == 'jobAds' || widget.typeAds == 'adsWithoutImage'? 40.sp:0.sp
+            horizontal: 20.sp,  vertical: widget.typeAds == 'jobAds' || widget.typeAds == 'adsWithoutImage'|| widget.categoryId ==27? 40.sp:0.sp
           ),
           child: Column(
             children: [
@@ -108,7 +110,7 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
                             fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_14
                           ),
                         ),
-                        widget.typeAds == 'jobAds'? Container():    Text(
+                        widget.typeAds == 'jobAds'|| widget.categoryId ==27? Container():    Text(
                           widget.data!.ad!.price.toString() + " درهم إماراتي",
                           style: AppStyle.smallTitleStyle.copyWith(
                             color: AppColorsController().textPrimaryColor,
@@ -178,7 +180,7 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
 
                             ),
                             Spacer(),
-                            widget.typeAds == 'jobAds'|| widget.typeAds == 'adsWithoutImage'?  Row(
+                            widget.typeAds == 'jobAds'|| widget.typeAds == 'adsWithoutImage'|| widget.categoryId ==27?  Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
@@ -342,7 +344,7 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
 
               //see_less
 
-              widget.typeAds == 'jobAds'|| widget.typeAds == 'adsWithoutImage'?  SeeMorePropertiesWidget(
+              widget.typeAds == 'jobAds'|| widget.typeAds == 'adsWithoutImage'|| widget.categoryId ==27?  SeeMorePropertiesWidget(
                 isSeeMore: true,
                 properties: widget.data?.properties,
               ) : SeeMorePropertiesWidget(

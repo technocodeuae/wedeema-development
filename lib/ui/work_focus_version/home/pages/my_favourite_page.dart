@@ -363,7 +363,7 @@ onChangedLoaderFavourite: _makeLoaderChanged,
               DIManager.findNavigator()
                   .pushNamed(ItemsDetailsPage.routeName,
                   arguments: ItemsArgs(
-                    id: items[index].ad_id??0,
+                    id: items[index].ad_id??0,categoryId: items[index].category_id ??0
                   ));
             },
             data: items[index],

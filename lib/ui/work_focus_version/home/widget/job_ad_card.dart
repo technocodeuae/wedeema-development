@@ -25,8 +25,10 @@ class JobAdCard extends StatefulWidget {
   final Function() onPress;
   final double? width;
 final bool weNeedJustImage;
+final bool isUseGridView;
+
   const JobAdCard(
-      {Key? key, this.data, this.width, this.height, required this.onPress,this.weNeedJustImage = false})
+      {Key? key, this.data, this.width, this.height, required this.onPress,this.weNeedJustImage = false,this.isUseGridView = false})
       : super(key: key);
 
   @override
@@ -93,11 +95,13 @@ class _JobAdCardState extends State<JobAdCard> {
                     ),
                   ),
                   _descriptionWidget(),
+
                   _priceAndDateWidget(),
                   SizedBox(height: 4.sp,),
                 ],
               ),
             ),
+            widget.isUseGridView? Spacer():Container(),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -127,7 +131,7 @@ class _JobAdCardState extends State<JobAdCard> {
   Widget _propWidget({required String image, required String title}) {
     return Row(
       children: [
-        SvgPicture.asset(image, height: 18.sp, width: 18.sp),
+        title==''?Container(): SvgPicture.asset(image, height: 18.sp, width: 18.sp),
         SizedBox(width: 6,),
         Text(title, style: AppStyle.lightSubtitle.copyWith(
           color: AppColorsController().black,
@@ -144,44 +148,42 @@ class _JobAdCardState extends State<JobAdCard> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SingleChildScrollView(scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _getTitle(PropType.SALARY, withTitle: true) ?? 'الراتب: غير معلن',
-                      style: AppStyle.lightSubtitle.copyWith(
-                        color: AppColorsController().black,
-                        fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_12
-                      ),
-                    ),
-                    SizedBox(height: 2.sp,),
-                    Text(
-                      ("نوع الدوام: "+"${ _getTitle(PropType.EMP_TYPE) ?? "  غير معلن"}") ,
-                      style: AppStyle.lightSubtitle.copyWith(
-                        color: AppColorsController().black,
-                        fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_12
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(width: 160.w,),
-                Container(
-                  margin: EdgeInsets.only(bottom: 4.sp),
-                  child: Text(
-                    widget.data?.created_at != null ? getComparedTime(widget.data?.created_at ?? DateTime.now()).toString() : "",
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _getTitle(PropType.SALARY, withTitle: true) ?? 'الراتب: غير معلن',
                     style: AppStyle.lightSubtitle.copyWith(
-                      color: AppColorsController().greyTextColor,
+                      color: AppColorsController().black,
                       fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_12
                     ),
                   ),
+                  SizedBox(height: 2.sp,),
+                  Text(
+                    ("نوع الدوام: "+"${ _getTitle(PropType.EMP_TYPE) ?? "  غير معلن"}") ,
+                    style: AppStyle.lightSubtitle.copyWith(
+                      color: AppColorsController().black,
+                      fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_12
+                    ),
+                  ),
+                ],
+              ),
+
+              Container(
+                margin: EdgeInsets.only(bottom: 4.sp),
+                child: Text(
+                  widget.data?.created_at != null ? getComparedTime(widget.data?.created_at ?? DateTime.now()).toString() : "",
+                  style: AppStyle.lightSubtitle.copyWith(
+                    color: AppColorsController().greyTextColor,
+                    fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_12
+                  ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           Row(
             children: [

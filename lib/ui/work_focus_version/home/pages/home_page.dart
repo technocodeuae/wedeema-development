@@ -127,7 +127,7 @@ class _HomePageState extends State<HomePage>
                   } else {
                     DIManager.findNavigator().pushNamed(ItemsDetailsPage.routeName,
                         arguments: ItemsArgs(
-                          id: data!.ad?.ad_id,
+                          id: data!.ad?.ad_id,categoryId: data!.ad?.category_id??0
                         ));
                   }
                 }
@@ -274,7 +274,9 @@ class _HomePageState extends State<HomePage>
                                             if (categoriesState is BaseFailState) {
                                               return Column(
                                                 children: [
+
                                                   VerticalPadding(3.sp),
+                                                  // SizedBox(height: MediaQuery.of(context).size.height/6,),
                                                   GeneralErrorWidget(
                                                     error: categoriesState.error,
                                                     callback: categoriesState.callback,

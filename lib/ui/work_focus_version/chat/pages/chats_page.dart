@@ -9,9 +9,11 @@ import '../../../../core/bloc/states/base_fail_state.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/dimens.dart';
 import '../../../../core/di/di_manager.dart';
+import '../../../../core/shared_prefs/shared_prefs.dart';
 import '../../../../core/utils/localization/app_localizations.dart';
 import '../../../../core/utils/ui/widgets/general_error_widget.dart';
 import '../../../../core/utils/ui/widgets/utils/vertical_padding.dart';
+import '../../../../data/models/messages/entity/messages_entity.dart';
 import '../../general/app_bar/app_bar.dart';
 import '../../general/back_long_press_widget.dart';
 import '../../general/bottom_navigation_bar/bottom_navigation_bar_widget.dart';
@@ -33,7 +35,7 @@ class ChatsPage extends StatefulWidget {
 class _ChatsPageState extends State<ChatsPage> {
   final chatBloc = DIManager.findDep<ChatCubit>();
 
-  List<dynamic> data = [];
+  List<MessagesEntity> data = [];
 
   bool isLoading = false;
   bool _isLoading = false;
@@ -118,10 +120,17 @@ class _ChatsPageState extends State<ChatsPage> {
           itemBuilder: (context, index) {
             return InkWell(
               onTap: () {
+                print(data[index].ad_id);
+                print(data[index].user_id_2);
+                if(DIManager.findDep<SharedPrefs>().getUserID() == data[index].user_id_1.toString()){
+                  print('000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000');
+                }  else{
+                  print('111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111');
+                }
                 DIManager.findNavigator().pushNamed(ChatMessagesPage.routeName,
                     arguments: ArgumentMessage(
                         user_id_2: data[index].user_id_2,
-                        ad_id: data[index].ad_id));
+                        ad_id: data[index].ad_id,));
               },
               child: MainPageChat(
                 data: data[index],

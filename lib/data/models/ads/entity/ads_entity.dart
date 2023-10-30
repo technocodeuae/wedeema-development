@@ -70,7 +70,8 @@ class ItemsAdsEntity extends BaseEntity {
     this.is_favorite = 0,
     this.user_id,
     this.is_liked=0,
-    this.ad_evaluations
+    this.ad_evaluations,
+    this.category_id,
   });
 
   final int? id;
@@ -94,6 +95,7 @@ class ItemsAdsEntity extends BaseEntity {
   final int? followers_count;
   final DateTime? date_ad;
   final String? category_title;
+  final int? category_id;
   final String? status;
   final String? availability_status;
    int is_favorite;
@@ -130,7 +132,8 @@ class ItemsAdsEntity extends BaseEntity {
     this.availability_status,
     this.is_favorite,
     this.user_id,
-    this.is_liked
+    this.is_liked,
+    this.category_id,
   ];
 
 }

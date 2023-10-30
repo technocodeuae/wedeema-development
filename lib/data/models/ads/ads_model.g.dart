@@ -43,6 +43,7 @@ ItemsAdsModel _$ItemsAdsModelFromJson(Map<String, dynamic> json) => ItemsAdsMode
           CategoryAdsDetailsModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       category_title: json['category_title'] as String?,
+      category_id: json['category_id'] as int?,
       status: json['status'] as String?,
       likes: json['likes'] as int? ?? 0,
       availability_status: json['availability_status'] as String?,
