@@ -81,14 +81,14 @@ class _SearchPageState extends State<SearchPage> {
 
   void _onLoading() async {
     // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 30));
+    await Future.delayed(Duration(milliseconds: 200));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     page++;
 
     adsBloc.getSearchFilterAds(
         page, titleSearch);
     loading = true;
-    loadingLiner = true;
+    // loadingLiner = true;
 
     if (mounted) setState(() {});
     _refreshController.loadComplete();
@@ -451,15 +451,20 @@ Expanded(
                           loadingLiner = false;
 
                           return
-                            loadingLiner?LinearProgressIndicator(
+                            loadingLiner?
+                            LinearProgressIndicator(
                               color: AppColorsController().buttonRedColor,
                               backgroundColor: AppColorsController().greyBackground,
                               minHeight: 2,
-                            ):items.length ==0?Column(
-                              children: [
-                                Text('لايوجد ${searchHistory.last}'),
-                              ],
-                            ): _bodySearchItems();
+                            )
+                            //     :
+                            // items.length ==0 && searchHistory.length !=0?Column(
+                            //   children: [
+                            //     Text('لايوجد ${searchHistory.last!  ?? ''}'),
+                            //   ],
+                            // )
+
+                                : _bodySearchItems();
                         }
 
                         return
@@ -467,11 +472,13 @@ Expanded(
                             color: AppColorsController().buttonRedColor,
                             backgroundColor: AppColorsController().greyBackground,
                             minHeight: 2,
-                          ): items.length ==0?Column(
-                            children: [
-                              Text('لايوجد ${searchHistory.last}'),
-                            ],
-                          ): _bodySearchItems();
+                          )
+                          //     : items.length ==0 && searchHistory.length !=0?Column(
+                          //   children: [
+                          //     Text('لايوجد ${searchHistory.last ?? ''}'),
+                          //   ],
+                          // )
+                              : _bodySearchItems();
                       },
                     ),
                   ),
@@ -487,18 +494,22 @@ Expanded(
                   padding:  EdgeInsets.symmetric(horizontal: 24.sp),
                   child: Text(translate('last_search'),textAlign: TextAlign.start, style: TextStyle(color: AppColorsController().black, fontSize: AppFontSize.fontSize_14,)),
                 ),
-                ListView.separated( physics: BouncingScrollPhysics(),
-                  itemCount: searchHistory.length,
-                  padding: EdgeInsets.symmetric(horizontal: 8.sp),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return _searchItem(index: index, value: searchHistory[index]);
-                  },
-                  separatorBuilder: (context, index) {
-                    return Divider(
-                      height: 0,
-                    );
-                  },
+                Container(
+                  height: searchHistory.length ==1?(40.sp):searchHistory.length ==2?80.sp:searchHistory.length ==3?120.sp:searchHistory.length ==4?160.sp: 200.sp,
+                  child: ListView.separated( physics: BouncingScrollPhysics(),
+                    itemCount: searchHistory.length,
+                    reverse: true,
+                    padding: EdgeInsets.symmetric(horizontal: 8.sp),
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                                         return _searchItem(index: index, value: searchHistory[index]);
+                    },
+                    separatorBuilder: (context, index) {
+                      return Divider(
+                        height: 0,
+                      );
+                    },
+                  ),
                 ),
                 Align(
                   alignment: AlignmentDirectional.bottomEnd,
@@ -533,6 +544,36 @@ Expanded(
                             ):
    */
 
+
+  Widget _bodySearchTest(){
+    return ListView.builder(
+        scrollDirection: Axis.vertical,
+        itemCount: 20,
+        shrinkWrap: true,padding: const EdgeInsets.all(8.0),
+        physics: BouncingScrollPhysics(),
+        itemBuilder: (context,index){
+
+          return Column(
+            children: [
+              Row(
+
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('test' ,style: TextStyle(color: AppColorsController().black,fontSize: AppFontSize.fontSize_12,)),
+                      Text('22',style: TextStyle(color: AppColorsController().greyTextColor,fontSize: AppFontSize.fontSize_14,)),
+                    ],
+
+                  ),
+
+                ],),
+              Divider(color: AppColorsController().buttonRedColor,height: 4),
+
+            ],
+          );
+        });
+  }
   Widget _bodySearchItems(){
     return ListView.builder(
         scrollDirection: Axis.vertical,
