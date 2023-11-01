@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wadeema/core/constants/app_font.dart';
 import 'package:wadeema/core/utils/app_general_utils.dart';
+import 'package:wadeema/ui/work_focus_version/app.dart';
 
 import '../../../../blocs/ads/ads_bloc.dart';
 import '../../../../blocs/ads/states/ads_state.dart';
@@ -49,6 +51,59 @@ class _FavouritesButtonWidgetState extends State<FavouritesButtonWidget> {
       children: [
         BlocListener<AdsCubit, AdsState>(
           bloc: adsBloc,
+          listener: (_, state) {
+
+            widget.onChangedLoader!(false);
+
+            final favouriteState = widget.isFavourite == true
+                ? state.unFavouriteAdState
+                : state.favouriteAdState;
+
+            if (loading && favouriteState is BaseFailState) {
+              String massage = favouriteState!.error!.message.toString();
+              loading = false;
+              final snackBar = SnackBar(
+                content: Text("${massage}"),
+                behavior: SnackBarBehavior.floating,
+                duration: Duration(seconds: 1),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
+
+            if (loading &&
+                widget.isFavourite == true &&
+                favouriteState is UnFavouriteAdSuccessState) {
+              loading = false;
+
+              widget.onChanged!(false, widget.index!);
+
+              final snackBar = SnackBar(
+                content: Center(child: Text("تم حذف الإعلان من المفضلة ",style: TextStyle(color: AppColorsController().black,fontSize: AppFontSize.fontSize_14,fontWeight: AppFontWeight.midBold),)),
+                behavior: SnackBarBehavior.floating,
+                duration: Duration(seconds: 1),
+                clipBehavior: Clip.hardEdge,
+                backgroundColor: AppColorsController().defaultPrimaryColor,
+
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
+
+            if (loading &&
+                widget.isFavourite == false &&
+                favouriteState is FavouriteAdSuccessState) {
+              loading = false;
+              widget.onChanged!(true, widget.index!);
+              final snackBar = SnackBar(
+                content: Center(child: Text("تم إضافة الإعلان إلى المفضلة ",style: TextStyle(color: AppColorsController().black,fontSize: AppFontSize.fontSize_14,fontWeight: AppFontWeight.midBold),)),
+                behavior: SnackBarBehavior.floating,
+                duration: Duration(seconds: 1),
+                clipBehavior: Clip.hardEdge,
+                backgroundColor: AppColorsController().defaultPrimaryColor,
+
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
+          },
           child: Column(
             children: [
               widget.isFromPageFavourite == true ? SizedBox(
@@ -84,39 +139,7 @@ class _FavouritesButtonWidgetState extends State<FavouritesButtonWidget> {
               ),
             ],
           ),
-          listener: (_, state) {
 
-            widget.onChangedLoader!(false);
-
-            final favouriteState = widget.isFavourite == true
-                ? state.unFavouriteAdState
-                : state.favouriteAdState;
-
-            if (loading && favouriteState is BaseFailState) {
-              String massage = favouriteState!.error!.message.toString();
-              loading = false;
-              final snackBar = SnackBar(
-                content: Text("${massage}"),
-                behavior: SnackBarBehavior.floating,
-                duration: Duration(seconds: 1),
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            }
-
-            if (loading &&
-                widget.isFavourite == true &&
-                favouriteState is UnFavouriteAdSuccessState) {
-              loading = false;
-              widget.onChanged!(false, widget.index!);
-            }
-
-            if (loading &&
-                widget.isFavourite == false &&
-                favouriteState is FavouriteAdSuccessState) {
-              loading = false;
-              widget.onChanged!(true, widget.index!);
-            }
-          },
         ),
       ],
     );

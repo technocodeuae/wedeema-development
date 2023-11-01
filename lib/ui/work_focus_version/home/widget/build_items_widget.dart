@@ -235,7 +235,7 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                 child: Row(
                   children: [
                     if (!(categoriesBloc
-                        .isJobs(itemsList[0].category_title ?? '')))
+                        .isJobs(itemsList[0].category_title ?? '')) && itemsList.length!=0)
                       Row(
                         children: [
                           if (itemsList.length <= 7) ...[
@@ -249,7 +249,9 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                                             ItemsDetailsPage.routeName,
                                             arguments: ItemsArgs(
                                               id: itemsList[i].ad_id ?? 0,
-                                              type: 'adsWithoutImage' ,                                            ));
+                                              type: 'adsWithoutImage' ,
+                                            categoryId: itemsList[i].category_id ?? 0,
+                                            ));
                                       },
                                       data: itemsList[i],
                                     )
@@ -260,7 +262,7 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                                         DIManager.findNavigator().pushNamed(
                                             ItemsDetailsPage.routeName,
                                             arguments: ItemsArgs(
-                                              id: itemsList[i].ad_id ?? 0,                                              ));
+                                              id: itemsList[i].ad_id ?? 0,  categoryId: itemsList[i].category_id ?? 0,                                            ));
                                       },
                                       data: itemsList[i],
                                     ),
@@ -278,7 +280,7 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                                         DIManager.findNavigator().pushNamed(
                                             ItemsDetailsPage.routeName,
                                             arguments: ItemsArgs(
-                                              id: itemsList[i].ad_id ?? 0, type: 'adsWithoutImage'
+                                              id: itemsList[i].ad_id ?? 0, type: 'adsWithoutImage',categoryId: itemsList[i].category_id ?? 0,
                                             ));
                                       },
                                       data: itemsList[i],
@@ -288,7 +290,7 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                                         DIManager.findNavigator().pushNamed(
                                             ItemsDetailsPage.routeName,
                                             arguments: ItemsArgs(
-                                              id: itemsList[i].ad_id ?? 0,
+                                              id: itemsList[i].ad_id ?? 0,categoryId: itemsList[i].category_id ?? 0,
                                             ));
                                       },
                                       data: itemsList[i],
@@ -329,7 +331,7 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                     //
 
                     if ((categoriesBloc
-                        .isJobs(itemsList[0].category_title ?? ''))) ...[
+                        .isJobs(itemsList[0].category_title ?? ''))&& itemsList.length!=0) ...[
                       Row(
                         children: [
                           if (itemsList.length <= 7) ...[
@@ -346,7 +348,7 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                                     DIManager.findNavigator().pushNamed(
                                       ItemsDetailsPage.routeName,
                                       arguments: ItemsArgs(
-                                          id: itemsList[i].ad_id ?? 0,
+                                          id: itemsList[i].ad_id ?? 0,categoryId: itemsList[i].category_id ?? 0,
                                           type: 'jobAds'),
                                     );
                                   },
@@ -367,7 +369,7 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                                     DIManager.findNavigator().pushNamed(
                                       ItemsDetailsPage.routeName,
                                       arguments: ItemsArgs(
-                                          id: itemsList[i].ad_id ?? 0,
+                                          id: itemsList[i].ad_id ?? 0,categoryId: itemsList[i].category_id ?? 0,
                                           type: 'jobAds'),
                                     );
                                   },

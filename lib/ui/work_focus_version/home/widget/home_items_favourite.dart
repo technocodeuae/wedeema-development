@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wadeema/blocs/ads/ads_bloc.dart';
+import 'package:wadeema/blocs/ads/states/ads_state.dart';
 import 'package:wadeema/blocs/application/application_bloc.dart';
 import 'package:wadeema/core/di/di_manager.dart';
 import 'package:wadeema/core/utils/app_general_utils.dart';
@@ -7,6 +10,7 @@ import 'package:wadeema/core/utils/localization/app_localizations.dart';
 import 'package:wadeema/ui/work_focus_version/chat/pages/chat_messages_page.dart';
 import 'package:wadeema/ui/work_focus_version/general/icons/chat_icon.dart';
 
+import '../../../../core/bloc/states/base_fail_state.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_consts.dart';
 import '../../../../core/constants/app_font.dart';
@@ -15,9 +19,10 @@ import '../../../../data/models/ads/entity/ads_entity.dart';
 import '../../ads/widget/favourites_button_widget.dart';
 import '../../chat/args/argument_message.dart';
 import '../../general/icons/account_icon.dart';
+import '../../general/icons/favourites_icon.dart';
 import 'build_circular_image_user.dart';
 
-class HomeItemsFavorite extends StatelessWidget {
+class HomeItemsFavorite extends StatefulWidget {
   final ItemsAdsEntity? data;
   final double? height;
   final Function() onPress;
@@ -29,15 +34,31 @@ class HomeItemsFavorite extends StatelessWidget {
   final int? indexFavourite;
 
   const HomeItemsFavorite(
-      {Key? key, this.data, this.width, this.height, required this.onPress, this.weNeedJustImage = false, this.onChangedFavourite, this.onChangedLoaderFavourite, this.adsIdFavourite, this.indexFavourite,})
+      {Key? key, this.data,
+        this.width,
+        this.height,
+        required this.onPress,
+        this.weNeedJustImage = false,
+        this.onChangedFavourite,
+        this.onChangedLoaderFavourite,
+        this.adsIdFavourite,
+        this.indexFavourite,
+
+
+      })
       : super(key: key);
 
   @override
+  State<HomeItemsFavorite> createState() => _HomeItemsFavoriteState();
+}
+
+class _HomeItemsFavoriteState extends State<HomeItemsFavorite> {
+  @override
   Widget build(BuildContext context) {
-    String? image = data?.ad_images?[0].name?.toString();
-    return Container(
-      height: height ?? 190.sp,
-      width: width ?? (376 / 2).sp,
+    // String? image = data?.ad_images?[0].name?.toString();
+    return  Container(
+      height: widget.height ?? 190.sp,
+      width: widget.width ?? (376 / 2).sp,
       decoration: BoxDecoration(
         border: Border.all(
             color: AppColorsController().black, width: 0.2.sp),
@@ -47,7 +68,7 @@ class HomeItemsFavorite extends StatelessWidget {
         ),
       ),
       child: TextButton(
-        onPressed: onPress,
+        onPressed: widget.onPress,
         style: TextButton.styleFrom(
             padding: EdgeInsets.zero,
             foregroundColor: AppColorsController().dropdown,
@@ -65,7 +86,7 @@ class HomeItemsFavorite extends StatelessWidget {
 
                  // image == '/img/ad/default.png'?Container():
 
-                 Column(
+                    Column(
                       children: [
                         _imageWidget(),
                         SizedBox(height: 10.sp,),
@@ -81,12 +102,12 @@ class HomeItemsFavorite extends StatelessWidget {
                             padding: EdgeInsets.only(top: 0.0,
                                 left: 4.sp,
                                 right: 4.sp),
-                            child: weNeedJustImage ?
-                            data?.profile_pic != null && data?.profile_pic != ''
+                            child: widget.weNeedJustImage ?
+                            widget.data?.profile_pic != null && widget.data?.profile_pic != ''
                                 ?
                             ClipOval(
                               child: Image.network(
-                                AppConsts.IMAGE_URL + '${data?.profile_pic}',
+                                AppConsts.IMAGE_URL + '${widget.data?.profile_pic}',
                                 width: 32.sp,
                                 height: 32.sp,
                                 fit: BoxFit.fill,
@@ -94,8 +115,8 @@ class HomeItemsFavorite extends StatelessWidget {
                                 :
                            Container() :
                             BuildCircularImageUser(
-                              url: data?.profile_pic,
-                              id: data?.user_id,
+                              url: widget.data?.profile_pic,
+                              id: widget.data?.user_id,
                             ),
                           ),
 
@@ -125,12 +146,12 @@ class HomeItemsFavorite extends StatelessWidget {
                                 boxShadow: [AppStyle.normalShadow]),
                             child: Center(
                               child: FavouritesButtonWidget(
-                                isFavourite: false,
+                                isFavourite: true,
                                 isFromPageFavourite: true,
-                                index: indexFavourite,
-                                onChanged: onChangedFavourite,
-                                adsId: adsIdFavourite,
-                                onChangedLoader: onChangedLoaderFavourite,
+                                index: widget.indexFavourite,
+                                onChanged: widget.onChangedFavourite,
+                                adsId: widget.adsIdFavourite,
+                                onChangedLoader: widget.onChangedLoaderFavourite,
                               ),
                             ),
                           ),
@@ -158,7 +179,7 @@ class HomeItemsFavorite extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10.sp),
                     child: Text(
-                      data?.city ?? '',
+                      widget.data?.city ?? '',
                       style: AppStyle.lightSubtitle.copyWith(
                           color: AppColorsController().black,
                           fontWeight: AppFontWeight.midLight,
@@ -187,8 +208,8 @@ class HomeItemsFavorite extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          data?.date_ad != null ? getComparedTime(
-              data?.date_ad ?? DateTime.now()).toString() : "",
+          widget.data?.date_ad != null ? getComparedTime(
+              widget.data?.date_ad ?? DateTime.now()).toString() : "",
           style: AppStyle.lightSubtitle.copyWith(
               color: AppColorsController().black,
               fontWeight: AppFontWeight.midLight,
@@ -200,8 +221,8 @@ class HomeItemsFavorite extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 4.sp),
             child: Text(
-              (data?.price ?? 0) > 0
-                  ? '${data?.price?.toString() ?? ''} ${data?.currency ?? ''}'
+              (widget.data?.price ?? 0) > 0
+                  ? '${widget.data?.price?.toString() ?? ''} ${widget.data?.currency ?? ''}'
                   : '${translate('price_not_announced')}',
               style: AppStyle.lightSubtitle.copyWith(
                   color: AppColorsController().selectIconColor,
@@ -220,13 +241,13 @@ class HomeItemsFavorite extends StatelessWidget {
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16), topRight: Radius.circular(16)),
       child: Container(
-        width: width ?? ((376 / 2)).sp,
+        width: widget.width ?? ((376 / 2)).sp,
         height: 102.sp,
         // child: (data!.ad_images != null && (data?.ad_images?.length ?? 0) > 0 && (data?.ad_images?[0].name?.toString() != '/img/ad/default.png') )
-        child: (data!.ad_images != null && (data?.ad_images?.length ?? 0) > 0  )
+        child: (widget.data!.ad_images != null && (widget.data?.ad_images?.length ?? 0) > 0  )
             ? Image.network(
-          AppConsts.IMAGE_URL + (data?.ad_images?[0].name?.toString() ?? ''),
-          width: width ?? 200.sp,
+          AppConsts.IMAGE_URL + (widget.data?.ad_images?[0].name?.toString() ?? ''),
+          width: widget.width ?? 200.sp,
           height: 102.sp,
           fit: BoxFit.cover,
         )
@@ -237,7 +258,7 @@ class HomeItemsFavorite extends StatelessWidget {
 
   Widget _titleWidget() {
     return Text(
-      data?.title ?? '',
+      widget.data?.title ?? '',
       style: AppStyle.defaultStyle.copyWith(
           color: AppColorsController().black,
           fontWeight: AppFontWeight.bold,
@@ -253,7 +274,7 @@ class HomeItemsFavorite extends StatelessWidget {
         if (!AppUtils.checkIfGuest(context)) {
           DIManager.findNavigator().pushNamed(ChatMessagesPage.routeName,
               arguments: ArgumentMessage(
-                  user_id_2: data?.user_id, ad_id: data?.ad_id));
+                  user_id_2: widget.data?.user_id, ad_id: widget.data?.ad_id));
         }
       },
       child: Container(

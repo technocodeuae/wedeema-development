@@ -204,7 +204,7 @@ class AdsCubit extends Cubit<AdsState> {
     }
   }
 
-
+bool isFavourite = false;
   Future<void> favouriteAd(int adId) async {
     emit(state.copyWith(favouriteAdState: BaseLoadingState()));
     final result = await adsRepo.favouriteAd(adId);
@@ -225,6 +225,7 @@ class AdsCubit extends Cubit<AdsState> {
     emit(state.copyWith(unFavouriteAdState: BaseLoadingState()));
     final result = await adsRepo.unFavouriteAd(adId);
     if (result.hasDataOnly) {
+      isFavourite = true;
       emit(state.copyWith(unFavouriteAdState: UnFavouriteAdSuccessState(result.data!)));
     } else {
       emit(

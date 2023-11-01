@@ -321,8 +321,8 @@ class _ViewAllPageState extends State<ViewAllPage> {
                                     DIManager.findNavigator().pushNamed(
                                         AddMainDetailsPage.routeName,
                                         arguments:
-                                        ArgumentCategory(dataMap: dataMap
-                                        ,
+                                        ArgumentCategory(dataMap: dataMap,
+
                                         ));
                                   },
                                   child: Container(
@@ -491,7 +491,7 @@ class _ViewAllPageState extends State<ViewAllPage> {
             onPress: () {
               DIManager.findNavigator().pushNamed(
                 ItemsDetailsPage.routeName,
-                arguments: ItemsArgs(id: items[index].ad_id ?? 0),
+                arguments: ItemsArgs(id: items[index].ad_id ?? 0,categoryId: items[index].category_id ?? 0),
               );
             },
           );
@@ -640,8 +640,9 @@ class _ViewAllPageState extends State<ViewAllPage> {
             onPress: () {
               DIManager.findNavigator().pushNamed(
                 ItemsDetailsPage.routeName,
-                arguments: ItemsArgs(id: items[index].ad_id ?? 0),
+                arguments: ItemsArgs(id: items[index].ad_id ?? 0,categoryId: items[index].category_id ?? 0,type: 'jobAds'),
               );
+              print(items[index].category_id);
             },
           );
         },
@@ -719,7 +720,7 @@ class _ViewAllPageState extends State<ViewAllPage> {
                 onPress: () {
                   DIManager.findNavigator().pushNamed(
                     ItemsDetailsPage.routeName,
-                    arguments: ItemsArgs(id: items[index].ad_id ?? 0),
+                    arguments: ItemsArgs(id: items[index].ad_id ?? 0,categoryId: items[index].category_id ?? 0,type: 'jobAds'),
                   );
                 },
               );
@@ -730,7 +731,7 @@ class _ViewAllPageState extends State<ViewAllPage> {
               onPress: () {
                 DIManager.findNavigator().pushNamed(
                   ItemsDetailsPage.routeName,
-                  arguments: ItemsArgs(id: items[index].ad_id ?? 0),
+                  arguments: ItemsArgs(id: items[index].ad_id ?? 0,categoryId: items[index].category_id ?? 0,type: 'jobAds'),
                 );
               },
             )
@@ -817,8 +818,9 @@ class _ViewAllPageState extends State<ViewAllPage> {
               onPress: () {
                 DIManager.findNavigator().pushNamed(
                   ItemsDetailsPage.routeName,
-                  arguments: ItemsArgs(id: items[index].ad_id ?? 0),
+                  arguments: ItemsArgs(id: items[index].ad_id ?? 0,categoryId: items[index].category_id ?? 0,type: 'jobAds'),
                 );
+                // print(items[index].category_id );
               },
             );
           }

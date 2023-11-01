@@ -27,7 +27,14 @@ class HomeItemsWidget extends StatelessWidget {
   final bool weDontHaveImage;
 
   const HomeItemsWidget(
-      {Key? key, this.data, this.width, this.height, required this.onPress, this.weNeedJustImage = false, this.weDontHaveImage = false})
+      {Key? key,
+        this.data,
+        this.width,
+        this.height,
+        required this.onPress,
+        this.weNeedJustImage = false,
+        this.weDontHaveImage = false,
+      })
       : super(key: key);
 
   @override

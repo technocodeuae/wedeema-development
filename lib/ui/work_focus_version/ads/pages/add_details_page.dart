@@ -179,7 +179,7 @@ class _AddDetailsPageState extends State<AddDetailsPage> {
                           height: 16.sp,
                         ),
                         Container(
-                          width: 150.sp,
+                          width: 150.sp ,
                           height: 44.sp,
                           margin: EdgeInsets.symmetric(horizontal: 120.sp),
                           child: AppButton(
@@ -205,13 +205,13 @@ class _AddDetailsPageState extends State<AddDetailsPage> {
                                   arguments: ViewAllArgs(
                                     type: 4,
                                     formData: json.encode(mapDetails),
-                                    category_id: widget?.dataMap!["category_id"],
+                                    category_id: widget.dataMap!["category_id"],
                                   ),
                                 );
                               } else
                                 DIManager.findNavigator().pushNamed(
                                     AddMainDetailsPage.routeName,
-                                    arguments: widget!.dataMap!);
+                                    arguments: widget.dataMap!);
 
                               // DIManager.findNavigator().pushNamed(
                               //   SafetyPage.routeName,

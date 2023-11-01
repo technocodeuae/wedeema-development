@@ -107,7 +107,7 @@ class _LookingForDetailsPageState extends State<LookingForDetailsPage> {
           child: InkWell(
             onTap: () {
               Navigator.of(context).pop();
-              categoriesBloc.getSubCategories(widget.args!.idPast!);
+              categoriesBloc.getSubCategories(widget.args!.idPast! );
               // DIManager.findNavigator().pushReplacementNamed(
               //   LookingForDetailsPage.routeName,
               //   arguments: ItemsArgs(

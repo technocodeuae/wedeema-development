@@ -62,7 +62,7 @@ class _DetailsBodyFilterWidgetState extends State<DetailsBodyFilterWidget> {
         DIManager.findNavigator().pushNamed(
           ItemsDetailsPage.routeName,
           arguments: ItemsArgs(
-            id: widget.data!.ad_id,
+            id: widget.data!.ad_id, categoryId: widget.data!.category_id??0
           ),
         );
       },

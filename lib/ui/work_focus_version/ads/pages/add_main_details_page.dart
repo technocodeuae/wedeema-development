@@ -123,15 +123,16 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
           onDone: () {
             setState(() {});
           });
-
     }
     _controller.addListener(_updateCharCount);
   }
+
   void _updateCharCount() {
     setState(() {
       charCount = _controller.text.length; // عد الأحرف في النص
     });
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -146,13 +147,15 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
   int charCount = 0; // متغير لتخزين عدد الأحرف
 
   int wordCount = 0;
+
 ////
   void _updateWordCount() {
     final words = _controller.text.split(' ');
     wordCount = words.length;
   }
 
-  bool isLoading=false;
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -247,12 +250,14 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
                                       child: OptionItem(
                                           title: translate('category'),
                                           subtitle:
-                                              widget.argumentCategory?.name ?? '',
+                                              widget.argumentCategory?.name ??
+                                                  '',
                                           onClick: () {}),
                                       categoryId: widget.argumentCategory
                                               ?.dataMap?['category_id'] ??
                                           -1,
-                                      selectedSubCategory: widget.argumentCategory
+                                      selectedSubCategory: widget
+                                          .argumentCategory
                                           ?.dataMap?['category_id'],
                                       list: widget.argumentCategory?.list ??
                                           categoriesBloc.categories,
@@ -270,9 +275,9 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
                                     ),
 
                                     Column(
-                                      children:  List.generate(
+                                      children: List.generate(
                                           1 + subcategoriesLength(), (index) {
-                                        return  SubCategoriesDropdownWidget(
+                                        return SubCategoriesDropdownWidget(
                                           child: OptionItem(
                                               title:
                                                   '${translate('subcategory')} ${index + 1}',
@@ -287,9 +292,11 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
                                               onClick: () {}),
                                           categoryId: index == 0
                                               ? (widget.argumentCategory
-                                                      ?.dataMap?['category_id'] ??
+                                                          ?.dataMap?[
+                                                      'category_id'] ??
                                                   -1)
-                                              : (checkSubcategoriesList(index - 1)
+                                              : (checkSubcategoriesList(
+                                                      index - 1)
                                                   ? (widget.argumentCategory
                                                                   ?.dataMap?[
                                                               'sub_category_ids']
@@ -299,18 +306,27 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
                                           selectedSubCategory:
                                               checkSubcategoriesList(index)
                                                   ? widget.argumentCategory
-                                                          ?.dataMap?[
-                                                      'sub_category_ids']?[index]
+                                                              ?.dataMap?[
+                                                          'sub_category_ids']
+                                                      ?[index]
                                                   : null,
                                           onSelected: (value) {
-
                                             _selectSubcategory(
                                                 value: value, index: index);
                                           },
                                         );
                                       }),
                                     ),
-                        isLoading ? LinearProgressIndicator(color: AppColorsController().buttonRedColor,backgroundColor: AppColorsController().colorBarRed,):Container(),
+                                    isLoading
+                                        ? LinearProgressIndicator(
+                                            color: AppColorsController()
+                                                .buttonRedColor,
+                                            backgroundColor:
+                                                AppColorsController()
+                                                    .colorBarRed,
+                                          )
+                                        : Container(),
+
                                     ListView.builder(
                                         padding: EdgeInsets.only(
                                             bottom: MediaQuery.of(context)
@@ -329,7 +345,8 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
                                           }
 
                                           if (data[index].property?.type ==
-                                              PropertyTypes.listDropdown.value) {
+                                              PropertyTypes
+                                                  .listDropdown.value) {
                                             return DropdownWidget(
                                               child: OptionItem(
                                                   title: data[index]
@@ -346,11 +363,11 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
                                               subProperties:
                                                   data[index].sub_properties ??
                                                       [],
-                                              selectedProperties:
-                                                  categoriesBloc.selectedSubprop[
-                                                      data[index]
-                                                          .property
-                                                          ?.propertyId],
+                                              selectedProperties: categoriesBloc
+                                                      .selectedSubprop[
+                                                  data[index]
+                                                      .property
+                                                      ?.propertyId],
                                               onSelected: (value) {
                                                 categoriesBloc.selectedSubprop[
                                                     data[index]
@@ -360,7 +377,9 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
                                                 categoriesBloc.refresh();
                                               },
                                             );
-                                          } else if (data[index].property?.type ==
+                                          } else if (data[index]
+                                                  .property
+                                                  ?.type ==
                                               PropertyTypes.list.value) {
                                             return TypeItemWidget(
                                               title:
@@ -369,11 +388,11 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
                                               subProperties:
                                                   data[index].sub_properties ??
                                                       [],
-                                              selectedProperties:
-                                                  categoriesBloc.selectedSubprop[
-                                                      data[index]
-                                                          .property
-                                                          ?.propertyId],
+                                              selectedProperties: categoriesBloc
+                                                      .selectedSubprop[
+                                                  data[index]
+                                                      .property
+                                                      ?.propertyId],
                                               onSelected: (value) {
                                                 categoriesBloc.selectedSubprop[
                                                     data[index]
@@ -403,11 +422,11 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
                                               subProperties:
                                                   data[index].sub_properties ??
                                                       [],
-                                              selectedProperties:
-                                                  categoriesBloc.selectedSubprop[
-                                                      data[index]
-                                                          .property
-                                                          ?.propertyId],
+                                              selectedProperties: categoriesBloc
+                                                      .selectedSubprop[
+                                                  data[index]
+                                                      .property
+                                                      ?.propertyId],
                                               onSelected: (value) {
                                                 categoriesBloc.selectedSubprop[
                                                     data[index]
@@ -427,11 +446,12 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
                                                     ?.type ==
                                                 PropertyTypes.StringMulti.value;
 
-                                            TextInputType textInputType = isNumber
-                                                ? TextInputType.number
-                                                : ((multiLines)
-                                                    ? TextInputType.text
-                                                    : TextInputType.name);
+                                            TextInputType textInputType =
+                                                isNumber
+                                                    ? TextInputType.number
+                                                    : ((multiLines)
+                                                        ? TextInputType.text
+                                                        : TextInputType.name);
 
                                             return buildTextField(
                                                 propertyId: data[index]
@@ -448,10 +468,75 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
                                                         .property
                                                         ?.essential ==
                                                     '1',
-                                                height: multiLines ? 80.sp : null,
+                                                height:
+                                                    multiLines ? 80.sp : null,
                                                 index: index);
                                           }
                                         }),
+                                    if (_isFilter()) ...[
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 6.sp,
+                                          ),
+                                          for (int index = (data.length - 1);
+                                              index != -1;
+                                              index--) ...[
+                                            buildTextFieldPrice(
+                                                propertyId: data[index]
+                                                        .property
+                                                        ?.propertyId
+                                                        ?.toString() ??
+                                                    '',
+                                                title: data[index]
+                                                    .property
+                                                    ?.title
+                                                    ?.toCapitalized(),
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                isRequired: data[index]
+                                                        .property
+                                                        ?.essential ==
+                                                    '1',
+                                                height: 80,
+                                                isProperty: true,
+                                                index: index),
+                                          ]
+                                        ],
+                                      ),
+                                    ],
+                                    if (!_isFilter()) ...[
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 6.sp,
+                                          ),
+                                          for (int index = 0;
+                                              index < data.length;
+                                              index++) ...[
+                                            buildTextFieldPriceAds(
+                                                propertyId: data[index]
+                                                        .property
+                                                        ?.propertyId
+                                                        ?.toString() ??
+                                                    '',
+                                                title: data[index]
+                                                    .property
+                                                    ?.title
+                                                    ?.toCapitalized(),
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                isRequired: data[index]
+                                                        .property
+                                                        ?.essential ==
+                                                    '1',
+                                                height: 80,
+                                                isProperty: true,
+                                                index: index),
+                                          ]
+                                        ],
+                                      ),
+                                    ],
                                     if (!_isFilter()) ...[
                                       // Text('عدد الأحرف: $charCount'),
                                       buildTextField(
@@ -466,7 +551,6 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
 //                                            });
 //                                           },
                                           controller: _controller,
-
                                           inputFormatters: [
                                             LengthLimitingTextInputFormatter(
                                                 maxWordCount * 6),
@@ -482,7 +566,6 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
 
                                       buildTextField(
                                           controller: _controller2,
-
                                           inputFormatters: [
                                             LengthLimitingTextInputFormatter(
                                                 maxWordCount * 100),
@@ -973,104 +1056,337 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
       bool isRequired = true,
       int? index,
       Widget? suffix,
-        void Function(String)? onChangeText,
+      void Function(String)? onChangeText,
       bool readOnly = false,
       GestureTapCallback? onTap}) {
     String key = propertyId + ',$index';
     focusNodes[key] ??= FocusNode();
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (isProperty) ...[
-          SizedBox(
-            height: 4,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.sp),
-            child: Text((title ?? '') + '${(isRequired) ? ' * ' : ''}' + ": ",
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColorsController().black,fontSize: AppFontSize.fontSize_13,
-                    fontWeight: FontWeight.bold)),
-          ),
-        ],
-        Padding(
-          padding: EdgeInsets.only(top: isProperty ? 2 : 4),
-          child: Container(
-            height: height ?? 40.sp,
-            margin: EdgeInsets.symmetric(
-                horizontal: isProperty ? 12.sp : 24.sp, vertical: 8),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: AppColorsController().borderColor,
-                width: 0.1,
-              ),
-              borderRadius: BorderRadius.all(
-                Radius.circular(Dimens.containerBorderRadius),
-              ),
-              color: AppColorsController().containerPrimaryColor,
-            ),
-            child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 12.sp,
+    return title!.contains('السعر من') || title!.contains('السعر إلى')
+        ? Container()
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (isProperty) ...[
+                SizedBox(
+                  height: 4,
                 ),
-                child: TextFieldWidget(
-                  inputFormatters: inputFormatters,
-                  controller: controller,
-                  onChangeText: onChangeText,
-                  icon: isProperty
-                      ? SizedBox.shrink()
-                      : Text(
-                          (title ?? '') +
-                              '${(isRequired) ? ' (*) ' : ''}' +
-                              ": ",
-                          style: AppStyle.smallTitleTextStyle.copyWith(
-                              color: AppColorsController().black,
-                              fontWeight: FontWeight.bold,fontSize: AppFontSize.fontSize_13),
-                        ),
-                  hint: isProperty ? hintText : '',
-                  onTap: onTap,
-                  textDirection: TextDirection.rtl,
-                  suffix: suffix,
-                  readOnly: readOnly,
-                  focusNode: focusNodes[key],
-                  onFieldSubmitted: (s) {
-                    FocusScope.of(context).unfocus();
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12.sp),
+                  child: Text(
+                      (title ?? '') + '${(isRequired) ? ' * ' : ''}' + ": ",
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: AppColorsController().black,
+                          fontSize: AppFontSize.fontSize_13,
+                          fontWeight: FontWeight.bold)),
+                ),
+              ],
+              Padding(
+                padding: EdgeInsets.only(top: isProperty ? 2 : 4),
+                child: Container(
+                  height: height ?? 40.sp,
+                  margin: EdgeInsets.symmetric(
+                      horizontal: isProperty ? 12.sp : 24.sp, vertical: 8),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: AppColorsController().borderColor,
+                      width: 0.1,
+                    ),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(Dimens.containerBorderRadius),
+                    ),
+                    color: AppColorsController().containerPrimaryColor,
+                  ),
+                  child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12.sp,
+                      ),
+                      child: TextFieldWidget(
+                        inputFormatters: inputFormatters,
+                        controller: controller,
+                        onChangeText: onChangeText,
+                        icon: isProperty
+                            ? SizedBox.shrink()
+                            : Text(
+                                (title ?? '') +
+                                    '${(isRequired) ? ' (*) ' : ''}' +
+                                    ": ",
+                                style: AppStyle.smallTitleTextStyle.copyWith(
+                                    color: AppColorsController().black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: AppFontSize.fontSize_13),
+                              ),
+                        hint: isProperty ? hintText : '',
+                        onTap: onTap,
+                        textDirection: TextDirection.rtl,
+                        suffix: suffix,
+                        readOnly: readOnly,
+                        focusNode: focusNodes[key],
+                        onFieldSubmitted: (s) {
+                          FocusScope.of(context).unfocus();
 
-                    String nextKey = '';
-                    for (int i = 0; i < focusNodes.keys.toList().length; i++) {
-                      if (focusNodes.keys.toList()[i] == key) {
-                        if (i + 1 < focusNodes.keys.length)
-                          nextKey = focusNodes.keys.toList()[i + 1];
-                      }
-                    }
+                          String nextKey = '';
+                          for (int i = 0;
+                              i < focusNodes.keys.toList().length;
+                              i++) {
+                            if (focusNodes.keys.toList()[i] == key) {
+                              if (i + 1 < focusNodes.keys.length)
+                                nextKey = focusNodes.keys.toList()[i + 1];
+                            }
+                          }
 
-                    if (focusNodes[nextKey] != null)
-                      FocusScope.of(context).requestFocus(focusNodes[nextKey]);
-                  },
-                  isRequired: isRequired,
-                  keyboardType: keyboardType,
-                  onTextChanged: (value) {
-                    if (int.tryParse(propertyId) != null) {
-                      categoriesBloc
-                              .selectedSubprop[int.tryParse(propertyId) ?? 0] =
-                          value;
-                    } else {
-                      widget.argumentCategory?.dataMap?[propertyId] =
-                          value.toString();
-                    }
-                  },
-                )),
-          ),
-        ),
-        if (isProperty) ...[
-          SizedBox(
-            height: 2,
-          ),
-          DividerItem(),
-        ],
-      ],
-    );
+                          if (focusNodes[nextKey] != null)
+                            FocusScope.of(context)
+                                .requestFocus(focusNodes[nextKey]);
+                        },
+                        isRequired: isRequired,
+                        keyboardType: keyboardType,
+                        onTextChanged: (value) {
+                          if (int.tryParse(propertyId) != null) {
+                            categoriesBloc.selectedSubprop[
+                                int.tryParse(propertyId) ?? 0] = value;
+                          } else {
+                            widget.argumentCategory?.dataMap?[propertyId] =
+                                value.toString();
+                          }
+                        },
+                      )),
+                ),
+              ),
+              if (isProperty) ...[
+                SizedBox(
+                  height: 2,
+                ),
+                DividerItem(),
+              ],
+            ],
+          );
+  }
+
+  Widget buildTextFieldPrice(
+      {required String propertyId,
+      bool isProperty = true,
+      String? title,
+      String? hintText,
+      KeyB,
+      TextInputType? keyboardType,
+      TextEditingController? controller,
+      double? height,
+      List<TextInputFormatter>? inputFormatters,
+      bool isRequired = true,
+      int? index,
+      Widget? suffix,
+      void Function(String)? onChangeText,
+      bool readOnly = false,
+      GestureTapCallback? onTap}) {
+    String key = propertyId + ',$index';
+    focusNodes[key] ??= FocusNode();
+
+    return title!.contains('السعر من') || title!.contains('السعر إلى') || title!.contains('المساحة من') || title!.contains('المساحة إلى')
+        ? Row(
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(right: 10),
+                child: Text(
+                    (title ?? '') + '${(isRequired) ? ' * ' : ''}' + ": ",
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: AppColorsController().black,
+                        fontSize: AppFontSize.fontSize_13,
+                        fontWeight: FontWeight.bold)),
+              ),
+              Container(
+                height: 35.sp,
+                width: 90.sp,
+                margin: EdgeInsets.symmetric(
+                    horizontal: isProperty ? 5.sp : 24.sp, vertical: 8),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: AppColorsController().borderColor,
+                    width: 0.1,
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(Dimens.containerBorderRadius),
+                  ),
+                  color: AppColorsController().containerPrimaryColor,
+                ),
+                child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.sp,
+                    ),
+                    child: TextFieldWidget(
+                      inputFormatters: inputFormatters,
+                      controller: controller,
+                      onChangeText: onChangeText,
+                      icon: isProperty
+                          ? SizedBox.shrink()
+                          : Text(
+                              (title ?? '') +
+                                  '${(isRequired) ? ' (*) ' : ''}' +
+                                  ": ",
+                              style: AppStyle.smallTitleTextStyle.copyWith(
+                                  color: AppColorsController().black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: AppFontSize.fontSize_13),
+                            ),
+                      hint: isProperty ? hintText : '',
+                      onTap: onTap,
+                      textDirection: TextDirection.rtl,
+                      suffix: suffix,
+                      readOnly: readOnly,
+                      focusNode: focusNodes[key],
+                      onFieldSubmitted: (s) {
+                        FocusScope.of(context).unfocus();
+
+                        String nextKey = '';
+                        for (int i = 0;
+                            i < focusNodes.keys.toList().length;
+                            i++) {
+                          if (focusNodes.keys.toList()[i] == key) {
+                            if (i + 1 < focusNodes.keys.length)
+                              nextKey = focusNodes.keys.toList()[i + 1];
+                          }
+                        }
+
+                        if (focusNodes[nextKey] != null)
+                          FocusScope.of(context)
+                              .requestFocus(focusNodes[nextKey]);
+                      },
+                      isRequired: isRequired,
+                      keyboardType: keyboardType,
+                      onTextChanged: (value) {
+                        if (int.tryParse(propertyId) != null) {
+                          categoriesBloc.selectedSubprop[
+                              int.tryParse(propertyId) ?? 0] = value;
+                        } else {
+                          widget.argumentCategory?.dataMap?[propertyId] =
+                              value.toString();
+                        }
+                      },
+                    )),
+              ),
+              if (isProperty) ...[
+                SizedBox(
+                  height: 2,
+                ),
+                DividerItem(),
+              ],
+            ],
+          )
+        : Container();
+  }
+
+  Widget buildTextFieldPriceAds(
+      {required String propertyId,
+      bool isProperty = true,
+      String? title,
+      String? hintText,
+      KeyB,
+      TextInputType? keyboardType,
+      TextEditingController? controller,
+      double? height,
+      List<TextInputFormatter>? inputFormatters,
+      bool isRequired = true,
+      int? index,
+      Widget? suffix,
+      void Function(String)? onChangeText,
+      bool readOnly = false,
+      GestureTapCallback? onTap}) {
+    String key = propertyId + ',$index';
+    focusNodes[key] ??= FocusNode();
+
+    return title!.contains('السعر من') || title!.contains('المساحة من')
+        ? Row(
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(right: 10),
+                child: Text(
+                    (title!.contains('السعر من')? 'السعر ':'المساحة' ?? '') + '${(isRequired) ? ' * ' : ''}' + ": ",
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: AppColorsController().black,
+                        fontSize: AppFontSize.fontSize_13,
+                        fontWeight: FontWeight.bold)),
+              ),
+              Container(
+                height: 35.sp,
+                width: 120.sp,
+                margin: EdgeInsets.symmetric(
+                    horizontal: isProperty ? 5.sp : 24.sp, vertical: 8),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: AppColorsController().borderColor,
+                    width: 0.1,
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(Dimens.containerBorderRadius),
+                  ),
+                  color: AppColorsController().containerPrimaryColor,
+                ),
+                child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.sp,
+                    ),
+                    child: TextFieldWidget(
+                      inputFormatters: inputFormatters,
+                      controller: controller,
+                      onChangeText: onChangeText,
+                      icon: isProperty
+                          ? SizedBox.shrink()
+                          : Text(
+                              (title ?? '') +
+                                  '${(isRequired) ? ' (*) ' : ''}' +
+                                  ": ",
+                              style: AppStyle.smallTitleTextStyle.copyWith(
+                                  color: AppColorsController().black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: AppFontSize.fontSize_13),
+                            ),
+                      hint: isProperty ? hintText : '',
+                      onTap: onTap,
+                      textDirection: TextDirection.rtl,
+                      suffix: suffix,
+                      readOnly: readOnly,
+                      focusNode: focusNodes[key],
+                      onFieldSubmitted: (s) {
+                        FocusScope.of(context).unfocus();
+
+                        String nextKey = '';
+                        for (int i = 0;
+                            i < focusNodes.keys.toList().length;
+                            i++) {
+                          if (focusNodes.keys.toList()[i] == key) {
+                            if (i + 1 < focusNodes.keys.length)
+                              nextKey = focusNodes.keys.toList()[i + 1];
+                          }
+                        }
+
+                        if (focusNodes[nextKey] != null)
+                          FocusScope.of(context)
+                              .requestFocus(focusNodes[nextKey]);
+                      },
+                      isRequired: isRequired,
+                      keyboardType: keyboardType,
+                      onTextChanged: (value) {
+                        if (int.tryParse(propertyId) != null) {
+                          categoriesBloc.selectedSubprop[
+                              int.tryParse(propertyId) ?? 0] = value;
+                        } else {
+                          widget.argumentCategory?.dataMap?[propertyId] =
+                              value.toString();
+                        }
+                      },
+                    )),
+              ),
+              if (isProperty) ...[
+                SizedBox(
+                  height: 2,
+                ),
+                DividerItem(),
+              ],
+            ],
+          )
+        : Container();
   }
 
   bool checkSubcategoriesList(int index) {
@@ -1136,6 +1452,5 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
     categoriesBloc.getPropertiesCategories(value?.category_id ?? -1);
 
     categoriesBloc.refresh();
-
   }
 }

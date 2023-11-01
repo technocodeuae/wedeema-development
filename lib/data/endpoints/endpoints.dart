@@ -74,7 +74,7 @@ class AppEndpoints {
 
   /// my favourite
   ///
-  static const String myFavouriteAds =  'user/my_favorite_ads';
+  static const String myFavouriteAds =  'user/favorite_ads';
 
 
   /// notifications

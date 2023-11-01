@@ -92,7 +92,7 @@ class AdsRemoteDataSourceImpl implements AdsRemoteDataSource {
   Future<Result<AdsModel>> getMyFavouriteAds(int page) async {
     return await RemoteDataSource.request<AdsModel>(
       converter: (model) => AdsModel.fromJson(model),
-      method: HttpMethod.POST,
+      method: HttpMethod.GET,
       headers: {RemoteDataSource.requiresToken: true},
       url: AppEndpoints.myFavouriteAds+ "?page=${page}",
     );
@@ -145,6 +145,7 @@ class AdsRemoteDataSourceImpl implements AdsRemoteDataSource {
     );
   }
   Future<Result<EmptyModel>> unFavouriteAd(int adId) async {
+
     return await RemoteDataSource.request<EmptyModel>(
       converter: (model) => EmptyModel(model),
       method: HttpMethod.POST,
@@ -152,6 +153,7 @@ class AdsRemoteDataSourceImpl implements AdsRemoteDataSource {
       headers: {RemoteDataSource.requiresToken: true},
       url: AppEndpoints.unFavouriteAd,
     );
+
   }
 
 }

@@ -220,7 +220,7 @@ bool isLoadingFooter = false;
                         DIManager.findNavigator().pushNamed(
                           ItemsDetailsPage.routeName,
                           arguments: ItemsArgs(
-                              id: itemsList[index].ad_id ?? 0),
+                              id: itemsList[index].ad_id ?? 0   ,  categoryId: itemsList[index].category_id ?? 0,type: 'jobAds'),
                         );
                       },
                     ),
@@ -341,7 +341,8 @@ bool isLoadingFooter = false;
               if (categoriesBloc.isJobs(
                   itemsList[index].category_title ?? '')) {
                 return SizedBox(
-                  child: JobAdCard(     isUseGridView: true,
+                  child: JobAdCard(
+                    isUseGridView: true,
                     width:
                     MediaQuery.sizeOf(context).width * 0.85,
                     data: itemsList[index],
@@ -349,7 +350,9 @@ bool isLoadingFooter = false;
                       DIManager.findNavigator().pushNamed(
                         ItemsDetailsPage.routeName,
                         arguments: ItemsArgs(
-                            id: itemsList[index].ad_id ?? 0),
+                            id: itemsList[index].ad_id ?? 0,
+                        categoryId: itemsList[index].category_id ?? 0,type: 'jobAds'
+                        ),
                       );
                     },
                   ),

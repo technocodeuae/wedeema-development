@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:wadeema/ui/work_focus_version/home/widget/home_items_favourite.dart';
@@ -9,9 +8,8 @@ import '../../../../blocs/ads/states/ads_state.dart';
 import '../../../../blocs/categories/categories_bloc.dart';
 import '../../../../core/bloc/states/base_fail_state.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_font.dart';
-import '../../../../core/constants/app_style.dart';
 import '../../../../core/di/di_manager.dart';
+import '../../../../core/utils/app_general_utils.dart';
 import '../../../../core/utils/localization/app_localizations.dart';
 import '../../../../core/utils/ui/widgets/general_error_widget.dart';
 import '../../../../core/utils/ui/widgets/utils/vertical_padding.dart';
@@ -19,11 +17,8 @@ import '../../../../data/models/ads/entity/ads_entity.dart';
 import '../../general/app_bar/app_bar.dart';
 import '../../general/back_long_press_widget.dart';
 import '../../general/bottom_navigation_bar/bottom_navigation_bar_widget.dart';
-import '../../general/icons/back_icon.dart';
 import '../../general/progress_indicator/loading_column_overlay.dart';
 import '../arg/items_args.dart';
-import '../widget/build_circular_image_user.dart';
-import '../widget/details_body_filter_widget.dart';
 import '../widget/job_ad_card.dart';
 import 'items_details_page.dart';
 
@@ -41,8 +36,10 @@ class _MyFavouritePageState extends State<MyFavouritePage> {
   final categoriesBloc = DIManager.findDep<CategoriesCubit>();
   int page = 1;
   List<ItemsAdsEntity> items = [];
- late AdsEntity data;
+  late AdsEntity data;
   bool loading = false;
+  bool loadingRefresh = false;
+  bool addFromFavorite =false;
   bool loadingLodar = false;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -54,47 +51,65 @@ class _MyFavouritePageState extends State<MyFavouritePage> {
     page = 1;
     loading = true;
     loadingLodar = true;
-
+    addFromFavorite =false;
     items = [];
     adsBloc.getMyFavouriteAds(page);
     setState(() {});
     _refreshController.refreshCompleted();
   }
 
+  Future<void> _onRefreshFavorite() async {
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 10));
+    // if failed,use refreshFailed()
+    page = 1;
+    loading = true;
+    // addFromFavorite =true;
 
+    // loadingLodar = true;
+    items=[];
+    adsBloc.getMyFavouriteAds(page);
+
+    // items.add(value)
+    // setState(() {});
+    // _refreshController.refreshCompleted();
+  }
 
   void _onLoading() async {
     // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 30));
+    await Future.delayed(Duration(milliseconds: 400));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     page++;
-
+    loadingRefresh=true;
     adsBloc.getMyFavouriteAds(page);
     loading = true;
-
+    addFromFavorite =false;
     if (mounted) setState(() {});
     _refreshController.loadComplete();
+
+    await Future.delayed(Duration(milliseconds: 40));
+    loadingRefresh=false;
   }
 
   void _makeFavouriteChanged(bool newValue, int index) {
+    _onRefreshFavorite();
+
+    //   ..then((value) {
+    //   adsBloc.getMyFavouriteAds(page);
+    //   items.addAll(data.data!);
+    //
+    // });
     setState(() {
-      items![index]?.is_favorite = (newValue == false ? 0 : 1);
+      items[index].is_favorite = (newValue == false ? 0 : 1);
     });
+
   }
 
-  void _makeLikeChanged(bool newValue, int index) {
-    setState(() {
-      items![index]?.is_liked = (newValue == false ? 0 : 1);
-      if (newValue == true)
-        items![index]?.likes++;
-      else
-        items![index]?.likes--;
-    });
-  }
+
   void _makeLoaderChanged(bool newValue) {
     setState(() {
-      print("NOOOw"+newValue.toString());
-      loadingLodar =newValue;
+      print("NOOOw" + newValue.toString());
+      loadingLodar = newValue;
     });
   }
 
@@ -107,11 +122,12 @@ class _MyFavouritePageState extends State<MyFavouritePage> {
     loadingLodar = true;
   }
 
+
+  bool removeItem =  false;
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -120,7 +136,6 @@ class _MyFavouritePageState extends State<MyFavouritePage> {
               isLoading: loadingLodar,
               child: SafeArea(
                 child: BackLongPress(
-
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -131,9 +146,10 @@ class _MyFavouritePageState extends State<MyFavouritePage> {
                           onTap: () {
                             DIManager.findNavigator().pop();
                           },
-child: Container(
-  width: 35.sp,height: 35.sp,
-),
+                          child: Container(
+                            width: 35.sp,
+                            height: 35.sp,
+                          ),
                         ),
                       ),
                       Expanded(
@@ -146,24 +162,80 @@ child: Container(
                             onRefresh: _onRefresh,
                             header: ClassicHeader(
                               refreshingIcon: Container(
-                                  width: 20.sp,height: 20.sp,child: CircularProgressIndicator(color: AppColorsController().buttonRedColor,strokeWidth: 1.5,)),
-                              idleIcon: Center(child: Icon(Icons.arrow_downward,color: AppColorsController().buttonRedColor,),),
-                              completeIcon: Center(child: Icon(Icons.check,color: AppColorsController().buttonRedColor,size: 30.sp,),),
-                              releaseIcon: Center(child: Icon(Icons.change_circle_sharp,color: AppColorsController().buttonRedColor,size: 30.sp,),),
+                                  width: 20.sp,
+                                  height: 20.sp,
+                                  child: CircularProgressIndicator(
+                                    color: AppColorsController().buttonRedColor,
+                                    strokeWidth: 1.5,
+                                  )),
+                              idleIcon: Center(
+                                child: Icon(
+                                  Icons.arrow_downward,
+                                  color: AppColorsController().buttonRedColor,
+                                ),
+                              ),
+                              completeIcon: Center(
+                                child: Icon(
+                                  Icons.check,
+                                  color: AppColorsController().buttonRedColor,
+                                  size: 30.sp,
+                                ),
+                              ),
+                              releaseIcon: Center(
+                                child: Icon(
+                                  Icons.change_circle_sharp,
+                                  color: AppColorsController().buttonRedColor,
+                                  size: 30.sp,
+                                ),
+                              ),
                               completeText: "",
                               refreshingText: "",
-                              textStyle: TextStyle(color: AppColorsController().white),
+                              textStyle:
+                                  TextStyle(color: AppColorsController().white),
                             ),
                             footer: ClassicFooter(
                               height: 80,
-                              noMoreIcon: Center(child: Icon(Icons.arrow_upward,color: AppColorsController().buttonRedColor,),),
-                              idleIcon: Center(child: Icon(Icons.arrow_upward,color: AppColorsController().buttonRedColor,),),
-                              loadingIcon:  Container(
-                                  width: 20.sp,height: 20.sp,child: CircularProgressIndicator(color: AppColorsController().buttonRedColor,strokeWidth: 1.5,)),
-                              canLoadingIcon: Center(child: Icon(Icons.change_circle_sharp,color: AppColorsController().buttonRedColor,size: 30.sp,),),
+                              noMoreIcon: Center(
+                                child: Icon(
+                                  Icons.ac_unit,
+                                  color: AppColorsController().buttonRedColor,
+                                ),
+                              ),
+
+                              idleIcon: loadingRefresh?Center(
+                                child: Container(
+                                    width: 20.sp,
+                                    height: 20.sp,
+                                    child: CircularProgressIndicator(
+                                      color: AppColorsController().buttonRedColor,
+                                      strokeWidth: 1.5,
+                                    )),
+                              ): Center(
+                                child: Icon(
+                                  Icons.arrow_upward,
+                                  color: AppColorsController().buttonRedColor,
+                                ),
+                              ),
+                              loadingIcon: Center(
+                                child: Container(
+                                    width: 20.sp,
+                                    height: 20.sp,
+                                    child: CircularProgressIndicator(
+                                      color: AppColorsController().buttonRedColor,
+                                      strokeWidth: 1.5,
+                                    )),
+                              ),
+                              canLoadingIcon: Center(
+                                child: Icon(
+                                  Icons.change_circle_sharp,
+                                  color: AppColorsController().buttonRedColor,
+                                  size: 30.sp,
+                                ),
+                              ),
                               canLoadingText: "",
                               loadingText: "",
-                              textStyle: TextStyle(color: AppColorsController().white),
+                              textStyle:
+                                  TextStyle(color: AppColorsController().white),
                             ),
                             onLoading: _onLoading,
                             child: BlocConsumer<AdsCubit, AdsState>(
@@ -172,11 +244,15 @@ child: Container(
                                   setState(() {
                                     loadingLodar = false;
                                   });
+
+
                                 },
                                 builder: (context, state) {
                                   print("Here" + state.toString());
 
-                                  final adsState = state.getMyFavouriteAdsState;
+                                  final adsState = removeItem? state.unFavouriteAdState: state.getMyFavouriteAdsState;
+                                  // final adsState =  state.getMyFavouriteAdsState;
+
 
                                   print("Here" + adsState.toString());
                                   if (adsState is BaseFailState) {
@@ -191,17 +267,58 @@ child: Container(
                                     );
                                   }
 
+
                                   if (loading == true &&
                                       (adsState
                                           is GetAllMyFavouriteAdsSuccessState)) {
-                                     data = (state.getMyFavouriteAdsState
+                                    data = (state.getMyFavouriteAdsState
                                             as GetAllMyFavouriteAdsSuccessState)
                                         .ads;
+                                    addFromFavorite? items:
                                     items.addAll(data.data!);
                                     loading = false;
-                                    return items.isNotEmpty && loading ==false? _buildWithGridViewBody():  loading ==true?Container():Center(child: Container(child: Text('لايوجد إعلانات في المفضلة'),),);
+                                    return items.isNotEmpty && loading == false
+                                        ? _buildWithGridViewBody()
+                                        : loading == true
+                                            ? _buildWithGridViewBody()
+                                            : Center(
+                                                child: Container(
+                                                  child: Text(
+                                                      'لايوجد إعلانات في المفضلة'),
+                                                ),
+                                              );
                                   }
-                                  return items.isNotEmpty && loading ==false? _buildWithGridViewBody(): loading ==true?Container():Center(child: Container(child: Text('لايوجد إعلانات في المفضلة'),),);
+                                  //
+                                  // if (loading == true &&
+                                  //     (adsState
+                                  //     is UnFavouriteAdSuccessState)) {
+                                  //   items =[];
+                                  //   data = (state.getMyFavouriteAdsState
+                                  //   as GetAllMyFavouriteAdsSuccessState)
+                                  //       .ads;
+                                  //   items.addAll(data.data!);
+                                  //   loading = false;
+                                  //   return items.isNotEmpty && loading == false
+                                  //       ? _buildWithGridViewBody()
+                                  //       : loading == true
+                                  //       ? Container()
+                                  //       : Center(
+                                  //     child: Container(
+                                  //       child: Text(
+                                  //           'لايوجد إعلانات في المفضلة'),
+                                  //     ),
+                                  //   );
+                                  // }
+                                  return items.isNotEmpty && loading == false
+                                      ? _buildWithGridViewBody()
+                                      : loading == true
+                                          ? _buildWithGridViewBody()
+                                          : Center(
+                                              child: Container(
+                                                child: Text(
+                                                    'لايوجد إعلانات في المفضلة'),
+                                              ),
+                                            );
                                 }),
                           ),
                         ),
@@ -221,6 +338,7 @@ child: Container(
       // bottomSheet: bottomNavigationBarWidget(),
     );
   }
+
   //
   // _buildBody() {
   //   return ListView.separated(
@@ -315,13 +433,35 @@ child: Container(
   // }
 
   _buildWithGridViewBody() {
-    return Padding(
-      padding:  EdgeInsets.all(12.sp),
-      child:  GridView.builder(
-        itemCount:  items.length,
+    return    Padding(
+      padding: EdgeInsets.all(12.sp),
+      child: GridView.builder(
+        itemCount: items.length,
         shrinkWrap: true,
-
         itemBuilder: (context, index) {
+          if (categoriesBloc.isJobs(items[index].category_title ?? '')) {
+
+            return JobAdCard(
+              // weNeedJustImage: true,
+              // height: MediaQuery.sizeOf(context).height * 0.23,
+              // height: 250.sp,
+              isUseGridView: true,
+              isFromFavoritePage: true,
+              onChangedLoaderFavourite: _makeLoaderChanged,
+              adsIdFavourite: items[index].ad_id!,
+              onChangedFavourite: _makeFavouriteChanged,
+              indexFavourite: index,
+              width: MediaQuery.sizeOf(context).width * 0.85,
+              data: items[index],
+              onPress: () {
+                DIManager.findNavigator().pushNamed(ItemsDetailsPage.routeName,
+                    arguments: ItemsArgs(
+                        id: items[index].ad_id ?? 0,
+                        categoryId: items[index].category_id ?? 0,type: 'jobAds'));
+              },
+            );
+          }
+
           // if (categoriesBloc.isJobs(data?.?[index].category_title ?? '')) {
           //
           //   return JobAdCard(
@@ -337,40 +477,22 @@ child: Container(
           //       );
           //     },
           //   );
-          // }     // if (categoriesBloc.isJobs(data?.?[index].category_title ?? '')) {
-          //
-          //   return JobAdCard(
-          //     weNeedJustImage: true,
-          //     // height: MediaQuery.sizeOf(context).height * 0.23,
-          //     // height: 250.sp,
-          //     width: MediaQuery.sizeOf(context).width * 0.85,
-          //     data: data?.active_ads?[index],
-          //     onPress: () {
-          //       DIManager.findNavigator().pushNamed(
-          //         ItemsDetailsPage.routeName,
-          //         arguments: ItemsArgs(id: data?.active_ads?[index].ad_id ?? 0),
-          //       );
-          //     },
-          //   );
           // }
-        return HomeItemsFavorite(
-onChangedLoaderFavourite: _makeLoaderChanged,
-            adsIdFavourite: items[index].id!,
-            onChangedFavourite:_makeFavouriteChanged ,
+          return  HomeItemsFavorite(
+            onChangedLoaderFavourite: _makeLoaderChanged,
+            adsIdFavourite: items[index].ad_id!,
+            onChangedFavourite: _makeFavouriteChanged,
             indexFavourite: index,
-
             onPress: () {
-              DIManager.findNavigator()
-                  .pushNamed(ItemsDetailsPage.routeName,
+              DIManager.findNavigator().pushNamed(ItemsDetailsPage.routeName,
                   arguments: ItemsArgs(
-                    id: items[index].ad_id??0,categoryId: items[index].category_id ??0
-                  ));
+                      id: items[index].ad_id ?? 0,
+                      categoryId: items[index].category_id ?? 0));
             },
             data: items[index],
           );
         },
-        gridDelegate:
-        SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisExtent: 210.sp,
           crossAxisSpacing: 6.sp,
@@ -380,6 +502,4 @@ onChangedLoaderFavourite: _makeLoaderChanged,
       ),
     );
   }
-
-
 }

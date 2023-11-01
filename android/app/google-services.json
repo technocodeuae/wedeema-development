@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "226657059684",
-    "project_id": "waddema-8ebc5",
-    "storage_bucket": "waddema-8ebc5.appspot.com"
+    "project_number": "187490660983",
+    "project_id": "wadeema-b0b70",
+    "storage_bucket": "wadeema-b0b70.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:226657059684:android:70eb6f65d570fbad00b071",
+        "mobilesdk_app_id": "1:187490660983:android:8dc8b191c3e8142c8f0c72",
         "android_client_info": {
           "package_name": "com.technocode.wadeema"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "226657059684-8vtp3rhpnsv8ucag8lhirs2shnra2fv1.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAU_JB4XVn9U9lz2_4DEJr615MkXEQaAtU"
+          "current_key": "AIzaSyDmKbHJcbX4in8TlwO5GTSV6Psz30m2DG4"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "226657059684-88oumd5h2b2ubphs6ohra1do7g59jom3.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

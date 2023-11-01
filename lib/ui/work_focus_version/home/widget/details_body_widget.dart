@@ -34,7 +34,7 @@ class DetailsBodyWidget extends StatefulWidget {
   final Function(bool)? onPressedLoader;
   final Function(bool)? onPressedAddComment;
 
-  const DetailsBodyWidget({
+  const  DetailsBodyWidget({
     Key? key,
     this.onPressedLike,
     this.onPressedFavourite,

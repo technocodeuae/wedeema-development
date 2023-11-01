@@ -62,10 +62,11 @@ class SeeMorePropertiesWidget extends StatelessWidget {
                             color:
                             AppColorsController()
                                 .textPrimaryColor,
+                            fontSize: AppFontSize.fontSize_14,
                             fontWeight:
                             AppFontWeight
-                                .midLight,
-                          ),
+                                .midLight,overflow: TextOverflow.ellipsis,
+                          ),maxLines: 1,
                         ),
                         SizedBox(
                           width: 8.sp,
@@ -79,11 +80,11 @@ class SeeMorePropertiesWidget extends StatelessWidget {
                               .copyWith(
                             color:
                             AppColorsController()
-                                .black,
+                                .black, fontSize: AppFontSize.fontSize_13,
                             fontWeight:
                             AppFontWeight
-                                .midLight,
-                          ),
+                                .midLight,overflow: TextOverflow.ellipsis,
+                          ),maxLines: 1,
                         ),
                       ],
                     ),
