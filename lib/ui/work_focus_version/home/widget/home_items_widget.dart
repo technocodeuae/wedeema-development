@@ -57,7 +57,8 @@ class HomeItemsWidget extends StatelessWidget {
             foregroundColor: AppColorsController().dropdown,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(16)))),
-        child: weDontHaveImage ?
+        child: data?.ad_images?[0].name?.toString() ==
+            '/img/ad/default.png' ?
 
 
         Column(

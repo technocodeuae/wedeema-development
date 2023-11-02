@@ -194,7 +194,7 @@ class _MyFavouritePageState extends State<MyFavouritePage> {
                                   TextStyle(color: AppColorsController().white),
                             ),
                             footer: ClassicFooter(
-                              height: 80,
+                              height: 80.sp,
                               noMoreIcon: Center(
                                 child: Icon(
                                   Icons.ac_unit,

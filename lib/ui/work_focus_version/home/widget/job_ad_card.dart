@@ -153,6 +153,7 @@ class _JobAdCardState extends State<JobAdCard> {
             ):Container(),
 
             widget.isUseGridView ? Spacer() : Container(),
+            // Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

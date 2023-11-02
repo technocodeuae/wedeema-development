@@ -79,15 +79,15 @@ class _ViewAllPageState extends State<ViewAllPage> {
     } else if (widget.arg.type == 6) {
       adsBloc.getSearchFilterAds(
         page,
-        widget.arg.title!,
+        widget.arg.title!,widget.arg.category_id.toString() ?? ''
       );
       loading = true;
     } else if (widget.arg.type == 4) {
       adsBloc.getAllFilterAds(
-          page, widget.arg.formData!, widget.arg.category_id!);
+          page, widget.arg.formData!, int.parse(widget.arg.category_id!.toString()));
       loading = true;
     } else if (widget.arg.type == 3) {
-      adsBloc.getCategoryAds(page, widget.arg.category_id!);
+      adsBloc.getCategoryAds(page, int.parse(widget.arg.category_id!.toString()));
       loading = true;
     }
 
@@ -112,15 +112,15 @@ class _ViewAllPageState extends State<ViewAllPage> {
     } else if (widget.arg.type == 6) {
       adsBloc.getSearchFilterAds(
         page,
-        widget.arg.title ?? '',
+        widget.arg.title ?? '',widget.arg.category_id!
       );
       loading = true;
     } else if (widget.arg.type == 4) {
       adsBloc.getAllFilterAds(
-          page, widget.arg.formData ?? {}, widget.arg.category_id ?? -1);
+          page, widget.arg.formData ?? {},int.parse(widget.arg.category_id!.toString())  );
       loading = true;
     } else if (widget.arg.type == 3) {
-      adsBloc.getCategoryAds(page, widget.arg.category_id ?? -1);
+      adsBloc.getCategoryAds(page, int.parse(widget.arg.category_id!.toString()));
       loading = true;
     }
 
@@ -168,15 +168,15 @@ class _ViewAllPageState extends State<ViewAllPage> {
     } else if (widget.arg.type == 6) {
       adsBloc.getSearchFilterAds(
         page,
-        widget.arg.title ?? '',
+        widget.arg.title ?? '',widget.arg.category_id ?? ''
       );
       loading = true;
     } else if (widget.arg.type == 4) {
       adsBloc.getAllFilterAds(
-          page, widget.arg.formData ?? {}, widget.arg.category_id ?? -1);
+          page, widget.arg.formData ?? {}, int.parse(widget.arg.category_id!.toString()));
       loading = true;
     } else if (widget.arg.type == 3) {
-      adsBloc.getCategoryAds(page, widget.arg.category_id ?? -1);
+      adsBloc.getCategoryAds(page, int.parse(widget.arg.category_id!.toString()));
       loading = true;
     }
   }
@@ -736,6 +736,7 @@ class _ViewAllPageState extends State<ViewAllPage> {
               },
             )
                 : HomeItemsWidget(
+              // weDontHaveImage: true,
               onPress: () {
                 DIManager.findNavigator()
                     .pushNamed(ItemsDetailsPage.routeName,

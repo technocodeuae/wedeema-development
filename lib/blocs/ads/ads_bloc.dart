@@ -34,9 +34,9 @@ class AdsCubit extends Cubit<AdsState> {
       );
     }
   }
-  Future<void> getSearchFilterAds(int page,String title) async {
+  Future<void> getSearchFilterAds(int page,String title,String category_id) async {
     emit(state.copyWith(getAllSearchAdsState: BaseLoadingState()));
-    final result = await adsRepo.getSearchFilterAds(page, title);
+    final result = await adsRepo.getSearchFilterAds(page, title,category_id);
     print('02198398129083901283098129038920183098129038012830981209382109321908');
     print(result.data!.data!);
     print('02198398129083901283098129038920183098129038012830981209382109321908');
@@ -47,7 +47,7 @@ class AdsCubit extends Cubit<AdsState> {
         state.copyWith(
           getAllSearchAdsState: BaseFailState(
             result.error,
-            callback: () => this.getSearchFilterAds(page, title),
+            callback: () => this.getSearchFilterAds(page, title,category_id),
           ),
         ),
       );

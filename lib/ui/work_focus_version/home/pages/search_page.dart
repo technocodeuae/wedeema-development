@@ -31,6 +31,7 @@ import '../../general/text_fields/text_field_widget.dart';
 import '../arg/items_args.dart';
 import '../arg/view_all_args.dart';
 
+import '../widget/looking_for_widget_search.dart';
 import '../widget/looking_widget_shimmer.dart';
 import 'items_details_page.dart';
 
@@ -73,20 +74,20 @@ class _SearchPageState extends State<SearchPage> {
     items = [];
 
     adsBloc.getSearchFilterAds(
-        page, titleSearch);
+        page, titleSearch,categoriesBloc.currentSelect2 == 0 ? '':categoriesBloc.currentSelect2.toString()  );
 
     setState(() {});
     _refreshController.refreshCompleted();
   }
 
-  void _onLoading() async {
+  void _onLoading() async {print('sadsadsadsadsadsadsaadsadsasdsa');
     // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 20));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     page++;
-
+print('sadsadsadsadsadsadsaadsadsasdsa');
     adsBloc.getSearchFilterAds(
-        page, titleSearch);
+        page, titleSearch,categoriesBloc.currentSelect2 == 0 ? '':categoriesBloc.currentSelect2.toString());
     loading = true;
     // loadingLiner = true;
 
@@ -132,6 +133,7 @@ class _SearchPageState extends State<SearchPage> {
   _getData(){
     categoriesBloc.getMainCategories();
     dataStore.getSearchHistory().then((value) {
+      // if(searchH)
       setState(() {
         searchHistory = value;
       });
@@ -148,7 +150,13 @@ class _SearchPageState extends State<SearchPage> {
 
   bool isSelectAll = true;
 
+  void onRefresh(){
+    print('asdsadsadsadsadsadsadsadsadasdsadasasadsas');
+  }
+  List<CategoriesEntity> firstList = [];
 
+  bool isSelectAll1 = true;
+  int currentSelect = 0;
   @override
   Widget build(BuildContext context) {
 
@@ -246,12 +254,112 @@ class _SearchPageState extends State<SearchPage> {
                       isLoadingCategories = false;
 
                       return Column(
-                        children: [
-                          BuildLookingSearch(
-                              name: translate(
-                                  "are_you_looking_for"),
-                              lookingList: categories
-                          ),
+                        children: [ BlocConsumer<CategoriesCubit, CategoriesState>(
+                          bloc: categoriesBloc,
+                          listener: (context, state) {
+
+                            if(state is SendCurrentSelectSuccessState){
+                              categoriesBloc.sendCurrentSelect(currentSelect: currentSelect);
+
+                            }
+                          },
+                          builder: (context, state) {
+                            return Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.0.sp),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        width: MediaQuery.of(context).size.width,
+                                        height: 40.sp,
+                                        // child: ListView.separated(
+                                        //   physics: BouncingScrollPhysics(),
+                                        //   itemBuilder: (context, index) {
+                                        //     return LookingForWidgetSearch(
+                                        //       onPressed: () {
+                                        //         if(firstList[index].hasChild !=0) {
+                                        //           DIManager.findNavigator().pushNamed(
+                                        //             LookingForDetailsPage.routeName,
+                                        //             arguments:
+                                        //             ItemsArgs(title: firstList[index].title,
+                                        //                 id: firstList[index].category_id,
+                                        //                 childCount: firstList[index].hasChild,indexPage: 0),
+                                        //           );
+                                        //         }
+                                        //       },
+                                        //       data: firstList[index],
+                                        //     );
+                                        //   },
+                                        //   separatorBuilder: (context, index) {
+                                        //     return SizedBox(
+                                        //       width: 5.sp,
+                                        //     );
+                                        //   },
+                                        //   itemCount: firstList.length,
+                                        //   scrollDirection: Axis.horizontal,
+                                        // ),
+                                        child: SingleChildScrollView(
+                                          physics: BouncingScrollPhysics(),
+                                          scrollDirection: Axis.horizontal,
+                                          child: Row(
+                                            children: [
+                                              LookingForWidgetSearch(
+                                                currentSelect: currentSelect,
+                                                isSelectAll: isSelectAll,
+                                                onPressed: () {
+                                                  setState(() {
+                                                    currentSelect = 0;
+                                                    categoriesBloc.sendCurrentSelect(currentSelect: currentSelect);
+                                                    // widget.currentSelect = currentSelect;
+                                                    isSelectAll = true;
+                                                  });_onRefresh();
+                                                  print(currentSelect);
+                                                },
+                                                data: CategoriesEntity(title: "الجميع"),
+                                              ),
+                                              SizedBox(
+                                                width: 7.sp,
+                                              ),
+                                              for (int index = 0;
+                                              index < categories.length;
+                                              index++) ...[
+                                                LookingForWidgetSearch(
+                                                  currentSelect: currentSelect,
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      currentSelect = categories[index].category_id!;
+                                                      isSelectAll = false;
+                                                      categoriesBloc.sendCurrentSelect(currentSelect: currentSelect);
+                                                    });
+                                                    _onRefresh();
+                                                    print(currentSelect);
+                                                  },
+                                                  data: categories[index],
+                                                ),
+                                                SizedBox(
+                                                  width: 7.sp,
+                                                ),
+                                              ]
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                          // BuildLookingSearch(
+                          //   onRefresh: (){
+                          //     print('sadsadasdasdsadsadsadsadsadsadasdsadasdsadasdsa');
+                          //   },
+                          //     name: translate(
+                          //         "are_you_looking_for"),
+                          //     lookingList: categories,
+                          // ),
                           SizedBox(height: 4.sp),
                         ],
                       );
@@ -348,13 +456,113 @@ class _SearchPageState extends State<SearchPage> {
 
                     Column(
                       children: [
-                        BuildLookingSearch(
+                        BlocConsumer<CategoriesCubit, CategoriesState>(
+                          bloc: categoriesBloc,
+                          listener: (context, state) {
 
-                          name: translate(
-                              "are_you_looking_for"),
-                          lookingList: categories,
+                            if(state is SendCurrentSelectSuccessState){
+                              categoriesBloc.sendCurrentSelect(currentSelect: currentSelect);
+
+                            }
+                          },
+                          builder: (context, state) {
+                            return Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.0.sp),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        width: MediaQuery.of(context).size.width,
+                                        height: 40.sp,
+                                        // child: ListView.separated(
+                                        //   physics: BouncingScrollPhysics(),
+                                        //   itemBuilder: (context, index) {
+                                        //     return LookingForWidgetSearch(
+                                        //       onPressed: () {
+                                        //         if(firstList[index].hasChild !=0) {
+                                        //           DIManager.findNavigator().pushNamed(
+                                        //             LookingForDetailsPage.routeName,
+                                        //             arguments:
+                                        //             ItemsArgs(title: firstList[index].title,
+                                        //                 id: firstList[index].category_id,
+                                        //                 childCount: firstList[index].hasChild,indexPage: 0),
+                                        //           );
+                                        //         }
+                                        //       },
+                                        //       data: firstList[index],
+                                        //     );
+                                        //   },
+                                        //   separatorBuilder: (context, index) {
+                                        //     return SizedBox(
+                                        //       width: 5.sp,
+                                        //     );
+                                        //   },
+                                        //   itemCount: firstList.length,
+                                        //   scrollDirection: Axis.horizontal,
+                                        // ),
+                                        child: SingleChildScrollView(
+                                          physics: BouncingScrollPhysics(),
+                                          scrollDirection: Axis.horizontal,
+                                          child: Row(
+                                            children: [
+                                              LookingForWidgetSearch(
+                                                currentSelect: currentSelect,
+                                                isSelectAll: isSelectAll,
+                                                onPressed: () {
+                                                  setState(() {
+                                                  currentSelect = 0;
+                                                  categoriesBloc.sendCurrentSelect(currentSelect: currentSelect);
+                                                  // widget.currentSelect = currentSelect;
+                                                  isSelectAll = true;
+                                                  });_onRefresh();
+                                                  print(currentSelect);
+                                                },
+                                                data: CategoriesEntity(title: "الجميع"),
+                                              ),
+                                              SizedBox(
+                                                width: 7.sp,
+                                              ),
+                                              for (int index = 0;
+                                              index < categories.length;
+                                              index++) ...[
+                                                LookingForWidgetSearch(
+                                                  currentSelect: currentSelect,
+                                                  onPressed: () {
+
+                                                    setState(() {
+                                                      currentSelect = categories[index].category_id!;
+                                                      isSelectAll = false;
+                                                      categoriesBloc.sendCurrentSelect(currentSelect: currentSelect);
+                                                    });
+                                                    _onRefresh();
+                                                    print(currentSelect);
+                                                  },
+                                                  data: categories[index],
+                                                ),
+                                                SizedBox(
+                                                  width: 7.sp,
+                                                ),
+                                              ]
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
                         ),
-                        // SizedBox(height: 4.sp),
+                        // BuildLookingSearch(
+                        //
+                        //   name: translate(
+                        //       "are_you_looking_for"),
+                        //   lookingList: categories,
+                        //
+                        // ),
+                        SizedBox(height: 4.sp),
                       ],
                     );
                   },
@@ -362,6 +570,7 @@ class _SearchPageState extends State<SearchPage> {
               ),
 Expanded(
                 child: Container(
+
                   child: SmartRefresher(
                     enablePullDown: false,
                     enablePullUp: true,
@@ -416,6 +625,7 @@ Expanded(
                       TextStyle(color: AppColorsController().white),
                     ),
                     onLoading: _onLoading,
+
                     child:  BlocConsumer<AdsCubit, AdsState>(
                       bloc: adsBloc,
                       listener: (context, state) {
@@ -729,7 +939,11 @@ categoryId: items[index].category_id??0,
               hintColor: AppColorsController().greyTextColor,
 
               onFieldSubmitted: (value) {
-                _saveSearchValue(value);
+                if(!searchHistory.contains(value))
+                {
+                  _saveSearchValue(value);
+                }
+
 
                setState(() {
                  titleSearch =value;
@@ -795,7 +1009,7 @@ categoryId: items[index].category_id??0,
                         arguments: ViewAllArgs(
                           type: 3,
                           title: searchValue,
-                          category_id: categories[index].category_id,
+                          category_id: categories[index].category_id.toString(),
                         ),
                       ).then((value) => _getData());
                     },

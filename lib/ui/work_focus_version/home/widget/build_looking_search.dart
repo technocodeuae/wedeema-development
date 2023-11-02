@@ -18,11 +18,12 @@ import 'looking_for_widget_search.dart';
 
 class BuildLookingSearch extends StatefulWidget {
   final String name;
+  void onRefresh;
 
 
   List<CategoriesEntity> lookingList;
 
-  BuildLookingSearch({Key? key, required this.name, required this.lookingList,})
+  BuildLookingSearch({Key? key, required this.name, required this.lookingList,this.onRefresh})
       : super(key: key);
 
   @override
@@ -33,7 +34,7 @@ class _BuildLookingSearchState extends State<BuildLookingSearch> {
   List<CategoriesEntity> firstList = [];
 
   bool isSelectAll = true;
-  int currentSelect = 100;
+  int currentSelect = 0;
   final categoriesBloc = DIManager.findDep<CategoriesCubit>();
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,8 @@ class _BuildLookingSearchState extends State<BuildLookingSearch> {
         listener: (context, state) {
 
           if(state is SendCurrentSelectSuccessState){
-            categoriesBloc.sendData(currentSelect: currentSelect);
+            categoriesBloc.sendCurrentSelect(currentSelect: currentSelect);
+
           }
         },
     builder: (context, state) {
@@ -92,9 +94,9 @@ class _BuildLookingSearchState extends State<BuildLookingSearch> {
                           currentSelect: currentSelect,
                           isSelectAll: isSelectAll,
                           onPressed: () {
-                            setState(() {
+                            setState(() {  widget.onRefresh;
                               currentSelect = 0;
-                              categoriesBloc.sendData(currentSelect: currentSelect);
+                              categoriesBloc.sendCurrentSelect(currentSelect: currentSelect);
                               // widget.currentSelect = currentSelect;
                               isSelectAll = true;
                             });
@@ -114,7 +116,7 @@ class _BuildLookingSearchState extends State<BuildLookingSearch> {
                               setState(() {
                                 currentSelect = firstList[index].category_id!;
                                 isSelectAll = false;
-                                categoriesBloc.sendData(currentSelect: currentSelect);
+                                categoriesBloc.sendCurrentSelect(currentSelect: currentSelect);
                               });
                               print(currentSelect);
                             },

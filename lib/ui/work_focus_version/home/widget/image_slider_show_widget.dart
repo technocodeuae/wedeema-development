@@ -1,6 +1,7 @@
 import 'package:blur/blur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:share/share.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_consts.dart';
@@ -51,7 +52,15 @@ class _ImageSliderShowWidgetState extends State<ImageSliderShowWidget> {
       children: [
         Column(
           children: [
-            Container(
+            widget.images![0].name! == '/img/ad/default.png'?    Container(
+              width: 214.sp,
+              height: 214.sp,
+              child: SvgPicture.asset(
+                "assets/images/trace.svg",
+                width: 20.sp,
+                height: 214.sp, fit: BoxFit.scaleDown,
+              ),
+            ):   Container(
               height: 214.sp,
               width: width,
               child: PageView.builder(
@@ -105,6 +114,7 @@ class _ImageSliderShowWidgetState extends State<ImageSliderShowWidget> {
                           padding: const EdgeInsets.symmetric(horizontal: 1),
                           child: InkWell(
                             onTap: () {
+
                               _pageViewController.animateToPage(index,
                                   duration: const Duration(milliseconds: 300),
                                   curve: Curves.easeIn);

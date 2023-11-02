@@ -68,7 +68,7 @@ class _ViewAllSearchState extends State<ViewAllSearch> {
     items = [];
 
     adsBloc.getSearchFilterAds(
-        page, widget.arg.title!);
+        page, widget.arg.title!,widget.arg.category_id ?? '');
 
     setState(() {});
     _refreshController.refreshCompleted();
@@ -81,7 +81,7 @@ class _ViewAllSearchState extends State<ViewAllSearch> {
     page++;
 
     adsBloc.getSearchFilterAds(
-        page, widget.arg.title ?? '');
+        page, widget.arg.title ?? '',widget.arg.category_id ?? '' );
     loading = true;
 
     if (mounted) setState(() {});
@@ -118,7 +118,7 @@ class _ViewAllSearchState extends State<ViewAllSearch> {
     loadingLoader = true;
 
     adsBloc.getSearchFilterAds(
-        page, widget.arg.title ?? '');
+        page, widget.arg.title ?? '',widget.arg.category_id??'');
     loading = true;
   }
 

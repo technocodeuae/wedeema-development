@@ -66,7 +66,7 @@ int _currentIndex = 0;
     print(_currentIndex);
     return Padding(
       padding:
-          EdgeInsets.only(left: 30.sp, right: 30.sp, bottom: 7.sp, top: 5.sp),
+          EdgeInsets.only(left: 30.sp, right: 30.sp, bottom: 18.h, top: 5.sp),
       child: Stack(
         children: <Widget>[
           Container(

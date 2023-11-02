@@ -204,7 +204,7 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                         DIManager.findNavigator().pushNamed(
                           ViewAllPage.routeName,
                           arguments: ViewAllArgs(
-                            category_id: widget.category_id,
+                            category_id: widget.category_id.toString(),
                             type: widget.type,
                           ),
                         );
@@ -339,8 +339,7 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: JobAdCard(
-                                  height:
-                                      MediaQuery.sizeOf(context).height * 0.21,
+                                  height:175.h,     isUseGridView: true,
                                   width:
                                       MediaQuery.sizeOf(context).width * 0.85,
                                   data: itemsList[i],
@@ -360,8 +359,8 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: JobAdCard(
-                                  height:
-                                      MediaQuery.sizeOf(context).height * 0.21,
+                                  height:175.h,
+                                  isUseGridView: true,
                                   width:
                                       MediaQuery.sizeOf(context).width * 0.85,
                                   data: itemsList[i],
@@ -543,7 +542,7 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                           DIManager.findNavigator().pushNamed(
                             ViewAllPage.routeName,
                             arguments: ViewAllArgs(
-                              category_id: widget.category_id,
+                              category_id: widget.category_id.toString(),
                               type: widget.type,
                             ),
                           );

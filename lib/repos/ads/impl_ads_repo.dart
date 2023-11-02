@@ -33,8 +33,8 @@ class AdsRepo extends BaseRepository implements AdsFacade {
   }
 
   @override
-  Future<Result<AdsEntity>> getSearchFilterAds(int page,String title,) async {
-    final res = await _aRD.getSearchFilterAds(page,title);
+  Future<Result<AdsEntity>> getSearchFilterAds(int page,String title,String category_id) async {
+    final res = await _aRD.getSearchFilterAds(page,title,category_id);
     return mapModelToEntity(res);
   }
 

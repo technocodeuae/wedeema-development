@@ -63,7 +63,8 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
     print('widget.typeAds :${widget.typeAds}');
     return Column(
       children: [
-        widget.typeAds == 'jobAds' || widget.typeAds == 'adsWithoutImage' || widget.categoryId ==27? Container(): ImageSliderShowWidget(
+        widget.typeAds == 'jobAds' || widget.typeAds == 'adsWithoutImage' || widget.categoryId ==27?
+        Container(): ImageSliderShowWidget(
           images: widget.data?.images,
           is_favorite: widget.data?.ad?.is_favorite,
           ad_id: widget.data?.ad?.ad_id,
