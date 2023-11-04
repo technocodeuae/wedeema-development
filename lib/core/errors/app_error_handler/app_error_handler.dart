@@ -20,6 +20,8 @@ class AppErrorHandler {
     runZonedGuarded<Future<void>>(() async {
       runAppFunction();
     }, (Object error, StackTrace stackTrace) {
+
+      print(error.toString());
     });
   }
 }

@@ -121,6 +121,9 @@ void main() async {
   _configureFirebaseMessaging();
 
 
+       // runApp(App());
+
+//
   AppErrorHandler.dartErrorCatcher(
 
 

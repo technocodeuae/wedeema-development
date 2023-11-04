@@ -17,7 +17,7 @@ Map<String, dynamic> _$AdsModelToJson(AdsModel instance) => <String, dynamic>{
 ItemsAdsModel _$ItemsAdsModelFromJson(Map<String, dynamic> json) => ItemsAdsModel(
       id: json['id'] as int?,
       ad_id: json['ad_id'] as int?,
-      language_id: json['language_id'] as int?,
+      language_id: json['language_id'] as int?,image_name: json['image_name'] as String?,
       title: json['title'] as String?,
       short_description: json['short_description'] as String?,
       full_description: json['full_description'] as String?,
@@ -85,6 +85,7 @@ Map<String, dynamic> _$ItemsAdsModelToJson(ItemsAdsModel instance) => <String, d
       'likes': instance.likes,
       'ad_evaluations': instance.ad_evaluations,
       'sharing_link': instance.sharing_link,
+      'image_name': instance.image_name,
     };
 
 AdImagesModel _$AdImagesModelFromJson(Map<String, dynamic> json) => AdImagesModel(

@@ -75,7 +75,7 @@ class CategoriesCubit extends Cubit<CategoriesState> {
     }
   }
 
-  int? currentSelect2 =0;
+  int currentSelect2 =0;
   void sendCurrentSelect({required int currentSelect}){
     currentSelect2= currentSelect;
     emit(state.copyWith(SendCurrentSelect: SendCurrentSelectSuccessState()));

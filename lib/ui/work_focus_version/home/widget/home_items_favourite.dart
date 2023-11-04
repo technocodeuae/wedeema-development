@@ -251,7 +251,12 @@ class _HomeItemsFavoriteState extends State<HomeItemsFavorite> {
           height: 102.sp,
           fit: BoxFit.cover,
         )
-            : Container(),
+            :  Image.network(
+          AppConsts.IMAGE_URL + (widget.data?.image_name.toString() ?? ''),
+          width: widget.width ?? 200.sp,
+          height: 102.sp,
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

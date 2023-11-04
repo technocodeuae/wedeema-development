@@ -12,7 +12,7 @@ import '../../ui/work_focus_version/ads/args/argument_policy.dart';
 abstract class AdsFacade {
 
   Future<Result<AdsEntity>> getAllFilterAds(int page, List<Map<String,dynamic>> formData, int categoryId);
-  Future<Result<AdsEntity>> getSearchFilterAds(int page,String title,String category_id);
+  Future<Result<AdsEntity>> getSearchFilterAds(int page,String title,int category_id);
   Future<Result<AdsEntity>> getCategoryAds(int page,int categoryId);
   Future<Result<AdsEntity>> getAllRecentAds(int page);
   Future<Result<AdsEntity>> getAllPopularAds(int page);

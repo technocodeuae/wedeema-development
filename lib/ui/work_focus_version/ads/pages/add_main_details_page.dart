@@ -752,7 +752,7 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
                   arguments: ViewAllArgs(
                     type: 4,
                     formData: categoriesBloc.getPropertyData(),
-                    category_id: widget.argumentCategory?.id.toString(),
+                    category_id: widget.argumentCategory?.id!,
                   ),
                 );
                 return;

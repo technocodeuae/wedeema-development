@@ -74,7 +74,7 @@ class _SearchPageState extends State<SearchPage> {
     items = [];
 
     adsBloc.getSearchFilterAds(
-        page, titleSearch,categoriesBloc.currentSelect2 == 0 ? '':categoriesBloc.currentSelect2.toString()  );
+        page, titleSearch,categoriesBloc.currentSelect2 );
 
     setState(() {});
     _refreshController.refreshCompleted();
@@ -87,7 +87,7 @@ class _SearchPageState extends State<SearchPage> {
     page++;
 print('sadsadsadsadsadsadsaadsadsasdsa');
     adsBloc.getSearchFilterAds(
-        page, titleSearch,categoriesBloc.currentSelect2 == 0 ? '':categoriesBloc.currentSelect2.toString());
+        page, titleSearch,categoriesBloc.currentSelect2);
     loading = true;
     // loadingLiner = true;
 
@@ -1009,7 +1009,7 @@ categoryId: items[index].category_id??0,
                         arguments: ViewAllArgs(
                           type: 3,
                           title: searchValue,
-                          category_id: categories[index].category_id.toString(),
+                          category_id: categories[index].category_id!,
                         ),
                       ).then((value) => _getData());
                     },

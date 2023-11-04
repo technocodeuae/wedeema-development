@@ -79,15 +79,15 @@ class _ViewAllPageState extends State<ViewAllPage> {
     } else if (widget.arg.type == 6) {
       adsBloc.getSearchFilterAds(
         page,
-        widget.arg.title!,widget.arg.category_id.toString() ?? ''
+        widget.arg.title!,widget.arg.category_id!
       );
       loading = true;
     } else if (widget.arg.type == 4) {
       adsBloc.getAllFilterAds(
-          page, widget.arg.formData!, int.parse(widget.arg.category_id!.toString()));
+          page, widget.arg.formData!, widget.arg.category_id!);
       loading = true;
     } else if (widget.arg.type == 3) {
-      adsBloc.getCategoryAds(page, int.parse(widget.arg.category_id!.toString()));
+      adsBloc.getCategoryAds(page, widget.arg.category_id!);
       loading = true;
     }
 
@@ -97,7 +97,7 @@ class _ViewAllPageState extends State<ViewAllPage> {
 
   void _onLoading() async {
     // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 30));
+    await Future.delayed(Duration(milliseconds: 300));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     page++;
     if (widget.arg.type == 0) {
@@ -117,10 +117,10 @@ class _ViewAllPageState extends State<ViewAllPage> {
       loading = true;
     } else if (widget.arg.type == 4) {
       adsBloc.getAllFilterAds(
-          page, widget.arg.formData ?? {},int.parse(widget.arg.category_id!.toString())  );
+          page, widget.arg.formData ?? {},widget.arg.category_id! );
       loading = true;
     } else if (widget.arg.type == 3) {
-      adsBloc.getCategoryAds(page, int.parse(widget.arg.category_id!.toString()));
+      adsBloc.getCategoryAds(page, widget.arg.category_id!);
       loading = true;
     }
 
@@ -168,15 +168,15 @@ class _ViewAllPageState extends State<ViewAllPage> {
     } else if (widget.arg.type == 6) {
       adsBloc.getSearchFilterAds(
         page,
-        widget.arg.title ?? '',widget.arg.category_id ?? ''
+        widget.arg.title ?? '',widget.arg.category_id!
       );
       loading = true;
     } else if (widget.arg.type == 4) {
       adsBloc.getAllFilterAds(
-          page, widget.arg.formData ?? {}, int.parse(widget.arg.category_id!.toString()));
+          page, widget.arg.formData ?? {}, widget.arg.category_id!);
       loading = true;
     } else if (widget.arg.type == 3) {
-      adsBloc.getCategoryAds(page, int.parse(widget.arg.category_id!.toString()));
+      adsBloc.getCategoryAds(page, widget.arg.category_id!);
       loading = true;
     }
   }

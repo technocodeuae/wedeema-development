@@ -204,7 +204,7 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                         DIManager.findNavigator().pushNamed(
                           ViewAllPage.routeName,
                           arguments: ViewAllArgs(
-                            category_id: widget.category_id.toString(),
+                            category_id: widget.category_id,
                             type: widget.type,
                           ),
                         );
@@ -542,7 +542,7 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                           DIManager.findNavigator().pushNamed(
                             ViewAllPage.routeName,
                             arguments: ViewAllArgs(
-                              category_id: widget.category_id.toString(),
+                              category_id: widget.category_id,
                               type: widget.type,
                             ),
                           );

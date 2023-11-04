@@ -86,6 +86,7 @@ class ItemsAdsModel extends BaseModel {
   final DateTime? date_ad;
   final String? category_title;
   final String? status;
+  final String? image_name;
   final String? availability_status;
   int is_favorite;
   int is_liked;
@@ -122,6 +123,7 @@ class ItemsAdsModel extends BaseModel {
       this.is_liked = 0,
       this.user_id,
       this.category_id,
+      this.image_name,
       this.ad_evaluations});
 
   factory ItemsAdsModel.fromRawJson(String str) =>
@@ -162,7 +164,8 @@ class ItemsAdsModel extends BaseModel {
       is_favorite: this.is_favorite,
       is_liked: this.is_liked,
       likes: this.likes,category_id: this.category_id,
-      ad_evaluations: this.ad_evaluations?.map((e) => e.toEntity()).toList()
+      ad_evaluations: this.ad_evaluations?.map((e) => e.toEntity()).toList(),
+      image_name: this.image_name,
     );
   }
 }
