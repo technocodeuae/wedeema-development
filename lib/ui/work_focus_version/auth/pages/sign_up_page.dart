@@ -102,6 +102,7 @@ class _SignUpPageState extends State<SignUpPage> {
             children: [
               Column(
                 children: [
+                  SizedBox(height: 35.h,),
                   AppBarWidget(
                     flip: true,
                     child: Padding(

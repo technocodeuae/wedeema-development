@@ -57,13 +57,13 @@ class _SelectCityWidgetState extends State<SelectCityWidget> {
           if (citiesState is CitiesSuccessState) {
             final data = (state.getCitiesState as CitiesSuccessState).cities;
             return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 60.sp),
+              padding: EdgeInsets.symmetric(horizontal: 50.w),
               child: InkWell(
                 onTap: (){
                 _showBottomSheet(context,data);
                 },
                 child: Container(
-                  padding: EdgeInsets.only(bottom: 0.sp, left: 30.sp,right: 30.sp),
+                  padding: EdgeInsets.only(bottom: 0.sp, left: 30.w,right: 30.w),
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: AppColorsController().borderColor,

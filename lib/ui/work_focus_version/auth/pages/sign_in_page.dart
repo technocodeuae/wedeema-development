@@ -21,14 +21,16 @@ import '../../../../core/utils/localization/app_localizations.dart';
 import '../../../../core/utils/ui/snackbar_and_toast/snackbar_and_toast.dart';
 import '../../general/back_long_press_widget.dart';
 import '../../general/buttons/app_button.dart';
+import '../../general/icons/back_icon.dart';
 import '../../general/icons/check_icon.dart';
 import '../../general/progress_indicator/loading_column_overlay.dart';
 import '../../general/text_fields/text_field_widget.dart';
 
 class SignInPage extends StatefulWidget {
   static const routeName = '/SignInPage';
+  final int? type ;
 
-  const SignInPage({Key? key}) : super(key: key);
+  const SignInPage({Key? key, this.type }) : super(key: key);
 
   @override
   State<SignInPage> createState() => _SignInPageState();
@@ -66,13 +68,33 @@ class _SignInPageState extends State<SignInPage> {
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             child: Stack(
               children: [
+
                 Form(
                   key: _formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      SizedBox(height: 35.h,),
                       AppBarWidget(
                         flip: true,
+                        child:     widget.type == 0 ? InkWell(
+                          onTap: () {
+                            DIManager.findNavigator().pop();
+                            // if (_isFilter()) {
+                            //   DIManager.findNavigator().pop();
+                            // } else {
+                            //   if (!AppUtils.checkIfGuest(context)) {
+                            //     DIManager.findNavigator().pushReplacementNamed(
+                            //         SelectListingPage.routeName,
+                            //         arguments: {'city_id': -1});
+                            //   }
+                            // }
+                          },
+                          child: BackIcon(
+                            width: 80.sp,
+                            height: 90.sp,
+                          ),
+                        ):Container(),
                       ),
                       SizedBox(
                         height: 50.sp,

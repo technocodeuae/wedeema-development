@@ -90,7 +90,7 @@ class AppUtils {
           .showSnackBar(snackBar);
 
       DIManager.findNavigator().pushNamed(
-        SignInPage.routeName,
+        SignInPage.routeName,arguments: 0
       );
 
       return true;

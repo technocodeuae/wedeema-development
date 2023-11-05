@@ -71,7 +71,9 @@ class RouteGenerator {
         return SplashPage();
 
       case SignInPage.routeName:
-        return SignInPage();
+        return SignInPage(
+          type: (settings.arguments as int?) ,
+        );
 
       case SignInWithPhoneNumber.routeName:
         return SignInWithPhoneNumber();

@@ -249,7 +249,7 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                                             ItemsDetailsPage.routeName,
                                             arguments: ItemsArgs(
                                               id: itemsList[i].ad_id ?? 0,
-                                              type: 'adsWithoutImage' ,
+                                              // type: 'adsWithoutImage' ,
                                             categoryId: itemsList[i].category_id ?? 0,
                                             ));
                                       },
@@ -280,7 +280,9 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                                         DIManager.findNavigator().pushNamed(
                                             ItemsDetailsPage.routeName,
                                             arguments: ItemsArgs(
-                                              id: itemsList[i].ad_id ?? 0, type: 'adsWithoutImage',categoryId: itemsList[i].category_id ?? 0,
+                                              id: itemsList[i].ad_id ?? 0,
+                                              // type: 'adsWithoutImage',
+                                              categoryId: itemsList[i].category_id ?? 0,
                                             ));
                                       },
                                       data: itemsList[i],

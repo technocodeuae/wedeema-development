@@ -73,6 +73,7 @@ class ItemsAdsEntity extends BaseEntity {
     this.ad_evaluations,
     this.category_id,
     this.image_name,
+    this.featured_image,
   });
 
   final int? id;
@@ -91,6 +92,7 @@ class ItemsAdsEntity extends BaseEntity {
   final String? city;
   final List<AdImagesEntity>? ad_images;
   final String? image_name;
+  final String? featured_image;
   final List<CategoryAdsDetailsEntity>? properties;
   final int? price;
   final dynamic average;
@@ -137,6 +139,7 @@ class ItemsAdsEntity extends BaseEntity {
     this.is_liked,
     this.category_id,
     this.image_name,
+    this.featured_image,
   ];
 
 }

@@ -111,13 +111,61 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
                             fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_14
                           ),
                         ),
-                        widget.typeAds == 'jobAds'|| widget.categoryId ==27? Container():    Text(
-                          widget.data!.ad!.price.toString() + " درهم إماراتي",
-                          style: AppStyle.smallTitleStyle.copyWith(
-                            color: AppColorsController().textPrimaryColor,
-                            fontWeight: AppFontWeight.midLight,
+
+                        if(widget.data!.properties !=null && widget.data!.properties!.isNotEmpty == true)...[
+                          for(int i = 0 ; i<widget.data!.properties!.length; i ++)...[
+                            if(widget.data!.properties![i].title!.contains('السعر من') && widget.data!.properties![i].title == 'السعر من')...[
+                              widget.typeAds == 'jobAds'|| widget.categoryId ==27 ? Container():  Text(
+                                '${widget.data!.properties![i]
+                                    .description
+                                    .toString()} درهم',
+                                style: AppStyle.smallTitleStyle.copyWith(
+                                  color: AppColorsController().textPrimaryColor,
+                                  fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_12
+                                ),
+                                maxLines: 1,
+                              ),
+                            ]
+
+                            // else if(widget.data!.properties!.length>1)...[
+                            //
+                            //   widget.typeAds == 'jobAds'|| widget.categoryId ==27 ? Container(): Text(
+                            //
+                            //     (widget.data?.ad!.price ?? 0) > 0
+                            //         ? '${widget.data?.ad!.price ?.toString() ?? ''} ${widget.data?.ad!.currency ?? ''}'
+                            //         : '${translate('price_not_announced')}',
+                            //     style: AppStyle.smallTitleStyle.copyWith(
+                            //       color: AppColorsController().textPrimaryColor,
+                            //       fontWeight: AppFontWeight.midLight,
+                            //     ),
+                            //   ),
+                            //
+                            //
+                            //
+                            // ],
+
+                          ]
+                        ] else ...[
+                          widget.typeAds == 'jobAds'|| widget.categoryId ==27 ? Container(): Text(
+
+                            (widget.data?.ad!.price ?? 0) > 0
+                                ? '${widget.data?.ad!.price ?.toString() ?? ''} ${widget.data?.ad!.currency ?? ''}'
+                                : '${translate('price_not_announced')}',
+                            style: AppStyle.smallTitleStyle.copyWith(
+                              color: AppColorsController().textPrimaryColor,
+                              fontWeight: AppFontWeight.midLight,
+                            ),
                           ),
-                        ),
+
+                        ],
+
+                        // widget.typeAds == 'jobAds'|| widget.categoryId ==27 ? Container():    Text(
+                        //   widget.data!.ad!.price.toString() + " درهم إماراتي",
+                        //   style: AppStyle.smallTitleStyle.copyWith(
+                        //     color: AppColorsController().textPrimaryColor,
+                        //     fontWeight: AppFontWeight.midLight,
+                        //   ),
+                        // ),
                       ],
                     ),
                     Row(

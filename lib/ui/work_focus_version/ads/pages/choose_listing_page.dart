@@ -131,8 +131,8 @@ class _SelectListingPageState extends State<SelectListingPage> {
                                           SliverGridDelegateWithFixedCrossAxisCount(
                                             crossAxisCount: 3,
                                             childAspectRatio: 0.9,
-                                            crossAxisSpacing: 30.sp,
-                                            mainAxisSpacing: 10.sp,
+                                            crossAxisSpacing: 25.w,
+                                            mainAxisSpacing: 10.h,
                                           ),
                                           physics: NeverScrollableScrollPhysics(),
                                         ),
@@ -164,8 +164,8 @@ class _SelectListingPageState extends State<SelectListingPage> {
       double? height,
       double? width}) {
     return Container(
-      height: height ?? 50.sp,
-      width: width ?? 40.sp,
+      height: height ?? 50.h,
+      width: width ?? 40.w,
       decoration: BoxDecoration(
         border: Border.all(color: AppColorsController().black, width: 0.2),
         color: AppColorsController().containerPrimaryColor,

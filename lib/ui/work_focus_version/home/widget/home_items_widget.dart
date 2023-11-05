@@ -57,8 +57,9 @@ class HomeItemsWidget extends StatelessWidget {
             foregroundColor: AppColorsController().dropdown,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(16)))),
-        child: data?.ad_images?[0].name?.toString() ==
-            '/img/ad/default.png' ?
+        child:( (data!.ad_images != null && (data?.ad_images?.length ?? 0) > 0) && data?.ad_images?[0].name?.toString() ==
+            '/img/ad/default.png' )||   data?.featured_image?.toString() ==
+            '/img/ad/default.png'?
 
 
         Column(
@@ -350,63 +351,65 @@ Image.asset( "assets/images/logo.png",height: 95.h,width: 130.w,),
           ],
         )
   * */
-  Widget _priceAndDateWidgetDontHaveImage() {
-    return Padding(
-      padding: EdgeInsets.only(left: 4.sp, right: 4.sp),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Text(
-          //   data?.short_description ??'',maxLines: 1,overflow: TextOverflow.ellipsis,
-          //   style: AppStyle.lightSubtitle.copyWith(
-          //       color: AppColorsController().black,
-          //       fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_10
-          //   ),
-          // ),
+  // Widget _priceAndDateWidgetDontHaveImage() {
+  //   return Padding(
+  //     padding: EdgeInsets.only(left: 4.sp, right: 4.sp),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         // Text(
+  //         //   data?.short_description ??'',maxLines: 1,overflow: TextOverflow.ellipsis,
+  //         //   style: AppStyle.lightSubtitle.copyWith(
+  //         //       color: AppColorsController().black,
+  //         //       fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_10
+  //         //   ),
+  //         // ),
+  //
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             Text(
+  //               data?.date_ad != null ? getComparedTime(
+  //                   data?.date_ad ?? DateTime.now()).toString() : "",
+  //               style: AppStyle.lightSubtitle.copyWith(
+  //                   color: AppColorsController().black,
+  //                   fontWeight: AppFontWeight.midLight,
+  //                   fontSize: AppFontSize.fontSize_10
+  //               ),
+  //             ),
+  //
+  //             Text(
+  //               (data?.price ?? 0) > 0
+  //                   ? '${data?.price?.toString() ?? ''} ${data?.currency ?? ''}'
+  //                   : '${translate('price_not_announced')}',
+  //               style: AppStyle.lightSubtitle.copyWith(
+  //                   color: AppColorsController().selectIconColor,
+  //                   fontWeight: AppFontWeight.midLight,
+  //                   fontSize: AppFontSize.fontSize_10
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+  //
+  // Widget _titleWidgetDontHaveImage() {
+  //   return Text(
+  //     data?.title ?? '',
+  //     style: AppStyle.defaultStyle.copyWith(
+  //         color: AppColorsController().black,
+  //         fontWeight: AppFontWeight.bold,
+  //         overflow: TextOverflow.ellipsis, fontSize: AppFontSize.fontSize_14
+  //     ),
+  //     maxLines: 1,
+  //   );
+  // }
 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                data?.date_ad != null ? getComparedTime(
-                    data?.date_ad ?? DateTime.now()).toString() : "",
-                style: AppStyle.lightSubtitle.copyWith(
-                    color: AppColorsController().black,
-                    fontWeight: AppFontWeight.midLight,
-                    fontSize: AppFontSize.fontSize_10
-                ),
-              ),
-
-              Text(
-                (data?.price ?? 0) > 0
-                    ? '${data?.price?.toString() ?? ''} ${data?.currency ?? ''}'
-                    : '${translate('price_not_announced')}',
-                style: AppStyle.lightSubtitle.copyWith(
-                    color: AppColorsController().selectIconColor,
-                    fontWeight: AppFontWeight.midLight,
-                    fontSize: AppFontSize.fontSize_10
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _titleWidgetDontHaveImage() {
-    return Text(
-      data?.title ?? '',
-      style: AppStyle.defaultStyle.copyWith(
-          color: AppColorsController().black,
-          fontWeight: AppFontWeight.bold,
-          overflow: TextOverflow.ellipsis, fontSize: AppFontSize.fontSize_14
-      ),
-      maxLines: 1,
-    );
-  }
 
   Widget _priceAndDateWidget() {
+    // print(data?.properties![0].description);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -419,11 +422,30 @@ Image.asset( "assets/images/logo.png",height: 95.h,width: 130.w,),
               fontSize: AppFontSize.fontSize_12
           ),
         ),
-        Flexible(
+
+        if(data!.properties !=null && data!.properties!.isNotEmpty == true)...[
+          for(int i = 0 ; i<data!.properties!.length; i ++)...[
+            if(data!.properties![i].title!.contains('السعر من') && data!.properties![i].title == 'السعر من')...[
+              Text(
+                '${data!.properties![i]
+                    .description
+                    .toString()} ${data?.currency ?? ''}',
+                style: AppStyle.lightSubtitle.copyWith(
+                    color: AppColorsController().selectIconColor,
+                    fontWeight: AppFontWeight.midLight,
+                    fontSize: AppFontSize.fontSize_10
+                ),
+                maxLines: 1,
+              ),
+            ],
+          ]
+        ] else ...[
+          Flexible(
           flex: 1,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 4.sp),
             child: Text(
+
               (data?.price ?? 0) > 0
                   ? '${data?.price?.toString() ?? ''} ${data?.currency ?? ''}'
                   : '${translate('price_not_announced')}',
@@ -434,9 +456,17 @@ Image.asset( "assets/images/logo.png",height: 95.h,width: 130.w,),
               ),
             ),
           ),
-        ),
+        ),],
+
       ],
     );
+  }
+
+  checkPrice(List myList){
+
+    for(int i =0; i<myList.length; i++ ){
+
+    }
   }
 
   Widget _imageWidget() {
@@ -453,7 +483,12 @@ Image.asset( "assets/images/logo.png",height: 95.h,width: 130.w,),
           height: 102.sp,
           fit: BoxFit.cover,
         )
-            : Container(),
+            : Image.network(
+          AppConsts.IMAGE_URL + (data?.featured_image?.toString() ?? ''),
+          width: width ?? 200.sp,
+          height: 102.sp,
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

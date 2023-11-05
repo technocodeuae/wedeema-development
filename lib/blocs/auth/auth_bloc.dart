@@ -186,7 +186,7 @@ class AuthCubit extends Cubit<AuthState> {
 
       emit(state.copyWith(logout: LogOutSuccessState(result.data!)));
       DIManager.findNavigator().offAll(
-        SignInPage.routeName,
+        SignInPage.routeName,arguments: 1
       );
     } else {
       emit(

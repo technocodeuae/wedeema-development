@@ -229,6 +229,7 @@ bool isLoadingFooter = false;
                 return HomeItemsWidget(
 
                   onPress: () {
+                    print(itemsList);
                     DIManager.findNavigator()
                         .pushNamed(ItemsDetailsPage.routeName,
                         arguments: ItemsArgs(
@@ -361,6 +362,7 @@ bool isLoadingFooter = false;
               return HomeItemsWidget(
 
                 onPress: () {
+                  print(itemsList);
                   DIManager.findNavigator()
                       .pushNamed(ItemsDetailsPage.routeName,
                       arguments: ItemsArgs(
