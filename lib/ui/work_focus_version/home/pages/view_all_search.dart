@@ -434,7 +434,7 @@ class _ViewAllSearchState extends State<ViewAllSearch> {
                               .pushNamed(ItemsDetailsPage.routeName,
                                   arguments: ItemsArgs(
 categoryId: items[index].category_id ?? 0,
-                                    id: items[index].ad_id ?? 0,
+                                    id: items[index].ad_id ?? 0
                                   ));
 
                           print('------------------------------------------------------------');

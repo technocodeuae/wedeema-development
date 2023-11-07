@@ -233,7 +233,8 @@ bool isLoadingFooter = false;
                     DIManager.findNavigator()
                         .pushNamed(ItemsDetailsPage.routeName,
                         arguments: ItemsArgs(
-                          id: itemsList[index].ad_id ?? 0,categoryId: itemsList[index].category_id ?? 0
+                          id: itemsList[index].ad_id ?? 0,categoryId: itemsList[index].category_id ?? 0,
+                          type: "ads",
                         ));
                   },
                   data: itemsList[index],
@@ -366,7 +367,7 @@ bool isLoadingFooter = false;
                   DIManager.findNavigator()
                       .pushNamed(ItemsDetailsPage.routeName,
                       arguments: ItemsArgs(
-                        id: itemsList[index].ad_id ?? 0,categoryId: itemsList[index].category_id ??0,
+                        id: itemsList[index].ad_id ?? 0,categoryId: itemsList[index].category_id ??0,type: "ads",
                       ));
                 },
                 data: itemsList[index],

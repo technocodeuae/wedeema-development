@@ -11,6 +11,50 @@ import '../../models/messages/messages_model.dart';
 class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   const ChatRemoteDataSourceImpl();
 
+  /*
+
+                            await FirebaseFirestore.instance
+                                .collection('users')
+                                .doc('1234')
+                                .collection('ads')
+                                .doc('1')
+                                .collection('chats')
+                                .doc('4321')
+                                .collection('messages')
+                                .add({
+                              'text':'Hello',
+                              'senderId':'1234',
+                              'receiverId':'4321',
+                              'dateTime':'2023/11/7'
+                            })
+                                .then((value) {})
+                                .catchError((error) {
+                              print(error);
+                            });
+
+                            // set receiver chats
+                            await FirebaseFirestore.instance
+                                .collection('users')
+                                .doc('4321')
+                                .collection('ads')
+                                .doc('1')
+                                .collection('chats')
+                                .doc('1234')
+                                .collection('messages')
+                                .add({
+                              'text':'Hello',
+                              'senderId':'1234',
+                              'receiverId':'4321',
+                              'dateTime':'2023/11/7'
+                            })
+                                .then((value) {
+
+                            })
+                                .catchError((error) {
+                              print(error);
+                            });
+   */
+
   Future<Result<List<MessagesModel>>> getAllChats() async {
     return await RemoteDataSource.request<List<MessagesModel>>(
       converterList: (list) =>

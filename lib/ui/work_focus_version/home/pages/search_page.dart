@@ -667,14 +667,18 @@ Expanded(
                               backgroundColor: AppColorsController().greyBackground,
                               minHeight: 2,
                             )
-                            //     :
-                            // items.length ==0 && searchHistory.length !=0?Column(
-                            //   children: [
-                            //     Text('لايوجد ${searchHistory.last!  ?? ''}'),
-                            //   ],
-                            // )
+                                :
+                            items.length ==0 && searchHistory.length !=0?Column(
+                              children: [
+                                Text('لايوجد ${searchHistory.last!  ?? ''}'),
+                              ],
+                            ) : items.length ==0 &&  searchHistory.isEmpty ? Column(
+                              children: [
+                                Text('لايوجد نتائج'),
+                              ],
+                            ):
 
-                                : _bodySearchItems();
+                                 _bodySearchItems();
                         }
 
                         return
@@ -683,12 +687,15 @@ Expanded(
                             backgroundColor: AppColorsController().greyBackground,
                             minHeight: 2,
                           )
-                          //     : items.length ==0 && searchHistory.length !=0?Column(
-                          //   children: [
-                          //     Text('لايوجد ${searchHistory.last ?? ''}'),
-                          //   ],
-                          // )
-                              : _bodySearchItems();
+                              : items.length ==0 && searchHistory.length !=0?Column(
+                            children: [
+                              Text('لايوجد ${searchHistory.last ?? ''}'),
+                            ],
+                          ): items.length ==0 &&  searchHistory.isEmpty? Column(
+                            children: [
+                              Text('لايوجد نتائج'),
+                            ],
+                          ): _bodySearchItems();
                       },
                     ),
                   ),
@@ -797,9 +804,9 @@ Expanded(
                   .pushNamed(ItemsDetailsPage.routeName,
                   arguments: ItemsArgs(
 categoryId: items[index].category_id??0,
-                    id: items[index].ad_id ?? 0,
+                    id: items[index].ad_id ?? 0,type: 'ads'
                   ));
-              print(categoriesBloc.currentSelect2);
+              print(items[index].category_id??0);
             },
             child:  Column(
               children: [

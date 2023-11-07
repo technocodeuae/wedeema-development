@@ -54,7 +54,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
 
-  Future<void> sendMassage(ArgumentMessage arg) async {
+  Future<void> sendMassage(ArgumentMessage arg) async  {
     emit(state.copyWith(sendMassageState: BaseLoadingState()));
     final result = await adsRepo.sendMessage(arg);
     if (result.hasDataOnly) {

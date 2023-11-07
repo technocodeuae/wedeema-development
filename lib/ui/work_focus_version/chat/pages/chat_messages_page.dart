@@ -247,6 +247,7 @@ class _ChatMessagesPageState extends State<ChatMessagesPage>  with WidgetsBindin
                 //   ),
                 // ),
 
+
                 Expanded(
                   child: BlocConsumer<ChatCubit, ChatState>(
                       bloc: chatBloc,

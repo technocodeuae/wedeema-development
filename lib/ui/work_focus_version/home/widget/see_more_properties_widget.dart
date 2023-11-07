@@ -62,7 +62,7 @@ class SeeMorePropertiesWidget extends StatelessWidget {
                             color:
                             AppColorsController()
                                 .textPrimaryColor,
-                            fontSize: AppFontSize.fontSize_14,
+                            fontSize: AppFontSize.fontSize_12,
                             fontWeight:
                             AppFontWeight
                                 .midLight,overflow: TextOverflow.ellipsis,

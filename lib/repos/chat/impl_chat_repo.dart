@@ -27,6 +27,7 @@ class ChatRepo extends BaseRepository implements ChatFacade {
     this._sp,
   );
 
+
   @override
   Future<Result<List<MessagesEntity>>> getAllChats() async{
     final res = await _aRD.getAllChats();

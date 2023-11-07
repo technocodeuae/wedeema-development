@@ -64,6 +64,8 @@ class _SendOtpPageState extends State<SendOtpPage> {
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               child: Column(
                 children: [
+
+                  SizedBox(height: 30.h,),
                   AppBarWidget(
                     flip: true,
                     child: Padding(
@@ -162,7 +164,10 @@ class _SendOtpPageState extends State<SendOtpPage> {
               if (value.length >= 4) {
                 setState(() => _isLoading = true);
 
-                _authBloc.validateMobileNumber(value, widget.phoneNumber.replaceAll('+', ''),
+                _authBloc.validateMobileNumber(
+
+                    value, widget.phoneNumber.replaceAll('+', ''),
+
                     isChangePassword: widget.isChangePassword, onDone: () {
                   setState(() => _isLoading = false);
 

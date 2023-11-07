@@ -83,6 +83,7 @@ class _ItemsDetailsPageState extends State<ItemsDetailsPage> {
     print('widget.typeAds :${widget.args!.type}');
     print('widget.title :${widget.args!.title}');
     return Scaffold(
+
         backgroundColor: AppColorsController().scaffoldBGColorAdds,
         body: SafeArea(
           child: LoadingColumnOverlay(

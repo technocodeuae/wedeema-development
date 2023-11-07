@@ -1,5 +1,7 @@
 import 'package:get_storage/get_storage.dart';
+import 'package:wadeema/blocs/chat_firebase/chat_bloc_firebase.dart';
 import 'package:wadeema/blocs/evaluate/evaluate_bloc.dart';
+import 'package:wadeema/data/sources/chat_firebase/chat_remote_data_source_firebase.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/navigator/app_navigator.dart';
@@ -36,6 +38,8 @@ import '../../data/sources/profile/profile_remote_data_source.dart';
 import '../../data/sources/settings/settings_remote_data_source.dart';
 import '../../data/sources/sponsors/sponsors_remote_data_source.dart';
 import '../../data/sources/upload_ads/ads_remote_data_source.dart';
+import '../../repos/chat_firebase/chat_repo_i_firebase.dart';
+import '../../repos/chat_firebase/impl_chat_repo_firebase.dart';
 import '../../repos/notifications/notifications_repo_i.dart';
 import '../../repos/ads/ads_repo_i.dart';
 import '../../repos/ads/impl_ads_repo.dart';
@@ -151,6 +155,9 @@ class DIManager {
     /// Chat'  Remotes
     _injectDepLazy<ChatRemoteDataSource>(ChatRemoteDataSourceImpl());
 
+    /// Chat' Firebase  Remotes
+    _injectDepLazy<ChatRemoteDataSourceFirebase>(ChatRemoteDataSourceFirebaseImplFirebase());
+
     /// Notifications' Remotes
     _injectDepLazy<NotificationsRemoteDataSource>(NotificationsRemoteDataSourceImpl());
 
@@ -249,6 +256,13 @@ class DIManager {
       ),
     );
 
+    /// Chat' Repo Firebase
+    _injectDepLazy<ChatFacadeFirebase>(
+      ChatRepoFirebase(
+        findDep(),
+        findDep(),
+      ) ,
+    );
 
 
     /// Notifications' Repo
@@ -317,6 +331,14 @@ class DIManager {
     _injectDep(
       ChatCubit(findDep<ChatFacade>()),
     );
+
+
+
+    /// Chat' Blocs
+    _injectDep(
+      ChatCubitFirebase(findDep<ChatFacadeFirebase>()),
+    );
+
 
 
     /// Categories' Blocs

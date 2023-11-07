@@ -34,16 +34,17 @@ class DetailsBodyWidget extends StatefulWidget {
   final Function(bool)? onPressedLoader;
   final Function(bool)? onPressedAddComment;
 
-  const  DetailsBodyWidget({
+  const DetailsBodyWidget({
     Key? key,
     this.onPressedLike,
     this.onPressedFavourite,
     this.onPressedLoader,
     this.data,
     this.id,
-   required this.categoryId,
+    required this.categoryId,
     this.index,
-    this.onPressedAddComment, this.typeAds,
+    this.onPressedAddComment,
+    this.typeAds,
   }) : super(key: key);
 
   @override
@@ -63,24 +64,27 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
     print('widget.typeAds :${widget.typeAds}');
     return Column(
       children: [
-        widget.typeAds == 'jobAds' || widget.typeAds == 'adsWithoutImage' || widget.categoryId ==27?
-        Container(): ImageSliderShowWidget(
-          images: widget.data?.images,
-          is_favorite: widget.data?.ad?.is_favorite,
-          ad_id: widget.data?.ad?.ad_id,
-          onChanged: widget.onPressedFavourite,
-          index: widget.index,
-          onChangedLoader: widget.onPressedLoader,
-          adsUrlShare: widget.data?.sharing_link,
-        ),
-
-
-
-
+        widget.typeAds == 'jobAds' ||
+                widget.typeAds == 'adsWithoutImage' ||
+                widget.categoryId == 27
+            ? Container()
+            : ImageSliderShowWidget(
+                images: widget.data?.images,
+                is_favorite: widget.data?.ad?.is_favorite,
+                ad_id: widget.data?.ad?.ad_id,
+                onChanged: widget.onPressedFavourite,
+                index: widget.index,
+                onChangedLoader: widget.onPressedLoader,
+                adsUrlShare: widget.data?.sharing_link,
+              ),
         Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: 20.sp,  vertical: widget.typeAds == 'jobAds' || widget.typeAds == 'adsWithoutImage'|| widget.categoryId ==27? 40.sp:0.sp
-          ),
+              horizontal: 20.sp,
+              vertical: widget.typeAds == 'jobAds' ||
+                      widget.typeAds == 'adsWithoutImage' ||
+                      widget.categoryId == 27
+                  ? 40.sp
+                  : 0.sp),
           child: Column(
             children: [
               Container(
@@ -99,73 +103,103 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           widget.data!.ad!.title.toString(),
                           style: AppStyle.smallTitleStyle.copyWith(
-                            color: AppColorsController().black,
-                            fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_14
-                          ),
+                              color: AppColorsController().black,
+                              fontWeight: AppFontWeight.midLight,
+                              fontSize: AppFontSize.fontSize_14),
                         ),
 
-                        if(widget.data!.properties !=null && widget.data!.properties!.isNotEmpty == true)...[
-                          for(int i = 0 ; i<widget.data!.properties!.length; i ++)...[
-                            if(widget.data!.properties![i].title!.contains('السعر من') && widget.data!.properties![i].title == 'السعر من')...[
-                              widget.typeAds == 'jobAds'|| widget.categoryId ==27 ? Container():  Text(
-                                '${widget.data!.properties![i]
-                                    .description
-                                    .toString()} درهم',
-                                style: AppStyle.smallTitleStyle.copyWith(
-                                  color: AppColorsController().textPrimaryColor,
-                                  fontWeight: AppFontWeight.midLight,fontSize: AppFontSize.fontSize_12
-                                ),
-                                maxLines: 1,
-                              ),
+                        if(widget.typeAds == 'jobAds' || widget.categoryId == 27) ... [
+                          Container()
+                        ]else if (widget.data!.properties != null &&
+                            widget.data!.properties!.isNotEmpty == true) ...[
+                          for (int i = 0;
+                              i < widget.data!.properties!.length ;
+                              i++) ...[
+                            if (widget.data!.properties![i].title ==
+                                'السعر من' &&
+                                widget.data!.properties![i].title!
+                                    .contains('السعر من')) ...[
+                              widget.typeAds == 'jobAds' ||
+                                      widget.categoryId == 27
+                                  ? Container()
+                                  : Text(
+                                      '${widget.data!.properties![i].description.toString()} درهم',
+                                      style: AppStyle.smallTitleStyle.copyWith(
+                                          color: AppColorsController()
+                                              .textPrimaryColor,
+                                          fontWeight: AppFontWeight.midLight,
+                                          fontSize: AppFontSize.fontSize_12),
+                                      maxLines: 1,
+                                    ),
+                            ] else ...[
+                              // Container()
                             ]
-
-                            // else if(widget.data!.properties!.length>1)...[
-                            //
-                            //   widget.typeAds == 'jobAds'|| widget.categoryId ==27 ? Container(): Text(
-                            //
-                            //     (widget.data?.ad!.price ?? 0) > 0
-                            //         ? '${widget.data?.ad!.price ?.toString() ?? ''} ${widget.data?.ad!.currency ?? ''}'
-                            //         : '${translate('price_not_announced')}',
-                            //     style: AppStyle.smallTitleStyle.copyWith(
-                            //       color: AppColorsController().textPrimaryColor,
-                            //       fontWeight: AppFontWeight.midLight,
-                            //     ),
-                            //   ),
-                            //
-                            //
-                            //
-                            // ],
-
                           ]
-                        ] else ...[
-                          widget.typeAds == 'jobAds'|| widget.categoryId ==27 ? Container(): Text(
-
+                        ]                       else if(widget.typeAds =='ads')...[
+                        Text(
                             (widget.data?.ad!.price ?? 0) > 0
-                                ? '${widget.data?.ad!.price ?.toString() ?? ''} ${widget.data?.ad!.currency ?? ''}'
+                                ? '${widget.data?.ad!.price?.toString() ?? ''} ${widget.data?.ad!.currency ?? ''}'
                                 : '${translate('price_not_announced')}',
                             style: AppStyle.smallTitleStyle.copyWith(
-                              color: AppColorsController().textPrimaryColor,
+                              color:
+                              AppColorsController().textPrimaryColor,
+                              fontWeight: AppFontWeight.midLight,
+                            ),
+                          ),
+                        ] ,
+
+                        if(widget.data!.properties != null && widget.typeAds =='ads1')...[
+                          SizedBox(width: 100.w,),
+                          Text(
+                            (widget.data?.ad!.price ?? 0) > 0
+                                ? '${widget.data?.ad!.price?.toString() ?? ''} ${widget.data?.ad!.currency ?? ''}'
+                                : '${translate('price_not_announced')}',
+                            style: AppStyle.smallTitleStyle.copyWith(
+                              color:
+                              AppColorsController().textPrimaryColor,
+                              fontWeight: AppFontWeight.midLight,
+                            ),
+                          ),
+                        ],
+                        if((widget.typeAds =='ads' && widget.data!.properties == null &&widget.categoryId != 27  ) || (widget.data!.ad!.properties == null &&  widget.typeAds !='ads' &&widget.categoryId != 27  )) ...[
+                          widget.typeAds == 'jobAds' || widget.typeAds == 'ads1'|| widget.categoryId == 27?Container():      Text(
+                            (widget.data?.ad!.price ?? 0) > 0
+                                ? '${widget.data?.ad!.price?.toString() ?? ''} ${widget.data?.ad!.currency ?? ''}'
+                                : '${translate('price_not_announced')}',
+                            style: AppStyle.smallTitleStyle.copyWith(
+                              color:
+                              AppColorsController().textPrimaryColor,
+                              fontWeight: AppFontWeight.midLight,
+                            ),
+                          ),
+                        ],
+
+
+                        /*
+
+
+                         widget.typeAds == 'jobAds' || widget.categoryId == 27
+                              ? Container()
+                              :
+                          Text(
+                            (widget.data?.ad!.price ?? 0) > 0
+                                ? '${widget.data?.ad!.price?.toString() ?? ''} ${widget.data?.ad!.currency ?? ''}'
+                                : '${translate('price_not_announced')}',
+                            style: AppStyle.smallTitleStyle.copyWith(
+                              color:
+                              AppColorsController().textPrimaryColor,
                               fontWeight: AppFontWeight.midLight,
                             ),
                           ),
 
-                        ],
+                         */
 
-                        // widget.typeAds == 'jobAds'|| widget.categoryId ==27 ? Container():    Text(
-                        //   widget.data!.ad!.price.toString() + " درهم إماراتي",
-                        //   style: AppStyle.smallTitleStyle.copyWith(
-                        //     color: AppColorsController().textPrimaryColor,
-                        //     fontWeight: AppFontWeight.midLight,
-                        //   ),
-                        // ),
                       ],
                     ),
                     Row(
@@ -188,7 +222,6 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
                                 fontWeight: AppFontWeight.midLight,
                               ),
                             ),
-
                             SizedBox(
                               width: 8.sp,
                             ),
@@ -200,69 +233,75 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
                             ),
                           ],
                         ),
-
                       ],
                     ),
                     // SizedBox(
                     //   height: 8.sp,
                     // ),
 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              translate("status") + ":",
-                              style: AppStyle.smallTitleStyle.copyWith(
-                                color: AppColorsController().textPrimaryColor,
-                                fontWeight: AppFontWeight.midLight,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 8.sp,
-                            ),
-                            Text(
-                              widget.data!.ad!.availability_status.toString() == null ?"متاح":"متاح",
-                              style: AppStyle.smallTitleStyle.copyWith(
-                                color: AppColorsController().black,
-                                fontWeight: AppFontWeight.midLight,
-                              ),
-
-                            ),
-                            Spacer(),
-                            widget.typeAds == 'jobAds'|| widget.typeAds == 'adsWithoutImage'|| widget.categoryId ==27?  Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                FavouritesButtonWidget(
-
-                                  isFromPageFavourite: true,
-                                  onChanged: widget.onPressedFavourite,
-                                  onChangedLoader: widget.onPressedLoader,
-                                  adsId: widget.data?.ad?.ad_id,
-                                  isFavourite: widget.data?.ad?.is_favorite == 0 ? false:true,
-                                  index: widget.index,
-                                ),
-                                SizedBox(
-                                  width: 4.sp,
-                                ),
-                                Padding(
-                                  padding:  EdgeInsets.only(top: 4.sp),
-                                  child: InkWell(
-                                    onTap: (){
-                                      Share.share(widget.data!.sharing_link ??'');
-                                    },
-                                    child: ShareIcon(
-                                      height: 21.sp,
-                                      width: 21.sp,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          translate("status") + ":",
+                          style: AppStyle.smallTitleStyle.copyWith(
+                            color: AppColorsController().textPrimaryColor,
+                            fontWeight: AppFontWeight.midLight,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 8.sp,
+                        ),
+                        Text(
+                          widget.data!.ad!.availability_status.toString() ==
+                                  null
+                              ? "متاح"
+                              : "متاح",
+                          style: AppStyle.smallTitleStyle.copyWith(
+                            color: AppColorsController().black,
+                            fontWeight: AppFontWeight.midLight,
+                          ),
+                        ),
+                        Spacer(),
+                        widget.typeAds == 'jobAds' ||
+                                widget.typeAds == 'adsWithoutImage' ||
+                                widget.categoryId == 27
+                            ? Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  FavouritesButtonWidget(
+                                    isFromPageFavourite: true,
+                                    onChanged: widget.onPressedFavourite,
+                                    onChangedLoader: widget.onPressedLoader,
+                                    adsId: widget.data?.ad?.ad_id,
+                                    isFavourite:
+                                        widget.data?.ad?.is_favorite == 0
+                                            ? false
+                                            : true,
+                                    index: widget.index,
+                                  ),
+                                  SizedBox(
+                                    width: 4.sp,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 4.sp),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Share.share(
+                                            widget.data!.sharing_link ?? '');
+                                      },
+                                      child: ShareIcon(
+                                        height: 21.sp,
+                                        width: 21.sp,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ) :Container(),
-                          ],
-                        ),
-
-
+                                ],
+                              )
+                            : Container(),
+                      ],
+                    ),
 
                     // Row(
                     //   children: [
@@ -286,7 +325,6 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
                     //   ],
                     // ),
 
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -302,88 +340,97 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
                         ),
                         Text(
                           widget.data?.ad!.created_at != null
-                              ? translate("since") +" "+ getComparedTime(widget.data!.ad!.created_at!)
-                                  .toString()
+                              ? translate("since") +
+                                  " " +
+                                  getComparedTime(widget.data!.ad!.created_at!)
+                                      .toString()
                               : "",
                           style: AppStyle.smallTitleStyle.copyWith(
                             color: AppColorsController().black,
                             fontWeight: AppFontWeight.midLight,
                           ),
                         ),
-
                       ],
                     ),
 
                     SizedBox(
                       height: 2.sp,
                     ),
-                    (widget.data?.properties?.length??0) == 0 || widget.typeAds == 'jobAds' || widget.typeAds == 'adsWithoutImage'
+                    (widget.data?.properties?.length ?? 0) == 0 ||
+                            widget.typeAds == 'jobAds' ||
+                            widget.typeAds == 'adsWithoutImage'|| widget.categoryId == 27
                         ? Container()
                         : _isSeeMore == false
-                        ? InkWell(
-                      child: Center(
-                        child: Container(
-                          width: 100.sp,
-                          decoration: BoxDecoration(
-                            color: AppColorsController().containerPrimaryColor,
-                            border: Border.all(
-                              color: AppColorsController().borderGrayColor,
-                              width: 0.2.sp,
-                            ),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(Dimens.defaultBorderRadius),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              translate("see_more"),
-                              style:
-                              AppStyle.verySmallTitleStyle.copyWith(
-                                color: AppColorsController().black,
-                                fontWeight: AppFontWeight.midLight,
+                            ? InkWell(
+                                child: Center(
+                                  child: Container(
+                                    width: 100.sp,
+                                    decoration: BoxDecoration(
+                                      color: AppColorsController()
+                                          .containerPrimaryColor,
+                                      border: Border.all(
+                                        color: AppColorsController()
+                                            .borderGrayColor,
+                                        width: 0.2.sp,
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                            Dimens.defaultBorderRadius),
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        translate("see_more"),
+                                        style: AppStyle.verySmallTitleStyle
+                                            .copyWith(
+                                          color: AppColorsController().black,
+                                          fontWeight: AppFontWeight.midLight,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                onTap: () {
+                                  setState(() {
+                                    _isSeeMore = !_isSeeMore;
+                                  });
+                                },
+                              )
+                            : InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _isSeeMore = !_isSeeMore;
+                                  });
+                                },
+                                child: Center(
+                                  child: Container(
+                                    width: 100.sp,
+                                    decoration: BoxDecoration(
+                                      color: AppColorsController()
+                                          .containerPrimaryColor,
+                                      border: Border.all(
+                                        color: AppColorsController()
+                                            .borderGrayColor,
+                                        width: 0.2.sp,
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                            Dimens.defaultBorderRadius),
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        translate("see_less"),
+                                        style: AppStyle.verySmallTitleStyle
+                                            .copyWith(
+                                          color: AppColorsController().black,
+                                          fontWeight: AppFontWeight.midLight,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      onTap: () {
-                        setState(() {
-                          _isSeeMore = !_isSeeMore;
-                        });
-                      },
-                    )
-                        : InkWell(
-                      onTap: () {
-                        setState(() {
-                          _isSeeMore = !_isSeeMore;
-                        });
-                      },
-                      child: Center(
-                        child: Container(
-                          width: 100.sp,
-                          decoration: BoxDecoration(
-                            color: AppColorsController().containerPrimaryColor,
-                            border: Border.all(
-                              color: AppColorsController().borderGrayColor,
-                              width: 0.2.sp,
-                            ),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(Dimens.defaultBorderRadius),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              translate("see_less"),
-                              style:
-                              AppStyle.verySmallTitleStyle.copyWith(
-                                color: AppColorsController().black,
-                                fontWeight: AppFontWeight.midLight,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
                     SizedBox(
                       height: 2.sp,
                     ),
@@ -393,13 +440,17 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
 
               //see_less
 
-              widget.typeAds == 'jobAds'|| widget.typeAds == 'adsWithoutImage'|| widget.categoryId ==27?  SeeMorePropertiesWidget(
-                isSeeMore: true,
-                properties: widget.data?.properties,
-              ) : SeeMorePropertiesWidget(
-                isSeeMore: _isSeeMore,
-                properties: widget.data?.properties,
-              ),
+              widget.typeAds == 'jobAds' ||
+                      widget.typeAds == 'adsWithoutImage' ||
+                      widget.categoryId == 27
+                  ? SeeMorePropertiesWidget(
+                      isSeeMore: true,
+                      properties: widget.data?.properties,
+                    )
+                  : SeeMorePropertiesWidget(
+                      isSeeMore: _isSeeMore,
+                      properties: widget.data?.properties,
+                    ),
               SizedBox(
                 height: 8.sp,
               ),
@@ -443,11 +494,14 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
               RatingsWidget(
                 ratings: widget.data?.ratings,
               ),
-              SizedBox(height: 20.sp,),
+              SizedBox(
+                height: 20.sp,
+              ),
               Center(
                 child: AppButton(
                   height: 48.sp,
-                  width: 240.sp,borderRadiusCircular: 16.sp,
+                  width: 240.sp,
+                  borderRadiusCircular: 16.sp,
                   childPadding: EdgeInsets.symmetric(horizontal: 24.sp),
                   onPressed: () {
                     if (!AppUtils.checkIfGuest(context)) {
@@ -474,8 +528,7 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
                       SizedBox(
                         width: 25.sp,
                       ),
-                      ChatIcon(
-                      ),
+                      ChatIcon(),
                     ],
                   ),
                 ),

@@ -95,14 +95,24 @@ class SearchAppBarWidget extends StatelessWidget {
                       ? Container(
                           width: 36.sp,
                           height: 36.sp,
-                          child: CircleAvatar(
-                            backgroundImage: NetworkImage(
-                              AppConsts.IMAGE_URL +
-                                  DIManager.findDep<SharedPrefs>()
-                                      .getImageProfile()
-                                      .toString(),
-                            ),
-                            backgroundColor: Colors.transparent,
+                          child: Stack(
+                            children: [
+                              AccountIcon(
+                                width: 32.sp,
+                                height: 32.sp,
+                              ),
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                  AppConsts.IMAGE_URL +
+                                      DIManager.findDep<SharedPrefs>()
+                                          .getImageProfile()
+                                          .toString(),
+
+                                ),
+                                backgroundColor: Colors.transparent,
+
+                              ),
+                            ],
                           ),
                         )
                       : AccountIcon(
