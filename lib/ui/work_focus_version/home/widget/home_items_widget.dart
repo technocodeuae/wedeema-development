@@ -13,6 +13,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_consts.dart';
 import '../../../../core/constants/app_font.dart';
 import '../../../../core/constants/app_style.dart';
+import '../../../../core/shared_prefs/shared_prefs.dart';
 import '../../../../data/models/ads/entity/ads_entity.dart';
 import '../../chat/args/argument_message.dart';
 import '../../general/icons/account_icon.dart';
@@ -26,15 +27,14 @@ class HomeItemsWidget extends StatelessWidget {
   final bool weNeedJustImage;
   final bool weDontHaveImage;
 
-  const HomeItemsWidget(
-      {Key? key,
-        this.data,
-        this.width,
-        this.height,
-        required this.onPress,
-        this.weNeedJustImage = false,
-        this.weDontHaveImage = false,
-      })
+  const HomeItemsWidget({Key? key,
+    this.data,
+    this.width,
+    this.height,
+    required this.onPress,
+    this.weNeedJustImage = false,
+    this.weDontHaveImage = false,
+  })
       : super(key: key);
 
   @override
@@ -57,9 +57,11 @@ class HomeItemsWidget extends StatelessWidget {
             foregroundColor: AppColorsController().dropdown,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(16)))),
-        child:( (data!.ad_images != null && (data?.ad_images?.length ?? 0) > 0) && data?.ad_images?[0].name?.toString() ==
-            '/img/ad/default.png' )||   data?.featured_image?.toString() ==
-            '/img/ad/default.png'?
+        child: ((data!.ad_images != null &&
+            (data?.ad_images?.length ?? 0) > 0) &&
+            data?.ad_images?[0].name?.toString() ==
+                '/img/ad/default.png') || data?.featured_image?.toString() ==
+            '/img/ad/default.png' ?
 
 
         Column(
@@ -97,7 +99,6 @@ class HomeItemsWidget extends StatelessWidget {
                               //   height: 101.sp,
                               // ),
                               // SizedBox(height: 6.sp,),
-
 
 
                             ],
@@ -185,6 +186,8 @@ class HomeItemsWidget extends StatelessWidget {
                     ),
                   ),
                 ),
+                DIManager.findDep<SharedPrefs>().getUserID()! ==
+                    data!.user_id.toString() ? Container() :
                 _chatButton(context)
               ],
             ),
@@ -277,6 +280,10 @@ class HomeItemsWidget extends StatelessWidget {
                     ),
                   ),
                 ),
+
+                // data.user_id
+                DIManager.findDep<SharedPrefs>().getUserID()! ==
+                    data!.user_id.toString() ? Container() :
                 _chatButton(context)
               ],
             ),
@@ -423,9 +430,10 @@ Image.asset( "assets/images/logo.png",height: 95.h,width: 130.w,),
           ),
         ),
 
-        if(data!.properties !=null && data!.properties!.isNotEmpty == true)...[
-          for(int i = 0 ; i<data!.properties!.length; i ++)...[
-            if(data!.properties![i].title!.contains('السعر من') && data!.properties![i].title == 'السعر من')...[
+        if(data!.properties != null && data!.properties!.isNotEmpty == true)...[
+          for(int i = 0; i < data!.properties!.length; i ++)...[
+            if(data!.properties![i].title!.contains('السعر من') &&
+                data!.properties![i].title == 'السعر من')...[
               Text(
                 '${data!.properties![i]
                     .description
@@ -439,32 +447,34 @@ Image.asset( "assets/images/logo.png",height: 95.h,width: 130.w,),
               ),
             ],
           ]
-        ] else ...[
-          Flexible(
-          flex: 1,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 4.sp),
-            child: Text(
+        ] else
+          ...[
+            Flexible(
+              flex: 1,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 4.sp),
+                child: Text(
 
-              (data?.price ?? 0) > 0
-                  ? '${data?.price?.toString() ?? ''} ${data?.currency ?? ''}'
-                  : '${translate('price_not_announced')}',
-              style: AppStyle.lightSubtitle.copyWith(
-                  color: AppColorsController().selectIconColor,
-                  fontWeight: AppFontWeight.midLight,
-                  fontSize: AppFontSize.fontSize_10
+                  (data?.price ?? 0) > 0
+                      ? '${data?.price?.toString() ?? ''} ${data?.currency ??
+                      ''}'
+                      : '${translate('price_not_announced')}',
+                  style: AppStyle.lightSubtitle.copyWith(
+                      color: AppColorsController().selectIconColor,
+                      fontWeight: AppFontWeight.midLight,
+                      fontSize: AppFontSize.fontSize_10
+                  ),
+                ),
               ),
             ),
-          ),
-        ),],
+          ],
 
       ],
     );
   }
 
-  checkPrice(List myList){
-
-    for(int i =0; i<myList.length; i++ ){
+  checkPrice(List myList) {
+    for (int i = 0; i < myList.length; i++) {
 
     }
   }
@@ -511,7 +521,13 @@ Image.asset( "assets/images/logo.png",height: 95.h,width: 130.w,),
         if (!AppUtils.checkIfGuest(context)) {
           DIManager.findNavigator().pushNamed(ChatMessagesPage.routeName,
               arguments: ArgumentMessage(
-                  user_id_2: data?.user_id, ad_id: data?.ad_id));
+                user_id_2: data?.user_id,
+                ad_id: data?.ad_id,
+                imageAds: data?.ad_images?[0].name?.toString(),
+                nameAds: data?.title?? '',
+                nameOwnerAds: data?.user_name?? '',
+
+              ));
         }
       },
       child: Container(

@@ -1,15 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wadeema/blocs/chat_firebase/chat_bloc_firebase.dart';
+import 'package:wadeema/blocs/chat_firebase/states/chat_state_firebase.dart';
 
 import '../../../../blocs/application/application_bloc.dart';
 import '../../../../blocs/chat/chat_bloc.dart';
 import '../../../../blocs/chat/states/chat_state.dart';
 import '../../../../core/bloc/states/base_fail_state.dart';
+import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_font.dart';
+import '../../../../core/constants/app_style.dart';
 import '../../../../core/constants/dimens.dart';
 import '../../../../core/di/di_manager.dart';
 import '../../../../core/shared_prefs/shared_prefs.dart';
@@ -44,13 +49,16 @@ class _ChatsPageState extends State<ChatsPage> {
 
   List<MessagesEntity> data = [];
 
-  ChatRemoteDataSourceFirebaseImplFirebase chatRemoteDataSourceFirebaseImplFirebase = ChatRemoteDataSourceFirebaseImplFirebase();
+  ChatRemoteDataSourceFirebaseImplFirebase
+      chatRemoteDataSourceFirebaseImplFirebase =
+      ChatRemoteDataSourceFirebaseImplFirebase();
   bool isLoading = false;
   bool _isLoading = false;
 
   @override
   void initState() {
     chatBloc.getAllChats();
+    chatBlocFirebase.getAllAdsChats(user_id: '1234');
     isLoading = true;
     _isLoading = true;
   }
@@ -62,12 +70,125 @@ class _ChatsPageState extends State<ChatsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColorsController().card.withOpacity(0.8),
+      // backgroundColor: AppColorsController().card.withOpacity(0.8),
+      backgroundColor: AppColorsController().white,
+      appBar:  AppBar(
+        backgroundColor: AppColorsController().white,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage(AppAssets.appBarBackgroundImage),
+                fit: BoxFit.fill),
+          ),
+        ),
+        centerTitle: true,elevation: 0,
+        title: Text(translate('chat'),  style: AppStyle.smallTitleStyle.copyWith(
+          color: AppColorsController().black,
+          fontWeight: AppFontWeight.midBold,
+          fontSize: AppFontSize.fontSize_20,
+        ),maxLines: 1,),
+      
+
+
+      ),
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
           SafeArea(
-            child: LoadingColumnOverlay(
+            child: BlocConsumer<ChatCubitFirebase, ChatStateFirebase>(
+              bloc: chatBlocFirebase,
+              listener: (_, state) {
+                if(state is GetAllAdsChatsLoadingState ) {
+                  isLoading = true;
+                }else{
+                  isLoading = false;
+                }
+              },
+              builder: (_, __) {
+                return isLoading? Padding(
+                  padding: EdgeInsets.only(top: MediaQuery.of(context).size.height/2),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          width: 20.sp,
+                          height: 20.sp,
+                          child: CircularProgressIndicator(
+                            color: AppColorsController().buttonRedColor,
+                            strokeWidth: 1.5,
+                          )),
+                      Spacer(),
+                      Container()
+                    ],
+                  ),
+                ):ListView.separated(
+                  itemBuilder: (context, index) =>
+                      _buildBodyChats(chatBlocFirebase.adsChatsModel[index]),
+                  separatorBuilder: (context, index) => Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 1,
+                    color: Colors.grey,
+                  ),
+                  itemCount: chatBlocFirebase.adsChatsModel.length,
+                );
+              },
+            ),
+          ),
+          // isLoading?SizedBox(height: 500,):Container(),
+          bottomNavigationBarWidget(indexPage: 1),
+        ],
+      ),
+      // bottomSheet: bottomNavigationBarWidget(),
+    );
+  }
+
+  // _buildBody() {
+  //   return Expanded(
+  //     child: ListView.separated(
+  //         shrinkWrap: false,
+  //         physics: NeverScrollableScrollPhysics(),
+  //         itemBuilder: (context, index) {
+  //           return InkWell(
+  //             onTap: () {
+  //               print(data[index].ad_id);
+  //               print(data[index].user_id_2);
+  //               if (DIManager.findDep<SharedPrefs>().getUserID() ==
+  //                   data[index].user_id_1.toString()) {
+  //                 print(
+  //                     '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000');
+  //               } else {
+  //                 print(
+  //                     '111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111');
+  //               }
+  //               DIManager.findNavigator().pushNamed(ChatMessagesPage.routeName,
+  //                   arguments: ArgumentMessage(
+  //                     user_id_2: data[index].user_id_2,
+  //                     ad_id: data[index].ad_id,
+  //                   ));
+  //             },
+  //             child: MainPageChat(
+  //               data: data[index],
+  //             ),
+  //           );
+  //         },
+  //         separatorBuilder: (context, index) {
+  //           return SizedBox(
+  //             height: 8.sp,
+  //           );
+  //         },
+  //         itemCount: data.length),
+  //   );
+  // }
+
+  _buildBodyChats(AdsChatsModel data) {
+    return MainPageChat(adsData: data,);
+  }
+}
+
+/*
+
+LoadingColumnOverlay(
               isLoading: _isLoading,
               child: BackLongPress(
                 child: Container(
@@ -158,7 +279,7 @@ class _ChatsPageState extends State<ChatsPage> {
                                 user_id: '1234') ;
 
 
-                  print(chatBlocFirebase.adsChatsModel?.imageAds);
+                  // print(chatBlocFirebase.adsChatsModel?.ad_id);
 
 
 //                             await FirebaseFirestore.instance
@@ -290,49 +411,6 @@ class _ChatsPageState extends State<ChatsPage> {
                 ),
               ),
             ),
-          ),
-          bottomNavigationBarWidget(indexPage: 1),
-        ],
-      ),
-      // bottomSheet: bottomNavigationBarWidget(),
-    );
-  }
 
-  _buildBody() {
-    return Expanded(
-      child: ListView.separated(
-          shrinkWrap: false,
-          physics: NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            return InkWell(
-              onTap: () {
-                print(data[index].ad_id);
-                print(data[index].user_id_2);
-                if (DIManager.findDep<SharedPrefs>().getUserID() ==
-                    data[index].user_id_1.toString()) {
-                  print(
-                      '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000');
-                } else {
-                  print(
-                      '111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111');
-                }
-                DIManager.findNavigator().pushNamed(ChatMessagesPage.routeName,
-                    arguments: ArgumentMessage(
-                      user_id_2: data[index].user_id_2,
-                      ad_id: data[index].ad_id,
-                    ));
-              },
-              child: MainPageChat(
-                data: data[index],
-              ),
-            );
-          },
-          separatorBuilder: (context, index) {
-            return SizedBox(
-              height: 8.sp,
-            );
-          },
-          itemCount: data.length),
-    );
-  }
-}
+
+ */

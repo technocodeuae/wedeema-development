@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wadeema/core/utils/app_general_utils.dart';
 import 'package:wadeema/ui/work_focus_version/ads/pages/choose_listing_page.dart';
+import '../../../../blocs/chat_firebase/chat_bloc_firebase.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/dimens.dart';
@@ -112,6 +113,7 @@ int _currentIndex = 0;
                         ),
                         InkWell(
                           onTap: () {
+
                             if(widget.indexPage!=1){
                               if (!AppUtils.checkIfGuest(context)) {
                                 DIManager.findNavigator().pushReplacementNamed(

@@ -26,10 +26,10 @@ class AdsChatsModel {
 
   AdsChatsModel.forJson(Map<String, dynamic> json) {
     // text = json['text'];
-    nameAds = json['nameAds'];
-    ad_id = json['ad_id'];
-    imageAds = json['imageAds'];
-    dateTime = json['dateTime'];
+    nameAds = json['nameAds'] as String;
+    ad_id = json['ad_id'] as String;
+    imageAds = json['imageAds'] as String;
+    dateTime = json['dateTime'] as String;
   }
 
   Map<String, dynamic> toMap() {

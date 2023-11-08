@@ -153,7 +153,9 @@ dependencies:
   uni_links:
   firebase_core:
   firebase_messaging:
+#  firebase_database:
   cloud_firestore:
+  conditional_builder_null_safety: ^0.0.6
   flutter_keyboard_visibility: ^5.4.1
   introduction_screen: ^3.0.2
   auto_size_text: ^3.0.0

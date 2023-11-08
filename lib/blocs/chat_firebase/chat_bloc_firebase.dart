@@ -21,7 +21,6 @@ class ChatCubitFirebase extends Cubit<ChatStateFirebase> {
     this.adsRepo,
   ) : super(ChatFirebaseInitialState());
 
-
   // Future<void> getAllChats() async {
   //   emit(state.copyWith(getAllAdsChatsStateFirebase: BaseLoadingState()));
   //   final result = await adsRepo.getAllChatsFirebase();
@@ -74,41 +73,81 @@ class ChatCubitFirebase extends Cubit<ChatStateFirebase> {
   //     );
   //   }
   // }
-  AdsChatsModel? adsChatsModel;
+
+  // final databaseReference = FirebaseDatabase.instance.reference();
+
+  List<AdsChatsModel> adsChatsModel = [];
+  //
+  // Future<void> getAllAdsChats({
+  //   required String user_id,
+  // }) async {
+  //   emit(GetAllAdsChatsLoadingState());
+  //   try {
+  //     // await adsRepo.getAllAdsChats(user_id: user_id);
+  //     //
+  //
+  //     await FirebaseFirestore.instance
+  //         .collection('users')
+  //         .doc(user_id)
+  //         .collection('ads')
+  //         .get()
+  //         .then((value) {
+  //       value.docs.forEach((element) {
+  //         AdsChatsModel adsChats = AdsChatsModel.forJson(element.data());
+  //         adsChatsModel.add(adsChats);
+  //       });
+  //
+  //       print(adsChatsModel);
+  //     }).catchError((error) {
+  //       print(error.toString());
+  //     });
+  //
+  //     emit(GetAllAdsChatsSuccessState());
+  //   } catch (error) {
+  //     print(error.toString());
+  //     emit(GetAllAdsErrorState());
+  //   }
+  // }
+  //
+
   Future<void> getAllAdsChats({
     required String user_id,
-  }) async{
+  }) async {
     emit(GetAllAdsChatsLoadingState());
-    try{
+    adsChatsModel.clear();
+    try {
+      // await adsRepo.getAllAdsChats(user_id: user_id);
+      //
 
-       // await adsRepo.getAllAdsChats(user_id: user_id);
-       //
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user_id)
+          .collection('ads')
+          .get()
+          .then((value) {
+        value.docs.forEach((element) {
+          AdsChatsModel adsChats = AdsChatsModel.forJson(element.data());
+          adsChatsModel.add(adsChats);
 
-         await FirebaseFirestore.instance
-             .collection('users')
-             .doc(user_id)
-             .collection('ads')
-             .get()
-             .then((value) {
-
-           value.docs.forEach((element) {
-             adsChatsModel =AdsChatsModel.forJson(element.data());
-             // print(adsChatsModel!.imageAds);
-           });
-
-
-         }).catchError((error) {
-
-           print(error.toString());
-         });
+        });
 
 
+      }).catchError((error) {
+        print(error.toString());
+        print('error.toString()');
+      });
+      print(adsChatsModel[2].nameAds);
       emit(GetAllAdsChatsSuccessState());
-    } catch (error){
+    } catch (error) {
       print(error.toString());
       emit(GetAllAdsErrorState());
     }
+
+
   }
+
+
+
 
 
   Future<void> sendMassageFirebaseToFireStore({
@@ -120,21 +159,18 @@ class ChatCubitFirebase extends Cubit<ChatStateFirebase> {
   }) async {
     emit(ChatFirebaseLoadingState());
 
-    try{
-      await adsRepo.sendMassageFirebaseToFireStore(user_id: user_id,
+    try {
+      await adsRepo.sendMassageFirebaseToFireStore(
+          user_id: user_id,
           user_id_2: user_id_2,
           ad_id: ad_id,
           dataMassageModel: dataMassageModel,
           adsChatsModel: adsChatsModel);
       print('SendMessageSuccessFirebase');
       emit(SendMessageSuccessState());
-    } catch(error){
+    } catch (error) {
       print(error.toString());
       emit(SendMessageErrorState());
-
     }
-
   }
-
-
 }

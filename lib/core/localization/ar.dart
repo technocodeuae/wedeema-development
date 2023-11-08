@@ -110,7 +110,7 @@ Map<String, String> ar = {
   "favorites": "المفضلة",
   "blocked_users": "قائمة الحظر",
   "chat": "الدردشة",
-  "enter_your_message": "أدخل المسج",
+  "enter_your_message": "اكتب رسالة هنا",
   "status": "الحالة",
   "likes": "إعجاب",
   "posted_on": "تم النشر في",

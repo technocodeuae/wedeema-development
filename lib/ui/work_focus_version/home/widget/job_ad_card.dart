@@ -14,6 +14,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_consts.dart';
 import '../../../../core/constants/app_font.dart';
 import '../../../../core/constants/app_style.dart';
+import '../../../../core/shared_prefs/shared_prefs.dart';
 import '../../../../data/models/ads/entity/ads_entity.dart';
 import '../../ads/widget/favourites_button_widget.dart';
 import '../../chat/args/argument_message.dart';
@@ -170,6 +171,7 @@ class _JobAdCardState extends State<JobAdCard> {
                 //     ),
                 //   ),
                 // ),
+                DIManager.findDep<SharedPrefs>().getUserID()! == widget.data!.user_id.toString()? Container():
                 _chatButton(context)
               ],
             ),
