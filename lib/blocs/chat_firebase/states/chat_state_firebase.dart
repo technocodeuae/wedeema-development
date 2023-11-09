@@ -94,3 +94,7 @@ class GetAllAdsErrorState extends ChatStateFirebase {
 
   GetAllAdsErrorState();
 }
+
+class GetMessagesSuccessState extends ChatStateFirebase {
+  GetMessagesSuccessState();
+}

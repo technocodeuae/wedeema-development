@@ -2,7 +2,7 @@ class DataMassageModel {
   String? text;
   String? receiverId;
   String? senderId;
-  DateTime? dateTime;
+  String? dateTime;
 
   /*
     dataMassage
@@ -22,10 +22,10 @@ class DataMassageModel {
   });
 
   DataMassageModel.forJson(Map<String, dynamic> json) {
-    text = json['text'];
-    receiverId = json['receiverId'];
-    senderId = json['senderId'];
-    dateTime = json['dateTime'];
+    text = json['text']as String;
+    receiverId = json['receiverId']as String;
+    senderId = json['senderId']as String;
+    dateTime = json['dateTime'] as String;
   }
 
   Map<String, dynamic> toMap() {

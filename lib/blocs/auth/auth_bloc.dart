@@ -51,6 +51,7 @@ class AuthCubit extends Cubit<AuthState> {
       DIManager.findDep<SharedPrefs>()
         ..setToken(result.data?.access_token ?? '');
       DIManager.findDep<SharedPrefs>()..setUserID(result.data?.user?.id ?? -1);
+      DIManager.findDep<SharedPrefs>()..setUserNamePerson(result.data?.user!.user_name!);
       DIManager.findDep<SharedPrefs>()
         ..setNotificationsStatus(result.data?.user?.notification_status);
       DIManager.findDep<SharedPrefs>()
@@ -118,6 +119,7 @@ class AuthCubit extends Cubit<AuthState> {
       // await DIManager.findDep<ProfileCubit>().getUserProfile();
       DIManager.findDep<SharedPrefs>()..setToken(result.data?.access_token!);
       DIManager.findDep<SharedPrefs>()..setUserID(result.data?.user!.id!);
+      DIManager.findDep<SharedPrefs>()..setUserNamePerson(result.data?.user!.user_name!);
       DIManager.findDep<SharedPrefs>()
         ..setNotificationsStatus(result.data?.user?.notification_status);
       DIManager.findDep<SharedPrefs>()

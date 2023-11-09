@@ -518,6 +518,8 @@ Image.asset( "assets/images/logo.png",height: 95.h,width: 130.w,),
   Widget _chatButton(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        // print( DIManager.findDep<SharedPrefs>().getUserNamePerson().toString());
+
         if (!AppUtils.checkIfGuest(context)) {
           DIManager.findNavigator().pushNamed(ChatMessagesPage.routeName,
               arguments: ArgumentMessage(
@@ -526,7 +528,8 @@ Image.asset( "assets/images/logo.png",height: 95.h,width: 130.w,),
                 imageAds: data?.ad_images?[0].name?.toString(),
                 nameAds: data?.title?? '',
                 nameOwnerAds: data?.user_name?? '',
-
+                user_name_person_sender: DIManager.findDep<SharedPrefs>().getUserNamePerson().toString(),
+                user_id: DIManager.findDep<SharedPrefs>().getUserID().toString(),
               ));
         }
       },

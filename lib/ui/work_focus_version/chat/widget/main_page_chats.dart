@@ -38,8 +38,8 @@ class MainPageChat extends StatelessWidget {
               ClipRRect(
                 child: (adsData?.imageAds != null )
                     ? Image.network(
-                        // AppConsts.IMAGE_URL + adsData!.imageAds.toString(),
-                        AppConsts.IMAGE_URL + '/img/ad/1698142488797.jpg',
+                        AppConsts.IMAGE_URL + adsData!.imageAds.toString(),
+                        // AppConsts.IMAGE_URL + '/img/ad/1698142488797.jpg',
                         fit: BoxFit.fill,
                         height: 50.sp,
                         width: 50.sp,
@@ -80,7 +80,7 @@ class MainPageChat extends StatelessWidget {
               Spacer(),
               Text(
                 adsData!.dateTime != null
-                    ?  adsData!.dateTime.toString()
+                    ?  getComparedTime(DateTime.parse(adsData!.dateTime.toString())).toString()
                     : "",
                 style: AppStyle.lightSubtitle.copyWith(
                   color: AppColorsController().greyTextColor,

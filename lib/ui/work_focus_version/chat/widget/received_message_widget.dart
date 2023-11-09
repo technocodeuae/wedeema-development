@@ -7,13 +7,15 @@ import '../../../../core/constants/dimens.dart';
 import '../../../../data/models/messages/entity/messages_entity.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 
+import '../../../../data/models/messages_firebase/messages_model_new.dart';
 import '../../home/widget/home_items_favourite.dart';
 import '../../pdf/download_pdf_widget.dart';
 
 class ReceivedMessageWidget extends StatelessWidget {
   final MessagesEntity? data;
+  final DataMassageModel? dataMessages;
 
-  const ReceivedMessageWidget({Key? key, this.data}) : super(key: key);
+  const ReceivedMessageWidget({Key? key, this.data, this.dataMessages}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -109,10 +111,12 @@ class ReceivedMessageWidget extends StatelessWidget {
       // margin: EdgeInsets.only(top: 20),
 
       backGroundColor: AppColorsController().buttonRedColor,
-      child: data?.type == "text"
-          ? Text(
+      child:
+      // data?.type == "text"
+      //     ?
+      Text(
         // "Ut enim nia laborisasdasasdsaaaasas nisi ut aliquip ex ea commodo consequat",
-        data!.message.toString(),
+        dataMessages!.text.toString(),
         style: AppStyle.defaultStyle.copyWith(
           color: AppColorsController().white,
           fontWeight: FontWeight.w400,
@@ -120,18 +124,19 @@ class ReceivedMessageWidget extends StatelessWidget {
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
       )
-          : data?.type == "image"
-          ? Container(
-        height: 60.sp,
-        width: 120.sp,
-        child: Image.network(
-          AppConsts.IMAGE_URL + "/" +data!.filepath.toString(),
-        ),
-      )
-          : DownloadPdfWidget(
-        url: data!.filepath!,
-        name: data!.filename!,
-      ),
+
+      //     : data?.type == "image"
+      //     ? Container(
+      //   height: 60.sp,
+      //   width: 120.sp,
+      //   child: Image.network(
+      //     AppConsts.IMAGE_URL + "/" +data!.filepath.toString(),
+      //   ),
+      // )
+      //     : DownloadPdfWidget(
+      //   url: data!.filepath!,
+      //   name: data!.filename!,
+      // ),
     );
   }
 }

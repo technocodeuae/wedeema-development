@@ -6,12 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:wadeema/blocs/chat_firebase/states/chat_state_firebase.dart';
 import 'package:wadeema/core/constants/app_consts.dart';
 import 'package:wadeema/ui/work_focus_version/general/icons/account_icon.dart';
 
 import '../../../../blocs/application/application_bloc.dart';
 import '../../../../blocs/chat/chat_bloc.dart';
 import '../../../../blocs/chat/states/chat_state.dart';
+import '../../../../blocs/chat_firebase/chat_bloc_firebase.dart';
 import '../../../../blocs/notifications/notifications_bloc.dart';
 import '../../../../blocs/notifications/states/notifications_state.dart';
 import '../../../../core/bloc/states/base_fail_state.dart';
@@ -25,6 +27,8 @@ import '../../../../core/shared_prefs/shared_prefs.dart';
 import '../../../../core/utils/localization/app_localizations.dart';
 import '../../../../core/utils/ui/widgets/utils/vertical_padding.dart';
 import '../../../../data/models/messages/entity/messages_entity.dart';
+import '../../../../data/models/messages_firebase/ads_chats_model.dart';
+import '../../../../data/models/messages_firebase/messages_model_new.dart';
 import '../../general/back_long_press_widget.dart';
 import '../../general/icons/back_icon.dart';
 import '../../general/icons/send_message.dart';
@@ -44,8 +48,10 @@ class ChatMessagesPage extends StatefulWidget {
   State<ChatMessagesPage> createState() => _ChatMessagesPageState();
 }
 
-class _ChatMessagesPageState extends State<ChatMessagesPage>  with WidgetsBindingObserver{
+class _ChatMessagesPageState extends State<ChatMessagesPage>
+    with WidgetsBindingObserver {
   final chatBloc = DIManager.findDep<ChatCubit>();
+  final chatBlocFirebase = DIManager.findDep<ChatCubitFirebase>();
 
   bool isLoading = true;
 
@@ -57,141 +63,146 @@ class _ChatMessagesPageState extends State<ChatMessagesPage>  with WidgetsBindin
   TextEditingController controller = TextEditingController();
 
   String value = "";
-  bool  _isLoading = false;
+  bool _isLoading = false;
 
-  @override
-  void initState() {
-    //startApiRequest();
+  // @override
+  // void initState() {
+  //   //startApiRequest();
+  //
+  //   _isLoading = true;
+  //
+  //   _timer = Timer.periodic(Duration(milliseconds: 500), (timer) {
+  //     // Code to send message goes here
+  //     _makeApiRequest();
+  //     print('Message sent at ${DateTime.now()}Message sent at ${DateTime.now()}Message sent at ${DateTime.now()}Message sent at ${DateTime.now()}Message sent at ${DateTime.now()}Message sent at ${DateTime.now()}Message sent at ${DateTime.now()}Message sent at ${DateTime.now()}Message sent at ${DateTime.now()}');
+  //     print('Message sent at ${DateTime.now()}');
+  //   });
+  //   WidgetsBinding.instance.addObserver(this);
+  //   // _scrollController.animateTo(
+  //   //   _scrollController.position.maxScrollExtent + 50.h,
+  //   //   duration: Duration(seconds: 2), // قد تحتاج لضبط مدى الوقت حسب تفضيلاتك
+  //   //   curve: Curves.easeOut,
+  //   // );
+  // }
+  //
+  // @override
+  // void dispose() {
+  //   _timer?.cancel();
+  //   WidgetsBinding.instance?.removeObserver(this);
+  //
+  //   super.dispose();
+  // }
+  //
+  // void startApiRequest(AppLifecycleState state) {
+  //
+  //   if (state == AppLifecycleState.paused) {
+  //     _timer?.cancel();
+  //   } else if (state == AppLifecycleState.resumed) {
+  //
+  //     const fiveSec = const Duration(seconds: 1);
+  //     _timer =  Timer.periodic(fiveSec, (Timer t) => _makeApiRequest());
+  //   }
+  // }
+  //
+  // void _makeApiRequest() async {
+  //   if(isLoading == true) {
+  //     await chatBloc.getChatMessages(widget.data!.user_id_2!);
+  //   }
+  // }
+  //
+  // Future<void> loadImages() async {
+  //   final picker = ImagePicker(
+  //   );
+  //  // List<XFile>? result = await picker.pickMultiImage();
+  //
+  //
+  //   FilePickerResult? result = await FilePicker.platform.pickFiles(
+  //       type: FileType.image,
+  //       allowMultiple: true,
+  //     allowCompression: true,
+  //   );
+  //
+  //   if (result != null) {
+  //     files.clear();
+  //
+  //     for (PlatformFile platformFile in result.files) {
+  //       print("path:" +platformFile.path.toString() );
+  //       final File file = File(platformFile.path.toString());
+  //       files.add(file);
+  //     }
+  //
+  //     setState(() {
+  //       _isLoading = true;
+  //     });
+  //
+  //     await chatBloc.sendMassage(ArgumentMessage(
+  //         message: controller.text.toString(),
+  //         user_id_2: widget?.data!.user_id_2,
+  //         ad_id: widget?.data!.ad_id,
+  //         files: files));
+  //     value = "";
+  //     controller.text = "";
+  //     files = [];
+  //   }
+  //
+  //
+  // }
+  //
+  //
+  // Future<void> loadFiles() async {
+  //   try {
+  //     FilePickerResult? result = await FilePicker.platform.pickFiles(
+  //       type: FileType.custom,
+  //       allowCompression: true,
+  //       allowedExtensions: ['txt', 'pdf'],
+  //       allowMultiple: true,
+  //     );
+  //
+  //     if (result != null) {
+  //       files.clear();
+  //
+  //       for (PlatformFile platformFile in result.files) {
+  //         final File file = File(platformFile.path.toString());
+  //         files.add(file);
+  //       }
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  //
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
+  //     await chatBloc.sendMassage(ArgumentMessage(
+  //         message: controller.text.toString(),
+  //         user_id_2: widget?.data!.user_id_2,
+  //         ad_id: widget?.data!.ad_id,
+  //         files: files));
+  //     value = "";
+  //     controller.text = "";
+  //     files = [];
+  // }
 
-    _isLoading = true;
+  final ScrollController _scrollController = ScrollController(keepScrollOffset:true, initialScrollOffset: 3000);
 
-    _timer = Timer.periodic(Duration(milliseconds: 500), (timer) {
-      // Code to send message goes here
-      _makeApiRequest();
-      print('Message sent at ${DateTime.now()}Message sent at ${DateTime.now()}Message sent at ${DateTime.now()}Message sent at ${DateTime.now()}Message sent at ${DateTime.now()}Message sent at ${DateTime.now()}Message sent at ${DateTime.now()}Message sent at ${DateTime.now()}Message sent at ${DateTime.now()}');
-      print('Message sent at ${DateTime.now()}');
-    });
-    WidgetsBinding.instance?.addObserver(this);
-    // _scrollController.animateTo(
-    //   _scrollController.position.maxScrollExtent + 50.h,
-    //   duration: Duration(seconds: 2), // قد تحتاج لضبط مدى الوقت حسب تفضيلاتك
-    //   curve: Curves.easeOut,
-    // );
-  }
+  void move() {
+    // _scrollController.initialScrollOffset.isNaN;
+    _scrollController.animateTo(
 
-  @override
-  void dispose() {
-    _timer?.cancel();
-    WidgetsBinding.instance?.removeObserver(this);
-
-    super.dispose();
-  }
-
-  void startApiRequest(AppLifecycleState state) {
-
-    if (state == AppLifecycleState.paused) {
-      _timer?.cancel();
-    } else if (state == AppLifecycleState.resumed) {
-
-      const fiveSec = const Duration(seconds: 1);
-      _timer =  Timer.periodic(fiveSec, (Timer t) => _makeApiRequest());
-    }
-  }
-
-  void _makeApiRequest() async {
-    if(isLoading == true) {
-      await chatBloc.getChatMessages(widget.data!.user_id_2!);
-    }
-  }
-
-  Future<void> loadImages() async {
-    final picker = ImagePicker(
+      _scrollController.position.maxScrollExtent,
+      duration: Duration(milliseconds: 500),
+      // قد تحتاج لضبط مدى الوقت حسب تفضيلاتك
+      curve: Curves.easeOut,
     );
-   // List<XFile>? result = await picker.pickMultiImage();
-
-
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.image,
-        allowMultiple: true,
-      allowCompression: true,
-    );
-
-    if (result != null) {
-      files.clear();
-
-      for (PlatformFile platformFile in result.files) {
-        print("path:" +platformFile.path.toString() );
-        final File file = File(platformFile.path.toString());
-        files.add(file);
-      }
-
-      setState(() {
-        _isLoading = true;
-      });
-
-      await chatBloc.sendMassage(ArgumentMessage(
-          message: controller.text.toString(),
-          user_id_2: widget?.data!.user_id_2,
-          ad_id: widget?.data!.ad_id,
-          files: files));
-      value = "";
-      controller.text = "";
-      files = [];
-    }
-
-
   }
 
-
-  Future<void> loadFiles() async {
-    try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowCompression: true,
-        allowedExtensions: ['txt', 'pdf'],
-        allowMultiple: true,
-      );
-
-      if (result != null) {
-        files.clear();
-
-        for (PlatformFile platformFile in result.files) {
-          final File file = File(platformFile.path.toString());
-          files.add(file);
-        }
-      }
-    } catch (e) {
-      print(e);
-    }
-
-    setState(() {
-      _isLoading = true;
-    });
-      await chatBloc.sendMassage(ArgumentMessage(
-          message: controller.text.toString(),
-          user_id_2: widget?.data!.user_id_2,
-          ad_id: widget?.data!.ad_id,
-          files: files));
-      value = "";
-      controller.text = "";
-      files = [];
-  }
-
-
-  final ScrollController _scrollController = ScrollController();
-void move(){
-  _scrollController.animateTo(
-    _scrollController.position.maxScrollExtent ,
-    duration: Duration(milliseconds: 500), // قد تحتاج لضبط مدى الوقت حسب تفضيلاتك
-    curve: Curves.bounceOut,
-  );
-}
+  bool tapOnKeyboard = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColorsController().white,
-      resizeToAvoidBottomInset:false,
-      appBar:  AppBar(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
         backgroundColor: AppColorsController().white,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -204,19 +215,27 @@ void move(){
         elevation: 0,
         title: Column(
           children: [
-            SizedBox(height: 25.h,),
-            Text('${ widget.data!.nameOwnerAds!}',  style: AppStyle.smallTitleStyle.copyWith(
-              color: AppColorsController().black,
-              fontWeight: AppFontWeight.bold,
-              fontSize: AppFontSize.fontSize_20,
-            ),maxLines: 1,),
+            SizedBox(
+              height: 25.h,
+            ),
+            Text(
+              widget.data!.user_id_2.toString() ==
+                      DIManager.findDep<SharedPrefs>().getUserID().toString()
+                  ? '${widget.data!.user_name_person_sender!}'
+                  : '${widget.data!.nameOwnerAds!}',
+              style: AppStyle.smallTitleStyle.copyWith(
+                color: AppColorsController().black,
+                fontWeight: AppFontWeight.bold,
+                fontSize: AppFontSize.fontSize_20,
+              ),
+              maxLines: 1,
+            ),
           ],
         ),
-        leading:Transform.scale(
+        leading: Transform.scale(
           scale: 0.5,
           child: InkWell(
             onTap: () {
-
               print(data[0]);
               setState(() {
                 isLoading = false;
@@ -231,12 +250,372 @@ void move(){
               height: 18.sp,
             ),
           ),
-        ), iconTheme: IconThemeData(
-        size: 20.0, // تحديد حجم الأيقونة في الـ leading
+        ),
+        iconTheme: IconThemeData(
+          size: 20.0, // تحديد حجم الأيقونة في الـ leading
+        ),
       ),
+      body: Column(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: 60.h,
 
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15.sp),
+              color: AppColorsController().card,
+              border: Border.all(
+                color: AppColorsController().borderColor,
+                width: 0.2,
+              ),
+            ),
+
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ClipRRect(
+                    child: (widget.data?.imageAds != null )
+                        ? Image.network(
+                      AppConsts.IMAGE_URL + widget.data!.imageAds.toString(),
+                      fit: BoxFit.fill,
+                      height: 50.sp,
+                      width: 50.sp,
+                    )
+                        : AccountIcon(
+                      height: 50.sp,
+                      width: 50.sp,
+                    ),
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(40.sp)),
+                  ),
+                  SizedBox(width: 10.w),
+                  Text(
+                    widget.data!.nameAds.toString() ,
+                    style: AppStyle.defaultStyle.copyWith(
+                        color: AppColorsController().black,
+                        fontWeight: FontWeight.w400,
+                        fontSize: AppFontSize.fontSize_16
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+
+                ],
+              ),
+            ),
+          ),
+
+          Expanded(
+            child: Builder(builder: (context) {
+              chatBlocFirebase.getMessages(
+                  ad_id: widget.data!.ad_id.toString(),
+                  receiverId: widget.data!.user_id_2.toString() == DIManager.findDep<SharedPrefs>().getUserID().toString()?widget.data!.user_id.toString():widget.data!.user_id_2.toString(),
+              );
+              return BlocConsumer<ChatCubitFirebase,ChatStateFirebase>(
+                bloc: chatBlocFirebase,
+                listener: (context,state){},
+                builder:(context,state){
+                  return Column(
+                    children: [
+
+                      // for(int i = 0 ;i<chatBlocFirebase.messages.length;i++)...[
+                      //   Text(chatBlocFirebase.messages[i].text.toString(),style: TextStyle(color: Colors.black,fontSize: 25),),
+                      // ],
+                  // Text(chatBlocFirebase.messages[0].text.toString(),style: TextStyle(color: Colors.black,fontSize: 25),),
+Expanded(
+  child:   ListView.separated(
+    controller: _scrollController,
+    scrollDirection: Axis.vertical,
+            itemBuilder: (context,index){
+              // DIManager.findDep<SharedPrefs>().getUserID() ==
+              //     data[index].user_id_1.toString()
+              //     ?  SenderMessageWidget(data: data[index])
+              //     : ReceivedMessageWidget(data: data[index]);
+              //
+              if(chatBlocFirebase.messages[index].senderId == DIManager.findDep<SharedPrefs>().getUserID().toString())
+                return  SenderMessageWidget(dataMessages: chatBlocFirebase.messages[index]);
+            return ReceivedMessageWidget(dataMessages: chatBlocFirebase.messages[index]);
+            },
+            separatorBuilder: (context,state)=>SizedBox(height: 10,),
+            itemCount: chatBlocFirebase.messages.length,),
+),
+                      // Spacer(),
+
+                      Container(
+                        height: 0.4.h,
+                        width: MediaQuery.of(context).size.width,
+                        color: AppColorsController().borderColor,
+                      ),
+                      // TextFormField()
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 48.sp,width: MediaQuery.of(context).size.width,
+                          // color: Colors.grey.withOpacity(0.2),
+                          margin: EdgeInsets.symmetric(horizontal: 20.sp, vertical: 12.sp)
+                              .copyWith(bottom: MediaQuery.of(context).viewInsets.bottom + 16),
+                          child: Row(
+
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  onTap: (){
+                                    setState(() {
+                                      tapOnKeyboard=true;
+                                    });
+                                  },
+                                  controller: controller,
+                                  style: AppStyle.tinySmallTitleStyle.copyWith(
+                                      color: AppColorsController().naveTextColor,
+                                      fontSize: AppFontSize.fontSize_13
+                                  ),
+                                  minLines: 1,
+                                  maxLines: null,
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: translate("enter_your_message"),
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 4.sp, horizontal: 16.sp)),
+                                  onChanged: (value) {
+                                    value = value.toString();
+
+                                  },
+                                ),
+                              ),
+                              Container(
+                                width: 40.sp,
+                                height: 40.sp,
+                                child: InkWell(
+                                    onTap: ()  {
+                                      if (controller.text.isNotEmpty) {
+                                         chatBlocFirebase.sendMassageFirebaseToFireStore(
+                                            user_id: DIManager.findDep<SharedPrefs>().getUserID().toString(),
+                                            user_id_2: widget.data!.user_id_2.toString() == DIManager.findDep<SharedPrefs>().getUserID().toString()?widget.data!.user_id.toString():widget.data!.user_id_2.toString(),
+                                            ad_id: widget.data!.ad_id.toString(),
+                                            dataMassageModel: DataMassageModel(
+                                              text: controller.text.toString(),
+                                              dateTime: DateTime.now().toString(),
+                                              receiverId:  widget.data!.user_id_2.toString() == DIManager.findDep<SharedPrefs>().getUserID().toString()?widget.data!.user_id.toString():widget.data!.user_id_2.toString(),
+                                              senderId: DIManager.findDep<SharedPrefs>().getUserID().toString(),
+                                            ),
+                                            adsChatsModel: AdsChatsModel(
+                                                dateTime: DateTime.now().toString(),
+                                                ad_id: widget.data!.ad_id.toString(),
+                                                imageAds: widget.data!.imageAds.toString(),
+                                                nameAds: widget.data!.nameAds.toString(),
+                                                nameOwnerAds: widget.data!.nameOwnerAds.toString(),
+                                                massage: controller.text.toString(),
+                                                user_id: widget.data!.user_id.toString(),
+                                                user_id_2: widget.data!.user_id_2.toString(),
+                                                userNamePersonSender: widget.data!.user_name_person_sender.toString()
+                                            )
+                                        );
+// print(chatBlocFirebase.messages[0].text.toString());
+                                        // await chatBloc.sendMassage(
+                                        //   ArgumentMessage(
+                                        //       message: controller.text.toString(),
+                                        //       user_id_2: widget.data!.user_id_2,
+                                        //       ad_id: widget.data!.ad_id,
+                                        //       files: files),
+                                        // );
+                                        value = "";
+                                        controller.text = "";
+                                        Future.delayed(Duration(milliseconds: 500)).then((value) => move());
+                                      }
+                                    },
+                                    child:  Transform.rotate(
+                                      angle: 90 * 3.141592653589793 / 90, // تحويل الزاوية من درجة إلى راديان
+                                      child: Container( width: 40.sp,
+                                        height: 40.sp,
+                                        child: SendMessageIcon(
+                                            width: 29.sp,
+                                            height: 25.sp,
+                                            color:AppColorsController().iconColor
+                                        ),
+                                      ), // استبدل بمسار صورتك
+                                    )
+
+                                ),
+                              ),
+                              tapOnKeyboard?SizedBox(height: 500,):Container(),
+
+                              /*
+                                 Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  InkWell(
+                                    onTap: (){
+                                      loadImages();
+                                    },
+                                    child: Icon(
+                                      Icons.camera_alt_outlined,
+                                      color: AppColorsController().red,
+                                      size: 24.sp,
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: (){
+                                      loadFiles();
+                                    },
+                                    child: Icon(
+                                      Icons.attach_file_sharp,
+                                      color: AppColorsController().red,
+                                      size: 24.sp,
+                                    ),
+                                  ),
+
+                                  Container(
+                                    width: 200.sp,
+                                    child: TextField(
+
+                                      controller: controller,
+                                      style: AppStyle.tinySmallTitleStyle.copyWith(
+                                        color: AppColorsController().naveTextColor,
+                                      ),
+                                      minLines: 1,
+                                      maxLines: null,
+                                      decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          hintText: translate("enter_your_message"),
+                                          contentPadding: EdgeInsets.symmetric(
+                                              vertical: 4.sp, horizontal: 16.sp)),
+                                      onChanged: (value) {
+                                        value = value.toString();
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                               */
+                            ],
+                          ),
+                        ),
+                      ),
+                      // SizedBox(
+                      //   height: 300,
+                      // ),
+                    ],
+                  );
+                },
+              );
+            }),
+          ),
+        ],
       ),
-      body: LoadingColumnOverlay(
+      // bottomSheet: Container(
+      //   height: 48.sp,
+      //   margin: EdgeInsets.symmetric(horizontal: 20.sp, vertical: 12.sp)
+      //       .copyWith(bottom: MediaQuery.of(context).viewInsets.bottom + 16),
+      //   child: Row(
+      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //     children: [
+      //       Container(
+      //         width: 280.sp,
+      //         padding: EdgeInsets.symmetric(vertical: 8.sp,horizontal: 12.sp),
+      //         decoration: BoxDecoration(
+      //           border: Border.all(
+      //             color: AppColorsController().borderColor,
+      //             width: 0.2,
+      //           ),
+      //           borderRadius: BorderRadius.all(
+      //             Radius.circular(Dimens.containerBorderRadius),
+      //           ),
+      //           color: AppColorsController().containerPrimaryColor,
+      //         ),
+      //         child: Row(
+      //           mainAxisAlignment: MainAxisAlignment.center,
+      //           crossAxisAlignment: CrossAxisAlignment.center,
+      //           children: [
+      //             InkWell(
+      //               onTap: (){
+      //                 loadImages();
+      //               },
+      //               child: Icon(
+      //                 Icons.camera_alt_outlined,
+      //                 color: AppColorsController().red,
+      //                 size: 24.sp,
+      //               ),
+      //             ),
+      //             InkWell(
+      //               onTap: (){
+      //                 loadFiles();
+      //               },
+      //               child: Icon(
+      //                 Icons.attach_file_sharp,
+      //                 color: AppColorsController().red,
+      //                 size: 24.sp,
+      //               ),
+      //             ),
+      //
+      //             Container(
+      //               width: 200.sp,
+      //               child: TextField(
+      //
+      //                 controller: controller,
+      //                 style: AppStyle.tinySmallTitleStyle.copyWith(
+      //                   color: AppColorsController().naveTextColor,
+      //                 ),
+      //                 minLines: 1,
+      //                 maxLines: null,
+      //                 decoration: InputDecoration(
+      //                     border: InputBorder.none,
+      //                     hintText: translate("enter_your_message"),
+      //                     contentPadding: EdgeInsets.symmetric(
+      //                         vertical: 4.sp, horizontal: 16.sp)),
+      //                 onChanged: (value) {
+      //                   value = value.toString();
+      //                 },
+      //               ),
+      //             ),
+      //           ],
+      //         ),
+      //       ),
+      //       Container(
+      //         padding: EdgeInsets.all(12.sp),
+      //         decoration: BoxDecoration(
+      //           border: Border.all(
+      //             color: AppColorsController().borderColor,
+      //             width: 0.2,
+      //           ),
+      //           borderRadius: BorderRadius.all(
+      //             Radius.circular(Dimens.containerBorderRadius),
+      //           ),
+      //           color: AppColorsController().containerPrimaryColor,
+      //         ),
+      //         child: GestureDetector(
+      //           onTap: () async {
+      //             if (controller.text.isNotEmpty) {
+      //               await chatBloc.sendMassage(
+      //                 ArgumentMessage(
+      //                     message: controller.text.toString(),
+      //                     user_id_2: widget?.data!.user_id_2,
+      //                     ad_id: widget?.data!.ad_id,
+      //                     files: files),
+      //               );
+      //               value = "";
+      //               controller.text = "";
+      //             }
+      //           },
+      //           child: SendMessageIcon(
+      //             width: 29.sp,
+      //             height: 25.sp,
+      //               color:AppColorsController().iconColor
+      //           ),
+      //         ),
+      //       )
+      //     ],
+      //   ),
+      // ),
+    );
+  }
+
+/*
+
+LoadingColumnOverlay(
       isLoading: _isLoading,
       child: BackLongPress(
 
@@ -453,133 +832,23 @@ void move(){
           ],
         ),
       ),
-      ),
-      // bottomSheet: Container(
-      //   height: 48.sp,
-      //   margin: EdgeInsets.symmetric(horizontal: 20.sp, vertical: 12.sp)
-      //       .copyWith(bottom: MediaQuery.of(context).viewInsets.bottom + 16),
-      //   child: Row(
-      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //     children: [
-      //       Container(
-      //         width: 280.sp,
-      //         padding: EdgeInsets.symmetric(vertical: 8.sp,horizontal: 12.sp),
-      //         decoration: BoxDecoration(
-      //           border: Border.all(
-      //             color: AppColorsController().borderColor,
-      //             width: 0.2,
-      //           ),
-      //           borderRadius: BorderRadius.all(
-      //             Radius.circular(Dimens.containerBorderRadius),
-      //           ),
-      //           color: AppColorsController().containerPrimaryColor,
-      //         ),
-      //         child: Row(
-      //           mainAxisAlignment: MainAxisAlignment.center,
-      //           crossAxisAlignment: CrossAxisAlignment.center,
-      //           children: [
-      //             InkWell(
-      //               onTap: (){
-      //                 loadImages();
-      //               },
-      //               child: Icon(
-      //                 Icons.camera_alt_outlined,
-      //                 color: AppColorsController().red,
-      //                 size: 24.sp,
-      //               ),
-      //             ),
-      //             InkWell(
-      //               onTap: (){
-      //                 loadFiles();
-      //               },
-      //               child: Icon(
-      //                 Icons.attach_file_sharp,
-      //                 color: AppColorsController().red,
-      //                 size: 24.sp,
-      //               ),
-      //             ),
-      //
-      //             Container(
-      //               width: 200.sp,
-      //               child: TextField(
-      //
-      //                 controller: controller,
-      //                 style: AppStyle.tinySmallTitleStyle.copyWith(
-      //                   color: AppColorsController().naveTextColor,
-      //                 ),
-      //                 minLines: 1,
-      //                 maxLines: null,
-      //                 decoration: InputDecoration(
-      //                     border: InputBorder.none,
-      //                     hintText: translate("enter_your_message"),
-      //                     contentPadding: EdgeInsets.symmetric(
-      //                         vertical: 4.sp, horizontal: 16.sp)),
-      //                 onChanged: (value) {
-      //                   value = value.toString();
-      //                 },
-      //               ),
-      //             ),
-      //           ],
-      //         ),
-      //       ),
-      //       Container(
-      //         padding: EdgeInsets.all(12.sp),
-      //         decoration: BoxDecoration(
-      //           border: Border.all(
-      //             color: AppColorsController().borderColor,
-      //             width: 0.2,
-      //           ),
-      //           borderRadius: BorderRadius.all(
-      //             Radius.circular(Dimens.containerBorderRadius),
-      //           ),
-      //           color: AppColorsController().containerPrimaryColor,
-      //         ),
-      //         child: GestureDetector(
-      //           onTap: () async {
-      //             if (controller.text.isNotEmpty) {
-      //               await chatBloc.sendMassage(
-      //                 ArgumentMessage(
-      //                     message: controller.text.toString(),
-      //                     user_id_2: widget?.data!.user_id_2,
-      //                     ad_id: widget?.data!.ad_id,
-      //                     files: files),
-      //               );
-      //               value = "";
-      //               controller.text = "";
-      //             }
-      //           },
-      //           child: SendMessageIcon(
-      //             width: 29.sp,
-      //             height: 25.sp,
-      //               color:AppColorsController().iconColor
-      //           ),
-      //         ),
-      //       )
-      //     ],
-      //   ),
-      // ),
-    );
-  }
+      )
 
-
-
-
-
-
+ */
 
   _buildBody() {
     return Column(
       children: [
-
         Expanded(
           child: ListView.separated(
               physics: BouncingScrollPhysics(),
               shrinkWrap: true,
-
-              primary: false,controller: _scrollController,
+              primary: false,
+              controller: _scrollController,
               itemBuilder: (context, index) {
                 return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10.sp, vertical: 5.sp),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 10.sp, vertical: 5.sp),
                   // margin: EdgeInsets.symmetric(horizontal: 22.sp),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -657,7 +926,6 @@ void move(){
                               data[index].user_id_1.toString()
                           ? SenderMessageWidget(data: data[index])
                           : ReceivedMessageWidget(data: data[index]),
-
                     ],
                   ),
                 );
@@ -669,28 +937,24 @@ void move(){
               },
               itemCount: data.length),
         ),
-
-
         Container(
           height: 0.4.h,
           width: MediaQuery.of(context).size.width,
           color: AppColorsController().borderColor,
         ),
         Container(
-          height: 48.sp,width: MediaQuery.of(context).size.width,
+          height: 48.sp, width: MediaQuery.of(context).size.width,
           // color: Colors.grey.withOpacity(0.2),
           margin: EdgeInsets.symmetric(horizontal: 20.sp, vertical: 12.sp)
               .copyWith(bottom: MediaQuery.of(context).viewInsets.bottom + 16),
           child: Row(
-
             children: [
               Expanded(
                 child: TextField(
                   controller: controller,
                   style: AppStyle.tinySmallTitleStyle.copyWith(
-                    color: AppColorsController().naveTextColor,
-                    fontSize: AppFontSize.fontSize_13
-                  ),
+                      color: AppColorsController().naveTextColor,
+                      fontSize: AppFontSize.fontSize_13),
                   minLines: 1,
                   maxLines: null,
                   decoration: InputDecoration(
@@ -700,7 +964,6 @@ void move(){
                           vertical: 4.sp, horizontal: 16.sp)),
                   onChanged: (value) {
                     value = value.toString();
-
                   },
                 ),
               ),
@@ -716,20 +979,19 @@ void move(){
                       );
                       value = "";
                       controller.text = "";
-                      Future.delayed(Duration(seconds: 1)).then((value) => move());
+                      Future.delayed(Duration(seconds: 1))
+                          .then((value) => move());
                     }
                   },
-                  child:  Transform.rotate(
-                    angle: 90 * 3.141592653589793 / 90, // تحويل الزاوية من درجة إلى راديان
+                  child: Transform.rotate(
+                    angle: 90 * 3.141592653589793 / 90,
+                    // تحويل الزاوية من درجة إلى راديان
                     child: SendMessageIcon(
                         width: 29.sp,
                         height: 25.sp,
-                        color:AppColorsController().iconColor
-                    ), // استبدل بمسار صورتك
-                  )
-
-              ),
-
+                        color: AppColorsController()
+                            .iconColor), // استبدل بمسار صورتك
+                  )),
 
               /*
                      Row(

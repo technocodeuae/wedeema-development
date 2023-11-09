@@ -39,6 +39,8 @@ class SharedPrefs {
       ReadWriteValue('appRefreshToken${AppConsts.appName}', null);
   ReadWriteValue<String?> userID =
   ReadWriteValue('userID${AppConsts.appName}', null);
+  ReadWriteValue<String?> userNamePerson =
+  ReadWriteValue('user_name${AppConsts.appName}', null);
   ReadWriteValue<String?> notificationStatus =
   ReadWriteValue('notificationStatus${AppConsts.appName}', null);
   ReadWriteValue<String?> imageProfile =
@@ -184,6 +186,9 @@ class SharedPrefs {
     userID.val = userId.toString();
   }
 
+  setUserNamePerson(String? userName) {
+    userNamePerson.val = userName.toString();
+  }
   setImageProfile(String? image) {
     imageProfile.val = image.toString();
   }
@@ -240,6 +245,9 @@ class SharedPrefs {
     return userID.val;
   }
 
+  String? getUserNamePerson() {
+    return userNamePerson.val;
+  }
   String? getFCMToken() {
     return fcmToken.val;
   }

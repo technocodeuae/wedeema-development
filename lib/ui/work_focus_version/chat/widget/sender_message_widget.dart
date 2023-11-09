@@ -6,12 +6,14 @@ import '../../../../core/constants/app_style.dart';
 import '../../../../data/models/messages/entity/messages_entity.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 
+import '../../../../data/models/messages_firebase/messages_model_new.dart';
 import '../../pdf/download_pdf_widget.dart';
 
 class SenderMessageWidget extends StatelessWidget {
   final MessagesEntity? data;
+  final DataMassageModel? dataMessages;
 
-  const SenderMessageWidget({Key? key, this.data}) : super(key: key);
+  const SenderMessageWidget({Key? key, this.data, this.dataMessages}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -111,10 +113,12 @@ class SenderMessageWidget extends StatelessWidget {
           // margin: EdgeInsets.only(top: 20),
 
           backGroundColor: AppColorsController().grey,
-          child: data?.type == "text"
-              ? Text(
+          child:
+          // data?.type == "text"
+          //     ?
+          Text(
             // "Ut enim nia laborisasdasasdsaaaasas nisi ut aliquip ex ea commodo consequat",
-            data!.message.toString(),
+            dataMessages!.text.toString(),
             style: AppStyle.defaultStyle.copyWith(
               color: AppColorsController().black,
               fontWeight: FontWeight.w400,
@@ -122,18 +126,19 @@ class SenderMessageWidget extends StatelessWidget {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           )
-              : data?.type == "image"
-              ? Container(
-            height: 60.sp,
-            width: 120.sp,
-            child: Image.network(
-              AppConsts.IMAGE_URL + "/" +data!.filepath.toString(),
-            ),
-          )
-              : DownloadPdfWidget(
-            url: data!.filepath!,
-            name: data!.filename!,
-          ),
+
+          //     : data?.type == "image"
+          //     ? Container(
+          //   height: 60.sp,
+          //   width: 120.sp,
+          //   child: Image.network(
+          //     AppConsts.IMAGE_URL + "/" +data!.filepath.toString(),
+          //   ),
+          // )
+          //     : DownloadPdfWidget(
+          //   url: data!.filepath!,
+          //   name: data!.filename!,
+          // ),
         ),
       ],
     );

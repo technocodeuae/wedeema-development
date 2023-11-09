@@ -77,6 +77,7 @@ class ChatCubitFirebase extends Cubit<ChatStateFirebase> {
   // final databaseReference = FirebaseDatabase.instance.reference();
 
   List<AdsChatsModel> adsChatsModel = [];
+
   //
   // Future<void> getAllAdsChats({
   //   required String user_id,
@@ -128,10 +129,7 @@ class ChatCubitFirebase extends Cubit<ChatStateFirebase> {
         value.docs.forEach((element) {
           AdsChatsModel adsChats = AdsChatsModel.forJson(element.data());
           adsChatsModel.add(adsChats);
-
         });
-
-
       }).catchError((error) {
         print(error.toString());
         print('error.toString()');
@@ -142,13 +140,33 @@ class ChatCubitFirebase extends Cubit<ChatStateFirebase> {
       print(error.toString());
       emit(GetAllAdsErrorState());
     }
-
-
   }
 
+  String user_id = DIManager.findDep<SharedPrefs>().getUserID().toString();
+  List<DataMassageModel> messages = [];
 
-
-
+  void getMessages({
+    required String? ad_id,
+    required String? receiverId,
+  }) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user_id)
+        .collection('ads')
+        .doc(ad_id)
+        .collection('chats')
+        .doc(receiverId)
+        .collection('messages').orderBy('dateTime')
+        .snapshots()
+        .listen((event) {
+      messages= [];
+      event.docs.forEach((element) {
+        messages.add(DataMassageModel.forJson(element.data()));
+      });
+print(messages);
+      emit(GetMessagesSuccessState());
+    });
+  }
 
   Future<void> sendMassageFirebaseToFireStore({
     required String user_id,

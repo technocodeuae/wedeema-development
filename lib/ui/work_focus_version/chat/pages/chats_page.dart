@@ -58,7 +58,9 @@ class _ChatsPageState extends State<ChatsPage> {
   @override
   void initState() {
     chatBloc.getAllChats();
-    chatBlocFirebase.getAllAdsChats(user_id: '1234');
+    chatBlocFirebase.getAllAdsChats(
+      user_id: DIManager.findDep<SharedPrefs>().getUserID().toString(),
+    );
     isLoading = true;
     _isLoading = true;
   }
@@ -72,7 +74,7 @@ class _ChatsPageState extends State<ChatsPage> {
     return Scaffold(
       // backgroundColor: AppColorsController().card.withOpacity(0.8),
       backgroundColor: AppColorsController().white,
-      appBar:  AppBar(
+      appBar: AppBar(
         backgroundColor: AppColorsController().white,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -81,15 +83,17 @@ class _ChatsPageState extends State<ChatsPage> {
                 fit: BoxFit.fill),
           ),
         ),
-        centerTitle: true,elevation: 0,
-        title: Text(translate('chat'),  style: AppStyle.smallTitleStyle.copyWith(
-          color: AppColorsController().black,
-          fontWeight: AppFontWeight.midBold,
-          fontSize: AppFontSize.fontSize_20,
-        ),maxLines: 1,),
-      
-
-
+        centerTitle: true,
+        elevation: 0,
+        title: Text(
+          translate('chat'),
+          style: AppStyle.smallTitleStyle.copyWith(
+            color: AppColorsController().black,
+            fontWeight: AppFontWeight.midBold,
+            fontSize: AppFontSize.fontSize_20,
+          ),
+          maxLines: 1,
+        ),
       ),
       body: Stack(
         alignment: Alignment.bottomCenter,
@@ -98,40 +102,43 @@ class _ChatsPageState extends State<ChatsPage> {
             child: BlocConsumer<ChatCubitFirebase, ChatStateFirebase>(
               bloc: chatBlocFirebase,
               listener: (_, state) {
-                if(state is GetAllAdsChatsLoadingState ) {
+                if (state is GetAllAdsChatsLoadingState) {
                   isLoading = true;
-                }else{
+                } else {
                   isLoading = false;
                 }
               },
               builder: (_, __) {
-                return isLoading? Padding(
-                  padding: EdgeInsets.only(top: MediaQuery.of(context).size.height/2),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                          width: 20.sp,
-                          height: 20.sp,
-                          child: CircularProgressIndicator(
-                            color: AppColorsController().buttonRedColor,
-                            strokeWidth: 1.5,
-                          )),
-                      Spacer(),
-                      Container()
-                    ],
-                  ),
-                ):ListView.separated(
-                  itemBuilder: (context, index) =>
-                      _buildBodyChats(chatBlocFirebase.adsChatsModel[index]),
-                  separatorBuilder: (context, index) => Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 1,
-                    color: Colors.grey,
-                  ),
-                  itemCount: chatBlocFirebase.adsChatsModel.length,
-                );
+                return isLoading
+                    ? Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height / 2),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                                width: 20.sp,
+                                height: 20.sp,
+                                child: CircularProgressIndicator(
+                                  color: AppColorsController().buttonRedColor,
+                                  strokeWidth: 1.5,
+                                )),
+                            Spacer(),
+                            Container()
+                          ],
+                        ),
+                      )
+                    : ListView.separated(
+                        itemBuilder: (context, index) => _buildBodyChats(
+                            chatBlocFirebase.adsChatsModel[index]),
+                        separatorBuilder: (context, index) => Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 1,
+                          color: Colors.grey,
+                        ),
+                        itemCount: chatBlocFirebase.adsChatsModel.length,
+                      );
               },
             ),
           ),
@@ -182,7 +189,25 @@ mainAxisAlignment: MainAxisAlignment.center,
   // }
 
   _buildBodyChats(AdsChatsModel data) {
-    return MainPageChat(adsData: data,);
+    return InkWell(
+        onTap: () {
+
+
+          DIManager.findNavigator().pushNamed(ChatMessagesPage.routeName,
+              arguments: ArgumentMessage(
+                nameOwnerAds: data.nameOwnerAds,
+                nameAds: data.nameAds,
+                imageAds: data.imageAds,
+                ad_id: int.parse(data.ad_id.toString()),
+                user_id: data.user_id.toString(),
+                // user_id_firebase: DIManager.findDep<SharedPrefs>().getUserID().toString(),
+                user_id_2: int.parse(data.user_id_2.toString()),
+                user_name_person_sender: data.userNamePersonSender,
+              ));
+        },
+        child: MainPageChat(
+          adsData: data,
+        ));
   }
 }
 
