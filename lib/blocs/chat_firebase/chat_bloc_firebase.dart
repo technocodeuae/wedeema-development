@@ -191,4 +191,10 @@ print(messages);
       emit(SendMessageErrorState());
     }
   }
+
+  void deleteChat(){
+
+  }
 }
+
+

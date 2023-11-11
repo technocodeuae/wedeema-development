@@ -568,10 +568,10 @@ class _ClientAccountPageState extends State<ClientAccountPage> {
                         ImageProfileWidget(
                           url: data?.user?.profile_pic ?? "",
                         ),
-                        SizedBox(width: 20.sp),
+                        SizedBox(width: 15.w),
                         Row(
                           children: [
-                            SizedBox(width: 20.sp),
+                            SizedBox(width: 15.w),
                             InkWell(
                               child: Column(
                                 children: [
@@ -580,7 +580,7 @@ class _ClientAccountPageState extends State<ClientAccountPage> {
                                     style: AppStyle.lightSubtitle.copyWith(
                                         color: AppColorsController().black,
                                         fontWeight: FontWeight.w400,
-                                        fontSize: AppFontSize.fontSize_14),
+                                        fontSize: AppFontSize.fontSize_13),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -589,7 +589,7 @@ class _ClientAccountPageState extends State<ClientAccountPage> {
                                     style: AppStyle.lightSubtitle.copyWith(
                                         color: AppColorsController().black,
                                         fontWeight: FontWeight.w400,
-                                        fontSize: 14),
+                                        fontSize: AppFontSize.fontSize_13),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -602,7 +602,7 @@ class _ClientAccountPageState extends State<ClientAccountPage> {
                                 );
                               },
                             ),
-                            SizedBox(width: 30.sp),
+                            SizedBox(width: 30.w),
                             InkWell(
                               onTap: () {
                                 if (currentUserId == widget.userId) {
@@ -619,7 +619,7 @@ class _ClientAccountPageState extends State<ClientAccountPage> {
                                     style: AppStyle.lightSubtitle.copyWith(
                                         color: AppColorsController().black,
                                         fontWeight: FontWeight.w400,
-                                        fontSize: AppFontSize.fontSize_14),
+                                        fontSize: AppFontSize.fontSize_13),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -628,14 +628,14 @@ class _ClientAccountPageState extends State<ClientAccountPage> {
                                     style: AppStyle.lightSubtitle.copyWith(
                                         color: AppColorsController().black,
                                         fontWeight: FontWeight.w400,
-                                        fontSize: AppFontSize.fontSize_14),
+                                        fontSize: AppFontSize.fontSize_13),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ],
                               ),
                             ),
-                            SizedBox(width: 20.sp),
+                            SizedBox(width: 20.w),
                             InkWell(
                               onTap: () {
                                 // DIManager.findNavigator().pushNamed(
@@ -650,7 +650,7 @@ class _ClientAccountPageState extends State<ClientAccountPage> {
                                     style: AppStyle.lightSubtitle.copyWith(
                                         color: AppColorsController().black,
                                         fontWeight: FontWeight.w400,
-                                        fontSize: 14),
+                                        fontSize: AppFontSize.fontSize_13),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -659,7 +659,7 @@ class _ClientAccountPageState extends State<ClientAccountPage> {
                                     style: AppStyle.lightSubtitle.copyWith(
                                         color: AppColorsController().black,
                                         fontWeight: FontWeight.w400,
-                                        fontSize: 14),
+                                        fontSize: AppFontSize.fontSize_13),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -835,7 +835,7 @@ class _ClientAccountPageState extends State<ClientAccountPage> {
                     if (categoriesBloc.isJobs(data?.active_ads?[index].category_title ?? '')) {
 
                       return JobAdCard(
-                        weNeedJustImage: true,
+                        weNeedJustImage: true,isUseGridView: true,
                         // height: MediaQuery.sizeOf(context).height * 0.23,
                         // height: 250.sp,
                         width: MediaQuery.sizeOf(context).width * 0.85,
@@ -843,7 +843,9 @@ class _ClientAccountPageState extends State<ClientAccountPage> {
                         onPress: () {
                           DIManager.findNavigator().pushNamed(
                             ItemsDetailsPage.routeName,
-                            arguments: ItemsArgs(id: data?.active_ads?[index].ad_id ?? 0),
+                            arguments: ItemsArgs(id: data?.active_ads?[index].ad_id ?? 0,
+                            categoryId: 27
+                            ),
                           );
                         },
                       );
@@ -854,7 +856,8 @@ class _ClientAccountPageState extends State<ClientAccountPage> {
                           onPress: () {
                             DIManager.findNavigator().pushNamed(
                               ItemsDetailsPage.routeName,
-                              arguments: ItemsArgs(id: data?.active_ads?[index]?.ad_id ?? 0),
+                              arguments: ItemsArgs(id: data?.active_ads?[index]?.ad_id ?? 0,type: 'ads'
+                              ),
                             );
                           });
 

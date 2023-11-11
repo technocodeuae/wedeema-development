@@ -55,25 +55,31 @@ class MainPageChat extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    adsData!.nameAds.toString() ,
-                    style: AppStyle.defaultStyle.copyWith(
-                        color: AppColorsController().black,
-                        fontWeight: FontWeight.w400,
-                        fontSize: AppFontSize.fontSize_14
+                  Container(
+                    width: 220.w,
+                    child: Text(
+                      adsData!.nameAds.toString() ,
+                      style: AppStyle.defaultStyle.copyWith(
+                          color: AppColorsController().black,
+                          fontWeight: FontWeight.w400,
+                          fontSize: AppFontSize.fontSize_14
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
                   ),
-                  Text(
-                    adsData!.ad_id.toString() ,
-                    style: AppStyle.defaultStyle.copyWith(
-                        color: AppColorsController().black,
-                        fontWeight: FontWeight.w400,
-                        fontSize: AppFontSize.fontSize_12
+                  Container(
+                    width: 220.w,
+                    child: Text(
+                      adsData!.massage.toString() ,
+                      style: AppStyle.defaultStyle.copyWith(
+                          color: AppColorsController().red,
+                          fontWeight: FontWeight.w400,
+                          fontSize: AppFontSize.fontSize_12
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),

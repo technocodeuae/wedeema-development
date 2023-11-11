@@ -360,7 +360,7 @@ bool isLoadingFooter = false;
                   ),
                 );
               }
-              return HomeItemsWidget(
+              return  HomeItemsWidget(
 
                 onPress: () {
                   print(itemsList);

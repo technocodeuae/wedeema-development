@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -340,7 +342,7 @@ class _HomePageState extends State<HomePage>
                                               category_id: AppConsts.jobCategoryId,
                                             ),
                                             SizedBox(
-                                              height: 15.h,
+                                              height: Platform.isIOS?  15.h:35.h,
                                             ),
                                           ],
                                         ),

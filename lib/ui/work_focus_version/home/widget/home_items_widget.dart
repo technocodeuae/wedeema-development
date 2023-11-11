@@ -186,9 +186,15 @@ class HomeItemsWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                DIManager.findDep<SharedPrefs>().getUserID()! ==
-                    data!.user_id.toString() ? Container() :
-                _chatButton(context)
+
+                if(DIManager.findDep<SharedPrefs>()
+                    .getToken()?.isEmpty == false)...[
+                  DIManager.findDep<SharedPrefs>().getUserID()! == data!.user_id.toString()? Container():
+                  _chatButton(context)
+                ] else ...[
+                  _chatButton(context)
+                ],
+
               ],
             ),
 
@@ -281,10 +287,15 @@ class HomeItemsWidget extends StatelessWidget {
                   ),
                 ),
 
+                if(DIManager.findDep<SharedPrefs>()
+                    .getToken()?.isEmpty == false)...[
+                  DIManager.findDep<SharedPrefs>().getUserID()! == data!.user_id.toString()? Container():
+                  _chatButton(context)
+                ] else ...[
+                  _chatButton(context)
+                ],
                 // data.user_id
-                DIManager.findDep<SharedPrefs>().getUserID()! ==
-                    data!.user_id.toString() ? Container() :
-                _chatButton(context)
+
               ],
             ),
 

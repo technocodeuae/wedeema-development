@@ -101,35 +101,29 @@ class _ImageSliderShowWidgetState extends State<ImageSliderShowWidget> {
             ),
             SizedBox(height: 4.sp,),
             //creating dots at bottom
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: 40,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List<Widget>.generate(
-                    widget.isAllDetails == false ? (widget.images?.length ?? 0) : widget.imagesList?.length ?? 0,
-                    (index) => Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 1),
-                          child: InkWell(
-                            onTap: () {
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List<Widget>.generate(
+                  widget.isAllDetails == false ? (widget.images?.length ?? 0) : widget.imagesList?.length ?? 0,
+                  (index) => Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 1),
+                        child: InkWell(
+                          onTap: () {
 
-                              _pageViewController.animateToPage(index,
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeIn);
-                            },
-                            child: CircleAvatar(
-                              radius: 3.2,
-                              // check if a dot is connected to the current page
-                              // if true, give it a different color
-                              backgroundColor: _activePage == index
-                                  ? AppColorsController().buttonRedColor
-                                  : AppColorsController().black.withOpacity(0.45),
-                            ),
+                            _pageViewController.animateToPage(index,
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeIn);
+                          },
+                          child: CircleAvatar(
+                            radius: 3.2,
+                            // check if a dot is connected to the current page
+                            // if true, give it a different color
+                            backgroundColor: _activePage == index
+                                ? AppColorsController().buttonRedColor
+                                : AppColorsController().black.withOpacity(0.45),
                           ),
-                        )),
-              ),
+                        ),
+                      )),
             ),
             SizedBox(height: 8.sp,),
           ],

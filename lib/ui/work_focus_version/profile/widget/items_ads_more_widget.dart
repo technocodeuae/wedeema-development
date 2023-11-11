@@ -70,7 +70,7 @@ class _ItemsAdsMoreWidgetState extends State<ItemsAdsMoreWidget> {
                           onPress: () {
                             DIManager.findNavigator().pushNamed(
                               ItemsDetailsPage.routeName,
-                              arguments: ItemsArgs(id: widget.items?[index].ad_id ?? 0,categoryId: widget.items?[index].category_id??0),
+                              arguments: ItemsArgs(id: widget.items?[index].ad_id ?? 0,categoryId: 27),
                             );
                           },
                         );
@@ -80,7 +80,7 @@ class _ItemsAdsMoreWidgetState extends State<ItemsAdsMoreWidget> {
                           DIManager.findNavigator().pushNamed(
                               ItemsDetailsPage.routeName,
                               arguments: ItemsArgs(
-                                  id: widget.items![index]!.ad_id,categoryId: widget.items![index]!.category_id??0,
+                                  id: widget.items![index]!.ad_id,categoryId: widget.items![index]!.category_id??0,type: 'ads'
                               )
                           );
                         },

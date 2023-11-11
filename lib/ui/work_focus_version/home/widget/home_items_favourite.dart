@@ -190,8 +190,14 @@ class _HomeItemsFavoriteState extends State<HomeItemsFavorite> {
                     ),
                   ),
                 ),
-                DIManager.findDep<SharedPrefs>().getUserID()! == widget.data!.user_id.toString()? Container():
-                _chatButton(context),
+                if(DIManager.findDep<SharedPrefs>()
+                    .getToken()?.isEmpty == false)...[
+                  DIManager.findDep<SharedPrefs>().getUserID()! == widget.data!.user_id.toString()? Container():
+                  _chatButton(context)
+                ] else ...[
+                  _chatButton(context)
+                ],
+
                 // ElevatedButton(onPressed: (){
                 //   print(image);
                 //
@@ -278,11 +284,26 @@ class _HomeItemsFavoriteState extends State<HomeItemsFavorite> {
   Widget _chatButton(BuildContext context) {
     return GestureDetector(
       onTap: () {
+
+
         if (!AppUtils.checkIfGuest(context)) {
           DIManager.findNavigator().pushNamed(ChatMessagesPage.routeName,
               arguments: ArgumentMessage(
-                  user_id_2: widget.data?.user_id, ad_id: widget.data?.ad_id));
+                user_id_2: widget.data?.user_id,
+                ad_id: widget.data?.ad_id,
+                imageAds: widget.data?.ad_images?[0].name?.toString(),
+                nameAds: widget.data?.title?? '',
+                nameOwnerAds: widget.data?.user_name?? '',
+                user_name_person_sender: DIManager.findDep<SharedPrefs>().getUserNamePerson().toString(),
+                user_id: DIManager.findDep<SharedPrefs>().getUserID().toString(),
+              ));
         }
+
+        // if (!AppUtils.checkIfGuest(context)) {
+        //   DIManager.findNavigator().pushNamed(ChatMessagesPage.routeName,
+        //       arguments: ArgumentMessage(
+        //           user_id_2: widget.data?.user_id, ad_id: widget.data?.ad_id));
+        // }
       },
       child: Container(
         decoration: BoxDecoration(

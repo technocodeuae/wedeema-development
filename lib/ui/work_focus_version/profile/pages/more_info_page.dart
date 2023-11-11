@@ -167,36 +167,6 @@ class _MoreInfoPageState extends State<MoreInfoPage> {
   }
 }
 
-buildTabBar(){
-  return Container(
-    height: 400.sp,
-    child: DefaultTabController( length: 2,
-
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,shadowColor: Colors.white,
-          backgroundColor: Colors.white,
-          bottom: const TabBar(
-            tabs: [
-              Tab(
-                text: "Chats",
-              ),
-              Tab(
-                text: "Calls",
-              ),
-
-            ],
-          ),
-        ),
-        body: TabBarView(children: [
-          Text('data 1'),
-          Text('data 2'),
-
-        ]),
-      ),
-    ),
-  );
-}
 
 defaultBuildTabBar(context){
  Color primaryColor = AppColorsController().textPrimaryColor;

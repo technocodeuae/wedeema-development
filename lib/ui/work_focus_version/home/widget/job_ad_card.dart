@@ -171,8 +171,15 @@ class _JobAdCardState extends State<JobAdCard> {
                 //     ),
                 //   ),
                 // ),
-                DIManager.findDep<SharedPrefs>().getUserID()! == widget.data!.user_id.toString()? Container():
-                _chatButton(context)
+
+                if(DIManager.findDep<SharedPrefs>()
+                    .getToken()?.isEmpty == false)...[
+                  DIManager.findDep<SharedPrefs>().getUserID()! == widget.data!.user_id.toString()? Container():
+                  _chatButton(context)
+                ] else ...[
+                  _chatButton(context)
+                ],
+
               ],
             ),
 
@@ -332,11 +339,22 @@ class _JobAdCardState extends State<JobAdCard> {
   Widget _chatButton(BuildContext context) {
     return GestureDetector(
       onTap: () {
+
+print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
         if (!AppUtils.checkIfGuest(context)) {
           DIManager.findNavigator().pushNamed(ChatMessagesPage.routeName,
               arguments: ArgumentMessage(
-                  user_id_2: widget.data?.user_id, ad_id: widget.data?.ad_id));
+                user_id_2: widget.data?.user_id,
+                ad_id: widget.data?.ad_id,
+                imageAds: widget.data?.image_name?.toString(),
+                nameAds: widget.data?.title?? '',
+                nameOwnerAds: widget.data?.user_name?? '',adsIsJob: true,
+                user_name_person_sender: DIManager.findDep<SharedPrefs>().getUserNamePerson().toString(),
+                user_id: DIManager.findDep<SharedPrefs>().getUserID().toString(),
+              ));
         }
+
+
       },
       child: Container(
         width: 100.sp,

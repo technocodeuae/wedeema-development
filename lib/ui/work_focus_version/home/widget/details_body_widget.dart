@@ -10,6 +10,7 @@ import '../../../../core/constants/app_font.dart';
 import '../../../../core/constants/app_style.dart';
 import '../../../../core/constants/dimens.dart';
 import '../../../../core/di/di_manager.dart';
+import '../../../../core/shared_prefs/shared_prefs.dart';
 import '../../../../core/utils/localization/app_localizations.dart';
 import '../../../../data/models/ads_details/entity/ads_details_entity.dart';
 import '../../ads/widget/favourites_button_widget.dart';
@@ -497,42 +498,122 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
               SizedBox(
                 height: 20.sp,
               ),
-              Center(
-                child: AppButton(
-                  height: 48.sp,
-                  width: 240.sp,
-                  borderRadiusCircular: 16.sp,
-                  childPadding: EdgeInsets.symmetric(horizontal: 24.sp),
-                  onPressed: () {
-                    if (!AppUtils.checkIfGuest(context)) {
-                      DIManager.findNavigator().pushNamed(
-                          ChatMessagesPage.routeName,
-                          arguments: ArgumentMessage(
-                              user_id_2: widget.data?.ad?.user_id,
-                              ad_id: widget.data?.ad?.ad_id));
-                    }
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 70.sp,
-                      ),
-                      Text(
-                        translate("chat"),
-                        style: AppStyle.smallTitleStyle.copyWith(
-                          color: AppColorsController().textPrimaryColor,
-                          fontWeight: AppFontWeight.midLight,
+
+              if(DIManager.findDep<SharedPrefs>()
+                  .getToken()?.isEmpty == false)...[
+                DIManager.findDep<SharedPrefs>().getUserID()! == widget.data!.ad!.user_id.toString()? Container(): Center(
+                  child: AppButton(
+                    height: 48.sp,
+                    width: 240.sp,
+                    borderRadiusCircular: 16.sp,
+                    childPadding: EdgeInsets.symmetric(horizontal: 24.sp),
+                    onPressed: () {
+                      if (!AppUtils.checkIfGuest(context)) {
+                        DIManager.findNavigator().pushNamed(ChatMessagesPage.routeName,
+                            arguments: ArgumentMessage(
+                              user_id_2: widget.data?.ad!.user_id,
+                              ad_id: widget.data?.ad!.ad_id,
+                              imageAds:widget.typeAds == 'jobAds' ||
+                                  widget.typeAds == 'adsWithoutImage' ||
+                                  widget.categoryId == 27
+                                  ? widget.data?.ad!.image_name?.toString():widget.data?.ad!.featured_image?.toString(),
+                              nameAds: widget.data?.ad!.title?? '',
+                              nameOwnerAds: widget.data?.ad!.user_name?? '',adsIsJob:   widget.typeAds == 'jobAds' ||
+                                widget.typeAds == 'adsWithoutImage' ||
+                                widget.categoryId == 27
+                                ? true : false,
+                              user_name_person_sender: DIManager.findDep<SharedPrefs>().getUserNamePerson().toString(),
+                              user_id: DIManager.findDep<SharedPrefs>().getUserID().toString(),
+                            ));
+                      }
+
+                      // if (!AppUtils.checkIfGuest(context)) {
+                      //   DIManager.findNavigator().pushNamed(
+                      //       ChatMessagesPage.routeName,
+                      //       arguments: ArgumentMessage(
+                      //           user_id_2: widget.data?.ad?.user_id,
+                      //           ad_id: widget.data?.ad?.ad_id));
+                      // }
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 70.sp,
                         ),
-                      ),
-                      SizedBox(
-                        width: 25.sp,
-                      ),
-                      ChatIcon(),
-                    ],
+                        Text(
+                          translate("chat"),
+                          style: AppStyle.smallTitleStyle.copyWith(
+                            color: AppColorsController().textPrimaryColor,
+                            fontWeight: AppFontWeight.midLight,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 25.sp,
+                        ),
+                        ChatIcon(),
+                      ],
+                    ),
                   ),
                 ),
-              ),
+              ] else ...[
+                Center(
+                  child: AppButton(
+                    height: 48.sp,
+                    width: 240.sp,
+                    borderRadiusCircular: 16.sp,
+                    childPadding: EdgeInsets.symmetric(horizontal: 24.sp),
+                    onPressed: () {
+                      if (!AppUtils.checkIfGuest(context)) {
+                        DIManager.findNavigator().pushNamed(ChatMessagesPage.routeName,
+                            arguments: ArgumentMessage(
+                              user_id_2: widget.data?.ad!.user_id,
+                              ad_id: widget.data?.ad!.ad_id,
+                              imageAds:widget.typeAds == 'jobAds' ||
+                                  widget.typeAds == 'adsWithoutImage' ||
+                                  widget.categoryId == 27
+                                  ? widget.data?.ad!.image_name?.toString():widget.data?.ad!.featured_image?.toString(),
+                              nameAds: widget.data?.ad!.title?? '',
+                              nameOwnerAds: widget.data?.ad!.user_name?? '',adsIsJob:   widget.typeAds == 'jobAds' ||
+                                widget.typeAds == 'adsWithoutImage' ||
+                                widget.categoryId == 27
+                                ? true : false,
+                              user_name_person_sender: DIManager.findDep<SharedPrefs>().getUserNamePerson().toString(),
+                              user_id: DIManager.findDep<SharedPrefs>().getUserID().toString(),
+                            ));
+                      }
+
+                      // if (!AppUtils.checkIfGuest(context)) {
+                      //   DIManager.findNavigator().pushNamed(
+                      //       ChatMessagesPage.routeName,
+                      //       arguments: ArgumentMessage(
+                      //           user_id_2: widget.data?.ad?.user_id,
+                      //           ad_id: widget.data?.ad?.ad_id));
+                      // }
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 70.sp,
+                        ),
+                        Text(
+                          translate("chat"),
+                          style: AppStyle.smallTitleStyle.copyWith(
+                            color: AppColorsController().textPrimaryColor,
+                            fontWeight: AppFontWeight.midLight,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 25.sp,
+                        ),
+                        ChatIcon(),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+
             ],
           ),
         ),

@@ -157,14 +157,14 @@ class _MyAccountPageState extends State<MyAccountPage> {
             controller: ScrollController(keepScrollOffset: false),
             child: Row(
               children: [
-                SizedBox(width: 10.sp),
+                SizedBox(width: 10.w),
                 ImageProfileWidget(
                   url: data?.user?.profile_pic ?? "",
                 ),
-                SizedBox(width: 20.sp),
+                SizedBox(width: 20.w),
                 Row(
                   children: [
-                    SizedBox(width: 20.sp),
+                    SizedBox(width: 15.w),
                     InkWell(
                       child: Column(
                         children: [
@@ -173,7 +173,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                             style: AppStyle.lightSubtitle.copyWith(
                                 color: AppColorsController().black,
                                 fontWeight: FontWeight.w400,
-                                fontSize: 14),
+                                fontSize: AppFontSize.fontSize_13),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -182,7 +182,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                             style: AppStyle.lightSubtitle.copyWith(
                                 color: AppColorsController().black,
                                 fontWeight: FontWeight.w400,
-                                fontSize: 14),
+                                fontSize: AppFontSize.fontSize_13),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -195,7 +195,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                         );
                       },
                     ),
-                    SizedBox(width: 30.sp),
+                    SizedBox(width: 30.w),
                     InkWell(
                       onTap: () {
                         DIManager.findNavigator().pushNamed(
@@ -210,7 +210,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                             style: AppStyle.lightSubtitle.copyWith(
                                 color: AppColorsController().black,
                                 fontWeight: FontWeight.w400,
-                                fontSize: 14),
+                                fontSize: AppFontSize.fontSize_13),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -219,14 +219,14 @@ class _MyAccountPageState extends State<MyAccountPage> {
                             style: AppStyle.lightSubtitle.copyWith(
                                 color: AppColorsController().black,
                                 fontWeight: FontWeight.w400,
-                                fontSize: 14),
+                                fontSize: AppFontSize.fontSize_13),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(width: 20.sp),
+                    SizedBox(width: 20.w),
                     InkWell(
                       onTap: () {
                         // DIManager.findNavigator().pushNamed(
@@ -241,7 +241,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                             style: AppStyle.lightSubtitle.copyWith(
                                 color: AppColorsController().black,
                                 fontWeight: FontWeight.w400,
-                                fontSize: 14),
+                                fontSize: AppFontSize.fontSize_13),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -250,7 +250,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                             style: AppStyle.lightSubtitle.copyWith(
                                 color: AppColorsController().black,
                                 fontWeight: FontWeight.w400,
-                                fontSize: 14),
+                                fontSize: AppFontSize.fontSize_13),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -263,7 +263,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
             ),
           ),
           SizedBox(
-            height: 10.sp,
+            height: 10.w,
           ),
           Text(
             data?.user?.user_name.toString() ?? '',
