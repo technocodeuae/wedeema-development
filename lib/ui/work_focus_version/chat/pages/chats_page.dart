@@ -58,9 +58,7 @@ class _ChatsPageState extends State<ChatsPage> {
   @override
   void initState() {
     chatBloc.getAllChats();
-    chatBlocFirebase.getAllAdsChats(
-      user_id: DIManager.findDep<SharedPrefs>().getUserID().toString(),
-    );
+    chatBlocFirebase.getAllAdsChats();
     isLoading = true;
     _isLoading = true;
   }
@@ -103,6 +101,12 @@ class _ChatsPageState extends State<ChatsPage> {
               bloc: chatBlocFirebase,
               listener: (_, state) {
                 if (state is GetAllAdsChatsLoadingState) {
+                  isLoading = true;
+                } else {
+                  isLoading = false;
+                }
+
+                if (state is DeleteMessagesLoadingState) {
                   isLoading = true;
                 } else {
                   isLoading = false;

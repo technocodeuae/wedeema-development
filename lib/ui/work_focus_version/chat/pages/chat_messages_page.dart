@@ -205,6 +205,7 @@ class _ChatMessagesPageState extends State<ChatMessagesPage>
 
   bool tapOnKeyboard = false;
 
+  bool isLoadingChats= true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -308,7 +309,9 @@ class _ChatMessagesPageState extends State<ChatMessagesPage>
                                   widget.data!.imageAds.toString(),
                               fit: BoxFit.fill,
                               height: 50.sp,
-                              width: 50.sp,
+                              width: 50.sp, errorBuilder: (context, error, stackTrace) {
+                        return Container();
+                      },
                             )
                           : AccountIcon(
                               height: 50.sp,
@@ -346,7 +349,10 @@ class _ChatMessagesPageState extends State<ChatMessagesPage>
 
                   if(state is GetMessagesSuccessState){
                     move();
+
                   }
+
+
                 },
                 builder: (context, state) {
                  // DateTime timeMessage = DateTime.parse(chatBlocFirebase.messages.last.dateTime.toString());

@@ -98,3 +98,14 @@ class GetAllAdsErrorState extends ChatStateFirebase {
 class GetMessagesSuccessState extends ChatStateFirebase {
   GetMessagesSuccessState();
 }
+
+class DeleteMessagesLoadingState extends ChatStateFirebase {
+  DeleteMessagesLoadingState();
+}
+class DeleteMessagesSuccessState extends ChatStateFirebase {
+  DeleteMessagesSuccessState();
+}
+class DeleteMessagesErrorState extends ChatStateFirebase {
+  final String? error;
+  DeleteMessagesErrorState(this.error);
+}

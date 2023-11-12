@@ -24,7 +24,7 @@ final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 // Initialize the Firebase SDK
 Future<void> _initFirebaseMessaging() async {
 
-  firebaseMessaging.getToken().then((token){
+  await firebaseMessaging.getToken().then((token){
     print("token is $token");
     DIManager.findDep<SharedPrefs>()..setDeviceToken(token);
   });

@@ -111,9 +111,7 @@ class ChatCubitFirebase extends Cubit<ChatStateFirebase> {
   // }
   //
 
-  Future<void> getAllAdsChats({
-    required String user_id,
-  }) async {
+  Future<void> getAllAdsChats() async {
     emit(GetAllAdsChatsLoadingState());
     adsChatsModel.clear();
     try {
@@ -156,14 +154,15 @@ class ChatCubitFirebase extends Cubit<ChatStateFirebase> {
         .doc(ad_id)
         .collection('chats')
         .doc(receiverId)
-        .collection('messages').orderBy('dateTime')
+        .collection('messages')
+        .orderBy('dateTime')
         .snapshots()
         .listen((event) {
-      messages= [];
+      messages = [];
       event.docs.forEach((element) {
         messages.add(DataMassageModel.forJson(element.data()));
       });
-print(messages);
+      print(messages);
       emit(GetMessagesSuccessState());
     });
   }
@@ -192,9 +191,39 @@ print(messages);
     }
   }
 
-  void deleteChat(){
-
+  void deleteChat({
+    required String? ad_id,
+    required String? receiverId,
+  }) {
+    emit(DeleteMessagesLoadingState());
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user_id)
+        .collection('ads')
+        .doc(ad_id)
+        .delete()
+        .then((value) {
+      getAllAdsChats();
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(user_id)
+          .collection('ads')
+          .doc(ad_id)
+          .collection('chats')
+          .doc(receiverId)
+          .collection('messages')
+          .get()
+          .then((value) {
+        for (DocumentSnapshot ds in value.docs) {
+          ds.reference.delete();
+        }
+        ;
+        emit(DeleteMessagesSuccessState());
+      }).catchError((error) {
+        DeleteMessagesErrorState(error.toString());
+      });
+    }).catchError((error) {
+      DeleteMessagesErrorState(error.toString());
+    });
   }
 }
-
-

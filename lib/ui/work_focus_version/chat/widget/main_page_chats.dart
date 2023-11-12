@@ -11,17 +11,25 @@ import '../../../../data/models/messages/entity/messages_entity.dart';
 import '../../general/icons/account_icon.dart';
 import '../../home/widget/home_items_widget.dart';
 import '../../pdf/download_pdf_widget.dart';
+import 'package:wadeema/core/di/di_manager.dart';
+import 'package:wadeema/blocs/chat_firebase/chat_bloc_firebase.dart';
 
-class MainPageChat extends StatelessWidget {
+class MainPageChat extends StatefulWidget {
   final MessagesEntity? data;
   final AdsChatsModel? adsData;
 
-  const MainPageChat({Key? key, this.data,this.adsData}) : super(key: key);
+   MainPageChat({Key? key, this.data,this.adsData}) : super(key: key);
 
+  @override
+  State<MainPageChat> createState() => _MainPageChatState();
+}
+final chatBlocFirebase = DIManager.findDep<ChatCubitFirebase>();
+
+class _MainPageChatState extends State<MainPageChat> {
   @override
   Widget build(BuildContext context) {
     print('0000000549068439085438598342905890348538409438058049845398435904395034859084398504830543509345');
-    print(adsData?.imageAds);
+    print(widget.adsData?.imageAds);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.sp),
       child: Column(
@@ -36,13 +44,15 @@ class MainPageChat extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
-                child: (adsData?.imageAds != null )
+                child: (widget.adsData?.imageAds != null )
                     ? Image.network(
-                        AppConsts.IMAGE_URL + adsData!.imageAds.toString(),
+                        AppConsts.IMAGE_URL + widget.adsData!.imageAds.toString(),
                         // AppConsts.IMAGE_URL + '/img/ad/1698142488797.jpg',
                         fit: BoxFit.fill,
                         height: 50.sp,
-                        width: 50.sp,
+                        width: 50.sp,  errorBuilder: (context, error, stackTrace) {
+                  return Container();
+                },
                       )
                     : AccountIcon(
                         height: 50.sp,
@@ -58,7 +68,7 @@ class MainPageChat extends StatelessWidget {
                   Container(
                     width: 220.w,
                     child: Text(
-                      adsData!.nameAds.toString() ,
+                      widget.adsData!.nameAds.toString() ,
                       style: AppStyle.defaultStyle.copyWith(
                           color: AppColorsController().black,
                           fontWeight: FontWeight.w400,
@@ -71,7 +81,7 @@ class MainPageChat extends StatelessWidget {
                   Container(
                     width: 220.w,
                     child: Text(
-                      adsData!.massage.toString() ,
+                      widget.adsData!.massage.toString() ,
                       style: AppStyle.defaultStyle.copyWith(
                           color: AppColorsController().red,
                           fontWeight: FontWeight.w400,
@@ -84,14 +94,24 @@ class MainPageChat extends StatelessWidget {
                 ],
               ),
               Spacer(),
-              Text(
-                adsData!.dateTime != null
-                    ?  getComparedTime(DateTime.parse(adsData!.dateTime.toString())).toString()
-                    : "",
-                style: AppStyle.lightSubtitle.copyWith(
-                  color: AppColorsController().greyTextColor,
-                  fontWeight: FontWeight.w400,
-                ),
+              Column(
+                children: [
+                  Text(
+                    widget.adsData!.dateTime != null
+                        ?  getComparedTime(DateTime.parse(widget.adsData!.dateTime.toString())).toString()
+                        : "",
+                    style: AppStyle.lightSubtitle.copyWith(
+                      color: AppColorsController().greyTextColor,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  IconButton(onPressed: (){
+                    chatBlocFirebase.deleteChat(
+                      ad_id: widget.adsData!.ad_id!.toString(),
+                      receiverId:widget.adsData!.user_id_2.toString(),
+                    );
+                  }, icon: Icon(Icons.delete)),
+                ],
               ),
             ],
           ),

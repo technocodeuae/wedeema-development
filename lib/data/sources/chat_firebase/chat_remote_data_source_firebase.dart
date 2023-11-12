@@ -131,26 +131,7 @@ class ChatRemoteDataSourceFirebaseImplFirebase
     required DataMassageModel dataMassageModel,
     required AdsChatsModel adsChatsModel,
   }) async {
-    /*
-    dataMassage
-    {
-          'text': 'Hello',
-          'senderId': '1234',
-          'receiverId': '4321',
-          'dateTime': '2023/11/7'
-        }
-     */
 
-    /*
-    dataAds
-    {
-           'nameAds':'سيارة نيسان',
-           'lastText':'Hello',
-           'ad_id':'1234',
-           'imageAds':'as/asd/asd.png',
-           'dateTime':'2023/11/7'
-        }
-     */
 
     await FirebaseFirestore.instance
         .collection('users')
