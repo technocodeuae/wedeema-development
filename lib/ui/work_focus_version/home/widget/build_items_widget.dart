@@ -341,7 +341,7 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: JobAdCard(
-                                  height:175.h,     isUseGridView: true,
+                                  height:175.sp,     isUseGridView: true,
                                   width:
                                       MediaQuery.sizeOf(context).width * 0.85,
                                   data: itemsList[i],
@@ -361,7 +361,7 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: JobAdCard(
-                                  height:175.h,
+                                  height:175.sp,
                                   isUseGridView: true,
                                   width:
                                       MediaQuery.sizeOf(context).width * 0.85,

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wadeema/core/constants/app_font.dart';
 import 'package:wadeema/data/models/messages_firebase/ads_chats_model.dart';
 
+import '../../../../blocs/chat_firebase/states/chat_state_firebase.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_consts.dart';
 import '../../../../core/constants/app_style.dart';
 import '../../../../core/constants/dimens.dart';
+import '../../../../core/shared_prefs/shared_prefs.dart';
 import '../../../../data/models/messages/entity/messages_entity.dart';
 import '../../general/icons/account_icon.dart';
 import '../../home/widget/home_items_widget.dart';
@@ -79,17 +82,54 @@ class _MainPageChatState extends State<MainPageChat> {
                     ),
                   ),
                   Container(
-                    width: 220.w,
-                    child: Text(
-                      widget.adsData!.massage.toString() ,
-                      style: AppStyle.defaultStyle.copyWith(
-                          color: AppColorsController().red,
-                          fontWeight: FontWeight.w400,
-                          fontSize: AppFontSize.fontSize_12
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    width: 150.sp,
+                    child: Builder(builder: (context) {
+                      chatBlocFirebase.getMessages(
+                        user_id: DIManager.findDep<SharedPrefs>().getUserID(),
+                        ad_id: widget.adsData!.ad_id.toString(),
+                        user_id_2: widget.adsData!.user_id_2.toString() ==
+                            DIManager.findDep<SharedPrefs>().getUserID().toString()
+                            ? widget.adsData!.user_id.toString()
+                            : widget.adsData!.user_id_2.toString(),
+                        receiverId: widget.adsData!.user_id_2.toString() ==
+                            DIManager.findDep<SharedPrefs>().getUserID().toString()
+                            ? widget.adsData!.user_id.toString()
+                            : widget.adsData!.user_id_2.toString(),
+                      );
+                      return BlocConsumer<ChatCubitFirebase, ChatStateFirebase>(
+                        bloc: chatBlocFirebase,
+                        listener: (context, state) {
+
+                        },
+                        builder: (context, state) {
+                          // DateTime timeMessage = DateTime.parse(chatBlocFirebase.messages.last.dateTime.toString());
+                          // DateTime timeMessage2 = DateTime.parse(chatBlocFirebase.messages.last.dateTime.toString());
+                          // String _dateTimeNow = DateFormat.yMMMMd().format(timeMessage);
+                          // bool shouldBreak = false;
+                          return  chatBlocFirebase.messages.isEmpty ?Container(): Container(
+                            height: 25.sp,
+                            width: 20.sp,
+                            child:
+                            Text(
+                              chatBlocFirebase.messages.last.text ??'',
+                              style: AppStyle.defaultStyle.copyWith(
+                                  color: AppColorsController().red,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: AppFontSize.fontSize_12
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+
+                            // child: Text(chatBlocFirebase.messages.last.text ??''),
+                          );
+                        },
+                      );
+                    })
+                      
+                      
+                      
+
                   ),
                 ],
               ),
@@ -107,7 +147,17 @@ class _MainPageChatState extends State<MainPageChat> {
                   ),
                   IconButton(onPressed: (){
                     chatBlocFirebase.deleteChat(
+                      user_id: DIManager.findDep<SharedPrefs>().getUserID(),
                       ad_id: widget.adsData!.ad_id!.toString(),
+                      user_id_2: widget.adsData!.user_id_2
+                          .toString() ==
+                          DIManager.findDep<SharedPrefs>()
+                              .getUserID()
+                              .toString()
+                          ? widget.adsData!.user_id
+                          .toString()
+                          : widget.adsData!.user_id_2
+                          .toString(),
                       receiverId:widget.adsData!.user_id_2.toString(),
                     );
                   }, icon: Icon(Icons.delete)),

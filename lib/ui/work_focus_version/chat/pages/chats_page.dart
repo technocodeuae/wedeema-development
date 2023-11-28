@@ -58,7 +58,9 @@ class _ChatsPageState extends State<ChatsPage> {
   @override
   void initState() {
     chatBloc.getAllChats();
-    chatBlocFirebase.getAllAdsChats();
+    chatBlocFirebase.getAllAdsChats(
+      user_id: DIManager.findDep<SharedPrefs>().getUserID().toString()
+    );
     isLoading = true;
     _isLoading = true;
   }

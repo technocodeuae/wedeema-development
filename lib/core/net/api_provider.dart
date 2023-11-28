@@ -2,8 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import '../../../../core/constants/app_consts.dart';
-import '../../../../core/constants/urls.dart';
+
 import '../../../../core/di/di_manager.dart';
 import '../../../../core/errors/base_error.dart';
 import '../../../../core/errors/cancel_error.dart';
@@ -15,7 +14,7 @@ import '../../../../core/errors/unauthorized_error.dart';
 import '../../../../core/errors/unexpected_error.dart';
 import '../../../../core/net/http_method.dart';
 import '../../../../core/results/result.dart';
-import 'package:uploadcare_client/uploadcare_client.dart' as uploadcare;
+
 
 class ApiProvider {
 

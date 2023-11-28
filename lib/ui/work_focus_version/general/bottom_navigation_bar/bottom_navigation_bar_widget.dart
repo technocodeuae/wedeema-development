@@ -9,6 +9,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/dimens.dart';
 import '../../../../core/di/di_manager.dart';
 import '../../chat/pages/chats_page.dart';
+import '../../community/community.dart';
 import '../../home/pages/home_page.dart';
 import '../../home/pages/my_favourite_page.dart';
 import '../../profile/pages/my_profile_page.dart';
@@ -63,7 +64,7 @@ int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    PagesEnum pagesEnum;
+    // PagesEnum pagesEnum;
     print(_currentIndex);
     return Padding(
       padding:
@@ -97,9 +98,9 @@ int _currentIndex = 0;
                         InkWell(
                           onTap: () {
                         if(widget.indexPage!=0){
-                          DIManager.findNavigator().pushReplacementNamed(
+                          DIManager.findNavigator().pushNamedAndRemoveUntil(
                             HomePage.routeName,
-                            arguments: homeKey,
+                            // arguments: homeKey,
                           );
 
                         }
@@ -111,10 +112,20 @@ int _currentIndex = 0;
                               iconPath: AppAssets.homeIcons,
                               page: PagesEnum.PAGE_1),
                         ),
+
+
                         InkWell(
                           onTap: () {
 
-                            if(widget.indexPage!=1){
+                            if(widget.indexPage==0){
+                              if (!AppUtils.checkIfGuest(context)) {
+                                DIManager.findNavigator().pushNamed(
+                                  ChatsPage.routeName,
+                                  // arguments: chatKey,
+                                );
+                              }
+
+                            } else if(widget.indexPage!=1 && widget.indexPage!=0) {
                               if (!AppUtils.checkIfGuest(context)) {
                                 DIManager.findNavigator().pushReplacementNamed(
                                   ChatsPage.routeName,
@@ -133,14 +144,33 @@ int _currentIndex = 0;
                         ),
                         InkWell(
                           onTap: () {
-                            if(widget.indexPage!=2){
+
+                            if(widget.indexPage==0){
+                              if (!AppUtils.checkIfGuest(context)) {
+                                DIManager.findNavigator().pushNamed(
+                                    SelectListingPage.routeName,
+                                    arguments: {'city_id': -1}
+                                );
+                              }
+
+                            } else if(widget.indexPage!=2 && widget.indexPage!=0) {
                               if (!AppUtils.checkIfGuest(context)) {
                                 DIManager.findNavigator().pushReplacementNamed(
                                     SelectListingPage.routeName,
-                                    arguments: {'city_id': -1});
+                                    arguments: {'city_id': -1}
+                                );
                               }
 
                             }
+
+                            // if(widget.indexPage!=2){
+                            //   if (!AppUtils.checkIfGuest(context)) {
+                            //     DIManager.findNavigator().pushNamed(
+                            //         SelectListingPage.routeName,
+                            //         arguments: {'city_id': -1});
+                            //   }
+                            //
+                            // }
 
                           },
                           child: _buildTabItem(indexPage: _currentIndex,
@@ -150,15 +180,34 @@ int _currentIndex = 0;
                         ),
                         InkWell(
                           onTap: () {
-                            if(widget.indexPage!=3){
+
+
+                            if(widget.indexPage==0){
+                              if (!AppUtils.checkIfGuest(context)) {
+                                DIManager.findNavigator().pushNamed(
+                                  MyFavouritePage.routeName,
+                                );
+                              }
+
+                            } else if(widget.indexPage!=3 && widget.indexPage!=0) {
                               if (!AppUtils.checkIfGuest(context)) {
                                 DIManager.findNavigator().pushReplacementNamed(
                                   MyFavouritePage.routeName,
-                                  // arguments: favouriteKey
                                 );
                               }
 
                             }
+
+                            //
+                            // if(widget.indexPage!=3){
+                            //   if (!AppUtils.checkIfGuest(context)) {
+                            //     DIManager.findNavigator().pushNamed(
+                            //       MyFavouritePage.routeName,
+                            //       // arguments: favouriteKey
+                            //     );
+                            //   }
+                            //
+                            // }
 
                           },
                           child: _buildTabItem(indexPage: _currentIndex,
@@ -168,13 +217,30 @@ int _currentIndex = 0;
                         ),
                         InkWell(
                           onTap: () {
-                            if(widget.indexPage!=4){
-                              DIManager.findNavigator().pushReplacementNamed(
-                                MyProfilePage.routeName,
-                                // arguments: settingKey
-                              );
+
+                            if(widget.indexPage==0){
+                              if (!AppUtils.checkIfGuest(context)) {
+                                DIManager.findNavigator().pushNamed(
+                                  MyProfilePage.routeName,
+                                );
+                              }
+
+                            } else if(widget.indexPage!=4 && widget.indexPage!=0) {
+                              if (!AppUtils.checkIfGuest(context)) {
+                                DIManager.findNavigator().pushReplacementNamed(
+                                  MyProfilePage.routeName,
+                                );
+                              }
 
                             }
+
+                            // if(widget.indexPage!=4){
+                            //   DIManager.findNavigator().pushNamed(
+                            //     MyProfilePage.routeName,
+                            //     // arguments: settingKey
+                            //   );
+                            //
+                            // }
 
 
                           },
@@ -183,6 +249,8 @@ int _currentIndex = 0;
                               iconPath: AppAssets.menuIcons,
                               page: PagesEnum.PAGE_5),
                         ),
+
+
                       ],
                     ),
                   ),

@@ -31,7 +31,7 @@ abstract class RemoteDataSource {
     log('body: $data');
     if (headers == null) headers = {
     };
-    headers["Lang"] =       DIManager.findDep<ApplicationCubit>().appLanguage.languageCode;
+    headers["Lang"] = DIManager.findDep<ApplicationCubit>().appLanguage.languageCode;
 
     // if (headers[RemoteDataSource.requiresToken] == null) {
     //   headers[RemoteDataSource.requiresToken] = true;

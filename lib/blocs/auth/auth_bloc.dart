@@ -49,13 +49,30 @@ class AuthCubit extends Cubit<AuthState> {
     if (result.hasDataOnly) {
       var fcmToken = DIManager.findDep<SharedPrefs>().getFCMToken();
       DIManager.findDep<SharedPrefs>()
-        ..setToken(result.data?.access_token ?? '');
-      DIManager.findDep<SharedPrefs>()..setUserID(result.data?.user?.id ?? -1);
-      DIManager.findDep<SharedPrefs>()..setUserNamePerson(result.data?.user!.user_name!);
+        .setToken(result.data?.access_token ?? '');
+      DIManager.findDep<SharedPrefs>().setUserID(result.data?.user?.id ?? -1);
+      // print('result.data?.user?.id:============================================${DIManager.findDep<SharedPrefs>().setUserID(result.data?.user?.id ?? -1)}');
+      print('result.data?.user?.id:============================================${DIManager.findDep<SharedPrefs>().getUserID()}');
+      print('result.data?.user?.id:============================================${result.data?.user?.id}');
+      print('result.data?.user?.id:============================================${result.data?.user?.id}');
+      print('result.data?.user?.id:============================================${result.data?.user?.id}');
+      print('result.data?.user?.id:============================================${result.data?.user?.id}');
+      print('result.data?.user?.id:============================================${result.data?.user?.id}');
+      print('result.data?.user?.id:============================================${result.data?.user?.id}');
+      print('result.data?.user?.id:============================================${result.data?.user?.id}');
+      print('result.data?.user?.id:============================================${result.data?.user?.user_name}');
+      print('result.data?.user?.id:============================================${result.data?.user?.user_name}');
+      print('result.data?.user?.id:============================================${result.data?.user?.user_name}');
+      print('result.data?.user?.id:============================================${result.data?.user?.user_name}');
+      print('result.data?.user?.id:============================================${result.data?.user?.user_name}');
+      print('result.data?.user?.id:============================================${result.data?.user?.user_name}');
+      print('result.data?.user?.id:============================================${result.data?.user?.user_name}');
+      print('result.data?.user?.id:============================================${result.data?.user?.user_name}');
+      DIManager.findDep<SharedPrefs>().setUserNamePerson(result.data?.user!.user_name!);
       DIManager.findDep<SharedPrefs>()
-        ..setNotificationsStatus(result.data?.user?.notification_status);
+        .setNotificationsStatus(result.data?.user?.notification_status);
       DIManager.findDep<SharedPrefs>()
-        ..setImageProfile(result.data?.user?.profile_pic ?? '');
+        .setImageProfile(result.data?.user?.profile_pic ?? '');
 
       // if(fcmToken != null ) await authRepo.firebase(token: fcmToken);
       // await DIManager.findDep<ProfileCubit>().getUserProfile();
@@ -117,13 +134,13 @@ class AuthCubit extends Cubit<AuthState> {
 
       // if(fcmToken != null ) await authRepo.firebase(token: fcmToken);
       // await DIManager.findDep<ProfileCubit>().getUserProfile();
-      DIManager.findDep<SharedPrefs>()..setToken(result.data?.access_token!);
-      DIManager.findDep<SharedPrefs>()..setUserID(result.data?.user!.id!);
-      DIManager.findDep<SharedPrefs>()..setUserNamePerson(result.data?.user!.user_name!);
+      DIManager.findDep<SharedPrefs>().setToken(result.data?.access_token!);
+      DIManager.findDep<SharedPrefs>().setUserID(result.data?.user!.id!);
+      DIManager.findDep<SharedPrefs>().setUserNamePerson(result.data?.user!.user_name!);
       DIManager.findDep<SharedPrefs>()
-        ..setNotificationsStatus(result.data?.user?.notification_status);
+        .setNotificationsStatus(result.data?.user?.notification_status);
       DIManager.findDep<SharedPrefs>()
-        ..setImageProfile(result.data?.user?.profile_pic ?? "");
+        .setImageProfile(result.data?.user?.profile_pic ?? "");
 
       // DIManager.findDep<SharedPrefs>().setLoginMode(LoginModeEnum.NORMAL_MODE);
       // DIManager.findDep<SharedPrefs>().setEmployeeMode(EmployeeModesEnum.SOCIAL_MODE);

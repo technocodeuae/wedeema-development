@@ -61,6 +61,7 @@ class _ForgetPageState extends State<ForgetPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  // SizedBox(height: 15.sp,),
                   AppBarWidget(
                     flip: true,
                     child: Padding(

@@ -1,18 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wadeema/blocs/chat_firebase/states/chat_state_firebase.dart';
-import 'package:wadeema/blocs/chat_firebase/states/chat_state_firebase.dart';
-import 'package:wadeema/blocs/chat_firebase/states/chat_state_firebase.dart';
-import 'package:wadeema/blocs/chat_firebase/states/chat_state_firebase.dart';
-import 'package:wadeema/blocs/chat_firebase/states/chat_state_firebase.dart';
-import '../../../../core/bloc/states/base_fail_state.dart';
-import '../../../../core/bloc/states/base_wait_state.dart';
+
 import '../../../../core/di/di_manager.dart';
 import '../../../../core/shared_prefs/shared_prefs.dart';
 import '../../data/models/messages_firebase/ads_chats_model.dart';
 import '../../data/models/messages_firebase/messages_model_new.dart';
 import '../../repos/chat_firebase/chat_repo_i_firebase.dart';
-import '../../ui/work_focus_version/chat/args/argument_message.dart';
 
 class ChatCubitFirebase extends Cubit<ChatStateFirebase> {
   final ChatFacadeFirebase adsRepo;
@@ -77,7 +71,7 @@ class ChatCubitFirebase extends Cubit<ChatStateFirebase> {
   // final databaseReference = FirebaseDatabase.instance.reference();
 
   List<AdsChatsModel> adsChatsModel = [];
-
+  // String user_id = DIManager.findDep<SharedPrefs>().getUserID().toString();
   //
   // Future<void> getAllAdsChats({
   //   required String user_id,
@@ -111,9 +105,14 @@ class ChatCubitFirebase extends Cubit<ChatStateFirebase> {
   // }
   //
 
-  Future<void> getAllAdsChats() async {
+  Future<void> getAllAdsChats(
+  {
+    required String? user_id,
+}
+      ) async {
     emit(GetAllAdsChatsLoadingState());
-    adsChatsModel.clear();
+    adsChatsModel = [];
+    print("user_id:====================================user_id===============user_id===============${user_id}");
     try {
       // await adsRepo.getAllAdsChats(user_id: user_id);
       //
@@ -128,11 +127,14 @@ class ChatCubitFirebase extends Cubit<ChatStateFirebase> {
           AdsChatsModel adsChats = AdsChatsModel.forJson(element.data());
           adsChatsModel.add(adsChats);
         });
+        print(adsChatsModel[0].nameAds);
+        print(adsChatsModel[1].nameAds);
       }).catchError((error) {
         print(error.toString());
         print('error.toString()');
       });
-      print(adsChatsModel[2].nameAds);
+      print('adsChatsModel[2].nameAds-----------------------------------------------------------------------');
+      print(adsChatsModel[0].nameAds);
       emit(GetAllAdsChatsSuccessState());
     } catch (error) {
       print(error.toString());
@@ -140,18 +142,23 @@ class ChatCubitFirebase extends Cubit<ChatStateFirebase> {
     }
   }
 
-  String user_id = DIManager.findDep<SharedPrefs>().getUserID().toString();
+
   List<DataMassageModel> messages = [];
 
   void getMessages({
     required String? ad_id,
+    required String? user_id_2,
+    required String? user_id,
     required String? receiverId,
   }) {
+    print('============================================================================');
+    print("ad_id!+user_id_2!: ${ad_id!+user_id!}");
+    print('============================================================================');
     FirebaseFirestore.instance
         .collection('users')
         .doc(user_id)
         .collection('ads')
-        .doc(ad_id)
+        .doc(ad_id!+user_id_2!)
         .collection('chats')
         .doc(receiverId)
         .collection('messages')
@@ -166,6 +173,39 @@ class ChatCubitFirebase extends Cubit<ChatStateFirebase> {
       emit(GetMessagesSuccessState());
     });
   }
+
+  List<DataMassageModel> messagesLast = [];
+
+
+  void getLastMessages({
+    required String? ad_id,
+    required String? user_id_2,
+    required String? user_id,
+    required String? receiverId,
+  }) {
+    print('============================================================================');
+    print("ad_id!+user_id_2!: ${ad_id!+user_id!}");
+    print('============================================================================');
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user_id)
+        .collection('ads')
+        .doc(ad_id+user_id_2!)
+        .collection('chats')
+        .doc(receiverId)
+        .collection('messages')
+        .orderBy('dateTime')
+        .snapshots()
+        .listen((event) {
+      messagesLast = [];
+      event.docs.forEach((element) {
+        messagesLast.add(DataMassageModel.forJson(element.data()));
+      });
+      print(messages);
+      emit(GetMessagesSuccessState());
+    });
+  }
+
 
   Future<void> sendMassageFirebaseToFireStore({
     required String user_id,
@@ -193,6 +233,8 @@ class ChatCubitFirebase extends Cubit<ChatStateFirebase> {
 
   void deleteChat({
     required String? ad_id,
+    required String? user_id_2,
+    required String? user_id,
     required String? receiverId,
   }) {
     emit(DeleteMessagesLoadingState());
@@ -200,15 +242,17 @@ class ChatCubitFirebase extends Cubit<ChatStateFirebase> {
         .collection('users')
         .doc(user_id)
         .collection('ads')
-        .doc(ad_id)
+        .doc(ad_id!+user_id_2!)
         .delete()
         .then((value) {
-      getAllAdsChats();
+      getAllAdsChats(
+        user_id: user_id
+      );
       FirebaseFirestore.instance
           .collection('users')
           .doc(user_id)
           .collection('ads')
-          .doc(ad_id)
+          .doc(ad_id+user_id_2)
           .collection('chats')
           .doc(receiverId)
           .collection('messages')

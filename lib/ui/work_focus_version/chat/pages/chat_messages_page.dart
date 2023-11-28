@@ -261,7 +261,7 @@ class _ChatMessagesPageState extends State<ChatMessagesPage>
           ),
         ),
         iconTheme: IconThemeData(
-          size: 20.0, // تحديد حجم الأيقونة في الـ leading
+          size: 20.sp, // تحديد حجم الأيقونة في الـ leading
         ),
       ),
       body: Column(
@@ -293,7 +293,7 @@ class _ChatMessagesPageState extends State<ChatMessagesPage>
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(width: 10.w),
+                    SizedBox(width: 10.sp),
                     ClipRRect(
                       child: (widget.data?.imageAds != null)
                           ? widget.data?.imageAds == '/img/ad/default.png'?    Container(
@@ -319,7 +319,7 @@ class _ChatMessagesPageState extends State<ChatMessagesPage>
                             ),
                       borderRadius: BorderRadius.all(Radius.circular(40.sp)),
                     ),
-                    SizedBox(width: 10.w),
+                    SizedBox(width: 10.sp),
                     Text(
                       widget.data!.nameAds.toString(),
                       style: AppStyle.defaultStyle.copyWith(
@@ -337,7 +337,12 @@ class _ChatMessagesPageState extends State<ChatMessagesPage>
           Expanded(
             child: Builder(builder: (context) {
               chatBlocFirebase.getMessages(
+                user_id: DIManager.findDep<SharedPrefs>().getUserID(),
                 ad_id: widget.data!.ad_id.toString(),
+                user_id_2: widget.data!.user_id_2.toString() ==
+                    DIManager.findDep<SharedPrefs>().getUserID().toString()
+                    ? widget.data!.user_id.toString()
+                    : widget.data!.user_id_2.toString(),
                 receiverId: widget.data!.user_id_2.toString() ==
                         DIManager.findDep<SharedPrefs>().getUserID().toString()
                     ? widget.data!.user_id.toString()

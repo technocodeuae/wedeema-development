@@ -22,7 +22,9 @@ import '../../general/progress_indicator/loading_column_overlay.dart';
 class SendOtpPage extends StatefulWidget {
   static const routeName = '/SendOtpPage';
 
-  const SendOtpPage({Key? key, required this.phoneNumber, this.isChangePassword = false}) : super(key: key);
+  const SendOtpPage(
+      {Key? key, required this.phoneNumber, this.isChangePassword = false})
+      : super(key: key);
 
   final String phoneNumber;
   final bool isChangePassword;
@@ -64,8 +66,9 @@ class _SendOtpPageState extends State<SendOtpPage> {
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               child: Column(
                 children: [
-
-                  SizedBox(height: 30.h,),
+                  SizedBox(
+                    height: 30.h,
+                  ),
                   AppBarWidget(
                     flip: true,
                     child: Padding(
@@ -113,15 +116,18 @@ class _SendOtpPageState extends State<SendOtpPage> {
         children: [
           Text(
             translate('verification_code'),
-            style: AppStyle.bigTitleStyle
-                .copyWith(color: AppColorsController().black, fontSize: 20.sp, fontWeight: AppFontWeight.bold),
+            style: AppStyle.bigTitleStyle.copyWith(
+                color: AppColorsController().black,
+                fontSize: 20.sp,
+                fontWeight: AppFontWeight.bold),
           ),
           SizedBox(
             height: 8.sp,
           ),
           Text(
             translate('enter_otp'),
-            style: AppStyle.defaultStyle.copyWith(color: AppColorsController().black),
+            style: AppStyle.defaultStyle
+                .copyWith(color: AppColorsController().black),
           )
         ],
       ),
@@ -140,7 +146,9 @@ class _SendOtpPageState extends State<SendOtpPage> {
             autoFocus: true,
             length: 4,
             animationType: AnimationType.fade,
-            textStyle: AppStyle.bigTitleStyle.copyWith(color: AppColorsController().black, fontWeight: FontWeight.bold),
+            textStyle: AppStyle.bigTitleStyle.copyWith(
+                color: AppColorsController().black,
+                fontWeight: FontWeight.bold),
             pinTheme: PinTheme(
                 shape: PinCodeFieldShape.underline,
                 fieldHeight: 65,
@@ -165,29 +173,38 @@ class _SendOtpPageState extends State<SendOtpPage> {
                 setState(() => _isLoading = true);
 
                 _authBloc.validateMobileNumber(
+                  value,
+                  widget.phoneNumber.replaceAll('+', ''),
+                  // widget.phoneNumber,
+                  isChangePassword: widget.isChangePassword,
+                  onDone: () {
+                    setState(() => _isLoading = false);
 
-                    value, widget.phoneNumber.replaceAll('+', ''),
-
-                    isChangePassword: widget.isChangePassword, onDone: () {
-                  setState(() => _isLoading = false);
-
-                  CustomDialogs.showTowButtonsDialog(
-                      context: context,
-                      title: translate('verification_has_done'),
-                      buttonText: translate('complete_registration'),
-                      onPrssed: () {
-                        Navigator.pop(context);
-                        if (widget.isChangePassword) {
-                          DIManager.findNavigator().pushReplacementNamed(ChangePasswordPageNew.routeName,
-                              arguments: {'phone_number': widget.phoneNumber});
-                        } else {
-                          DIManager.findNavigator().pushReplacementNamed(CompleteInfoPage.routeName,
-                              arguments: {'phone_number': widget.phoneNumber});
-                        }
-                      });
-                }, onError: () {
-                  setState(() => _isLoading = false);
-                });
+                    CustomDialogs.showTowButtonsDialog(
+                        context: context,
+                        title: translate('verification_has_done'),
+                        buttonText: translate('complete_registration'),
+                        onPrssed: () {
+                          Navigator.pop(context);
+                          if (widget.isChangePassword) {
+                            DIManager.findNavigator().pushReplacementNamed(
+                                ChangePasswordPageNew.routeName,
+                                arguments: {
+                                  'phone_number': widget.phoneNumber
+                                });
+                          } else {
+                            DIManager.findNavigator().pushReplacementNamed(
+                                CompleteInfoPage.routeName,
+                                arguments: {
+                                  'phone_number': widget.phoneNumber
+                                });
+                          }
+                        });
+                  },
+                  onError: () {
+                    setState(() => _isLoading = false);
+                  },
+                );
               }
             },
           ),
@@ -203,13 +220,16 @@ class _SendOtpPageState extends State<SendOtpPage> {
         onPressed: () {
           Navigator.pop(context);
         },
-        style: TextButton.styleFrom(foregroundColor: AppColorsController().primaryColor),
+        style: TextButton.styleFrom(
+            foregroundColor: AppColorsController().primaryColor),
         child: Row(mainAxisSize: MainAxisSize.min, children: [
           Text(
             '${widget.phoneNumber.replaceAll('+', '')}',
             textDirection: TextDirection.ltr,
             style: AppStyle.defaultStyle.copyWith(
-                color: AppColorsController().black, fontWeight: AppFontWeight.bold, fontSize: AppFontSize.fontSize_13),
+                color: AppColorsController().black,
+                fontWeight: AppFontWeight.bold,
+                fontSize: AppFontSize.fontSize_13),
           ),
           SizedBox(
             width: 4,
@@ -236,7 +256,8 @@ class _SendOtpPageState extends State<SendOtpPage> {
                   _resendCode();
                 }
               : null,
-          style: TextButton.styleFrom(foregroundColor: AppColorsController().black),
+          style: TextButton.styleFrom(
+              foregroundColor: AppColorsController().black),
           child: Text(
             translate('resend_code'),
             textAlign: TextAlign.center,
@@ -267,7 +288,8 @@ class _SendOtpPageState extends State<SendOtpPage> {
               _canResendCode = false;
               _authBloc.refresh();
             }
-            remainingTime = '${format.format(DateTime.fromMillisecondsSinceEpoch(remaining.inMilliseconds))}';
+            remainingTime =
+                '${format.format(DateTime.fromMillisecondsSinceEpoch(remaining.inMilliseconds))}';
           }
           if (remainingTime.isEmpty) {
             return SizedBox.shrink();
@@ -290,7 +312,10 @@ class _SendOtpPageState extends State<SendOtpPage> {
     });
 
     _authBloc.sendVerificationCode(
-        AppConsts.countryCode, widget.phoneNumber.replaceAll(AppConsts.countryCode, '').replaceAll('+', ''),
+        AppConsts.countryCode,
+        widget.phoneNumber
+            .replaceAll(AppConsts.countryCode, '')
+            .replaceAll('+', ''),
         isChangePassword: widget.isChangePassword, onDone: () {
       setState(() {
         _isLoading = false;

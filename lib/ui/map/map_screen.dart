@@ -71,7 +71,7 @@ class _MapScreenState extends State<MapScreen> {
                 color: AppColorsController().iconColor,
               ),
             ),
-          ),
+          ), 
           Expanded(
             child: GoogleMap(
               myLocationEnabled: true,

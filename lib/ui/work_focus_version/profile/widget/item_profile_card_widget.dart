@@ -29,7 +29,7 @@ class _ItemProfileCardWidgetState extends State<ItemProfileCardWidget>
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24.sp, vertical: 12.sp),
+      padding: EdgeInsets.symmetric(horizontal: 24.sp, vertical: 6.sp),
       child: InkWell(
         onTap: widget.onPressed,
         child: Container(
@@ -45,7 +45,7 @@ class _ItemProfileCardWidgetState extends State<ItemProfileCardWidget>
               Radius.circular(Dimens.containerBorderRadius),
             ),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 10.sp),
+          padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

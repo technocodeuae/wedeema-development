@@ -307,6 +307,14 @@ class AppStyle {
     fontWeight: FontWeight.w400,
   );
 
+
+  // 18
+  static TextStyle namePostTitleStyle = TextStyle(
+    fontSize: AppFontSize.fontSize_14,
+    color: DIManager.findDep<AppColorsController>().black,
+    fontWeight: FontWeight.w600,
+  );
+
   // 14
   static TextStyle smallTitleStyle = TextStyle(
     fontSize: AppFontSize.fontSize_14,

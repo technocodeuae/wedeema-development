@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
@@ -106,44 +107,95 @@ void _configureFirebaseMessaging() {
 }
 
 
-void main() async {
-  Bloc.observer = MyBlocObserver();
-  WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  await DIManager.initDI();
-  await Firebase.initializeApp(
-
-  );
-
-  // FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
-
-  await _initFirebaseMessaging();
-  _configureFirebaseMessaging();
-
-
-       // runApp(App());
-
+// void main() async {
+//   Bloc.observer = MyBlocObserver();
+//   WidgetsFlutterBinding.ensureInitialized();
+//   SystemChrome.setPreferredOrientations(
+//       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+//   await DIManager.initDI();
+//   await Firebase.initializeApp(
 //
-  AppErrorHandler.dartErrorCatcher(
+//   );
+//
+//   // FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+//
+//   await _initFirebaseMessaging();
+//   _configureFirebaseMessaging();
+//
+//
+//        // runApp(App());
+//
+// //
+//   AppErrorHandler.dartErrorCatcher(
+//
+//
+//         () => runApp(
+// // DevicePreview(
+// //             enabled: true,
+// //             // tools: [
+// //             //   ...DevicePreview.defaultTools,
+// //             // ],
+// //             builder: (context) =>App(),)
+//             App()
+//
+//     ),
+//   );
+//
+//
+// }
+
+Future<void> main() async {
+  runZonedGuarded<Future<void>>(() async {
+    Bloc.observer = MyBlocObserver();
+    WidgetsFlutterBinding.ensureInitialized();
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    await DIManager.initDI();
+    await Firebase.initializeApp(
+
+    );
+
+    // FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+
+    await _initFirebaseMessaging();
+    _configureFirebaseMessaging();
 
 
-        () => runApp(
+    runApp(App());
+
+/*
+    AppErrorHandler.dartErrorCatcher(
+
+
+          () => runApp(
 // DevicePreview(
 //             enabled: true,
 //             // tools: [
 //             //   ...DevicePreview.defaultTools,
 //             // ],
 //             builder: (context) =>App(),)
-            App()
+          App()
 
-    ),
-  );
+      ),
+    );
+*/
 
-
+    FlutterError.onError = (FlutterErrorDetails details) {
+      FlutterError.presentError(details);
+    };
+    ErrorWidget.builder = (FlutterErrorDetails details) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.red,
+          title: const Text('An error occurred'),
+        ),
+        body: Center(child: Text(details.toString()),),
+      );
+    };
+  }, (error, stack) {
+    debugPrint(error.toString());
+  });
 }
-
-
 
 /*
  - package:get_version

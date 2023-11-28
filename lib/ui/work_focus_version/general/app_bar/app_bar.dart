@@ -20,7 +20,7 @@ class AppBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // SizedBox(height: 12.h,),
+        SizedBox(height: 12.h,),
         Container(
           height: 85.sp,
           decoration: ThemeProvider().appMode == "light"
