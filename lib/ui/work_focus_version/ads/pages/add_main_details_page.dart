@@ -47,6 +47,7 @@ import '../../general/app_bar/app_bar.dart';
 import '../../general/back_long_press_widget.dart';
 import '../../general/icons/back_icon.dart';
 import '../../general/text_fields/text_field_widget.dart';
+import '../../home/widget/app_bar_app.dart';
 import '../args/argument_category.dart';
 import '../args/argument_policy.dart';
 import '../widget/cities_drop_down.dart';
@@ -159,387 +160,362 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appBarApp(context,text: translate(_isFilter() ? 'filter' : "place_ads"),
+      isNeedBack: true
+      ),
       backgroundColor: AppColorsController().whiteBackground,
       body: BackLongPress(
         child: Form(
           key: _formKey,
-          child: Column(
-            children: [
-              SizedBox(
-                height: 10.sp,
-              ),
-              AppBarWidget(
-                flip: true,
-                name: translate(_isFilter() ? 'filter' : "place_ads"),
-                child: InkWell(
-                  onTap: () {
-                    DIManager.findNavigator().pop();
-                    // if (_isFilter()) {
-                    //   DIManager.findNavigator().pop();
-                    // } else {
-                    //   if (!AppUtils.checkIfGuest(context)) {
-                    //     DIManager.findNavigator().pushReplacementNamed(
-                    //         SelectListingPage.routeName,
-                    //         arguments: {'city_id': -1});
-                    //   }
-                    // }
-                  },
-                  child: BackIcon(
-                    width: 26.sp,
-                    height: 18.sp,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: BlocBuilder<CategoriesCubit, CategoriesState>(
-                  bloc: categoriesBloc,
-                  builder: (context, state) {
-                    final getCategoriesState = state.getPropertiesCategories;
+          child: BlocBuilder<CategoriesCubit, CategoriesState>(
+            bloc: categoriesBloc,
+            builder: (context, state) {
+              final getCategoriesState = state.getPropertiesCategories;
 
-                    if (getCategoriesState is BaseFailState) {
-                      return Column(
-                        children: [
-                          VerticalPadding(3.0),
-                          GeneralErrorWidget(
-                            error: getCategoriesState.error,
-                            callback: getCategoriesState.callback,
-                          ),
-                        ],
-                      );
-                    } else if (getCategoriesState
-                        is GetPropertiesCategoriesSuccessState) {
-                      data = (state.getPropertiesCategories
-                              as GetPropertiesCategoriesSuccessState)
-                          .propertiesCategories;
+              if (getCategoriesState is BaseFailState) {
+                return Column(
+                  children: [
+                    VerticalPadding(3.0),
+                    GeneralErrorWidget(
+                      error: getCategoriesState.error,
+                      callback: getCategoriesState.callback,
+                    ),
+                  ],
+                );
+              } else if (getCategoriesState
+              is GetPropertiesCategoriesSuccessState) {
+                data = (state.getPropertiesCategories
+                as GetPropertiesCategoriesSuccessState)
+                    .propertiesCategories;
 
-                      return SingleChildScrollView(
-                        child: Stack(
-                          alignment: Alignment.bottomCenter,
-                          children: [
-                            Container(
-                              height: 700.sp,
-                              child: SingleChildScrollView(
-                                physics: BouncingScrollPhysics(),
-                                keyboardDismissBehavior:
-                                    ScrollViewKeyboardDismissBehavior.onDrag,
-                                controller: _scrollController,
-                                child: Column(
-                                  children: [
-                                    CitiesDropdownWidget(
-                                      child: OptionItem(
-                                          title: translate('emirate'),
-                                          subtitle: widget.argumentCategory
-                                                  ?.dataMap?['city_name'] ??
+                return SingleChildScrollView(
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      Container(
+                        height: 700.sp,
+                        child: SingleChildScrollView(
+                          physics: BouncingScrollPhysics(),
+                          keyboardDismissBehavior:
+                          ScrollViewKeyboardDismissBehavior.onDrag,
+                          controller: _scrollController,
+                          child: Column(
+                            children: [
+                              CitiesDropdownWidget(
+                                child: OptionItem(
+                                    title: translate('emirate'),
+                                    subtitle: widget.argumentCategory
+                                        ?.dataMap?['city_name'] ??
+                                        '',
+                                    onClick: () {}),
+                                selectedCity: widget.argumentCategory
+                                    ?.dataMap?['city_id'] ??
+                                    -1,
+                                // selectedProperties: ,
+                                onSelected: (value) {
+                                  widget.argumentCategory
+                                      ?.dataMap?['city_id'] = value?.id;
+                                  widget.argumentCategory
+                                      ?.dataMap?['city_name'] =
+                                      value?.title;
+                                  categoriesBloc.refresh();
+                                },
+                              ),
+
+                              SubCategoriesDropdownWidget(
+                                child: OptionItem(
+                                    title: translate('category'),
+                                    subtitle:
+                                    widget.argumentCategory?.name ??
+                                        '',
+                                    onClick: () {}),
+                                categoryId: widget.argumentCategory
+                                    ?.dataMap?['category_id'] ??
+                                    -1,
+                                selectedSubCategory: widget
+                                    .argumentCategory
+                                    ?.dataMap?['category_id'],
+                                list: widget.argumentCategory?.list ??
+                                    categoriesBloc.categories,
+                                onSelected: (value) {
+                                  widget.argumentCategory?.name =
+                                      value?.title;
+                                  widget.argumentCategory?.id =
+                                      value?.category_id;
+                                  _initData();
+                                  widget.argumentCategory
+                                      ?.dataMap?['category_id'] =
+                                      value?.category_id;
+                                  categoriesBloc.refresh();
+                                },
+                              ),
+
+                              Column(
+                                children: List.generate(
+                                    1 + subcategoriesLength(), (index) {
+                                  return SubCategoriesDropdownWidget(
+                                    child: OptionItem(
+                                        title:
+                                        '${translate('subcategory')} ${index + 1}',
+                                        subtitle: checkSubcategoriesList(
+                                            index)
+                                            ? (widget.argumentCategory
+                                            ?.dataMap?[
+                                        'subcategory_names']
+                                        [index] ??
+                                            '')
+                                            : '',
+                                        onClick: () {}),
+                                    categoryId: index == 0
+                                        ? (widget.argumentCategory
+                                        ?.dataMap?[
+                                    'category_id'] ??
+                                        -1)
+                                        : (checkSubcategoriesList(
+                                        index - 1)
+                                        ? (widget.argumentCategory
+                                        ?.dataMap?[
+                                    'sub_category_ids']
+                                    [index - 1] ??
+                                        -1)
+                                        : -1),
+                                    selectedSubCategory:
+                                    checkSubcategoriesList(index)
+                                        ? widget.argumentCategory
+                                        ?.dataMap?[
+                                    'sub_category_ids']
+                                        ?[index]
+                                        : null,
+                                    onSelected: (value) {
+                                      _selectSubcategory(
+                                          value: value, index: index);
+                                    },
+                                  );
+                                }),
+                              ),
+                              isLoading
+                                  ? LinearProgressIndicator(
+                                color: AppColorsController()
+                                    .buttonRedColor,
+                                backgroundColor:
+                                AppColorsController()
+                                    .colorBarRed,
+                              )
+                                  : Container(),
+
+                              ListView.builder(
+                                  padding: EdgeInsets.only(
+                                      bottom: MediaQuery.of(context)
+                                          .viewInsets
+                                          .bottom),
+                                  itemCount: data.length,
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                                  itemBuilder: (context, index) {
+                                    if (categoriesBloc.isPriceRange(
+                                        data[index].property?.title ??
+                                            '') &&
+                                        !_isFilter()) {
+                                      return SizedBox.shrink();
+                                    }
+
+                                    if (data[index].property?.type ==
+                                        PropertyTypes
+                                            .listDropdown.value) {
+                                      return DropdownWidget(
+                                        child: OptionItem(
+                                            title: data[index]
+                                                .property
+                                                ?.title ??
+                                                '',
+                                            subtitle: categoriesBloc
+                                                .selectedSubprop[
+                                            data[index]
+                                                .property
+                                                ?.propertyId] ??
+                                                '',
+                                            onClick: () {}),
+                                        subProperties:
+                                        data[index].sub_properties ??
+                                            [],
+                                        selectedProperties: categoriesBloc
+                                            .selectedSubprop[
+                                        data[index]
+                                            .property
+                                            ?.propertyId],
+                                        onSelected: (value) {
+                                          categoriesBloc.selectedSubprop[
+                                          data[index]
+                                              .property
+                                              ?.propertyId ??
+                                              0] = value?.title;
+                                          categoriesBloc.refresh();
+                                        },
+                                      );
+                                    } else if (data[index]
+                                        .property
+                                        ?.type ==
+                                        PropertyTypes.list.value) {
+                                      return TypeItemWidget(
+                                        title:
+                                        data[index].property?.title ??
+                                            '',
+                                        subProperties:
+                                        data[index].sub_properties ??
+                                            [],
+                                        selectedProperties: categoriesBloc
+                                            .selectedSubprop[
+                                        data[index]
+                                            .property
+                                            ?.propertyId],
+                                        onSelected: (value) {
+                                          categoriesBloc.selectedSubprop[
+                                          data[index]
+                                              .property
+                                              ?.propertyId ??
+                                              0] = value?.title;
+                                          categoriesBloc.refresh();
+                                        },
+                                      );
+                                    } else if (data[index]
+                                        .sub_properties
+                                        ?.isNotEmpty ??
+                                        false) {
+                                      return DropdownWidget(
+                                        child: OptionItem(
+                                            title: data[index]
+                                                .property
+                                                ?.title ??
+                                                '',
+                                            subtitle: categoriesBloc
+                                                .selectedSubprop[
+                                            data[index]
+                                                .property
+                                                ?.propertyId] ??
+                                                '',
+                                            onClick: () {}),
+                                        subProperties:
+                                        data[index].sub_properties ??
+                                            [],
+                                        selectedProperties: categoriesBloc
+                                            .selectedSubprop[
+                                        data[index]
+                                            .property
+                                            ?.propertyId],
+                                        onSelected: (value) {
+                                          categoriesBloc.selectedSubprop[
+                                          data[index]
+                                              .property
+                                              ?.propertyId ??
+                                              0] = value?.title;
+                                          categoriesBloc.refresh();
+                                        },
+                                      );
+                                    } else {
+                                      bool isNumber =
+                                          data[index].property?.type ==
+                                              PropertyTypes.integer.value;
+                                      // bool singleLine = data[index].property?.type == PropertyTypes.stringSingle.value;
+                                      bool multiLines = data[index]
+                                          .property
+                                          ?.type ==
+                                          PropertyTypes.StringMulti.value;
+
+                                      TextInputType textInputType =
+                                      isNumber
+                                          ? TextInputType.number
+                                          : ((multiLines)
+                                          ? TextInputType.text
+                                          : TextInputType.name);
+
+                                      return buildTextField(
+                                          propertyId: data[index]
+                                              .property
+                                              ?.propertyId
+                                              ?.toString() ??
                                               '',
-                                          onClick: () {}),
-                                      selectedCity: widget.argumentCategory
-                                              ?.dataMap?['city_id'] ??
-                                          -1,
-                                      // selectedProperties: ,
-                                      onSelected: (value) {
-                                        widget.argumentCategory
-                                            ?.dataMap?['city_id'] = value?.id;
-                                        widget.argumentCategory
-                                                ?.dataMap?['city_name'] =
-                                            value?.title;
-                                        categoriesBloc.refresh();
-                                      },
+                                          title: data[index]
+                                              .property
+                                              ?.title
+                                              ?.toCapitalized(),
+                                          keyboardType: textInputType,
+                                          isRequired: data[index]
+                                              .property
+                                              ?.essential ==
+                                              '1',
+                                          height:
+                                          multiLines ? 80.sp : null,
+                                          index: index);
+                                    }
+                                  }),
+                              if (_isFilter()) ...[
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 6.sp,
                                     ),
-
-                                    SubCategoriesDropdownWidget(
-                                      child: OptionItem(
-                                          title: translate('category'),
-                                          subtitle:
-                                              widget.argumentCategory?.name ??
-                                                  '',
-                                          onClick: () {}),
-                                      categoryId: widget.argumentCategory
-                                              ?.dataMap?['category_id'] ??
-                                          -1,
-                                      selectedSubCategory: widget
-                                          .argumentCategory
-                                          ?.dataMap?['category_id'],
-                                      list: widget.argumentCategory?.list ??
-                                          categoriesBloc.categories,
-                                      onSelected: (value) {
-                                        widget.argumentCategory?.name =
-                                            value?.title;
-                                        widget.argumentCategory?.id =
-                                            value?.category_id;
-                                        _initData();
-                                        widget.argumentCategory
-                                                ?.dataMap?['category_id'] =
-                                            value?.category_id;
-                                        categoriesBloc.refresh();
-                                      },
+                                    for (int index = (data.length - 1);
+                                    index != -1;
+                                    index--) ...[
+                                      buildTextFieldPrice(
+                                          propertyId: data[index]
+                                              .property
+                                              ?.propertyId
+                                              ?.toString() ??
+                                              '',
+                                          title: data[index]
+                                              .property
+                                              ?.title
+                                              ?.toCapitalized(),
+                                          keyboardType:
+                                          TextInputType.number,
+                                          isRequired: data[index]
+                                              .property
+                                              ?.essential ==
+                                              '1',
+                                          height: 80,
+                                          isProperty: true,
+                                          index: index),
+                                    ]
+                                  ],
+                                ),
+                              ],
+                              if (!_isFilter()) ...[
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 6.sp,
                                     ),
-
-                                    Column(
-                                      children: List.generate(
-                                          1 + subcategoriesLength(), (index) {
-                                        return SubCategoriesDropdownWidget(
-                                          child: OptionItem(
-                                              title:
-                                                  '${translate('subcategory')} ${index + 1}',
-                                              subtitle: checkSubcategoriesList(
-                                                      index)
-                                                  ? (widget.argumentCategory
-                                                                  ?.dataMap?[
-                                                              'subcategory_names']
-                                                          [index] ??
-                                                      '')
-                                                  : '',
-                                              onClick: () {}),
-                                          categoryId: index == 0
-                                              ? (widget.argumentCategory
-                                                          ?.dataMap?[
-                                                      'category_id'] ??
-                                                  -1)
-                                              : (checkSubcategoriesList(
-                                                      index - 1)
-                                                  ? (widget.argumentCategory
-                                                                  ?.dataMap?[
-                                                              'sub_category_ids']
-                                                          [index - 1] ??
-                                                      -1)
-                                                  : -1),
-                                          selectedSubCategory:
-                                              checkSubcategoriesList(index)
-                                                  ? widget.argumentCategory
-                                                              ?.dataMap?[
-                                                          'sub_category_ids']
-                                                      ?[index]
-                                                  : null,
-                                          onSelected: (value) {
-                                            _selectSubcategory(
-                                                value: value, index: index);
-                                          },
-                                        );
-                                      }),
-                                    ),
-                                    isLoading
-                                        ? LinearProgressIndicator(
-                                            color: AppColorsController()
-                                                .buttonRedColor,
-                                            backgroundColor:
-                                                AppColorsController()
-                                                    .colorBarRed,
-                                          )
-                                        : Container(),
-
-                                    ListView.builder(
-                                        padding: EdgeInsets.only(
-                                            bottom: MediaQuery.of(context)
-                                                .viewInsets
-                                                .bottom),
-                                        itemCount: data.length,
-                                        shrinkWrap: true,
-                                        physics: NeverScrollableScrollPhysics(),
-                                        // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                                        itemBuilder: (context, index) {
-                                          if (categoriesBloc.isPriceRange(
-                                                  data[index].property?.title ??
-                                                      '') &&
-                                              !_isFilter()) {
-                                            return SizedBox.shrink();
-                                          }
-
-                                          if (data[index].property?.type ==
-                                              PropertyTypes
-                                                  .listDropdown.value) {
-                                            return DropdownWidget(
-                                              child: OptionItem(
-                                                  title: data[index]
-                                                          .property
-                                                          ?.title ??
-                                                      '',
-                                                  subtitle: categoriesBloc
-                                                              .selectedSubprop[
-                                                          data[index]
-                                                              .property
-                                                              ?.propertyId] ??
-                                                      '',
-                                                  onClick: () {}),
-                                              subProperties:
-                                                  data[index].sub_properties ??
-                                                      [],
-                                              selectedProperties: categoriesBloc
-                                                      .selectedSubprop[
-                                                  data[index]
-                                                      .property
-                                                      ?.propertyId],
-                                              onSelected: (value) {
-                                                categoriesBloc.selectedSubprop[
-                                                    data[index]
-                                                            .property
-                                                            ?.propertyId ??
-                                                        0] = value?.title;
-                                                categoriesBloc.refresh();
-                                              },
-                                            );
-                                          } else if (data[index]
-                                                  .property
-                                                  ?.type ==
-                                              PropertyTypes.list.value) {
-                                            return TypeItemWidget(
-                                              title:
-                                                  data[index].property?.title ??
-                                                      '',
-                                              subProperties:
-                                                  data[index].sub_properties ??
-                                                      [],
-                                              selectedProperties: categoriesBloc
-                                                      .selectedSubprop[
-                                                  data[index]
-                                                      .property
-                                                      ?.propertyId],
-                                              onSelected: (value) {
-                                                categoriesBloc.selectedSubprop[
-                                                    data[index]
-                                                            .property
-                                                            ?.propertyId ??
-                                                        0] = value?.title;
-                                                categoriesBloc.refresh();
-                                              },
-                                            );
-                                          } else if (data[index]
-                                                  .sub_properties
-                                                  ?.isNotEmpty ??
-                                              false) {
-                                            return DropdownWidget(
-                                              child: OptionItem(
-                                                  title: data[index]
-                                                          .property
-                                                          ?.title ??
-                                                      '',
-                                                  subtitle: categoriesBloc
-                                                              .selectedSubprop[
-                                                          data[index]
-                                                              .property
-                                                              ?.propertyId] ??
-                                                      '',
-                                                  onClick: () {}),
-                                              subProperties:
-                                                  data[index].sub_properties ??
-                                                      [],
-                                              selectedProperties: categoriesBloc
-                                                      .selectedSubprop[
-                                                  data[index]
-                                                      .property
-                                                      ?.propertyId],
-                                              onSelected: (value) {
-                                                categoriesBloc.selectedSubprop[
-                                                    data[index]
-                                                            .property
-                                                            ?.propertyId ??
-                                                        0] = value?.title;
-                                                categoriesBloc.refresh();
-                                              },
-                                            );
-                                          } else {
-                                            bool isNumber =
-                                                data[index].property?.type ==
-                                                    PropertyTypes.integer.value;
-                                            // bool singleLine = data[index].property?.type == PropertyTypes.stringSingle.value;
-                                            bool multiLines = data[index]
-                                                    .property
-                                                    ?.type ==
-                                                PropertyTypes.StringMulti.value;
-
-                                            TextInputType textInputType =
-                                                isNumber
-                                                    ? TextInputType.number
-                                                    : ((multiLines)
-                                                        ? TextInputType.text
-                                                        : TextInputType.name);
-
-                                            return buildTextField(
-                                                propertyId: data[index]
-                                                        .property
-                                                        ?.propertyId
-                                                        ?.toString() ??
-                                                    '',
-                                                title: data[index]
-                                                    .property
-                                                    ?.title
-                                                    ?.toCapitalized(),
-                                                keyboardType: textInputType,
-                                                isRequired: data[index]
-                                                        .property
-                                                        ?.essential ==
-                                                    '1',
-                                                height:
-                                                    multiLines ? 80.sp : null,
-                                                index: index);
-                                          }
-                                        }),
-                                    if (_isFilter()) ...[
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                            width: 6.sp,
-                                          ),
-                                          for (int index = (data.length - 1);
-                                              index != -1;
-                                              index--) ...[
-                                            buildTextFieldPrice(
-                                                propertyId: data[index]
-                                                        .property
-                                                        ?.propertyId
-                                                        ?.toString() ??
-                                                    '',
-                                                title: data[index]
-                                                    .property
-                                                    ?.title
-                                                    ?.toCapitalized(),
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                isRequired: data[index]
-                                                        .property
-                                                        ?.essential ==
-                                                    '1',
-                                                height: 80,
-                                                isProperty: true,
-                                                index: index),
-                                          ]
-                                        ],
-                                      ),
-                                    ],
-                                    if (!_isFilter()) ...[
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                            width: 6.sp,
-                                          ),
-                                          for (int index = 0;
-                                              index < data.length;
-                                              index++) ...[
-                                            buildTextFieldPriceAds(
-                                                propertyId: data[index]
-                                                        .property
-                                                        ?.propertyId
-                                                        ?.toString() ??
-                                                    '',
-                                                title: data[index]
-                                                    .property
-                                                    ?.title
-                                                    ?.toCapitalized(),
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                isRequired: data[index]
-                                                        .property
-                                                        ?.essential ==
-                                                    '1',
-                                                height: 80,
-                                                isProperty: true,
-                                                index: index),
-                                          ]
-                                        ],
-                                      ),
-                                    ],
-                                    if (!_isFilter()) ...[
-                                      // Text('عدد الأحرف: $charCount'),
-                                      buildTextField(
+                                    for (int index = 0;
+                                    index < data.length;
+                                    index++) ...[
+                                      buildTextFieldPriceAds(
+                                          propertyId: data[index]
+                                              .property
+                                              ?.propertyId
+                                              ?.toString() ??
+                                              '',
+                                          title: data[index]
+                                              .property
+                                              ?.title
+                                              ?.toCapitalized(),
+                                          keyboardType:
+                                          TextInputType.number,
+                                          isRequired: data[index]
+                                              .property
+                                              ?.essential ==
+                                              '1',
+                                          height: 80,
+                                          isProperty: true,
+                                          index: index),
+                                    ]
+                                  ],
+                                ),
+                              ],
+                              if (!_isFilter()) ...[
+                                // Text('عدد الأحرف: $charCount'),
+                                buildTextField(
 //                                           onChangeText: (value){
 // print(charCount);
 //                                            setState(() {
@@ -550,79 +526,82 @@ class _AddMainDetailsPageState extends State<AddMainDetailsPage> {
 //                                              }
 //                                            });
 //                                           },
-                                          controller: _controller,
-                                          inputFormatters: [
-                                            LengthLimitingTextInputFormatter(
-                                                maxWordCount * 6),
-                                            // الضرب في 10 لمعالجة عدد الأحرف بدلاً من الكلمات
-                                          ],
-                                          hintText: "عنوان قصير لإعلانك",
-                                          propertyId: "title",
-                                          title: translate("address_ads")
-                                              .toCapitalized(),
-                                          keyboardType: TextInputType.text),
-                                      // SizedBox(height: 20),
-                                      // Text('عدد الكلمات المسموح به: $maxWordCount'),
-
-                                      buildTextField(
-                                          controller: _controller2,
-                                          inputFormatters: [
-                                            LengthLimitingTextInputFormatter(
-                                                maxWordCount * 100),
-                                            // الضرب في 10 لمعالجة عدد الأحرف بدلاً من الكلمات
-                                          ],
-                                          hintText: "أكتب وصف قصير للإعلان",
-                                          propertyId: "short_description",
-                                          title: translate(
-                                            "short_description",
-                                          ).toCapitalized(),
-                                          height: 80.sp),
-                                      if (!categoriesBloc.isJobs(
-                                          widget.argumentCategory?.name ??
-                                              '')) ...[
-                                        _addImage(),
-                                      ],
-                                      images.length > 0
-                                          ? Column(
-                                              children: [
-                                                SizedBox(
-                                                  height: 8.sp,
-                                                ),
-                                                _imagesWidget(),
-                                              ],
-                                            )
-                                          : Container(),
-                                      if (!categoriesBloc.isCommunity(
-                                          widget.argumentCategory?.name ??
-                                              '')) ...[
-                                        _buildAddress(),
-                                      ],
-                                      SizedBox(
-                                        height: 16.sp,
-                                      ),
-                                      PrivacyWidget(),
+                                    controller: _controller,
+                                    inputFormatters: [
+                                      LengthLimitingTextInputFormatter(
+                                          maxWordCount * 6),
+                                      // الضرب في 10 لمعالجة عدد الأحرف بدلاً من الكلمات
                                     ],
+                                    hintText: "عنوان قصير لإعلانك",
+                                    propertyId: "title",
+                                    title: translate("address_ads")
+                                        .toCapitalized(),
+                                    keyboardType: TextInputType.text),
+                                // SizedBox(height: 20),
+                                // Text('عدد الكلمات المسموح به: $maxWordCount'),
 
+                                buildTextField(
+                                    controller: _controller2,
+                                    inputFormatters: [
+                                      LengthLimitingTextInputFormatter(
+                                          maxWordCount * 100),
+                                      // الضرب في 10 لمعالجة عدد الأحرف بدلاً من الكلمات
+                                    ],
+                                    hintText: "أكتب وصف قصير للإعلان",
+                                    propertyId: "short_description",
+                                    title: translate(
+                                      "short_description",
+                                    ).toCapitalized(),
+                                    height: 80.sp),
+                                if (!categoriesBloc.isJobs(
+                                    widget.argumentCategory?.name ??
+                                        '')) ...[
+                                  _addImage(),
+                                ],
+                                images.length > 0
+                                    ? Column(
+                                  children: [
                                     SizedBox(
-                                      height: 60.sp,
+                                      height: 8.sp,
                                     ),
-                                    // _oldWidget()
+                                    _imagesWidget(),
                                   ],
+                                )
+                                    : Container(),
+                                if (!categoriesBloc.isCommunity(
+                                    widget.argumentCategory?.name ??
+                                        '')) ...[
+                                  _buildAddress(),
+                                ],
+                                SizedBox(
+                                  height: 16.sp,
                                 ),
+                                PrivacyWidget(),
+                              ],
+
+                              SizedBox(
+                                height: 60.sp,
                               ),
-                            ),
-                            _postAdButton(),
-                          ],
+                              // _oldWidget()
+                            ],
+                          ),
                         ),
-                      );
-                    }
-                    return Center(child: AppLoaderWidget());
-                  },
-                ),
-              ),
-            ],
+                      ),
+                      // _postAdButton(),
+                    ],
+                  ),
+                );
+              }
+              return Center(child: AppLoaderWidget());
+            },
           ),
         ),
+      ),
+      bottomNavigationBar: Padding(padding: EdgeInsets.only(
+          left: _isFilter()?100.sp: 130.sp,
+          right:_isFilter()?100.sp: 130.sp,
+          bottom: 30.sp),
+      child: _postAdButton(),
       ),
     );
   }

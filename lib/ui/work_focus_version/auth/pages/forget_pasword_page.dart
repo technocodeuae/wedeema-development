@@ -21,6 +21,7 @@ import '../../../../core/utils/ui/snackbar_and_toast/snackbar_and_toast.dart';
 import '../../general/back_long_press_widget.dart';
 import '../../general/progress_indicator/loading_column_overlay.dart';
 import '../../general/text_fields/text_field_widget.dart';
+import '../../home/widget/app_bar_app.dart';
 
 class ForgetPage extends StatefulWidget {
   static const routeName = '/ForgetPasswordPage';
@@ -47,6 +48,10 @@ class _ForgetPageState extends State<ForgetPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appBarApp(context,text: '',
+      isNeedBack: true,
+      isAuth: true,
+      ),
       backgroundColor: AppColorsController().white,
       body: GestureDetector(
         onTap: (){
@@ -62,21 +67,21 @@ class _ForgetPageState extends State<ForgetPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   // SizedBox(height: 15.sp,),
-                  AppBarWidget(
-                    flip: true,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: InkWell(
-                        onTap: () {
-                          DIManager.findNavigator().pop();
-                        },
-                        child: BackIcon(
-                          width: 26.sp,
-                          height: 18.sp,
-                        ),
-                      ),
-                    ),
-                  ),
+                  // AppBarWidget(
+                  //   flip: true,
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.only(top: 8.0),
+                  //     child: InkWell(
+                  //       onTap: () {
+                  //         DIManager.findNavigator().pop();
+                  //       },
+                  //       child: BackIcon(
+                  //         width: 26.sp,
+                  //         height: 18.sp,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   BlocConsumer<AuthCubit, AuthState>(
                       bloc: _authBloc,
                       listener: (_, state) {
@@ -252,7 +257,9 @@ class _ForgetPageState extends State<ForgetPage> {
     setState(() {
       _isLoading = true;
     });
-    _authBloc.sendVerificationCode(AppConsts.countryCode, '${AppConsts.countryCode}$phoneValue',isChangePassword: true,onDone: (){
+    _authBloc.sendVerificationCode(AppConsts.countryCode, '${AppConsts.countryCode}$phoneValue',
+        isChangePassword: true,
+        onDone: (){
       setState(() {
         _isLoading = false;
       });

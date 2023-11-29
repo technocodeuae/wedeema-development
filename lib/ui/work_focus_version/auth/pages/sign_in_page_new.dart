@@ -25,19 +25,20 @@ import '../../general/icons/lock_icon.dart';
 import '../../general/progress_indicator/loading_column_overlay.dart';
 import '../../general/text_fields/text_field_decorator.dart';
 import '../../general/text_fields/text_field_widget.dart';
+import '../../home/widget/app_bar_app.dart';
 import '../widget/social_media_login.dart';
 import 'forget_password_page_old.dart';
 
-class SignInPage extends StatefulWidget {
+class SignInPageNew extends StatefulWidget {
   static const routeName = '/SignInPageNew';
 
-  const SignInPage({Key? key}) : super(key: key);
+  const SignInPageNew({Key? key}) : super(key: key);
 
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  State<SignInPageNew> createState() => _SignInPageNewState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _SignInPageNewState extends State<SignInPageNew> {
   TextEditingController passwordController = TextEditingController();
   final FocusNode focusNodePassword = FocusNode();
   String passwordValue = "";
@@ -57,6 +58,9 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColorsController().scaffoldBGColor,
+      appBar: appBarApp(context,text: translate("login"),
+          isNeedBack: true
+      ),
       body: GestureDetector(
         onTap: (){
           FocusScope.of(context).unfocus();
@@ -75,15 +79,15 @@ class _SignInPageState extends State<SignInPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          AppBarWidget(
-                            name: translate("login"),
-                            child: EnterIcon(
-                              width: 26.sp,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 50.sp,
-                          ),
+                          // AppBarWidget(
+                          //   name: translate("login"),
+                          //   child: EnterIcon(
+                          //     width: 26.sp,
+                          //   ),
+                          // ),
+                          // SizedBox(
+                          //   height: 50.sp,
+                          // ),
                           BlocConsumer<AuthCubit, AuthState>(
                               bloc: _authBloc,
                               listener: (_, state) {

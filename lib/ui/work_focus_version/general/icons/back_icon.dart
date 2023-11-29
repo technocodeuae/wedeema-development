@@ -32,7 +32,7 @@ class BackIcon extends StatelessWidget {
           // width: width ?? 0.06.sw,
           height: 0.08.sw,
           //  height: height ?? 0.06.sw,
-          fit: BoxFit.fill,
+          fit: BoxFit.contain,
         ),
       ),
     );

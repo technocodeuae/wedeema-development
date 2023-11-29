@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wadeema/core/utils/localization/app_localizations.dart';
 import 'package:wadeema/core/utils/location_manager.dart';
+import 'package:wadeema/ui/work_focus_version/home/widget/app_bar_app.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/di/di_manager.dart';
@@ -56,22 +57,25 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appBarApp(context, text: translate('select_location'),
+      isNeedBack: true,
+      ),
       body: Column(
         children: [
           SizedBox(height: 15.sp,),
-          AppBarWidget(
-            name: translate('select_location'),
-            child: InkWell(
-              onTap: () {
-                DIManager.findNavigator().pop();
-              },
-              child: BackIcon(
-                width: 26.sp,
-                height: 18.sp,
-                color: AppColorsController().iconColor,
-              ),
-            ),
-          ), 
+          // AppBarWidget(
+          //   name: translate('select_location'),
+          //   child: InkWell(
+          //     onTap: () {
+          //       DIManager.findNavigator().pop();
+          //     },
+          //     child: BackIcon(
+          //       width: 26.sp,
+          //       height: 18.sp,
+          //       color: AppColorsController().iconColor,
+          //     ),
+          //   ),
+          // ),
           Expanded(
             child: GoogleMap(
               myLocationEnabled: true,

@@ -18,6 +18,7 @@ import '../../general/app_bar/app_bar.dart';
 import '../../general/back_long_press_widget.dart';
 import '../../general/icons/back_icon.dart';
 import '../../general/progress_indicator/loading_column_overlay.dart';
+import '../../home/widget/app_bar_app.dart';
 
 class SendOtpPage extends StatefulWidget {
   static const routeName = '/SendOtpPage';
@@ -54,6 +55,9 @@ class _SendOtpPageState extends State<SendOtpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColorsController().white,
+      appBar: appBarApp(context,text: '',
+          isNeedBack: true
+      ),
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -66,24 +70,24 @@ class _SendOtpPageState extends State<SendOtpPage> {
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               child: Column(
                 children: [
-                  SizedBox(
-                    height: 30.h,
-                  ),
-                  AppBarWidget(
-                    flip: true,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: InkWell(
-                        onTap: () {
-                          DIManager.findNavigator().pop();
-                        },
-                        child: BackIcon(
-                          width: 26.sp,
-                          height: 18.sp,
-                        ),
-                      ),
-                    ),
-                  ),
+                  // SizedBox(
+                  //   height: 30.h,
+                  // ),
+                  // AppBarWidget(
+                  //   flip: true,
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.only(top: 8.0),
+                  //     child: InkWell(
+                  //       onTap: () {
+                  //         DIManager.findNavigator().pop();
+                  //       },
+                  //       child: BackIcon(
+                  //         width: 26.sp,
+                  //         height: 18.sp,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.sp),
                     child: Column(

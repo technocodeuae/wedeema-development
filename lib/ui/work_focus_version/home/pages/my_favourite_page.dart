@@ -19,6 +19,7 @@ import '../../general/back_long_press_widget.dart';
 import '../../general/bottom_navigation_bar/bottom_navigation_bar_widget.dart';
 import '../../general/progress_indicator/loading_column_overlay.dart';
 import '../arg/items_args.dart';
+import '../widget/app_bar_app.dart';
 import '../widget/job_ad_card.dart';
 import 'items_details_page.dart';
 
@@ -128,6 +129,7 @@ class _MyFavouritePageState extends State<MyFavouritePage> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+      appBar: appBarApp(context,text: translate("my_favourite")),
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -140,18 +142,18 @@ class _MyFavouritePageState extends State<MyFavouritePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      AppBarWidget(
-                        name: translate("my_favourite"),
-                        child: InkWell(
-                          onTap: () {
-                            DIManager.findNavigator().pop();
-                          },
-                          child: Container(
-                            width: 35.sp,
-                            height: 35.sp,
-                          ),
-                        ),
-                      ),
+                      // AppBarWidget(
+                      //   name: translate("my_favourite"),
+                      //   child: InkWell(
+                      //     onTap: () {
+                      //       DIManager.findNavigator().pop();
+                      //     },
+                      //     child: Container(
+                      //       width: 35.sp,
+                      //       height: 35.sp,
+                      //     ),
+                      //   ),
+                      // ),
                       Expanded(
                         child: Container(
                           child: SmartRefresher(
@@ -480,7 +482,7 @@ class _MyFavouritePageState extends State<MyFavouritePage> {
           // }
           return  HomeItemsFavorite(
             onChangedLoaderFavourite: _makeLoaderChanged,
-            adsIdFavourite: items[index].ad_id!,
+            adsIdFavourite: items[index].ad_id ?? 585,
             onChangedFavourite: _makeFavouriteChanged,
             indexFavourite: index,
             onPress: () {

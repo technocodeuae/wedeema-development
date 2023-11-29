@@ -25,6 +25,7 @@ import '../../general/icons/back_icon.dart';
 import '../../general/progress_indicator/loading_column_overlay.dart';
 import '../../home/arg/view_all_args.dart';
 import '../../home/pages/view_all_page.dart';
+import '../../home/widget/app_bar_app.dart';
 import 'add_main_details_page.dart';
 
 class AddDetailsPage extends StatefulWidget {
@@ -58,6 +59,9 @@ class _AddDetailsPageState extends State<AddDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appBarApp(context,text: translate("place_ads"),
+          isNeedBack: true
+      ),
       backgroundColor: AppColorsController().scaffoldBGColor,
       body: GestureDetector(
         onTap: (){
@@ -70,19 +74,20 @@ class _AddDetailsPageState extends State<AddDetailsPage> {
             child: BackLongPress(
 
               child: Column(
-                children: [   SizedBox(height: 10.sp ,),
-                  AppBarWidget(
-                    name: translate("place_ads"),
-                    child: InkWell(
-                      onTap: () {
-                        DIManager.findNavigator().pop();
-                      },
-                      child: BackIcon(
-                        width: 26.sp,
-                        height: 18.sp,
-                      ),
-                    ),
-                  ),
+                children: [
+                  // SizedBox(height: 10.sp ,),
+                  // AppBarWidget(
+                  //   name: translate("place_ads"),
+                  //   child: InkWell(
+                  //     onTap: () {
+                  //       DIManager.findNavigator().pop();
+                  //     },
+                  //     child: BackIcon(
+                  //       width: 26.sp,
+                  //       height: 18.sp,
+                  //     ),
+                  //   ),
+                  // ),
                   Expanded(
                     child: ListView(
                       children: [

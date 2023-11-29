@@ -15,6 +15,7 @@ import '../../general/icons/back_icon.dart';
 import '../../general/icons/email_icon.dart';
 import '../../general/text_fields/text_field_decorator.dart';
 import '../../general/text_fields/text_field_widget.dart';
+import '../../home/widget/app_bar_app.dart';
 import 'otp_page.dart';
 class SignInWithPhoneNumber extends StatefulWidget {
   static const routeName = '/SignInWithPhoneNumber';
@@ -33,26 +34,29 @@ class _SignInWithPhoneNumberState extends State<SignInWithPhoneNumber> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appBarApp(context,text: translate(""),
+          isNeedBack: true
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            AppBarWidget(
-              name: translate(""),
-              child: InkWell(
-                onTap: (){
-                  DIManager.findNavigator().pop();
-
-                },
-                child: BackIcon(
-                  width: 26.sp,
-                  height: 18.sp,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 78.sp,
-            ),
+            // AppBarWidget(
+            //   name: translate(""),
+            //   child: InkWell(
+            //     onTap: (){
+            //       DIManager.findNavigator().pop();
+            //
+            //     },
+            //     child: BackIcon(
+            //       width: 26.sp,
+            //       height: 18.sp,
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: 78.sp,
+            // ),
 
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 40.sp,),

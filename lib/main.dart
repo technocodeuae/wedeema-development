@@ -154,14 +154,14 @@ Future<void> main() async {
     await Firebase.initializeApp(
 
     );
-
-    // FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
-
     await _initFirebaseMessaging();
     _configureFirebaseMessaging();
 
-
+    // FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
     runApp(App());
+
+
+
 
 /*
     AppErrorHandler.dartErrorCatcher(

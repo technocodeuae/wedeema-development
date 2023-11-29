@@ -49,7 +49,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     Timer(
-        Duration(seconds: 3), () {
+        Duration(milliseconds: 500), () {
       DIManager.findNavigator().pushNamedAndRemoveUntil(
         AppUtils.isFist()  ? TourPage.routeName : HomePage.routeName,
       );

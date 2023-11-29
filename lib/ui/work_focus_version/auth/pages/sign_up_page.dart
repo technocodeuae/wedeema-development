@@ -10,22 +10,16 @@ import 'package:wadeema/core/constants/dimens.dart';
 import 'package:wadeema/ui/work_focus_version/ads/widget/post_ad_button.dart';
 import 'package:wadeema/ui/work_focus_version/auth/pages/send_otp_page.dart';
 import 'package:wadeema/ui/work_focus_version/general/text_fields/text_field_widget.dart';
-
 import '../../../../blocs/auth/auth_bloc.dart';
 import '../../../../blocs/auth/states/auth_state.dart';
 import '../../../../core/bloc/states/base_fail_state.dart';
-import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_font.dart';
 import '../../../../core/di/di_manager.dart';
 import '../../../../core/utils/localization/app_localizations.dart';
 import '../../../../core/utils/ui/snackbar_and_toast/snackbar_and_toast.dart';
 import '../../../../data/models/cities/entity/cities_entity.dart';
 import '../../ads/widget/privacy_widget.dart';
-import '../../general/app_bar/app_bar.dart';
-import '../../general/back_long_press_widget.dart';
-import '../../general/icons/back_icon.dart';
-import '../../general/progress_indicator/loading_column_overlay.dart';
-import '../../home/pages/home_page.dart';
+import '../../home/widget/app_bar_app.dart';
 
 class SignUpPage extends StatefulWidget {
   static const routeName = '/SignUpPage';
@@ -91,6 +85,10 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColorsController().white,
+      appBar: appBarApp(context, text: '',
+          isNeedBack: true,
+          isAuth: true
+      ),
       body: GestureDetector(
         onTap: (){
           FocusScope.of(context).unfocus();
@@ -98,83 +96,42 @@ class _SignUpPageState extends State<SignUpPage> {
         },
         child: SingleChildScrollView(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          child: Stack(
-            children: [
-              Column(
-                children: [
-                  SizedBox(height: 35.h,),
-                  AppBarWidget(
-                    flip: true,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: InkWell(
-                        onTap: () {
-                          DIManager.findNavigator().pop();
-                        },
-                        child: BackIcon(
-                          width: 26.sp,
-                          height: 18.sp,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 50.sp,
-                  ),
-                  Form(
-                    key: _formKey,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.sp),
-                      child: BlocListener<AuthCubit, AuthState>(
-                        bloc: _authBloc,
-                        listener: (_, state) {
-                          final registerState = state.registerState;
+          child: Form(
+            key: _formKey,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.sp),
+              child: BlocListener<AuthCubit, AuthState>(
+                bloc: _authBloc,
+                listener: (_, state) {
+                  final registerState = state.registerState;
 
-                          if (_isLoading == true &&registerState is BaseFailState) {
-                            CustomSnackbar.showErrorSnackbar(
-                              registerState.error!,
-                            );
-                            setState(() {
-                              _isLoading = false;
-                            });
-                          }
-                          if (_isLoading == true &&registerState is VerificationCodeSuccessState) {
+                  if (_isLoading == true &&registerState is BaseFailState) {
+                    CustomSnackbar.showErrorSnackbar(
+                      registerState.error!,
+                    );
+                    setState(() {
+                      _isLoading = false;
+                    });
+                  }
+                  if (_isLoading == true &&registerState is VerificationCodeSuccessState) {
 
-                          }
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _titleWidget(),
-                            SizedBox(height: 24,),
-                            _numberField(),
-                            SizedBox(height: 94,),
-                            PrivacyWidget(color: AppColorsController().black),
-                            SizedBox(height: 16,),
-                            _buildButton(),
-                            _signInWidget(),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Positioned(
-                top: 60.sp,
-                left: 131.sp,
-                right: 131.sp,
-                child: Hero(
-                  tag: 'logo',
-                  child: Image.asset(
-                    AppAssets.logoImage,
-                    height: 72.sp,
-                    fit: BoxFit.fill,
-                  ),
+                  }
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _titleWidget(),
+                    SizedBox(height: 24.sp,),
+                    _numberField(),
+                    SizedBox(height: 94.sp,),
+                    PrivacyWidget(color: AppColorsController().black),
+                    SizedBox(height: 16.sp,),
+                    _buildButton(),
+                    _signInWidget(),
+                  ],
                 ),
               ),
-
-            ],
+            ),
           ),
         ),
       ),
@@ -220,7 +177,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     });
                     DIManager.findNavigator().pushNamed(
                         SendOtpPage.routeName,
-                        arguments: {'phone_number':'+${AppConsts.countryCode}$phoneValue'}
+                        // arguments: {'phone_number':'+${AppConsts.countryCode}$phoneValue'}
+                        arguments: {'phone_number':'${AppConsts.countryCode}$phoneValue'}
                     );
                   },onError: (){
                     setState(() {

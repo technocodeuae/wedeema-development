@@ -21,6 +21,7 @@ import '../../../../core/utils/ui/snackbar_and_toast/snackbar_and_toast.dart';
 import '../../general/back_long_press_widget.dart';
 import '../../general/progress_indicator/loading_column_overlay.dart';
 import '../../general/text_fields/text_field_widget.dart';
+import '../../home/widget/app_bar_app.dart';
 
 class ChangePasswordPageNew extends StatefulWidget {
   static const routeName = '/ChangePasswordPageNew';
@@ -49,6 +50,9 @@ class _ChangePasswordPageNewState extends State<ChangePasswordPageNew> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColorsController().white,
+      appBar: appBarApp(context,text: translate("change_password"),
+          isNeedBack: true
+      ),
       body: GestureDetector(
         onTap: (){
           FocusScope.of(context).unfocus();
@@ -62,21 +66,21 @@ class _ChangePasswordPageNewState extends State<ChangePasswordPageNew> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  AppBarWidget(
-                    flip: true,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: InkWell(
-                        onTap: () {
-                          DIManager.findNavigator().pop();
-                        },
-                        child: BackIcon(
-                          width: 26.sp,
-                          height: 18.sp,
-                        ),
-                      ),
-                    ),
-                  ),
+                  // AppBarWidget(
+                  //   flip: true,
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.only(top: 8.0),
+                  //     child: InkWell(
+                  //       onTap: () {
+                  //         DIManager.findNavigator().pop();
+                  //       },
+                  //       child: BackIcon(
+                  //         width: 26.sp,
+                  //         height: 18.sp,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   BlocConsumer<AuthCubit, AuthState>(
                       bloc: _authBloc,
                       listener: (_, state) {

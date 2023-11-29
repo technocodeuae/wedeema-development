@@ -38,6 +38,7 @@ import '../../general/icons/edit_icon.dart';
 import '../../general/progress_indicator/loading_column_overlay.dart';
 import '../../general/text_fields/build_text_field_widget.dart';
 import '../../general/text_fields/text_field_decorator.dart';
+import '../../home/widget/app_bar_app.dart';
 import '../widget/image_profile_widget.dart';
 import 'my_account_page.dart';
 
@@ -146,6 +147,10 @@ void dispose(){
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appBarApp(context,
+      text:translate("profile"),
+        isNeedBack: true
+      ),
       body: GestureDetector(
         onTap: (){
           FocusScope.of(context).unfocus();
@@ -156,18 +161,18 @@ void dispose(){
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                AppBarWidget(
-                  name: translate("profile"),
-                  child: InkWell(
-                    onTap: () {
-                      DIManager.findNavigator().pop();
-                    },
-                    child: BackIcon(
-                      width: 26.sp,
-                      height: 18.sp,
-                    ),
-                  ),
-                ),
+                // AppBarWidget(
+                //   name: translate("profile"),
+                //   child: InkWell(
+                //     onTap: () {
+                //       DIManager.findNavigator().pop();
+                //     },
+                //     child: BackIcon(
+                //       width: 26.sp,
+                //       height: 18.sp,
+                //     ),
+                //   ),
+                // ),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(

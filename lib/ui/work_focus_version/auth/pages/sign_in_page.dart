@@ -11,6 +11,7 @@ import 'package:wadeema/ui/work_focus_version/auth/pages/forget_pasword_page.dar
 import 'package:wadeema/ui/work_focus_version/auth/pages/sign_up_page.dart';
 import 'package:wadeema/ui/work_focus_version/general/app_bar/app_bar.dart';
 import 'package:wadeema/ui/work_focus_version/home/pages/home_page.dart';
+import 'package:wadeema/ui/work_focus_version/home/widget/app_bar_app.dart';
 
 import '../../../../blocs/auth/auth_bloc.dart';
 import '../../../../blocs/auth/states/auth_state.dart';
@@ -58,6 +59,10 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColorsController().white,
+      appBar: appBarApp(context, text: '',
+      isNeedBack: widget.type == 0 ?true : false,
+isAuth: true
+      ),
       body: GestureDetector(
         onTap: (){
           FocusScope.of(context).unfocus();
@@ -66,93 +71,78 @@ class _SignInPageState extends State<SignInPage> {
         child: BackLongPress(
           child: SingleChildScrollView(
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            child: Stack(
-              children: [
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // SizedBox(height: 35.h,),
+                  // AppBarWidget(
+                  //   flip: true,
+                  //   child:     widget.type == 0 ? InkWell(
+                  //     onTap: () {
+                  //       DIManager.findNavigator().pop();
+                  //       // if (_isFilter()) {
+                  //       //   DIManager.findNavigator().pop();
+                  //       // } else {
+                  //       //   if (!AppUtils.checkIfGuest(context)) {
+                  //       //     DIManager.findNavigator().pushReplacementNamed(
+                  //       //         SelectListingPage.routeName,
+                  //       //         arguments: {'city_id': -1});
+                  //       //   }
+                  //       // }
+                  //     },
+                  //     child: BackIcon(
+                  //       width: 80.sp,
+                  //       height: 90.sp,
+                  //     ),
+                  //   ):Container(),
+                  // ),
+                  // SizedBox(
+                  //   height: 50.sp,
+                  // ),
+                  BlocConsumer<AuthCubit, AuthState>(
+                      bloc: _authBloc,
+                      listener: (_, state) {
 
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(height: 35.h,),
-                      AppBarWidget(
-                        flip: true,
-                        child:     widget.type == 0 ? InkWell(
-                          onTap: () {
-                            DIManager.findNavigator().pop();
-                            // if (_isFilter()) {
-                            //   DIManager.findNavigator().pop();
-                            // } else {
-                            //   if (!AppUtils.checkIfGuest(context)) {
-                            //     DIManager.findNavigator().pushReplacementNamed(
-                            //         SelectListingPage.routeName,
-                            //         arguments: {'city_id': -1});
-                            //   }
-                            // }
-                          },
-                          child: BackIcon(
-                            width: 80.sp,
-                            height: 90.sp,
+                        final loginState = state.loginState;
+                        if (_isLoading == true &&loginState is BaseFailState) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          CustomSnackbar.showErrorSnackbar(
+                            loginState.error!,
+                          );
+                        }
+                        if (_isLoading == true &&loginState is LoginSuccessState) {
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          DIManager.findNavigator().pushNamedAndRemoveUntil(
+                            HomePage.routeName,
+                          );
+                        }
+                      },
+                      builder: (_, state) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 12.sp),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _titleWidget(),
+                              SizedBox(height: 24,),
+                              _numberField(),
+                              SizedBox(height: 24,),
+                              _passwordField(),
+                              _forgotPasswordWidget(),
+                              _buildButton(),
+                              _registerWidget(),
+                            ],
                           ),
-                        ):Container(),
-                      ),
-                      SizedBox(
-                        height: 50.sp,
-                      ),
-                      BlocConsumer<AuthCubit, AuthState>(
-                          bloc: _authBloc,
-                          listener: (_, state) {
-
-                            final loginState = state.loginState;
-                            if (_isLoading == true &&loginState is BaseFailState) {
-                              setState(() {
-                                _isLoading = false;
-                              });
-                              CustomSnackbar.showErrorSnackbar(
-                                loginState.error!,
-                              );
-                            }
-                            if (_isLoading == true &&loginState is LoginSuccessState) {
-                              setState(() {
-                                _isLoading = false;
-                              });
-                              DIManager.findNavigator().pushNamedAndRemoveUntil(
-                                HomePage.routeName,
-                              );
-                            }
-                          },
-                          builder: (_, state) {
-                            return Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 12.sp),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _titleWidget(),
-                                  SizedBox(height: 24,),
-                                  _numberField(),
-                                  SizedBox(height: 24,),
-                                  _passwordField(),
-                                  _forgotPasswordWidget(),
-                                  _buildButton(),
-                                  _registerWidget(),
-                                ],
-                              ),
-                            );
-                          }),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  top: 60.sp,
-                  left: 131.sp,
-                  right: 131.sp,
-                  child: Image.asset(
-                    AppAssets.logoImage,
-                    height: 72.sp,
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              ],
+                        );
+                      }),
+                ],
+              ),
             ),
           ),
         ),

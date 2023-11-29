@@ -5,6 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_consts.dart';
+import '../../../../core/constants/app_font.dart';
+import '../../../../core/constants/app_style.dart';
 import '../../../../core/di/di_manager.dart';
 import '../../../../core/shared_prefs/shared_prefs.dart';
 import '../../../../core/utils/app_general_utils.dart';
@@ -21,6 +23,9 @@ import '../pages/search_page.dart';
 PreferredSizeWidget appBarApp(context,
 {
   required String text,
+  bool isHomePage = false,
+  bool isAuth = false,
+  bool isNeedBack = false,
 }
     ){
 
@@ -39,8 +44,16 @@ PreferredSizeWidget appBarApp(context,
     ),
     // centerTitle: true,
     elevation: 0,
-    title: Padding(
-      padding: EdgeInsets.only(top: 25),
+    title: !isHomePage && !isAuth?  Text(
+      text ,
+      style: AppStyle.smallTitleStyle.copyWith(
+        color: AppColorsController().black,
+        fontWeight: AppFontWeight.midBold,
+        fontSize: AppFontSize.fontSize_20,
+      ),maxLines: 1,
+      textAlign: TextAlign.center,
+    ): isHomePage ?Padding(
+      padding: EdgeInsets.only(top: 25.sp),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -129,7 +142,23 @@ PreferredSizeWidget appBarApp(context,
           ),
         ],
       ),
-    ),
+    ):Padding(padding: EdgeInsets.only(top: 15.sp),child: Image.asset(
+      AppAssets.logoImage,
+      height: 62.sp,
+      fit: BoxFit.fill,
+    ),),
+leading: isNeedBack? InkWell(
+  onTap: () {
+    DIManager.findNavigator().pop();
+  },
+  child: BackIcon(
+    width: 26.sp,
+    height: 18.sp,
+    color: AppColorsController().iconColor,
+  ),
+):Container(),
+leadingWidth: 36.sp,
+
 centerTitle: true,
 //     leading: Transform.scale(
 //       scale: 0.5,

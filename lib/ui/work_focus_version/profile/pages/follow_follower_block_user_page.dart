@@ -18,6 +18,7 @@ import '../../general/back_long_press_widget.dart';
 import '../../general/bottom_navigation_bar/bottom_navigation_bar_widget.dart';
 import '../../general/icons/back_icon.dart';
 import '../../general/progress_indicator/loading_column_overlay.dart';
+import '../../home/widget/app_bar_app.dart';
 import '../../home/widget/build_circular_image_user.dart';
 import 'client_account_page.dart';
 
@@ -111,6 +112,12 @@ class _FollowFollowerBlockUserState extends State<FollowFollowerBlockUser> {
         .size
         .width;
     return Scaffold(
+        appBar: appBarApp(context,
+          text: widget.action == 0 ? translate("followers") : widget
+              .action == 1 ? translate("following") : translate(
+              "blocked_users"),
+          isNeedBack: true
+        ),
       body: SafeArea(
         child: LoadingColumnOverlay(
             isLoading: loadingLoader,
@@ -121,23 +128,23 @@ class _FollowFollowerBlockUserState extends State<FollowFollowerBlockUser> {
 
           child: Column(
                 children: [
-                  AppBarWidget(
-                    name: widget.action == 0 ? translate("followers") : widget
-                        .action == 1 ? translate("following") : translate(
-                        "blocked_users"),
-                    child: InkWell(
-                      onTap: (){
-                        Navigator.of(context).pop();
-                      },
-                      child: BackIcon(
-                        width: 26.sp,
-                        height: 18.sp,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 16.sp,
-                  ),
+                  // AppBarWidget(
+                  //   name: widget.action == 0 ? translate("followers") : widget
+                  //       .action == 1 ? translate("following") : translate(
+                  //       "blocked_users"),
+                  //   child: InkWell(
+                  //     onTap: (){
+                  //       Navigator.of(context).pop();
+                  //     },
+                  //     child: BackIcon(
+                  //       width: 26.sp,
+                  //       height: 18.sp,
+                  //     ),
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   height: 16.sp,
+                  // ),
                   Expanded(
                     child: Container(
                       child: SmartRefresher(

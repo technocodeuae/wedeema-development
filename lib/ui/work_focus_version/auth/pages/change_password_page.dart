@@ -22,6 +22,7 @@ import '../../general/icons/lock_icon.dart';
 import '../../general/progress_indicator/loading_column_overlay.dart';
 import '../../general/text_fields/text_field_decorator.dart';
 import '../../general/text_fields/text_field_widget.dart';
+import '../../home/widget/app_bar_app.dart';
 import '../../profile/pages/my_profile_page.dart';
 
 class ChangePasswordPage extends StatefulWidget {
@@ -49,6 +50,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColorsController().scaffoldBGColor,
+      appBar: appBarApp(context,text: translate("change_password"),
+          isNeedBack: true
+      ),
       body: GestureDetector(
         onTap: (){
           FocusScope.of(context).unfocus();
@@ -62,18 +66,19 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  AppBarWidget(
-                    name: translate("change_password"),
-                    child: InkWell(
-                      onTap: () {
-                        DIManager.findNavigator().pop();
-                      },
-                      child: BackIcon(
-                        width: 26.sp,
-                        height: 18.sp,
-                      ),
-                    ),
-                  ),
+
+                  // AppBarWidget(
+                  //   name: translate("change_password"),
+                  //   child: InkWell(
+                  //     onTap: () {
+                  //       DIManager.findNavigator().pop();
+                  //     },
+                  //     child: BackIcon(
+                  //       width: 26.sp,
+                  //       height: 18.sp,
+                  //     ),
+                  //   ),
+                  // ),
                   Expanded(
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10.sp),

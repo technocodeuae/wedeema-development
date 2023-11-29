@@ -78,7 +78,9 @@ class AppLoaderWidget extends StatelessWidget {
       );
     } else {
       return Column(
-        mainAxisSize: MainAxisSize.min,
+        // mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -87,9 +89,9 @@ class AppLoaderWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  VerticalPadding(2.0),
+                  // VerticalPadding(2.0),
                   loader,
-                  VerticalPadding(4.0),
+                  // VerticalPadding(4.0),
                 ],
               ),
             ],

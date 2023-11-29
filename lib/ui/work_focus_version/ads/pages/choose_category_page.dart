@@ -18,6 +18,7 @@ import '../../general/back_long_press_widget.dart';
 import '../../general/buttons/app_button.dart';
 import '../../general/icons/add_icon.dart';
 import '../../general/progress_indicator/loading_column_overlay.dart';
+import '../../home/widget/app_bar_app.dart';
 import 'choose_listing_page.dart';
 
 class ChooseCategoryPage extends StatefulWidget {
@@ -49,25 +50,29 @@ class _ChooseCategoryPageState extends State<ChooseCategoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColorsController().scaffoldBGColor,
+      appBar: appBarApp(context,text: translate("place_ads"),
+          isNeedBack: true
+      ),
       body: SafeArea(
         child: LoadingColumnOverlay(
           isLoading: _isLoading,
           child: BackLongPress(
 
             child: Column(
-              children: [   SizedBox(height: 10.sp ,),
-                AppBarWidget(
-                  name: translate("place_ads"),
-                  child: InkWell(
-                    onTap: () {
-                      DIManager.findNavigator().pop();
-                    },
-                    child: AddIcon(
-                      width: 30.sp,
-                      height: 30.sp,
-                    ),
-                  ),
-                ),
+              children: [
+                // SizedBox(height: 10.sp ,),
+                // AppBarWidget(
+                //   name: translate("place_ads"),
+                //   child: InkWell(
+                //     onTap: () {
+                //       DIManager.findNavigator().pop();
+                //     },
+                //     child: AddIcon(
+                //       width: 30.sp,
+                //       height: 30.sp,
+                //     ),
+                //   ),
+                // ),
                 Expanded(
                   child: ListView(
                     children: [

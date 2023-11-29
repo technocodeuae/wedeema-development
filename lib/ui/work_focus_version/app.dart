@@ -11,6 +11,7 @@ import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:wadeema/ui/work_focus_version/tour/tour_page.dart';
 import '../../../../blocs/application/application_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_consts.dart';
@@ -23,6 +24,8 @@ import '../../core/constants/app_font.dart';
 import '../../core/localization/translations.dart';
 import '../../core/navigator/route_generator.dart';
 import '../../core/shared_prefs/shared_prefs.dart';
+import '../../core/utils/app_general_utils.dart';
+import 'home/pages/home_page.dart';
 
 class App extends StatefulWidget {
   @override
@@ -133,7 +136,7 @@ class _AppState extends State<App> {
                           DefaultCupertinoLocalizations.delegate,
                           DefaultMaterialLocalizations.delegate,
                         ],
-                        initialRoute: SplashPage.routeName,
+                        initialRoute: AppUtils.isFist()  ? TourPage.routeName : HomePage.routeName,
                         localeResolutionCallback: (Locale? locale,
                             Iterable<Locale> supportedLocales) {
                           //print("change language");

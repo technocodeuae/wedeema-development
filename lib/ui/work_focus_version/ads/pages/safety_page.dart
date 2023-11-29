@@ -19,6 +19,7 @@ import '../../general/buttons/app_button.dart';
 import '../../general/icons/back_icon.dart';
 import '../../general/progress_indicator/loading_column_overlay.dart';
 import '../../home/pages/home_page.dart';
+import '../../home/widget/app_bar_app.dart';
 import '../args/argument_policy.dart';
 
 class SafetyPage extends StatefulWidget {
@@ -49,25 +50,29 @@ class _SafetyPageState extends State<SafetyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColorsController().scaffoldBGColor,
+      appBar: appBarApp(context,text: translate("place_ads"),
+          isNeedBack: true
+      ),
       body:  SafeArea(
           child: LoadingColumnOverlay(
             isLoading: _isLoading,
             child: BackLongPress(
 
               child: Column(
-                children: [   SizedBox(height: 10.sp ,),
-                  AppBarWidget(
-                    name: translate("place_ads"),
-                    child: InkWell(
-                      onTap: () {
-                        DIManager.findNavigator().pop();
-                      },
-                      child: BackIcon(
-                        width: 26.sp,
-                        height: 18.sp,
-                      ),
-                    ),
-                  ),
+                children: [
+                  // SizedBox(height: 10.sp ,),
+                  // AppBarWidget(
+                  //   name: translate("place_ads"),
+                  //   child: InkWell(
+                  //     onTap: () {
+                  //       DIManager.findNavigator().pop();
+                  //     },
+                  //     child: BackIcon(
+                  //       width: 26.sp,
+                  //       height: 18.sp,
+                  //     ),
+                  //   ),
+                  // ),
                   Expanded(
                     child: ListView(
                       children: [

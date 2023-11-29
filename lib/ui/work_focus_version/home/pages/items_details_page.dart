@@ -16,6 +16,7 @@ import '../../general/back_long_press_widget.dart';
 import '../../general/icons/back_icon.dart';
 import '../../general/progress_indicator/loading_column_overlay.dart';
 import '../arg/items_args.dart';
+import '../widget/app_bar_app.dart';
 import '../widget/details_body_widget.dart';
 
 class ItemsDetailsPage extends StatefulWidget {
@@ -83,7 +84,8 @@ class _ItemsDetailsPageState extends State<ItemsDetailsPage> {
     print('widget.typeAds :${widget.args!.type}');
     print('widget.title :${widget.args!.title}');
     return Scaffold(
-
+        appBar: appBarApp(context, text: translate("ads"),
+            isNeedBack: true),
         backgroundColor: AppColorsController().scaffoldBGColorAdds,
         body: SafeArea(
           child: LoadingColumnOverlay(
@@ -92,18 +94,18 @@ class _ItemsDetailsPageState extends State<ItemsDetailsPage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    AppBarWidget(
-                      name: translate("ads"),
-                      child: InkWell(
-                        onTap: () {
-                          DIManager.findNavigator().pop();
-                        },
-                        child: BackIcon(
-                          width: 26.sp,
-                          height: 18.sp,
-                        ),
-                      ),
-                    ),
+                    // AppBarWidget(
+                    //   name: translate("ads"),
+                    //   child: InkWell(
+                    //     onTap: () {
+                    //       DIManager.findNavigator().pop();
+                    //     },
+                    //     child: BackIcon(
+                    //       width: 26.sp,
+                    //       height: 18.sp,
+                    //     ),
+                    //   ),
+                    // ),
                     BlocConsumer<AdsCubit, AdsState>(
                       bloc: adsBloc,
                       listener: (context, state) {

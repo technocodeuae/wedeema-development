@@ -114,6 +114,7 @@ class _HomePageState extends State<HomePage>
     return Scaffold(
       backgroundColor: AppColorsController().whiteBackground,
       appBar: appBarApp(context,
+        isHomePage: true,
         text: 'Home'
       ),
       body: Stack(

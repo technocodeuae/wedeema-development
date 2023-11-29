@@ -30,6 +30,7 @@ import '../../general/back_long_press_widget.dart';
 import '../../general/icons/back_icon.dart';
 import '../../general/progress_indicator/loading_column_overlay.dart';
 import '../../home/pages/home_page.dart';
+import '../../home/widget/app_bar_app.dart';
 
 class CompleteInfoPage extends StatefulWidget {
   static const routeName = '/CompleteInfoPage';
@@ -103,6 +104,9 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColorsController().white,
+      appBar: appBarApp(context,text: '',
+          isNeedBack: true
+      ),
       body: GestureDetector(
         onTap: (){
           FocusScope.of(context).unfocus();
@@ -113,21 +117,21 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             child: Column(
               children: [
-                AppBarWidget(
-                  flip: true,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: InkWell(
-                      onTap: () {
-                        DIManager.findNavigator().pop();
-                      },
-                      child: BackIcon(
-                        width: 26.sp,
-                        height: 18.sp,
-                      ),
-                    ),
-                  ),
-                ),
+                // AppBarWidget(
+                //   flip: true,
+                //   child: Padding(
+                //     padding: const EdgeInsets.only(top: 8.0),
+                //     child: InkWell(
+                //       onTap: () {
+                //         DIManager.findNavigator().pop();
+                //       },
+                //       child: BackIcon(
+                //         width: 26.sp,
+                //         height: 18.sp,
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 SizedBox(
                   height: 20.sp,
                 ),
@@ -168,17 +172,17 @@ class _CompleteInfoPageState extends State<CompleteInfoPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _profileIcon(),
-                          SizedBox(height: 24,),
+                          SizedBox(height: 24.sp,),
                           _usernameField(),
-                          SizedBox(height: 12,),
+                          SizedBox(height: 12.sp,),
                           _emailField(),
-                          SizedBox(height: 12,),
+                          SizedBox(height: 12.sp,),
                           _emirateDropdown(),
-                          SizedBox(height: 12,),
+                          SizedBox(height: 12.sp,),
                           _passwordField(),
-                          SizedBox(height: 32,),
+                          SizedBox(height: 32.sp,),
                           PrivacyWidget(color: AppColorsController().black),
-                          SizedBox(height: 16,),
+                          SizedBox(height: 16.sp,),
                           _buildButton(),
                           _signInWidget(),
                         ],

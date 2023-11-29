@@ -7,6 +7,7 @@ import 'package:wadeema/core/constants/app_colors.dart';
 import 'package:wadeema/core/constants/dimens.dart';
 import 'package:wadeema/data/models/profile/entity/profile_entity.dart';
 import 'package:wadeema/ui/work_focus_version/general/buttons/app_button.dart';
+import 'package:wadeema/ui/work_focus_version/home/widget/app_bar_app.dart';
 import '../../../../blocs/profile/profile_bloc.dart';
 import '../../../../blocs/profile/states/profile_state.dart';
 import '../../../../core/bloc/states/base_fail_state.dart';
@@ -57,7 +58,10 @@ class _MyAccountPageState extends State<MyAccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColorsController().card.withOpacity(0.8),
+      appBar: appBarApp(context, text:translate("my_profile"),
+      isNeedBack: true
+      ),
+      // backgroundColor: AppColorsController().card.withOpacity(0.8),
       body: SafeArea(
         child: LoadingColumnOverlay(
           isLoading: _isLoader,
@@ -68,19 +72,19 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  AppBarWidget(
-                    name: translate("my_profile"),
-                    child: InkWell(
-                      onTap: () {
-                        DIManager.findNavigator().pop();
-                      },
-                      child: BackIcon(
-                        width: 26.sp,
-                        height: 18.sp,
-                        color: AppColorsController().iconColor,
-                      ),
-                    ),
-                  ),
+                  // AppBarWidget(
+                  //   name: translate("my_profile"),
+                  //   child: InkWell(
+                  //     onTap: () {
+                  //       DIManager.findNavigator().pop();
+                  //     },
+                  //     child: BackIcon(
+                  //       width: 26.sp,
+                  //       height: 18.sp,
+                  //       color: AppColorsController().iconColor,
+                  //     ),
+                  //   ),
+                  // ),
                   BlocConsumer<ProfileCubit, ProfileState>(
                       bloc: profileBloc,
                       listener: (_, state) {
@@ -169,7 +173,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                       child: Column(
                         children: [
                           Text(
-                            data?.user?.following?.toString() ?? '',
+                            data?.user?.followers?.toString() ?? '',
                             style: AppStyle.lightSubtitle.copyWith(
                                 color: AppColorsController().black,
                                 fontWeight: FontWeight.w400,
@@ -191,7 +195,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                       onTap: () {
                         DIManager.findNavigator().pushNamed(
                           FollowFollowerBlockUser.routeName,
-                          arguments: 0,
+                          arguments: 1,
                         );
                       },
                     ),
@@ -200,13 +204,13 @@ class _MyAccountPageState extends State<MyAccountPage> {
                       onTap: () {
                         DIManager.findNavigator().pushNamed(
                           FollowFollowerBlockUser.routeName,
-                          arguments: 1,
+                          arguments: 0,
                         );
                       },
                       child: Column(
                         children: [
                           Text(
-                            data?.user?.followers?.toString() ?? '',
+                            data?.user?.following?.toString() ?? '',
                             style: AppStyle.lightSubtitle.copyWith(
                                 color: AppColorsController().black,
                                 fontWeight: FontWeight.w400,

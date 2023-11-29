@@ -17,6 +17,7 @@ import '../../general/app_bar/app_bar.dart';
 import '../../general/back_long_press_widget.dart';
 import '../../general/icons/back_icon.dart';
 import '../../general/progress_indicator/loading_column_overlay.dart';
+import '../../home/widget/app_bar_app.dart';
 
 class AboutAppPage extends StatefulWidget {
   static const routeName = '/AboutAppPage';
@@ -49,6 +50,8 @@ class _AboutAppPageState extends State<AboutAppPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: appBarApp(context, text: translate("about_app"),
+            isNeedBack: true),
         body: SafeArea(
       child: LoadingColumnOverlay(
         isLoading: _isLoadingLoader,
@@ -56,18 +59,18 @@ class _AboutAppPageState extends State<AboutAppPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppBarWidget(
-                name: translate("about_app"),
-                child: InkWell(
-                  onTap: () {
-                    DIManager.findNavigator().pop();
-                  },
-                  child: BackIcon(
-                    width: 26.sp,
-                    height: 18.sp,
-                  ),
-                ),
-              ),
+              // AppBarWidget(
+              //   name: translate("about_app"),
+              //   child: InkWell(
+              //     onTap: () {
+              //       DIManager.findNavigator().pop();
+              //     },
+              //     child: BackIcon(
+              //       width: 26.sp,
+              //       height: 18.sp,
+              //     ),
+              //   ),
+              // ),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(

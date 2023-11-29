@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wadeema/core/utils/app_general_utils.dart';
+import 'package:wadeema/ui/work_focus_version/home/widget/app_bar_app.dart';
 
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/di/di_manager.dart';
@@ -23,21 +24,23 @@ class AccountSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appBarApp(context, text: translate("account_settings"),
+      isNeedBack: true),
       body: SafeArea(
         child: Column(
           children: [
-            AppBarWidget(
-              name: translate("account_settings"),
-              child: InkWell(
-                onTap: () {
-                  DIManager.findNavigator().pop();
-                },
-                child: BackIcon(
-                  width: 26.sp,
-                  height: 18.sp,
-                ),
-              ),
-            ),
+            // AppBarWidget(
+            //   name: translate("account_settings"),
+            //   child: InkWell(
+            //     onTap: () {
+            //       DIManager.findNavigator().pop();
+            //     },
+            //     child: BackIcon(
+            //       width: 26.sp,
+            //       height: 18.sp,
+            //     ),
+            //   ),
+            // ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(

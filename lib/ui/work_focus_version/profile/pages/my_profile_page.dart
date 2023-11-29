@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wadeema/ui/work_focus_version/home/widget/app_bar_app.dart';
 
 import '../../../../blocs/application/application_bloc.dart';
 import '../../../../blocs/auth/auth_bloc.dart';
@@ -42,6 +43,7 @@ class _MyProfilePageState extends State<MyProfilePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appBarApp(context, text: translate("menu"),),
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -49,13 +51,13 @@ class _MyProfilePageState extends State<MyProfilePage>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppBarWidget(
-                  name: translate("menu"),
-                  child: Container(
-                    width: 26.sp,
-                    height: 18.sp,
-                  ),
-                ),
+                // AppBarWidget(
+                //   name: translate("menu"),
+                //   child: Container(
+                //     width: 26.sp,
+                //     height: 18.sp,
+                //   ),
+                // ),
                 SizedBox(
                   height: 16.sp,
                 ),

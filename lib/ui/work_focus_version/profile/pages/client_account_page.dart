@@ -29,6 +29,7 @@ import '../../general/icons/back_icon.dart';
 import '../../general/icons/list_icon.dart';
 import '../../general/progress_indicator/loading_column_overlay.dart';
 import '../../home/arg/items_args.dart';
+import '../../home/widget/app_bar_app.dart';
 import '../../home/widget/home_items_widget.dart';
 import '../widget/block_button_widget.dart';
 import '../widget/evaluate_user_button_widget.dart';
@@ -78,7 +79,11 @@ class _ClientAccountPageState extends State<ClientAccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColorsController().card.withOpacity(0.8),
+      appBar: appBarApp(context,
+          text:translate("profile"),
+          isNeedBack: true
+      ),
+      // backgroundColor: AppColorsController().card.withOpacity(0.8),
       body: SafeArea(
         child: LoadingColumnOverlay(
           isLoading: _isLoader,
@@ -89,18 +94,18 @@ class _ClientAccountPageState extends State<ClientAccountPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AppBarWidget(
-                      name: translate("profile"),
-                      child: InkWell(
-                        onTap: () {
-                          DIManager.findNavigator().pop();
-                        },
-                        child: BackIcon(
-                          width: 26.sp,
-                          height: 18.sp,
-                        ),
-                      ),
-                    ),
+                    // AppBarWidget(
+                    //   name: translate("profile"),
+                    //   child: InkWell(
+                    //     onTap: () {
+                    //       DIManager.findNavigator().pop();
+                    //     },
+                    //     child: BackIcon(
+                    //       width: 26.sp,
+                    //       height: 18.sp,
+                    //     ),
+                    //   ),
+                    // ),
                     Expanded(
                       child: SingleChildScrollView(
                         physics: BouncingScrollPhysics(),
@@ -573,6 +578,7 @@ class _ClientAccountPageState extends State<ClientAccountPage> {
                           children: [
                             SizedBox(width: 15.w),
                             InkWell(
+
                               child: Column(
                                 children: [
                                   Text(
@@ -605,12 +611,16 @@ class _ClientAccountPageState extends State<ClientAccountPage> {
                             SizedBox(width: 30.w),
                             InkWell(
                               onTap: () {
-                                if (currentUserId == widget.userId) {
-                                  DIManager.findNavigator().pushNamed(
-                                    FollowFollowerBlockUser.routeName,
-                                    arguments: 0,
-                                  );
-                                }
+                                // if (currentUserId == widget.userId) {
+                                //   DIManager.findNavigator().pushNamed(
+                                //     FollowFollowerBlockUser.routeName,
+                                //     arguments: 0,
+                                //   );
+                                // }
+                                DIManager.findNavigator().pushNamed(
+                                  FollowFollowerBlockUser.routeName,
+                                  arguments: 0,
+                                );
                               },
                               child: Column(
                                 children: [
