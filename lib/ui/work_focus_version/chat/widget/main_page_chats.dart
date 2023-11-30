@@ -20,18 +20,49 @@ import 'package:wadeema/blocs/chat_firebase/chat_bloc_firebase.dart';
 class MainPageChat extends StatefulWidget {
   final MessagesEntity? data;
   final AdsChatsModel? adsData;
+  final String? index;
 
-   MainPageChat({Key? key, this.data,this.adsData}) : super(key: key);
+  MainPageChat({Key? key, this.data, this.adsData,this.index}) : super(key: key);
 
   @override
   State<MainPageChat> createState() => _MainPageChatState();
 }
+
 final chatBlocFirebase = DIManager.findDep<ChatCubitFirebase>();
 
 class _MainPageChatState extends State<MainPageChat> {
+  // final chatBlocFirebase = DIManager.findDep<ChatCubitFirebase>();
+  //
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   chatBlocFirebase; // قد تحتاج لتكوين ChatCubitFirebase بطريقة أخرى
+  //   fetchMessages();
+  //   // chatBlocFirebase.getAllAdsChats(
+  //   //     user_id: DIManager.findDep<SharedPrefs>().getUserID().toString()
+  //   // );
+  // }
+  //
+  // void fetchMessages() {
+  //   chatBlocFirebase.getMessages(
+  //     user_id: DIManager.findDep<SharedPrefs>().getUserID(),
+  //     ad_id: widget.adsData!.ad_id.toString(),
+  //     user_id_2: widget.adsData!.user_id_2.toString() ==
+  //             DIManager.findDep<SharedPrefs>().getUserID().toString()
+  //         ? widget.adsData!.user_id.toString()
+  //         : widget.adsData!.user_id_2.toString(),
+  //     receiverId: widget.adsData!.user_id_2.toString() ==
+  //             DIManager.findDep<SharedPrefs>().getUserID().toString()
+  //         ? widget.adsData!.user_id.toString()
+  //         : widget.adsData!.user_id_2.toString(),
+  //
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
-    print('0000000549068439085438598342905890348538409438058049845398435904395034859084398504830543509345');
+    print(
+        '0000000549068439085438598342905890348538409438058049845398435904395034859084398504830543509345');
     print(widget.adsData?.imageAds);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.sp),
@@ -47,22 +78,23 @@ class _MainPageChatState extends State<MainPageChat> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
-                child: (widget.adsData?.imageAds != null )
+                child: (widget.adsData?.imageAds != null)
                     ? Image.network(
-                        AppConsts.IMAGE_URL + widget.adsData!.imageAds.toString(),
+                        AppConsts.IMAGE_URL +
+                            widget.adsData!.imageAds.toString(),
                         // AppConsts.IMAGE_URL + '/img/ad/1698142488797.jpg',
                         fit: BoxFit.fill,
                         height: 50.sp,
-                        width: 50.sp,  errorBuilder: (context, error, stackTrace) {
-                  return Container();
-                },
+                        width: 50.sp,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container();
+                        },
                       )
                     : AccountIcon(
                         height: 50.sp,
                         width: 50.sp,
                       ),
-                borderRadius:
-                    BorderRadius.all(Radius.circular(40.sp)),
+                borderRadius: BorderRadius.all(Radius.circular(40.sp)),
               ),
               SizedBox(width: 10.w),
               Column(
@@ -71,66 +103,86 @@ class _MainPageChatState extends State<MainPageChat> {
                   Container(
                     width: 220.w,
                     child: Text(
-                      widget.adsData!.nameAds.toString() ,
+                      widget.adsData!.nameAds.toString(),
                       style: AppStyle.defaultStyle.copyWith(
                           color: AppColorsController().black,
                           fontWeight: FontWeight.w400,
-                          fontSize: AppFontSize.fontSize_14
-                      ),
+                          fontSize: AppFontSize.fontSize_14),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   Container(
                     width: 150.sp,
-                    child: Builder(builder: (context) {
-                      chatBlocFirebase.getMessages(
-                        user_id: DIManager.findDep<SharedPrefs>().getUserID(),
-                        ad_id: widget.adsData!.ad_id.toString(),
-                        user_id_2: widget.adsData!.user_id_2.toString() ==
-                            DIManager.findDep<SharedPrefs>().getUserID().toString()
-                            ? widget.adsData!.user_id.toString()
-                            : widget.adsData!.user_id_2.toString(),
-                        receiverId: widget.adsData!.user_id_2.toString() ==
-                            DIManager.findDep<SharedPrefs>().getUserID().toString()
-                            ? widget.adsData!.user_id.toString()
-                            : widget.adsData!.user_id_2.toString(),
-                      );
-                      return BlocConsumer<ChatCubitFirebase, ChatStateFirebase>(
-                        bloc: chatBlocFirebase,
-                        listener: (context, state) {
+                    child: Container(
+                      height: 25.sp,
+                      width: 20.sp,
+                      child: Text(
+                        // chatBlocFirebase.messages.last.text.toString() ?? '',
+                        // chatBlocFirebase.lastMessages ?? '',
+                        widget.adsData!.massage?? '',
+                        style: AppStyle.defaultStyle.copyWith(
+                          color: AppColorsController().red,
+                          fontWeight: FontWeight.w400,
+                          fontSize: AppFontSize.fontSize_12,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  )
 
-                        },
-                        builder: (context, state) {
-                          // DateTime timeMessage = DateTime.parse(chatBlocFirebase.messages.last.dateTime.toString());
-                          // DateTime timeMessage2 = DateTime.parse(chatBlocFirebase.messages.last.dateTime.toString());
-                          // String _dateTimeNow = DateFormat.yMMMMd().format(timeMessage);
-                          // bool shouldBreak = false;
-                          return  chatBlocFirebase.messages.isEmpty ?Container(): Container(
-                            height: 25.sp,
-                            width: 20.sp,
-                            child:
-                            Text(
-                              chatBlocFirebase.messages.last.text ??'',
-                              style: AppStyle.defaultStyle.copyWith(
-                                  color: AppColorsController().red,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: AppFontSize.fontSize_12
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-
-                            // child: Text(chatBlocFirebase.messages.last.text ??''),
-                          );
-                        },
-                      );
-                    })
-                      
-                      
-                      
-
-                  ),
+//                   Container(
+//                     width: 150.sp,
+//                     child: Builder(builder: (context) {
+// print(widget.adsData!.ad_id.toString());
+//                       // chatBlocFirebase.getMessages(
+//                       //   user_id: DIManager.findDep<SharedPrefs>().getUserID(),
+//                       //   ad_id: widget.adsData!.ad_id.toString(),
+//                       //   user_id_2: widget.adsData!.user_id_2.toString() ==
+//                       //       DIManager.findDep<SharedPrefs>().getUserID().toString()
+//                       //       ? widget.adsData!.user_id.toString()
+//                       //       : widget.adsData!.user_id_2.toString(),
+//                       //   receiverId: widget.adsData!.user_id_2.toString() ==
+//                       //       DIManager.findDep<SharedPrefs>().getUserID().toString()
+//                       //       ? widget.adsData!.user_id.toString()
+//                       //       : widget.adsData!.user_id_2.toString(),
+//                       // );
+//                       return BlocConsumer<ChatCubitFirebase, ChatStateFirebase>(
+//                         bloc: chatBlocFirebase,
+//                         listener: (context, state) {
+//
+//                         },
+//                         builder: (context, state) {
+//                           // DateTime timeMessage = DateTime.parse(chatBlocFirebase.messages.last.dateTime.toString());
+//                           // DateTime timeMessage2 = DateTime.parse(chatBlocFirebase.messages.last.dateTime.toString());
+//                           // String _dateTimeNow = DateFormat.yMMMMd().format(timeMessage);
+//                           // bool shouldBreak = false;
+//                           return  chatBlocFirebase.messages.isEmpty ?Container(): Container(
+//                             height: 25.sp,
+//                             width: 20.sp,
+//                             child:
+//                             Text(
+//                               chatBlocFirebase.messages.last.text ??'',
+//                               style: AppStyle.defaultStyle.copyWith(
+//                                   color: AppColorsController().red,
+//                                   fontWeight: FontWeight.w400,
+//                                   fontSize: AppFontSize.fontSize_12
+//                               ),
+//                               maxLines: 1,
+//                               overflow: TextOverflow.ellipsis,
+//                             ),
+//
+//                             // child: Text(chatBlocFirebase.messages.last.text ??''),
+//                           );
+//                         },
+//                       );
+//                     })
+//
+//
+//
+//
+//                   ),
                 ],
               ),
               Spacer(),
@@ -138,34 +190,37 @@ class _MainPageChatState extends State<MainPageChat> {
                 children: [
                   Text(
                     widget.adsData!.dateTime != null
-                        ?  getComparedTime(DateTime.parse(widget.adsData!.dateTime.toString())).toString()
+                        ? getComparedTime(DateTime.parse(
+                                widget.adsData!.dateTime.toString()))
+                            .toString()
                         : "",
                     style: AppStyle.lightSubtitle.copyWith(
                       color: AppColorsController().greyTextColor,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  IconButton(onPressed: (){
-                    chatBlocFirebase.deleteChat(
-                      user_id: DIManager.findDep<SharedPrefs>().getUserID(),
-                      ad_id: widget.adsData!.ad_id!.toString(),
-                      user_id_2: widget.adsData!.user_id_2
-                          .toString() ==
-                          DIManager.findDep<SharedPrefs>()
-                              .getUserID()
-                              .toString()
-                          ? widget.adsData!.user_id
-                          .toString()
-                          : widget.adsData!.user_id_2
-                          .toString(),
-                      receiverId:widget.adsData!.user_id_2.toString(),
-                    );
-                  }, icon: Icon(Icons.delete)),
+                  IconButton(
+                      onPressed: () {
+                        chatBlocFirebase.deleteChat(
+                          user_id: DIManager.findDep<SharedPrefs>().getUserID(),
+                          ad_id: widget.adsData!.ad_id!.toString(),
+                          user_id_2: widget.adsData!.user_id_2.toString() ==
+                                  DIManager.findDep<SharedPrefs>()
+                                      .getUserID()
+                                      .toString()
+                              ? widget.adsData!.user_id.toString()
+                              : widget.adsData!.user_id_2.toString(),
+                          receiverId: widget.adsData!.user_id_2.toString(),
+                        );
+                      },
+                      icon: Icon(Icons.delete)),
                 ],
               ),
             ],
           ),
-SizedBox(height: 10.sp,),
+          SizedBox(
+            height: 10.sp,
+          ),
           // Padding(
           //   padding: EdgeInsets.only(right: 20.sp),
           //   child: Column(

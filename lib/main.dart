@@ -18,6 +18,11 @@ import 'blocs/bloc_observer.dart';
 import 'core/shared_prefs/shared_prefs.dart';
 import 'data/models/notifications/notifications_model.dart';
 import 'ui/work_focus_version/app.dart';
+// import 'package:timezone/data/latest.dart' as tzdata;
+// import 'package:timezone/timezone.dart' as tz;
+// import 'package:timezone/data/latest.dart' as tz;
+// import 'package:timezone/standalone.dart' as tz;
+//
 
 
 final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
@@ -146,6 +151,13 @@ void _configureFirebaseMessaging() {
 
 Future<void> main() async {
   runZonedGuarded<Future<void>>(() async {
+    // tz.initializeTimeZones();
+    // var easternTimeZone = tz.getLocation('America/New_York');
+    // var utcTime = DateTime.utc(2023, 4, 1, 12); // 12:00 PM UTC
+    // var easternTime = tz.TZDateTime.from(utcTime, easternTimeZone);
+    //
+    // print(easternTime);
+    // print(timeInDubai);
     Bloc.observer = MyBlocObserver();
     WidgetsFlutterBinding.ensureInitialized();
     SystemChrome.setPreferredOrientations(

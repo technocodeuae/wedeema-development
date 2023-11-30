@@ -129,9 +129,6 @@ class ChatCubitFirebase extends Cubit<ChatStateFirebase> {
         });
         print(adsChatsModel[0].nameAds);
         print(adsChatsModel[1].nameAds);
-      }).catchError((error) {
-        print(error.toString());
-        print('error.toString()');
       });
       print('adsChatsModel[2].nameAds-----------------------------------------------------------------------');
       print(adsChatsModel[0].nameAds);
@@ -171,38 +168,34 @@ class ChatCubitFirebase extends Cubit<ChatStateFirebase> {
       });
       print(messages);
       emit(GetMessagesSuccessState());
+      // getAllAdsChats(
+      //   user_id: user_id
+      // );
     });
   }
 
   List<DataMassageModel> messagesLast = [];
 
-
-  void getLastMessages({
-    required String? ad_id,
-    required String? user_id_2,
+String lastMessages = '';
+  List<AdsChatsModel> adsLastInfo = [];
+  void getAdsLastInfo({
     required String? user_id,
-    required String? receiverId,
+
   }) {
-    print('============================================================================');
-    print("ad_id!+user_id_2!: ${ad_id!+user_id!}");
-    print('============================================================================');
     FirebaseFirestore.instance
         .collection('users')
         .doc(user_id)
         .collection('ads')
-        .doc(ad_id+user_id_2!)
-        .collection('chats')
-        .doc(receiverId)
-        .collection('messages')
-        .orderBy('dateTime')
         .snapshots()
         .listen((event) {
-      messagesLast = [];
+      adsLastInfo = [];
       event.docs.forEach((element) {
-        messagesLast.add(DataMassageModel.forJson(element.data()));
+        AdsChatsModel adsChats = AdsChatsModel.forJson(element.data());
+        adsLastInfo.add(adsChats);
       });
-      print(messages);
-      emit(GetMessagesSuccessState());
+      print(adsLastInfo[0].nameAds);
+      print(adsLastInfo[1].nameAds);
+      emit(GetAdsInfoSuccessState());
     });
   }
 
@@ -223,7 +216,15 @@ class ChatCubitFirebase extends Cubit<ChatStateFirebase> {
           ad_id: ad_id,
           dataMassageModel: dataMassageModel,
           adsChatsModel: adsChatsModel);
-      print('SendMessageSuccessFirebase');
+      // print('SendMessageSuccessFirebase');
+
+      //
+      // getLastMessages(
+      //   user_id: user_id,
+      // receiverId: user_id_2,
+      //  user_id_2: user_id_2,
+      // ad_id: ad_id,
+      // );
       emit(SendMessageSuccessState());
     } catch (error) {
       print(error.toString());
@@ -271,3 +272,5 @@ class ChatCubitFirebase extends Cubit<ChatStateFirebase> {
     });
   }
 }
+
+

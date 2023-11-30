@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wadeema/blocs/chat_firebase/chat_bloc_firebase.dart';
 import 'package:wadeema/blocs/chat_firebase/states/chat_state_firebase.dart';
+import 'package:wadeema/ui/work_focus_version/home/widget/app_bar_app.dart';
 
 import '../../../../blocs/application/application_bloc.dart';
 import '../../../../blocs/chat/chat_bloc.dart';
@@ -61,6 +62,9 @@ class _ChatsPageState extends State<ChatsPage> {
     chatBlocFirebase.getAllAdsChats(
       user_id: DIManager.findDep<SharedPrefs>().getUserID().toString()
     );
+    chatBlocFirebase.getAdsLastInfo(
+        user_id: DIManager.findDep<SharedPrefs>().getUserID().toString()
+    );
     isLoading = true;
     _isLoading = true;
   }
@@ -74,27 +78,7 @@ class _ChatsPageState extends State<ChatsPage> {
     return Scaffold(
       // backgroundColor: AppColorsController().card.withOpacity(0.8),
       backgroundColor: AppColorsController().white,
-      appBar: AppBar(
-        backgroundColor: AppColorsController().white,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage(AppAssets.appBarBackgroundImage),
-                fit: BoxFit.fill),
-          ),
-        ),
-        centerTitle: true,
-        elevation: 0,
-        title: Text(
-          translate('chat'),
-          style: AppStyle.smallTitleStyle.copyWith(
-            color: AppColorsController().black,
-            fontWeight: AppFontWeight.midBold,
-            fontSize: AppFontSize.fontSize_20,
-          ),
-          maxLines: 1,
-        ),
-      ),
+      appBar: appBarApp(context, text: translate('chat'),),
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -115,7 +99,8 @@ class _ChatsPageState extends State<ChatsPage> {
                 }
               },
               builder: (_, __) {
-                return isLoading
+                return
+                  isLoading
                     ? Padding(
                         padding: EdgeInsets.only(
                             top: MediaQuery.of(context).size.height / 2),
@@ -135,15 +120,27 @@ class _ChatsPageState extends State<ChatsPage> {
                           ],
                         ),
                       )
-                    : ListView.separated(
-                        itemBuilder: (context, index) => _buildBodyChats(
-                            chatBlocFirebase.adsChatsModel[index]),
+                    :
+                  chatBlocFirebase.adsLastInfo.length == 0 ?Center(
+                    child: Container(
+                      child: Text(
+                        'لايوجد محادثات بعد'
+                      ),
+                    ),
+                  ):  ListView.separated(
+                        itemBuilder: (context, index) {
+
+                         //  print(chatBlocFirebase.adsChatsModel[index].massage);
+                         // List<DataMassageModel> m =chatBlocFirebase.messages;
+                         //  print(m[index].text);
+                          return _buildBodyChats(
+                            chatBlocFirebase.adsLastInfo[index]);},
                         separatorBuilder: (context, index) => Container(
                           width: MediaQuery.of(context).size.width,
                           height: 1,
                           color: Colors.grey,
                         ),
-                        itemCount: chatBlocFirebase.adsChatsModel.length,
+                        itemCount: chatBlocFirebase.adsLastInfo.length,
                       );
               },
             ),
@@ -194,7 +191,7 @@ class _ChatsPageState extends State<ChatsPage> {
   //   );
   // }
 
-  _buildBodyChats(AdsChatsModel data) {
+  _buildBodyChats(AdsChatsModel data,) {
     return InkWell(
         onTap: () {
 
@@ -213,6 +210,7 @@ class _ChatsPageState extends State<ChatsPage> {
         },
         child: MainPageChat(
           adsData: data,
+
         ));
   }
 }

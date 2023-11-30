@@ -42,6 +42,17 @@ class GetMessagesSuccessState extends ChatStateFirebase {
   GetMessagesSuccessState();
 }
 
+class GetAdsInfoSuccessState extends ChatStateFirebase {
+  GetAdsInfoSuccessState();
+}
+
+
+
+class ChatStateFirebaseSuccess extends ChatStateFirebase {
+  final String? messages;
+  final int? conversations;
+  ChatStateFirebaseSuccess(this.messages,this.conversations);
+}
 class DeleteMessagesLoadingState extends ChatStateFirebase {
   DeleteMessagesLoadingState();
 }

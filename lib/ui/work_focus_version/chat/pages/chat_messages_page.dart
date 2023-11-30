@@ -42,6 +42,12 @@ import '../../home/widget/home_items_favourite.dart';
 import '../args/argument_message.dart';
 import '../widget/received_message_widget.dart';
 import '../widget/sender_message_widget.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/standalone.dart' as tz;
+
+
+
 
 class ChatMessagesPage extends StatefulWidget {
   final ArgumentMessage? data;
@@ -70,6 +76,12 @@ class _ChatMessagesPageState extends State<ChatMessagesPage>
   String value = "";
   bool _isLoading = false;
 
+  // Future<void> setup() async {
+  //   await tz.initializeTimeZone();
+  //   var detroit = tz.getLocation('Asia/Dubai');
+  //   var now = tz.TZDateTime.now(detroit);
+  //   print(now);
+  // }
 
 
   // @override
@@ -279,6 +291,15 @@ class _ChatMessagesPageState extends State<ChatMessagesPage>
             ),
             child: InkWell(
               onTap: () {
+                // final dubai = tz.getLocation('Asia/Dubai');
+                // var timeInDubai = tz.TZDateTime.now(dubai);
+                //
+                // print(DateTime.now().toLocal()); 
+
+                // var easternTimeZone = tz.getLocation('Asia/Dubai');
+                // var utcTime = DateTime.utc(2023,11,30); // 12:00 PM UTC
+                // var easternTime = tz.TZDateTime.from(utcTime, easternTimeZone);
+                // print(easternTime);
                 DIManager.findNavigator().pushNamed(
                     ItemsDetailsPage.routeName,
                     arguments: ItemsArgs(
@@ -334,8 +355,10 @@ class _ChatMessagesPageState extends State<ChatMessagesPage>
               ),
             ),
           ),
+
           Expanded(
             child: Builder(builder: (context) {
+              // setup();
               chatBlocFirebase.getMessages(
                 user_id: DIManager.findDep<SharedPrefs>().getUserID(),
                 ad_id: widget.data!.ad_id.toString(),
@@ -351,13 +374,9 @@ class _ChatMessagesPageState extends State<ChatMessagesPage>
               return BlocConsumer<ChatCubitFirebase, ChatStateFirebase>(
                 bloc: chatBlocFirebase,
                 listener: (context, state) {
-
                   if(state is GetMessagesSuccessState){
                     move();
-
                   }
-
-
                 },
                 builder: (context, state) {
                  // DateTime timeMessage = DateTime.parse(chatBlocFirebase.messages.last.dateTime.toString());
@@ -366,88 +385,12 @@ class _ChatMessagesPageState extends State<ChatMessagesPage>
                  // bool shouldBreak = false;
                   return Column(
                     children: [
-                      // for(int i = 0 ;i<chatBlocFirebase.messages.length;i++)...[
-                      //   Text(chatBlocFirebase.messages[i].text.toString(),style: TextStyle(color: Colors.black,fontSize: 25),),
-                      // ],
-                      // Text(chatBlocFirebase.messages[0].text.toString(),style: TextStyle(color: Colors.black,fontSize: 25),),
                       SizedBox(height: 10.h,),
-
-                    // Container(
-                    //   color: Colors.grey[300],
-                    //   padding: EdgeInsets.symmetric(vertical: 8),
-                    //   child: Text(
-                    //     timeMessage.day.toString(),
-                    //     style: TextStyle(fontSize: 12),
-                    //   ),
-                    // ),
-                    //
-                    //   if(chatBlocFirebase.messages.length !=0)...[
-                    //     for(int i = chatBlocFirebase.messages.length+1; i>=chatBlocFirebase.messages.length;i--)...[
-                    //       if (DateTime.parse(chatBlocFirebase.messages[i -2 ].dateTime.toString()).day == DateTime.now().day.toString())
-                    //             () {
-                    //           shouldBreak = true;
-                    //           return Container(); // or any other widget
-                    //         }(),
-                    //
-                    //       if(!shouldBreak)
-                    //         Container(
-                    //           color: Colors.grey[300],
-                    //           padding: EdgeInsets.symmetric(vertical: 8),
-                    //           child: Text(
-                    //             chatBlocFirebase.messages[i-2].dateTime.toString(),
-                    //             style: TextStyle(fontSize: 12),
-                    //           ),
-                    //         ),
-                    //       // Container(
-                    //       //   color: Colors.grey[300],
-                    //       //   padding: EdgeInsets.symmetric(vertical: 8),
-                    //       //   child: Text(
-                    //       //     chatBlocFirebase.messages[i -2].text.toString(),
-                    //       //     style: TextStyle(fontSize: 12),
-                    //       //   ),
-                    //       // ),
-                    //
-                    //     ],
-                    //
-                    //   ],
-                    //
-                    //
-                    //   Container(
-                    //     color: Colors.grey[300],
-                    //     padding: EdgeInsets.symmetric(vertical: 8),
-                    //     child: Text(
-                    //       DateTime.now().day.toString(),
-                    //       style: TextStyle(fontSize: 12),
-                    //     ),
-                    //   ),
-                    //
-                    //
-                    //   Container(
-                    //     color: Colors.grey[300],
-                    //     padding: EdgeInsets.symmetric(vertical: 8),
-                    //     child: Text(
-                    //       _dateTimeNow.toString(),
-                    //       style: TextStyle(fontSize: 12),
-                    //     ),
-                    //   ),
-
-
-
                       Expanded(
                         child: ListView.separated(
                           controller: _scrollController,
                           scrollDirection: Axis.vertical,
                           itemBuilder: (context, index) {
-                            // DIManager.findDep<SharedPrefs>().getUserID() ==
-                            //     data[index].user_id_1.toString()
-                            //     ?  SenderMessageWidget(data: data[index])
-                            //     : ReceivedMessageWidget(data: data[index]);
-                            //
-
-
-
-
-
                             if (chatBlocFirebase.messages[index].senderId ==
                                 DIManager.findDep<SharedPrefs>()
                                     .getUserID()
@@ -458,8 +401,6 @@ class _ChatMessagesPageState extends State<ChatMessagesPage>
 
                             return ReceivedMessageWidget(
                                 dataMessages: chatBlocFirebase.messages[index]);
-
-
                           },
                           separatorBuilder: (context, state) => Container(),
                           itemCount: chatBlocFirebase.messages.length,
