@@ -54,7 +54,7 @@ class _RoundedAnimatedButtonState extends State<RoundedAnimatedButton> {
       child: AnimatedContainer(
         duration: _animationDuration,
         width: this.widget.width,
-        height: widget.height ?? ScreenHelper.fromHeight55(5.sp),
+        height: widget.height ?? 35.sp,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
@@ -73,7 +73,7 @@ class _RoundedAnimatedButtonState extends State<RoundedAnimatedButton> {
                           width: 0.0,
                           color: widget.color ?? Colors.transparent),
                   borderRadius: BorderRadius.circular(
-                      (widget.borderRadius ?? ScreenHelper.fromWidth55(10.sp)))),
+                      (widget.borderRadius ?? 400.sp))),
               color: widget.isActive == true
                   ? widget.isBordered == true
                       ? widget.color ?? Colors.transparent
@@ -81,7 +81,7 @@ class _RoundedAnimatedButtonState extends State<RoundedAnimatedButton> {
                           DIManager.findDep<AppColorsController>().primaryColor)
                   : widget.color ??Colors.white,
               child: Container(
-                height: widget.height ?? ScreenHelper.fromHeight55((6.4).sp),
+                height: widget.height ?? (14.5).sp,
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.center,

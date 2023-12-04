@@ -59,7 +59,7 @@ class HomeItemsWidget extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(16)))),
         child: ((data!.ad_images != null &&
             (data?.ad_images?.length ?? 0) > 0) &&
-            data?.ad_images?[0].name?.toString() ==
+            data?.image_name.toString() ==
                 '/img/ad/default.png') || data?.featured_image?.toString() ==
             '/img/ad/default.png' ?
 
@@ -497,9 +497,9 @@ Image.asset( "assets/images/logo.png",height: 95.h,width: 130.w,),
       child: Container(
         width: width ?? ((376 / 2)).sp,
         height: 102.sp,
-        child: (data!.ad_images != null && (data?.ad_images?.length ?? 0) > 0)
+        child: (data!.image_name != null )
             ? Image.network(
-          AppConsts.IMAGE_URL + (data?.ad_images?[0].name?.toString() ?? ''),
+          AppConsts.IMAGE_URL + (data?.image_name.toString() ?? ''),
           width: width ?? 200.sp,
           height: 102.sp,
           fit: BoxFit.cover,

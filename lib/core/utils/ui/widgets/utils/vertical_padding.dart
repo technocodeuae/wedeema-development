@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/utils/screen_utils/device_utils.dart';
 
 class VerticalPadding extends StatelessWidget {
@@ -8,6 +9,6 @@ class VerticalPadding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(height: ScreenHelper.fromHeight55(percentage));
+    return SizedBox(height: 7.sp);
   }
 }

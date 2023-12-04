@@ -20,6 +20,7 @@ ItemsAdsModel _$ItemsAdsModelFromJson(Map<String, dynamic> json) => ItemsAdsMode
       language_id: json['language_id'] as int?,
       image_name: json['image_name'] as String?,
       featured_image: json['featured_image'] as String?,
+      sub_category_title: json['sub_category_title'] as String?,
       title: json['title'] as String?,
       short_description: json['short_description'] as String?,
       full_description: json['full_description'] as String?,
@@ -89,6 +90,7 @@ Map<String, dynamic> _$ItemsAdsModelToJson(ItemsAdsModel instance) => <String, d
       'sharing_link': instance.sharing_link,
       'image_name': instance.image_name,
       'featured_image': instance.featured_image,
+      'sub_category_title': instance.sub_category_title,
     };
 
 AdImagesModel _$AdImagesModelFromJson(Map<String, dynamic> json) => AdImagesModel(

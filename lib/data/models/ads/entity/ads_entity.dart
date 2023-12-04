@@ -74,6 +74,7 @@ class ItemsAdsEntity extends BaseEntity {
     this.category_id,
     this.image_name,
     this.featured_image,
+    this.sub_category_title,
   });
 
   final int? id;
@@ -99,6 +100,7 @@ class ItemsAdsEntity extends BaseEntity {
   final int? followers_count;
   final DateTime? date_ad;
   final String? category_title;
+  final String? sub_category_title;
   final int? category_id;
   final String? status;
   final String? availability_status;
@@ -131,6 +133,7 @@ class ItemsAdsEntity extends BaseEntity {
     this.ad_images,
     this.properties,
     this.category_title,
+    this.sub_category_title,
     this.status,
     this.likes,
     this.availability_status,

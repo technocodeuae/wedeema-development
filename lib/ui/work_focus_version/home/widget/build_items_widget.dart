@@ -240,9 +240,8 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                         children: [
                           if (itemsList.length <= 7) ...[
                             for (int i = 0; i < itemsList.length; i++) ...[
-                              itemsList[i].ad_images?[0].name?.toString() ==
-                                      '/img/ad/default.png'
-                                  ? HomeItemsWidget(
+                              itemsList[i].image_name == '/img/ad/default.png' ?
+                              HomeItemsWidget(
                                       weDontHaveImage: true,
                                       onPress: () {
                                         DIManager.findNavigator().pushNamed(
@@ -272,9 +271,7 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
                             ],
                           ] else ...[
                             for (int i = 0; i < 7; i++) ...[
-                              itemsList[i].ad_images?[0].name?.toString() ==
-                                      '/img/ad/default.png'
-                                  ? HomeItemsWidget(
+                              itemsList[i].image_name == '/img/ad/default.png' ? HomeItemsWidget(
                                       weDontHaveImage: true,
                                       onPress: () {
                                         DIManager.findNavigator().pushNamed(

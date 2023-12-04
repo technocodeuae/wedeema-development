@@ -78,6 +78,7 @@ class _ClientAccountPageState extends State<ClientAccountPage> {
 
   @override
   Widget build(BuildContext context) {
+    print("widget.userId" + widget.userId.toString());
     return Scaffold(
       appBar: appBarApp(context,
           text:translate("profile"),

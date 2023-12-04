@@ -817,7 +817,7 @@ categoryId: items[index].category_id??0,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(items[index].title.toString() ,style: TextStyle(color: AppColorsController().black,fontSize: AppFontSize.fontSize_12,)),
-                        Text(items[index].category_title.toString(),style: TextStyle(color: AppColorsController().greyTextColor,fontSize: AppFontSize.fontSize_14,)),
+                        Text(items[index].sub_category_title.toString(),style: TextStyle(color: AppColorsController().greyTextColor,fontSize: AppFontSize.fontSize_14,)),
                       ],
 
                     ),
@@ -833,7 +833,6 @@ categoryId: items[index].category_id??0,
   Widget _searchItem({required int index,required String value}) {
     return TextButton(
       onPressed: () {
-
         // DIManager.findNavigator().pushNamed(
         //   ViewAllPage.routeName,
         //   arguments: ViewAllArgs(
@@ -844,10 +843,8 @@ categoryId: items[index].category_id??0,
         setState(() {
           titleSearch =value;
           _onRefresh();
-
         });
-
-      },
+        },
       style: TextButton.styleFrom(foregroundColor: AppColorsController().primaryColor,),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

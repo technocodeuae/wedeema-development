@@ -46,7 +46,7 @@ class _GeneralErrorWidgetState extends State<GeneralErrorWidget> {
           VerticalPadding(1.5.sp),
           Padding(
             padding:
-                EdgeInsets.symmetric(horizontal: ScreenHelper.fromWidth55(4.sp)),
+                EdgeInsets.symmetric(horizontal: 10.sp),
             child: Text(
               this.widget.message ?? widget.error!.message!,
               style: AppStyle.errorMessageStyle,textAlign: TextAlign.center,

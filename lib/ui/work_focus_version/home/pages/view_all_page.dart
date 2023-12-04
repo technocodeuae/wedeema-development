@@ -382,14 +382,16 @@ class _ViewAllPageState extends State<ViewAllPage> {
 
                             print("Here" + adsState.toString());
                             if (adsState is BaseFailState) {
-                              return Column(
-                                children: [
-                                  VerticalPadding(3.sp),
-                                  GeneralErrorWidget(
-                                    error: adsState.error,
-                                    callback: adsState.callback,
-                                  ),
-                                ],
+                              return SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    // VerticalPadding(3.sp),
+                                    GeneralErrorWidget(
+                                      error: adsState.error,
+                                      callback: adsState.callback,
+                                    ),
+                                  ],
+                                ),
                               );
                             }
 
@@ -591,7 +593,7 @@ class _ViewAllPageState extends State<ViewAllPage> {
       onRefresh: _onRefresh,
       physics: BouncingScrollPhysics(),
       footer: ClassicFooter(
-        height: 80,
+        height: 80.sp,
         noMoreIcon: Container(
             width: 20.sp,
             height: 20.sp,
@@ -669,7 +671,7 @@ class _ViewAllPageState extends State<ViewAllPage> {
       //   textStyle: TextStyle(color: AppColorsController().white),
       // ),
       footer: ClassicFooter(
-        height: 80,
+        height: 80.sp,
         noMoreIcon: Container(
             width: 20.sp,
             height: 20.sp,
@@ -709,14 +711,16 @@ class _ViewAllPageState extends State<ViewAllPage> {
       ),
       onLoading: _onLoading,
       child: Padding(
-        padding: EdgeInsets.all(12.sp),
+        padding: EdgeInsets.symmetric(horizontal: 0.sp),
         child: GridView.builder(
           itemCount: items.length,
+
           shrinkWrap: true,
           itemBuilder: (context, index) {
             if (categoriesBloc.isJobs(items[index].category_title ?? '')) {
               return card.JobAdCard(
                 data: items[index],
+                isUseGridView: true,
                 onPress: () {
                   DIManager.findNavigator().pushNamed(
                     ItemsDetailsPage.routeName,
@@ -727,7 +731,7 @@ class _ViewAllPageState extends State<ViewAllPage> {
             }
             return widget.arg.type == 3
                 ? card.JobAdCard(
-              data: items[index],
+              data: items[index],isUseGridView: true,
               onPress: () {
                 DIManager.findNavigator().pushNamed(
                   ItemsDetailsPage.routeName,
@@ -750,9 +754,9 @@ class _ViewAllPageState extends State<ViewAllPage> {
           },
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            mainAxisExtent: 210.sp,
-            crossAxisSpacing: 6.sp,
-            mainAxisSpacing: 18.sp,
+            mainAxisExtent: 220.sp,
+            crossAxisSpacing: 1.sp,
+            mainAxisSpacing: 2.sp,
           ),
           physics: NeverScrollableScrollPhysics(),
         ),
