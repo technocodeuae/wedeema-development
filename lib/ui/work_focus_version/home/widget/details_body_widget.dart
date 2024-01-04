@@ -114,75 +114,89 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
                               fontWeight: AppFontWeight.midLight,
                               fontSize: AppFontSize.fontSize_14),
                         ),
+                        // if (widget.typeAds == 'jobAds' ||
+                        //     widget.categoryId == 27) ...[
+                        //   Container()
+                        // ]
 
-                        if(widget.typeAds == 'jobAds' || widget.categoryId == 27) ... [
-                          Container()
-                        ]else if (widget.data!.properties != null &&
-                            widget.data!.properties!.isNotEmpty == true) ...[
-                          for (int i = 0;
-                              i < widget.data!.properties!.length ;
-                              i++) ...[
-                            if (widget.data!.properties![i].title ==
-                                'السعر من' &&
-                                widget.data!.properties![i].title!
-                                    .contains('السعر من')) ...[
-                              widget.typeAds == 'jobAds' ||
-                                      widget.categoryId == 27
-                                  ? Container()
-                                  : Text(
-                                      '${widget.data!.properties![i].description.toString()} درهم',
-                                      style: AppStyle.smallTitleStyle.copyWith(
-                                          color: AppColorsController()
-                                              .textPrimaryColor,
-                                          fontWeight: AppFontWeight.midLight,
-                                          fontSize: AppFontSize.fontSize_12),
-                                      maxLines: 1,
-                                    ),
-                            ] else ...[
-                              // Container()
-                            ]
-                          ]
-                        ]                       else if(widget.typeAds =='ads')...[
-                        Text(
-                            (widget.data?.ad!.price ?? 0) > 0
-                                ? '${widget.data?.ad!.price?.toString() ?? ''} ${widget.data?.ad!.currency ?? ''}'
-                                : '${translate('price_not_announced')}',
-                            style: AppStyle.smallTitleStyle.copyWith(
-                              color:
-                              AppColorsController().textPrimaryColor,
-                              fontWeight: AppFontWeight.midLight,
-                            ),
-                          ),
-                        ] ,
+                        // else if (widget.data!.properties != null &&
+                        //     widget.data!.properties!.isNotEmpty == true) ...[
+                        //   for (int i = 0;
+                        //       i < widget.data!.properties!.length ;
+                        //       i++) ...[
+                        //     if (widget.data!.properties![i].title ==
+                        //         'السعر من' &&
+                        //         widget.data!.properties![i].title!
+                        //             .contains('السعر من')) ...[
+                        //       widget.typeAds == 'jobAds' ||
+                        //               widget.categoryId == 27
+                        //           ? Container()
+                        //           : Text(
+                        //               '${widget.data!.properties![i].description.toString()} درهم',
+                        //               style: AppStyle.smallTitleStyle.copyWith(
+                        //                   color: AppColorsController()
+                        //                       .textPrimaryColor,
+                        //                   fontWeight: AppFontWeight.midLight,
+                        //                   fontSize: AppFontSize.fontSize_12),
+                        //               maxLines: 1,
+                        //             ),
+                        //     ] else ...[
+                        //       // Container()
+                        //     ]
+                        //   ]
+                        // ]
+                        //
+                        // else if (widget.typeAds == 'ads') ...[
+                        //   Text(
+                        //     (widget.data?.ad!.price ?? 0) > 0
+                        //         ? '${widget.data?.ad!.price?.toString() ?? ''} ${widget.data?.ad!.currency ?? ''}'
+                        //         : '${translate('price_not_announced')}',
+                        //     style: AppStyle.smallTitleStyle.copyWith(
+                        //       color: AppColorsController().textPrimaryColor,
+                        //       fontWeight: AppFontWeight.midLight,
+                        //     ),
+                        //   ),
+                        // ],
+                        // if (
+                        // // widget.data!.properties != null &&
+                        //     widget.typeAds == 'ads1') ...[
+                        //   SizedBox(
+                        //     width: 100.w,
+                        //   ),
+                        //   Text(
+                        //     (widget.data?.ad!.price ?? 0) > 0
+                        //         ? '${widget.data?.ad!.price?.toString() ?? ''} ${widget.data?.ad!.currency ?? ''}'
+                        //         : '${translate('price_not_announced')}',
+                        //     style: AppStyle.smallTitleStyle.copyWith(
+                        //       color: AppColorsController().textPrimaryColor,
+                        //       fontWeight: AppFontWeight.midLight,
+                        //     ),
+                        //   ),
+                        // ],
+                        // if ((widget.typeAds == 'ads' &&
+                        //         // widget.data!.properties == null &&
+                        //         widget.categoryId != 27) ||
+                        //     (
+                        //
+                        //         // widget.data!.ad!.properties == null &&
+                        //         widget.typeAds != 'ads' &&
+                        //         widget.categoryId != 27)) ...[
+                        //   widget.typeAds == 'jobAds' ||
+                        //           widget.typeAds == 'ads1' ||
+                        //           widget.categoryId == 27
+                        //       ? Container()
+                        //       : Text(
+                        //           (widget.data?.ad!.price ?? 0) > 0
+                        //               ? '${widget.data?.ad!.price?.toString() ?? ''} ${widget.data?.ad!.currency ?? ''}'
+                        //               : '${translate('price_not_announced')}',
+                        //           style: AppStyle.smallTitleStyle.copyWith(
+                        //             color:
+                        //                 AppColorsController().textPrimaryColor,
+                        //             fontWeight: AppFontWeight.midLight,
+                        //           ),
+                        //         ),
+                        // ],
 
-                        if(widget.data!.properties != null && widget.typeAds =='ads1')...[
-                          SizedBox(width: 100.w,),
-                          Text(
-                            (widget.data?.ad!.price ?? 0) > 0
-                                ? '${widget.data?.ad!.price?.toString() ?? ''} ${widget.data?.ad!.currency ?? ''}'
-                                : '${translate('price_not_announced')}',
-                            style: AppStyle.smallTitleStyle.copyWith(
-                              color:
-                              AppColorsController().textPrimaryColor,
-                              fontWeight: AppFontWeight.midLight,
-                            ),
-                          ),
-                        ],
-                        if((widget.typeAds =='ads' && widget.data!.properties == null &&widget.categoryId != 27  ) || (widget.data!.ad!.properties == null &&  widget.typeAds !='ads' &&widget.categoryId != 27  )) ...[
-                          widget.typeAds == 'jobAds' || widget.typeAds == 'ads1'|| widget.categoryId == 27?Container():      Text(
-                            (widget.data?.ad!.price ?? 0) > 0
-                                ? '${widget.data?.ad!.price?.toString() ?? ''} ${widget.data?.ad!.currency ?? ''}'
-                                : '${translate('price_not_announced')}',
-                            style: AppStyle.smallTitleStyle.copyWith(
-                              color:
-                              AppColorsController().textPrimaryColor,
-                              fontWeight: AppFontWeight.midLight,
-                            ),
-                          ),
-                        ],
-
-
-                        /*
 
 
                          widget.typeAds == 'jobAds' || widget.categoryId == 27
@@ -198,8 +212,6 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
                               fontWeight: AppFontWeight.midLight,
                             ),
                           ),
-
-                         */
 
                       ],
                     ),
@@ -359,7 +371,8 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
                     ),
                     (widget.data?.properties?.length ?? 0) == 0 ||
                             widget.typeAds == 'jobAds' ||
-                            widget.typeAds == 'adsWithoutImage'|| widget.categoryId == 27
+                            widget.typeAds == 'adsWithoutImage' ||
+                            widget.categoryId == 27
                         ? Container()
                         : _isSeeMore == false
                             ? InkWell(
@@ -499,63 +512,80 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
                 height: 20.sp,
               ),
 
-              if(DIManager.findDep<SharedPrefs>()
-                  .getToken()?.isEmpty == false)...[
-                DIManager.findDep<SharedPrefs>().getUserID()! == widget.data!.ad!.user_id.toString()? Container(): Center(
-                  child: AppButton(
-                    height: 48.sp,
-                    width: 240.sp,
-                    borderRadiusCircular: 16.sp,
-                    childPadding: EdgeInsets.symmetric(horizontal: 24.sp),
-                    onPressed: () {
-                      if (!AppUtils.checkIfGuest(context)) {
-                        DIManager.findNavigator().pushNamed(ChatMessagesPage.routeName,
-                            arguments: ArgumentMessage(
-                              user_id_2: widget.data?.ad!.user_id,
-                              ad_id: widget.data?.ad!.ad_id,
-                              imageAds:widget.typeAds == 'jobAds' ||
-                                  widget.typeAds == 'adsWithoutImage' ||
-                                  widget.categoryId == 27
-                                  ? widget.data?.ad!.image_name?.toString():widget.data?.ad!.featured_image?.toString(),
-                              nameAds: widget.data?.ad!.title?? '',
-                              nameOwnerAds: widget.data?.ad!.user_name?? '',adsIsJob:   widget.typeAds == 'jobAds' ||
-                                widget.typeAds == 'adsWithoutImage' ||
-                                widget.categoryId == 27
-                                ? true : false,
-                              user_name_person_sender: DIManager.findDep<SharedPrefs>().getUserNamePerson().toString(),
-                              user_id: DIManager.findDep<SharedPrefs>().getUserID().toString(),
-                            ));
-                      }
+              if (DIManager.findDep<SharedPrefs>().getToken()?.isEmpty ==
+                  false) ...[
+                DIManager.findDep<SharedPrefs>().getUserID()! ==
+                        widget.data!.ad!.user_id.toString()
+                    ? Container()
+                    : Center(
+                        child: AppButton(
+                          height: 48.sp,
+                          width: 240.sp,
+                          borderRadiusCircular: 16.sp,
+                          childPadding: EdgeInsets.symmetric(horizontal: 24.sp),
+                          onPressed: () {
+                            if (!AppUtils.checkIfGuest(context)) {
+                              DIManager.findNavigator().pushNamed(
+                                  ChatMessagesPage.routeName,
+                                  arguments: ArgumentMessage(
+                                    user_id_2: widget.data?.ad!.user_id,
+                                    ad_id: widget.data?.ad!.ad_id,
+                                    imageAds: widget.typeAds == 'jobAds' ||
+                                            widget.typeAds ==
+                                                'adsWithoutImage' ||
+                                            widget.categoryId == 27
+                                        ? widget.data?.ad!.image_name
+                                            ?.toString()
+                                        : widget.data?.ad!.featured_image
+                                            ?.toString(),
+                                    nameAds: widget.data?.ad!.title ?? '',
+                                    nameOwnerAds:
+                                        widget.data?.ad!.user_name ?? '',
+                                    adsIsJob: widget.typeAds == 'jobAds' ||
+                                            widget.typeAds ==
+                                                'adsWithoutImage' ||
+                                            widget.categoryId == 27
+                                        ? true
+                                        : false,
+                                    user_name_person_sender:
+                                        DIManager.findDep<SharedPrefs>()
+                                            .getUserNamePerson()
+                                            .toString(),
+                                    user_id: DIManager.findDep<SharedPrefs>()
+                                        .getUserID()
+                                        .toString(),
+                                  ));
+                            }
 
-                      // if (!AppUtils.checkIfGuest(context)) {
-                      //   DIManager.findNavigator().pushNamed(
-                      //       ChatMessagesPage.routeName,
-                      //       arguments: ArgumentMessage(
-                      //           user_id_2: widget.data?.ad?.user_id,
-                      //           ad_id: widget.data?.ad?.ad_id));
-                      // }
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 70.sp,
-                        ),
-                        Text(
-                          translate("chat"),
-                          style: AppStyle.smallTitleStyle.copyWith(
-                            color: AppColorsController().textPrimaryColor,
-                            fontWeight: AppFontWeight.midLight,
+                            // if (!AppUtils.checkIfGuest(context)) {
+                            //   DIManager.findNavigator().pushNamed(
+                            //       ChatMessagesPage.routeName,
+                            //       arguments: ArgumentMessage(
+                            //           user_id_2: widget.data?.ad?.user_id,
+                            //           ad_id: widget.data?.ad?.ad_id));
+                            // }
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: 70.sp,
+                              ),
+                              Text(
+                                translate("chat"),
+                                style: AppStyle.smallTitleStyle.copyWith(
+                                  color: AppColorsController().textPrimaryColor,
+                                  fontWeight: AppFontWeight.midLight,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 25.sp,
+                              ),
+                              ChatIcon(),
+                            ],
                           ),
                         ),
-                        SizedBox(
-                          width: 25.sp,
-                        ),
-                        ChatIcon(),
-                      ],
-                    ),
-                  ),
-                ),
+                      ),
               ] else ...[
                 Center(
                   child: AppButton(
@@ -565,21 +595,30 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
                     childPadding: EdgeInsets.symmetric(horizontal: 24.sp),
                     onPressed: () {
                       if (!AppUtils.checkIfGuest(context)) {
-                        DIManager.findNavigator().pushNamed(ChatMessagesPage.routeName,
+                        DIManager.findNavigator().pushNamed(
+                            ChatMessagesPage.routeName,
                             arguments: ArgumentMessage(
                               user_id_2: widget.data?.ad!.user_id,
                               ad_id: widget.data?.ad!.ad_id,
-                              imageAds:widget.typeAds == 'jobAds' ||
-                                  widget.typeAds == 'adsWithoutImage' ||
-                                  widget.categoryId == 27
-                                  ? widget.data?.ad!.image_name?.toString():widget.data?.ad!.featured_image?.toString(),
-                              nameAds: widget.data?.ad!.title?? '',
-                              nameOwnerAds: widget.data?.ad!.user_name?? '',adsIsJob:   widget.typeAds == 'jobAds' ||
-                                widget.typeAds == 'adsWithoutImage' ||
-                                widget.categoryId == 27
-                                ? true : false,
-                              user_name_person_sender: DIManager.findDep<SharedPrefs>().getUserNamePerson().toString(),
-                              user_id: DIManager.findDep<SharedPrefs>().getUserID().toString(),
+                              imageAds: widget.typeAds == 'jobAds' ||
+                                      widget.typeAds == 'adsWithoutImage' ||
+                                      widget.categoryId == 27
+                                  ? widget.data?.ad!.image_name?.toString()
+                                  : widget.data?.ad!.featured_image?.toString(),
+                              nameAds: widget.data?.ad!.title ?? '',
+                              nameOwnerAds: widget.data?.ad!.user_name ?? '',
+                              adsIsJob: widget.typeAds == 'jobAds' ||
+                                      widget.typeAds == 'adsWithoutImage' ||
+                                      widget.categoryId == 27
+                                  ? true
+                                  : false,
+                              user_name_person_sender:
+                                  DIManager.findDep<SharedPrefs>()
+                                      .getUserNamePerson()
+                                      .toString(),
+                              user_id: DIManager.findDep<SharedPrefs>()
+                                  .getUserID()
+                                  .toString(),
                             ));
                       }
 
@@ -613,7 +652,6 @@ class _DetailsBodyWidgetState extends State<DetailsBodyWidget> {
                   ),
                 ),
               ],
-
             ],
           ),
         ),

@@ -447,25 +447,25 @@ Image.asset( "assets/images/logo.png",height: 95.h,width: 130.w,),
           ),
         ),
 
-        if(data!.properties != null && data!.properties!.isNotEmpty == true)...[
-          for(int i = 0; i < data!.properties!.length; i ++)...[
-            if(data!.properties![i].title!.contains('السعر من') &&
-                data!.properties![i].title == 'السعر من')...[
-              Text(
-                '${data!.properties![i]
-                    .description
-                    .toString()} ${data?.currency ?? ''}',
-                style: AppStyle.lightSubtitle.copyWith(
-                    color: AppColorsController().selectIconColor,
-                    fontWeight: AppFontWeight.midLight,
-                    fontSize: AppFontSize.fontSize_10
-                ),
-                maxLines: 1,
-              ),
-            ],
-          ]
-        ] else
-          ...[
+        // if(data!.properties != null && data!.properties!.isNotEmpty == true)...[
+        //   for(int i = 0; i < data!.properties!.length; i ++)...[
+        //     if(data!.properties![i].title!.contains('السعر من') &&
+        //         data!.properties![i].title == 'السعر من')...[
+        //       Text(
+        //         '${data!.properties![i]
+        //             .description
+        //             .toString()} ${data?.currency ?? ''}',
+        //         style: AppStyle.lightSubtitle.copyWith(
+        //             color: AppColorsController().selectIconColor,
+        //             fontWeight: AppFontWeight.midLight,
+        //             fontSize: AppFontSize.fontSize_10
+        //         ),
+        //         maxLines: 1,
+        //       ),
+        //     ],
+        //   ]
+        // ] else
+        //   ...[
             Flexible(
               flex: 1,
               child: Padding(
@@ -484,7 +484,7 @@ Image.asset( "assets/images/logo.png",height: 95.h,width: 130.w,),
                 ),
               ),
             ),
-          ],
+          // ],
 
       ],
     );
