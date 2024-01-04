@@ -525,8 +525,8 @@ class _ViewAllPageState extends State<ViewAllPage> {
                         ),
                       ),
                       Text(
-                        items![index]!.date_ad != null
-                            ? getComparedTime(items![index]!.date_ad!)
+                        items![index]!.created_at != null
+                            ? getComparedTime(items![index]!.created_at!)
                             .toString()!
                             : "",
                         style: AppStyle.smallTitleStyle.copyWith(

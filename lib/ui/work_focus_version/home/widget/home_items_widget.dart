@@ -438,8 +438,8 @@ Image.asset( "assets/images/logo.png",height: 95.h,width: 130.w,),
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          data?.date_ad != null ? getComparedTime(
-              data?.date_ad ?? DateTime.now()).toString() : "",
+          data?.created_at != null ? getComparedTime(
+              data?.created_at ?? DateTime.now()).toString() : "",
           style: AppStyle.lightSubtitle.copyWith(
               color: AppColorsController().black,
               fontWeight: AppFontWeight.midLight,
