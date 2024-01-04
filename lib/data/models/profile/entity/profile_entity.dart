@@ -5,20 +5,21 @@ import '../../ads/entity/ads_entity.dart';
 class ProfileEntity extends BaseEntity {
   final List<ItemsAdsEntity>? ad;
   final ItemsUserEntity? user;
+  final int? adCount;
 
 
 
   ProfileEntity({
     this.ad,
     this.user,
-
+this.adCount
   });
 
   @override
   List<Object?> get props => [
     this.ad,
     this.user,
-
+this.adCount
   ];
 
 

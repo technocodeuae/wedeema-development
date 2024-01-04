@@ -340,7 +340,7 @@ class _JobAdCardState extends State<JobAdCard> {
     return GestureDetector(
       onTap: () {
 
-print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+// print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
         if (!AppUtils.checkIfGuest(context)) {
           DIManager.findNavigator().pushNamed(ChatMessagesPage.routeName,
               arguments: ArgumentMessage(

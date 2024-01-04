@@ -127,6 +127,62 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
+
+  Future<void> getOtherFollowings(int userId,int page) async {
+    emit(state.copyWith(getOthersFollowingsState: BaseLoadingState()));
+    final result = await profileRepo.getOtherFollowings(userId,page);
+    if (result.hasDataOnly) {
+      emit(state.copyWith(
+          getOthersFollowingsState: GetOthersFollowingsSuccessState(result.data!)));
+    } else {
+      emit(
+        state.copyWith(
+          getOthersFollowingsState: BaseFailState(
+            result.error,
+            callback: () => this.getOtherFollowings(userId,page),
+          ),
+        ),
+      );
+    }
+  }
+
+  Future<void> getOtherFollowers(int userId,int page) async {
+    emit(state.copyWith(getOthersFollowersState: BaseLoadingState()));
+    final result = await profileRepo.getOtherFollowers(userId,page);
+    if (result.hasDataOnly) {
+      emit(state.copyWith(
+          getOthersFollowersState: GetOthersFollowersSuccessState(result.data!)));
+    } else {
+      emit(
+        state.copyWith(
+          getOthersFollowersState: BaseFailState(
+            result.error,
+            callback: () => this.getOtherFollowers(userId,page),
+          ),
+        ),
+      );
+    }
+  }
+
+  Future<void> getOtherBlockers(int userId,int page) async {
+    emit(state.copyWith(getOthersBlockersState: BaseLoadingState()));
+    final result = await profileRepo.getOtherBlockers(userId,page);
+    if (result.hasDataOnly) {
+      emit(state.copyWith(
+          getOthersBlockersState: GetOthersBlockersSuccessState(result.data!)));
+    } else {
+      emit(
+        state.copyWith(
+          getOthersBlockersState: BaseFailState(
+            result.error,
+            callback: () => this.getOtherBlockers(userId,page),
+          ),
+        ),
+      );
+    }
+  }
+
+
   Future<void> getOtherProfile(int userId) async {
     emit(state.copyWith(getOtherProfileState: BaseLoadingState()));
     final result = await profileRepo.getOtherProfile(userId);

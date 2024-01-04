@@ -9,14 +9,14 @@ part of 'notifications_model.dart';
 ItemsNotificationsModel _$ItemsNotificationsModelFromJson(
         Map<String, dynamic> json) =>
     ItemsNotificationsModel(
-      json['user_id'] as int?,
+      int.parse(json['user_id']??'0'),
       id: json['id'] as int?,
       type: json['type'] as String?,
-      ad_id: json['ad_id'] as int?,
+      ad_id: int.parse(json['ad_id']??'0'),
       message: json['message'] as String?,
       title: json['title'] as String?,
       body: json['body'] as String?,
-      read: json['read'] as int?,
+      read: int.parse(json['read']??'0') ,
       created_at: json['created_at'] == null
           ? null
           : DateTime.parse(json['created_at'] as String),

@@ -8,6 +8,7 @@ class OtherProfileEntity extends BaseEntity {
   final ItemsUserEntity? user;
   final List<ItemsUserEntity>? user_followers;
   final List<ItemsUserEntity>? user_followings;
+  final int? adCount;
    bool? is_follow;
    bool? is_blocked;
    String? sharing_link;
@@ -22,6 +23,7 @@ class OtherProfileEntity extends BaseEntity {
     this.is_follow,
     this.is_blocked,
     this.sharing_link,
+    this.adCount,
   });
 
   @override
@@ -33,6 +35,7 @@ class OtherProfileEntity extends BaseEntity {
     this.user_followings,
     this.is_blocked,
     this.sharing_link,
+    this.adCount
   ];
 
 

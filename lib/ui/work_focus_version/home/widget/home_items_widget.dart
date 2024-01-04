@@ -57,11 +57,17 @@ class HomeItemsWidget extends StatelessWidget {
             foregroundColor: AppColorsController().dropdown,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(16)))),
-        child: ((data!.ad_images != null &&
-            (data?.ad_images?.length ?? 0) > 0) &&
-            data?.image_name.toString() ==
-                '/img/ad/default.png') || data?.featured_image?.toString() ==
-            '/img/ad/default.png' ?
+        child:
+        data?.image_name.toString() ==
+            '/img/ad/default.png'
+                || data?.featured_image?.toString() ==
+            '/img/ad/default.png'?
+        // ((data!.ad_images != null &&
+        //     (data?.ad_images?.length ?? 0) > 0) &&
+        //     data?.image_name.toString() ==
+        //         '/img/ad/default.png')
+        //         || data?.featured_image?.toString() ==
+        //     '/img/ad/default.png' ?
 
 
         Column(
@@ -536,7 +542,7 @@ Image.asset( "assets/images/logo.png",height: 95.h,width: 130.w,),
               arguments: ArgumentMessage(
                 user_id_2: data?.user_id,
                 ad_id: data?.ad_id,
-                imageAds: data?.ad_images?[0].name?.toString(),
+                imageAds: data?.image_name.toString(),
                 nameAds: data?.title?? '',
                 nameOwnerAds: data?.user_name?? '',
                 user_name_person_sender: DIManager.findDep<SharedPrefs>().getUserNamePerson().toString(),

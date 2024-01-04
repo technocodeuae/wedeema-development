@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:wadeema/blocs/ads/ads_bloc.dart';
 import 'package:wadeema/blocs/ads/states/ads_state.dart';
 import 'package:wadeema/blocs/application/application_bloc.dart';
@@ -252,14 +253,15 @@ class _HomeItemsFavoriteState extends State<HomeItemsFavorite> {
         width: widget.width ?? ((376 / 2)).sp,
         height: 102.sp,
         // child: (data!.ad_images != null && (data?.ad_images?.length ?? 0) > 0 && (data?.ad_images?[0].name?.toString() != '/img/ad/default.png') )
-        child: (widget.data!.ad_images != null && (widget.data?.ad_images?.length ?? 0) > 0  )
-            ? Image.network(
-          AppConsts.IMAGE_URL + (widget.data?.ad_images?[0].name?.toString() ?? ''),
-          width: widget.width ?? 200.sp,
-          height: 102.sp,
-          fit: BoxFit.cover,
-        )
-            :  Image.network(
+        child:  widget.data?.image_name.toString() =='/img/ad/default.png'  ?  Container(
+          width: 150.sp,
+          height: 95.sp,
+          child: SvgPicture.asset(
+            "assets/images/trace.svg",
+            width: 50.sp,
+            height: 101.sp, fit: BoxFit.fill,
+          ),
+        ): Image.network(
           AppConsts.IMAGE_URL + (widget.data?.image_name.toString() ?? ''),
           width: widget.width ?? 200.sp,
           height: 102.sp,
@@ -291,7 +293,7 @@ class _HomeItemsFavoriteState extends State<HomeItemsFavorite> {
               arguments: ArgumentMessage(
                 user_id_2: widget.data?.user_id,
                 ad_id: widget.data?.ad_id,
-                imageAds: widget.data?.ad_images?[0].name?.toString(),
+                imageAds: widget.data?.image_name.toString(),
                 nameAds: widget.data?.title?? '',
                 nameOwnerAds: widget.data?.user_name?? '',
                 user_name_person_sender: DIManager.findDep<SharedPrefs>().getUserNamePerson().toString(),

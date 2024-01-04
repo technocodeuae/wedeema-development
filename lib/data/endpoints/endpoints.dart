@@ -64,6 +64,10 @@ class AppEndpoints {
   static const String allFollowersUser =  '${User}followers';
   static const String allBlockersUser =  '${User}blockers';
 
+  static const String otherFollowingsUser =  '${User}followings_for_user';
+  static const String otherFollowersUser =  '${User}all_Followers_for_user';
+  static const String otherBlockersUser =  '${User}blockers_for_user';
+
   /// chat
   static const String allChats =  'chats';
   static const String getChatMassage =  '${Chat}/messages/';

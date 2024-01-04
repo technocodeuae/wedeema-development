@@ -81,7 +81,7 @@ class _ItemsDetailsPageState extends State<ItemsDetailsPage> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    print('widget.typeAds :${widget.args!.type}');
+    print('widget.typeAds :${widget.args!.id}');
     print('widget.title :${widget.args!.title}');
     return Scaffold(
         appBar: appBarApp(context, text: translate("ads"),

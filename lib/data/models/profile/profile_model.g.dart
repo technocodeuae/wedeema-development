@@ -13,12 +13,15 @@ ProfileModel _$ProfileModelFromJson(Map<String, dynamic> json) => ProfileModel(
       user: json['user'] == null
           ? null
           : ItemsUserModel.fromJson(json['user'] as Map<String, dynamic>),
+
+      adCount: json['ad_count'] ?? 0,
     );
 
 Map<String, dynamic> _$ProfileModelToJson(ProfileModel instance) =>
     <String, dynamic>{
       'ad': instance.ad,
       'user': instance.user,
+          'ad_count':instance.adCount,
     };
 
 ItemsUserModel _$ItemsUserModelFromJson(Map<String, dynamic> json) =>
@@ -41,20 +44,21 @@ ItemsUserModel _$ItemsUserModelFromJson(Map<String, dynamic> json) =>
       last_name: json['last_name'] as String?,
       city: json['city'] as String?,
       first_name: json['first_name'] as String?,
-      is_active: json['is_active'] as int?,
-      ratings_average: json['ratings_average'],
+      is_active: int.parse( json['is_active'] ??'0'),
+      ratings_average: double.parse(json['ratings_average'] ?? '0.0') ,
       address: json['address'] as String?,
       advertiser_perecent: json['advertiser_perecent'],
       apple_provider_id: json['apple_provider_id'],
-      is_mobile_verified: json['is_mobile_verified'] as int?,
-      following: json['following'] as int?,
-      is_accept_terms: json['is_accept_terms'] as int?,
+      is_mobile_verified: int.parse(json['is_mobile_verified']??'0'),
+      following: int.parse(json['following'] ?? '1') ,
+      is_accept_terms: int.parse(json['is_accept_terms'] ??'1') ,
       google_provider_id: json['google_provider_id'],
       facebook_provider_id: json['facebook_provider_id'],
       country: json['country'],
-      is_password_weak: json['is_password_weak'] as int?,
-      is_shown_email: json['is_shown_email'] as int?,
-      is_shown_mobile: json['is_shown_mobile'] as int?,
+      is_password_weak: int.parse(json['is_password_weak'] ??"1")
+          ,
+      is_shown_email: int.parse(json['is_shown_email']  ??'1'),
+      is_shown_mobile: int.parse(json['is_shown_mobile'] ??'1') ,
       last_login: json['last_login'] == null
           ? null
           : DateTime.parse(json['last_login'] as String),
@@ -66,7 +70,7 @@ ItemsUserModel _$ItemsUserModelFromJson(Map<String, dynamic> json) =>
       kind: json['kind'] as String?,
       platform_kind: json['platform_kind'] as String?,
       registration_website: json['registration_website'],
-      role_id: json['role_id'] as int?,
+      role_id: int.parse(json['role_id'] ??'1') ,
       twitter_provider_id: json['twitter_provider_id'],
       user_image: json['user_image'],
       verification_code: json['verification_code'],
@@ -79,8 +83,8 @@ ItemsUserModel _$ItemsUserModelFromJson(Map<String, dynamic> json) =>
       note: json['note'],
       mobile: json['mobile'] as String?,
       company_name: json['company_name'],
-      followers: json['followers'] as int?,
-      city_id: json['city_id'] as int?,
+      followers: int.parse(json['followers'] ?? '1'),
+      city_id: int.parse(json['city_id'] ??'1') ,
     );
 
 Map<String, dynamic> _$ItemsUserModelToJson(ItemsUserModel instance) =>

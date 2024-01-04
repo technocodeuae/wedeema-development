@@ -23,4 +23,9 @@ abstract class ProfileFacade {
   Future<Result<ListUserEntity>> getALLFollowings(int page);
   Future<Result<ListUserEntity>> getALLFollowers(int page);
   Future<Result<ListUserEntity>> getALLBlockers(int page);
+
+
+  Future<Result<ListUserEntity>> getOtherFollowings(int userId,int page);
+  Future<Result<ListUserEntity>> getOtherFollowers(int userId,int page);
+  Future<Result<ListUserEntity>> getOtherBlockers(int userId,int page);
 }

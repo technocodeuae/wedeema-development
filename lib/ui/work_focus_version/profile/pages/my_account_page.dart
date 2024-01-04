@@ -7,6 +7,7 @@ import 'package:wadeema/core/constants/app_colors.dart';
 import 'package:wadeema/core/constants/dimens.dart';
 import 'package:wadeema/data/models/profile/entity/profile_entity.dart';
 import 'package:wadeema/ui/work_focus_version/general/buttons/app_button.dart';
+import 'package:wadeema/ui/work_focus_version/home/arg/following_args.dart';
 import 'package:wadeema/ui/work_focus_version/home/widget/app_bar_app.dart';
 import '../../../../blocs/profile/profile_bloc.dart';
 import '../../../../blocs/profile/states/profile_state.dart';
@@ -195,7 +196,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                       onTap: () {
                         DIManager.findNavigator().pushNamed(
                           FollowFollowerBlockUser.routeName,
-                          arguments: 1,
+                          arguments: FollowingArgs(action: 1,userId: -1),
                         );
                       },
                     ),
@@ -204,7 +205,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                       onTap: () {
                         DIManager.findNavigator().pushNamed(
                           FollowFollowerBlockUser.routeName,
-                          arguments: 0,
+                          arguments: FollowingArgs(action: 0,userId: -1),
                         );
                       },
                       child: Column(
@@ -241,7 +242,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                       child: Column(
                         children: [
                           Text(
-                            '0',
+                            data?.adCount.toString() ?? '0',
                             style: AppStyle.lightSubtitle.copyWith(
                                 color: AppColorsController().black,
                                 fontWeight: FontWeight.w400,

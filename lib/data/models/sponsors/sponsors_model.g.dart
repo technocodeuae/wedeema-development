@@ -17,7 +17,7 @@ SponsorsModel _$SponsorsModelFromJson(Map<String, dynamic> json) =>
       created_at: json['created_at'] == null
           ? null
           : DateTime.parse(json['created_at'] as String),
-      is_active: json['is_active'] as int?,
+      is_active: int.parse(json['is_active']) ,
       updated_at: json['updated_at'] == null
           ? null
           : DateTime.parse(json['updated_at'] as String),

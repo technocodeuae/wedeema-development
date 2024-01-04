@@ -9,8 +9,8 @@ part of 'categories_model.dart';
 CategoriesModel _$CategoriesModelFromJson(Map<String, dynamic> json) =>
     CategoriesModel(
       id: json['id'] as int?,
-      parent_id: json['parent_id'] as int?,
-      sort_order: json['sort_order'] as int?,
+      parent_id: int.parse(json['parent_id']) ,
+      sort_order: int.parse(json['sort_order']) ,
       filter_show: json['filter_show'] as String?,
       slider_show: json['slider_show'] as String?,
       icon: json['icon'],
@@ -23,10 +23,10 @@ CategoriesModel _$CategoriesModelFromJson(Map<String, dynamic> json) =>
           ? null
           : DateTime.parse(json['updated_at'] as String),
       deleted_at: json['deleted_at'],
-      hasChild: json['hasChild'] as int?,
-      language_id: json['language_id'] as int?,
+      hasChild: int.parse(json['hasChild']) ,
+      language_id: int.parse(json['language_id'] ),
       title: json['title'] as String?,
-      category_id: json['category_id'] as int?,
+      category_id: int.parse(json['category_id']),
     );
 
 Map<String, dynamic> _$CategoriesModelToJson(CategoriesModel instance) =>

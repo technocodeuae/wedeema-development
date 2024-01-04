@@ -29,7 +29,7 @@ ItemsPropertiesModel _$ItemsPropertiesModelFromJson(
     ItemsPropertiesModel(
       id: json['id'] as int?,
       categoryId: json['categoryId'] as int?,
-      hasChild: json['hasChild'] as int?,
+      hasChild: int.parse(json['hasChild'] ??'0') ,
       title: json['title'] as String?,
       type: json['type'] as String?,
       updatedAt: json['updatedAt'] == null
@@ -44,7 +44,7 @@ ItemsPropertiesModel _$ItemsPropertiesModelFromJson(
       deletedAt: json['deletedAt'],
       sortOrder: json['sortOrder'] as int?,
       essential: json['essential'] as String?,
-      propertyId: json['property_id'] as int?,
+      propertyId: int.parse(json['property_id']  ??'0'),
     );
 
 Map<String, dynamic> _$ItemsPropertiesModelToJson(

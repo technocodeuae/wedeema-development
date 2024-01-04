@@ -321,7 +321,17 @@ class _DetailsBodyFilterWidgetState extends State<DetailsBodyFilterWidget> {
                         DIManager.findNavigator().pushNamed(
                             ChatMessagesPage.routeName,
                             arguments: ArgumentMessage(
-                                user_id_2: widget.data?.user_id, ad_id: widget.data?.ad_id));
+                                user_id_2: widget.data?.user_id, ad_id: widget.data?.ad_id,imageAds: widget.data?.image_name.toString(),
+
+
+                              nameAds: widget.data?.title?? '',
+                              nameOwnerAds: widget.data?.user_name?? '',
+                              user_name_person_sender: DIManager.findDep<SharedPrefs>().getUserNamePerson().toString(),
+                              user_id: DIManager.findDep<SharedPrefs>().getUserID().toString(),
+                            )
+
+
+                        );
                       }
                     },
                     child: Row(

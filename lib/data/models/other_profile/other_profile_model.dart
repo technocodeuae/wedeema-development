@@ -18,6 +18,7 @@ class OtherProfileModel extends BaseModel {
   final bool? is_follow;
   final bool? is_blocked;
   final String? sharing_link;
+  final int? adCount;
 
   OtherProfileModel({
     this.user_followings,
@@ -27,6 +28,7 @@ class OtherProfileModel extends BaseModel {
     this.is_follow,
     this.is_blocked,
     this.sharing_link,
+    this.adCount
   });
 
   factory OtherProfileModel.fromRawJson(String str) =>
@@ -47,6 +49,7 @@ class OtherProfileModel extends BaseModel {
       is_follow: is_follow,
       is_blocked: is_blocked,
         sharing_link:sharing_link,
+      adCount: adCount??0
     );
   }
 }

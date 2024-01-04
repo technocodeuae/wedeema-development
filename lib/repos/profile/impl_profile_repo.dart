@@ -87,6 +87,25 @@ class ProfileRepo extends BaseRepository implements ProfileFacade {
     return mapModelToEntity(res);
   }
 
+
+  @override
+  Future<Result<ListUserEntity>> getOtherFollowings(int userId,int page)async {
+    final res = await _aRD.getOtherFollowings(userId, page);
+    return mapModelToEntity(res);
+  }
+
+  @override
+  Future<Result<ListUserEntity>> getOtherFollowers(int userId,int page)async {
+    final res = await _aRD.getOtherFollowers(userId, page);
+    return mapModelToEntity(res);
+  }
+
+  @override
+  Future<Result<ListUserEntity>> getOtherBlockers(int userId,int page)async {
+    final res = await _aRD.getOtherBlockers(userId, page);
+    return mapModelToEntity(res);
+  }
+
   @override
   Future<Result<EmptyEntity>> userUnBlock(int userId)async {
     final res = await _aRD.userUnBlock(userId);

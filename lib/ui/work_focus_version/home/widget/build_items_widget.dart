@@ -118,8 +118,9 @@ class _BuildItemsWidgetState extends State<BuildItemsWidget> {
 
             return Column(
               children: [
-                VerticalPadding(3.sp),
-                itemsList.length == 0?Container():   GeneralErrorWidget(
+                // VerticalPadding(3.sp),
+                // itemsList.length == 0?Container():
+                GeneralErrorWidget(
                   error: adsState.error,
                   callback: adsState.callback,
                 ),

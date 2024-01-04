@@ -27,6 +27,7 @@ import '../../ui/work_focus_version/auth/pages/sign_up_page.dart';
 import '../../ui/work_focus_version/chat/args/argument_message.dart';
 import '../../ui/work_focus_version/chat/pages/chat_messages_page.dart';
 import '../../ui/work_focus_version/chat/pages/chats_page.dart';
+import '../../ui/work_focus_version/home/arg/following_args.dart';
 import '../../ui/work_focus_version/home/arg/items_args.dart';
 import '../../ui/work_focus_version/home/arg/view_all_args.dart';
 import '../../ui/work_focus_version/home/pages/home_page.dart';
@@ -92,7 +93,7 @@ class RouteGenerator {
 
       case FollowFollowerBlockUser.routeName:
         return FollowFollowerBlockUser(
-          action: (settings.arguments as int?),
+          followingArgs: (settings.arguments as FollowingArgs?),
         );
 
       case FAQPage.routeName:

@@ -12,10 +12,12 @@ part 'profile_model.g.dart';
 class ProfileModel extends BaseModel {
   final List<ItemsAdsModel>? ad;
   final ItemsUserModel? user;
+  final  int? adCount;
 
   ProfileModel({
     this.ad,
     this.user,
+    this.adCount
   });
 
   factory ProfileModel.fromRawJson(String str) =>
@@ -31,6 +33,7 @@ class ProfileModel extends BaseModel {
     return ProfileEntity(
       ad: ad?.map((e) => e.toEntity()).toList(),
       user: user?.toEntity(),
+adCount: adCount ??0,
     );
   }
 }

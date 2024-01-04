@@ -43,8 +43,8 @@ CategoryAdsDetailsModel _$CategoryAdsDetailsModelFromJson(
         Map<String, dynamic> json) =>
     CategoryAdsDetailsModel(
       id: json['id'] as int?,
-      parent_id: json['parent_id'] as int?,
-      sort_order: json['sort_order'] as int?,
+      parent_id: int.parse(json['parent_id'] ??'0'),
+      sort_order:int.parse( json['sort_order'] ),
       filter_show: json['filter_show'] as String?,
       slider_show: json['slider_show'] as String?,
       icon: json['icon'] as String?,
@@ -58,12 +58,12 @@ CategoryAdsDetailsModel _$CategoryAdsDetailsModelFromJson(
           : DateTime.parse(json['updated_at'] as String),
       deleted_at: json['deleted_at'],
       has_child: json['has_child'] as int?,
-      category_id: json['category_id'] as int?,
-      language_id: json['language_id'] as int?,
+      category_id: int.parse(json['category_id'] ??'0'),
+      language_id: int.parse( json['language_id'] ),
       title: json['title'] as String?,
-      ad_id: json['ad_id'] as int?,
+      ad_id: int.parse(json['ad_id'] ??'0')  ,
       essential: json['essential'] as String?,
-      property_id: json['property_id'] as int?,
+      property_id: int.parse(json['property_id'] ??'0') ,
       subproperty_id: json['subproperty_id'],
       description: json['description'] as String?,
     );
@@ -97,7 +97,7 @@ ImageAdsDetailsModel _$ImageAdsDetailsModelFromJson(
         Map<String, dynamic> json) =>
     ImageAdsDetailsModel(
       id: json['id'] as int?,
-      ad_id: json['ad_id'] as int?,
+      ad_id: int.parse(json['ad_id'] ??'0') ,
       featured: json['featured'] as String?,
       name: json['name'] as String?,
       created_at: json['created_at'] == null
@@ -122,12 +122,12 @@ Map<String, dynamic> _$ImageAdsDetailsModelToJson(
 RatingAdsDetailsModel _$RatingAdsDetailsModelFromJson(
         Map<String, dynamic> json) =>
     RatingAdsDetailsModel(
-      id: json['id'] as int?,
+      id: int.parse(json['id']??'0') ,
       type: json['type'] as String?,
-      evaluator_id: json['evaluator_id'] as int?,
+      evaluator_id: int.parse(json['evaluator_id']??'0'),
       evaluated_id: json['evaluated_id'],
-      ad_id: json['ad_id'] as int?,
-      value: json['value'],
+      ad_id: int.parse(json['ad_id']??'1'),
+      value: double.parse(json['value'] ??'0.0'),
       comment: json['comment'] as String?,
       created_at: json['created_at'] == null
           ? null

@@ -44,14 +44,14 @@ class _GeneralErrorWidgetState extends State<GeneralErrorWidget> {
         children: <Widget>[
           this.widget.body ?? Container(),
           VerticalPadding(1.5.sp),
-          Padding(
-            padding:
-                EdgeInsets.symmetric(horizontal: 10.sp),
-            child: Text(
-              this.widget.message ?? widget.error!.message!,
-              style: AppStyle.errorMessageStyle,textAlign: TextAlign.center,
-            ),
-          ),
+          // Padding(
+          //   padding:
+          //       EdgeInsets.symmetric(horizontal: 10.sp),
+          //   child: Text(
+          //     this.widget.message ?? widget.error!.message!,
+          //     style: AppStyle.errorMessageStyle,textAlign: TextAlign.center,
+          //   ),
+          // ),
           VerticalPadding(1.5.sp),
           RoundedAnimatedButton(
             text: translate('retry'),

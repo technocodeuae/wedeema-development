@@ -128,6 +128,48 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
     );
   }
 
+
+  Future<Result<ListUserModel>> getOtherFollowings(int userId,int page) async {
+    return await RemoteDataSource.request<ListUserModel>(
+      converter: (model) => ListUserModel.fromJson(model),
+      method: HttpMethod.POST,
+      headers: {RemoteDataSource.requiresToken: true},
+      data: {
+        "user_id":userId,
+        "page":page,
+      },
+      url: AppEndpoints.otherFollowingsUser,
+    );
+  }
+
+  Future<Result<ListUserModel>> getOtherFollowers(int userId,int page) async {
+    return await RemoteDataSource.request<ListUserModel>(
+      converter: (model) => ListUserModel.fromJson(model),
+      method: HttpMethod.POST,
+      headers: {RemoteDataSource.requiresToken: true},
+      data: {
+        "user_id":userId,
+        "page":page,
+      },
+      url: AppEndpoints.otherFollowersUser,
+    );
+  }
+
+  Future<Result<ListUserModel>> getOtherBlockers(int userId,int page) async {
+    return await RemoteDataSource.request<ListUserModel>(
+      converter: (model) => ListUserModel.fromJson(model),
+      method: HttpMethod.POST,
+      headers: {RemoteDataSource.requiresToken: true},
+      data: {
+        "user_id":userId,
+        "page":page,
+      },
+      url: AppEndpoints.otherBlockersUser,
+    );
+  }
+
+
+
   Future<Result<EmptyModel>> userUnBlock(int userId) async {
     return await RemoteDataSource.request<EmptyModel>(
       converter: (model) => EmptyModel(model),
@@ -137,6 +179,7 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
       url: AppEndpoints.unBlockUser,
     );
   }
+
 }
 
 abstract class ProfileRemoteDataSource {
@@ -148,6 +191,9 @@ abstract class ProfileRemoteDataSource {
   Future<Result<OtherProfileModel>> getOtherProfile(int userId);
   Future<Result<OtherProfileModel>> getProfileShare(String url);
   Future<Result<ListUserModel>> getALLFollowings(int page);
+  Future<Result<ListUserModel>> getOtherFollowings(int userId,int page);
+  Future<Result<ListUserModel>>  getOtherFollowers(int userId,int page);
+  Future<Result<ListUserModel>> getOtherBlockers(int userId,int page);
   Future<Result<ListUserModel>> getALLFollowers(int page);
   Future<Result<ListUserModel>> getALLBlockers(int page );
   Future<Result<EmptyModel>> userFollow(int userId);

@@ -8,7 +8,7 @@ part of 'settings_model.dart';
 
 ItemsSettingsModel _$ItemsSettingsModelFromJson(Map<String, dynamic> json) =>
     ItemsSettingsModel(
-      id: json['id'] as int?,
+      id: int.parse(json['id']??'0') ,
       title: json['title'] as String?,
     );
 
@@ -33,8 +33,8 @@ ItemsFaqModel _$ItemsFaqModelFromJson(Map<String, dynamic> json) =>
       question: json['question'] as String?,
       id: json['id'] as int?,
       answer: json['answer'] as String?,
-      faq_id: json['faq_id'] as int?,
-      language_id: json['language_id'] as int?,
+      faq_id: int.parse(json['faq_id']),
+      language_id: int.parse(json['language_id'])  ,
       created_at: json['created_at'] == null
           ? null
           : DateTime.parse(json['created_at'] as String),

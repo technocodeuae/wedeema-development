@@ -73,7 +73,7 @@ class RatingsWidget extends StatelessWidget {
 
                             BuildCircularImageUser(
                               url: ratings![index].user_profile_pic,
-                              id: ratings![index].evaluator_id,
+                              id: int.parse(ratings![index].evaluator_id.toString()),
                               size: 38.sp,
                             ),
 

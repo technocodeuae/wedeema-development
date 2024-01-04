@@ -7,7 +7,7 @@ part of 'cities_model.dart';
 // **************************************************************************
 
 CitiesModel _$CitiesModelFromJson(Map<String, dynamic> json) => CitiesModel(
-      id: json['id'] as int?,
+      id: int.parse(json['id']??'0'),
       title: json['title'] as String?,
       status: json['status'] as String?,
       deleted_at: json['deleted_at'] == null

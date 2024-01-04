@@ -22,6 +22,9 @@ class ProfileState {
   GeneralState getALLFollowersState;
   GeneralState getALLFollowingsState;
   GeneralState getALLBlockersState;
+  GeneralState getOthersFollowersState;
+  GeneralState getOthersFollowingsState;
+  GeneralState getOthersBlockersState;
 
 
 
@@ -37,6 +40,9 @@ class ProfileState {
     required this.getALLBlockersState,
     required this.getALLFollowersState,
     required this.getALLFollowingsState,
+    required this.getOthersBlockersState,
+    required this.getOthersFollowersState,
+    required this.getOthersFollowingsState,
   });
 
   factory ProfileState.initialState() => ProfileState(
@@ -52,7 +58,9 @@ class ProfileState {
     getALLFollowingsState: BaseInitState(),
     getALLFollowersState: BaseInitState(),
     getALLBlockersState: BaseInitState(),
-
+getOthersBlockersState: BaseInitState(),
+    getOthersFollowersState: BaseInitState(),
+    getOthersFollowingsState: BaseInitState(),
 
   );
 
@@ -69,6 +77,9 @@ class ProfileState {
     GeneralState? getALLFollowersState,
     GeneralState? getALLFollowingsState,
     GeneralState? getALLBlockersState,
+    GeneralState? getOthersFollowersState,
+    GeneralState? getOthersFollowingsState,
+    GeneralState? getOthersBlockersState,
 
   }) {
     return ProfileState(
@@ -85,7 +96,9 @@ class ProfileState {
       getALLFollowersState: getALLFollowersState ?? this.getALLFollowersState,
       getALLFollowingsState: getALLFollowingsState ?? this.getALLFollowingsState,
 
-
+getOthersFollowingsState: getOthersFollowingsState??this.getOthersFollowingsState ,
+      getOthersFollowersState: getOthersFollowersState??this.getOthersFollowersState,
+      getOthersBlockersState: getOthersBlockersState??this.getOthersBlockersState,
     );
   }
 }
@@ -124,6 +137,24 @@ class GetALLFollowersSuccessState extends BaseSuccessState {
   GetALLFollowersSuccessState(this.users);
 }
 
+
+class GetOthersFollowingsSuccessState extends BaseSuccessState {
+  final ListUserEntity users;
+
+  GetOthersFollowingsSuccessState(this.users);
+}
+
+class GetOthersBlockersSuccessState extends BaseSuccessState {
+  final ListUserEntity users;
+
+  GetOthersBlockersSuccessState(this.users);
+}
+
+class GetOthersFollowersSuccessState extends BaseSuccessState {
+  final ListUserEntity users;
+
+  GetOthersFollowersSuccessState(this.users);
+}
 
 
 

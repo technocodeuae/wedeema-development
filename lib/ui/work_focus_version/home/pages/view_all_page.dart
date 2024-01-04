@@ -710,56 +710,62 @@ class _ViewAllPageState extends State<ViewAllPage> {
         TextStyle(color: AppColorsController().white),
       ),
       onLoading: _onLoading,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 0.sp),
-        child: GridView.builder(
-          itemCount: items.length,
+      child: GridView.builder(
+        itemCount: items.length,
 
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            if (categoriesBloc.isJobs(items[index].category_title ?? '')) {
-              return card.JobAdCard(
-                data: items[index],
-                isUseGridView: true,
-                onPress: () {
-                  DIManager.findNavigator().pushNamed(
-                    ItemsDetailsPage.routeName,
-                    arguments: ItemsArgs(id: items[index].ad_id ?? 0,categoryId: items[index].category_id ?? 0,type: 'jobAds'),
-                  );
-                },
-              );
-            }
-            return widget.arg.type == 3
-                ? card.JobAdCard(
-              data: items[index],isUseGridView: true,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          if (categoriesBloc.isJobs(items[index].category_title ?? '')) {
+            return card.JobAdCard(
+              data: items[index],
+              isUseGridView: true,
               onPress: () {
                 DIManager.findNavigator().pushNamed(
                   ItemsDetailsPage.routeName,
                   arguments: ItemsArgs(id: items[index].ad_id ?? 0,categoryId: items[index].category_id ?? 0,type: 'jobAds'),
                 );
               },
-            )
-                : HomeItemsWidget(
-              // weDontHaveImage: true,
-              onPress: () {
+            );
+          }
+          return widget.arg.type == 3
+              ? card.JobAdCard(
+            data: items[index],isUseGridView: true,
+            onPress: () {
+              DIManager.findNavigator().pushNamed(
+                ItemsDetailsPage.routeName,
+                arguments: ItemsArgs(id: items[index].ad_id ?? 0,categoryId: items[index].category_id ?? 0,type: 'jobAds'),
+              );
+            },
+          )
+              : Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5.sp),
+                child: HomeItemsWidget(
+            // weDontHaveImage: true,
+            onPress: () {
                 DIManager.findNavigator()
                     .pushNamed(ItemsDetailsPage.routeName,
                     arguments: ItemsArgs(
                       id: items[index].ad_id ?? 0,categoryId: items[index].category_id ??0,type: 'ads1'
                     ));
                 print(items);
-              },
-              data: items[index],
-            );
-          },
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisExtent: 220.sp,
-            crossAxisSpacing: 1.sp,
-            mainAxisSpacing: 2.sp,
+            },
+            data: items[index],
           ),
-          physics: NeverScrollableScrollPhysics(),
+              );
+        },
+        gridDelegate:  widget.arg.type == 3
+            ? SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisExtent: 200.sp,
+          crossAxisSpacing: 0.sp,
+          mainAxisSpacing: 8.sp,
+        ):SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisExtent: 200.sp,
+          crossAxisSpacing: 0.sp,
+          mainAxisSpacing: 8.sp,
         ),
+        physics: NeverScrollableScrollPhysics(),
       ),
     );
   }

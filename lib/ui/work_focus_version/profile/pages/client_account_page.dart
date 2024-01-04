@@ -9,6 +9,7 @@ import 'package:wadeema/core/constants/app_colors.dart';
 import 'package:wadeema/core/constants/app_font.dart';
 import 'package:wadeema/core/constants/dimens.dart';
 import 'package:wadeema/data/models/other_profile/entity/other_profile_entity.dart';
+import 'package:wadeema/ui/work_focus_version/home/arg/following_args.dart';
 import 'package:wadeema/ui/work_focus_version/home/pages/items_details_page.dart';
 import 'package:wadeema/ui/work_focus_version/home/widget/job_ad_card.dart';
 
@@ -583,7 +584,7 @@ class _ClientAccountPageState extends State<ClientAccountPage> {
                               child: Column(
                                 children: [
                                   Text(
-                                    data?.user?.following?.toString() ?? '',
+                                    data?.user?.followers?.toString() ?? '',
                                     style: AppStyle.lightSubtitle.copyWith(
                                         color: AppColorsController().black,
                                         fontWeight: FontWeight.w400,
@@ -605,7 +606,7 @@ class _ClientAccountPageState extends State<ClientAccountPage> {
                               onTap: () {
                                 DIManager.findNavigator().pushNamed(
                                   FollowFollowerBlockUser.routeName,
-                                  arguments: 1,
+                                  arguments: FollowingArgs(action: 1,userId: data?.user?.id ??0),
                                 );
                               },
                             ),
@@ -620,13 +621,13 @@ class _ClientAccountPageState extends State<ClientAccountPage> {
                                 // }
                                 DIManager.findNavigator().pushNamed(
                                   FollowFollowerBlockUser.routeName,
-                                  arguments: 0,
+                                  arguments: FollowingArgs(action: 0,userId: data?.user?.id ??0),
                                 );
                               },
                               child: Column(
                                 children: [
                                   Text(
-                                    data?.user?.followers?.toString() ?? '',
+                                    data?.user?.following?.toString() ?? '',
                                     style: AppStyle.lightSubtitle.copyWith(
                                         color: AppColorsController().black,
                                         fontWeight: FontWeight.w400,
@@ -657,7 +658,7 @@ class _ClientAccountPageState extends State<ClientAccountPage> {
                               child: Column(
                                 children: [
                                   Text(
-                                    '0',
+                                    data?.adCount.toString() ?? '0',
                                     style: AppStyle.lightSubtitle.copyWith(
                                         color: AppColorsController().black,
                                         fontWeight: FontWeight.w400,

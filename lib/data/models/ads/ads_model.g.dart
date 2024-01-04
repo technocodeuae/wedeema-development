@@ -16,8 +16,8 @@ Map<String, dynamic> _$AdsModelToJson(AdsModel instance) => <String, dynamic>{
 
 ItemsAdsModel _$ItemsAdsModelFromJson(Map<String, dynamic> json) => ItemsAdsModel(
       id: json['id'] as int?,
-      ad_id: json['ad_id'] as int?,
-      language_id: json['language_id'] as int?,
+      ad_id: int.parse(json['ad_id'] ),
+      language_id: int.parse(json['language_id'] ),
       image_name: json['image_name'] as String?,
       featured_image: json['featured_image'] as String?,
       sub_category_title: json['sub_category_title'] as String?,
@@ -34,7 +34,7 @@ ItemsAdsModel _$ItemsAdsModelFromJson(Map<String, dynamic> json) => ItemsAdsMode
       price: json['price'] as int?,
       average: json['average'],
       sharing_link: json['sharing_link'] as String?,
-      followers_count: json['followers_count'] as int?,
+      followers_count: int.parse(json['followers_count'] ?? '0') ,
       date_ad: json['date_ad'] == null ? null : DateTime.parse(json['date_ad'] as String),
       ad_images: json['ad_images'] is List
           ? ((json['ad_images'] as List<dynamic>?)
@@ -46,13 +46,13 @@ ItemsAdsModel _$ItemsAdsModelFromJson(Map<String, dynamic> json) => ItemsAdsMode
           CategoryAdsDetailsModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       category_title: json['category_title'] as String?,
-      category_id: json['category_id'] as int?,
+      category_id: int.parse(json['category_id'] ??'0') ,
       status: json['status'] as String?,
-      likes: json['likes'] as int? ?? 0,
+      likes: int.parse(json['likes'] ??'0') ,
       availability_status: json['availability_status'] as String?,
-      is_favorite: json['is_favorite'] as int? ?? 0,
-      is_liked: json['is_liked'] as int? ?? 0,
-      user_id: json['user_id'] as int?,
+      is_favorite:int.parse( json['is_favorite'] ??'0'),
+      is_liked: int.parse(json['is_liked'] ??'0'),
+      user_id: int.parse(json['user_id'] ??'0'),
       ad_evaluations: json['ad_evaluations'] is List
           ? ((json['ad_evaluations'] as List<dynamic>?)
               ?.map((e) => AdEvaluationsModel.fromJson(e as Map<String, dynamic>))
