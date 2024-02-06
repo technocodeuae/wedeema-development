@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -94,7 +95,7 @@ class ApiProvider {
         }
       else
         decodedJson = response.data;
-      print(decodedJson);
+      log("Response==> $decodedJson");
 
       // if (decodedJson['status'] == true) {
       if (converterList != null)
