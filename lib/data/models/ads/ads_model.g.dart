@@ -16,7 +16,7 @@ Map<String, dynamic> _$AdsModelToJson(AdsModel instance) => <String, dynamic>{
 
 ItemsAdsModel _$ItemsAdsModelFromJson(Map<String, dynamic> json) => ItemsAdsModel(
       id: json['id'] as int?,
-      ad_id: int.parse(json['ad_id'] ),
+      ad_id: (json['ad_id']),
       language_id: int.parse(json['language_id'] ),
       image_name: json['image_name'] as String?,
       featured_image: json['featured_image'] as String?,

@@ -158,8 +158,8 @@ Future<void> main() async {
     //
     // print(easternTime);
     // print(timeInDubai);
-    Bloc.observer = MyBlocObserver();
     WidgetsFlutterBinding.ensureInitialized();
+    Bloc.observer = MyBlocObserver();
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     await DIManager.initDI();

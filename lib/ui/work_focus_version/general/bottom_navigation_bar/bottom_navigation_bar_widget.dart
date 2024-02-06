@@ -112,8 +112,6 @@ int _currentIndex = 0;
                               iconPath: AppAssets.homeIcons,
                               page: PagesEnum.PAGE_1),
                         ),
-
-
                         InkWell(
                           onTap: () {
 
@@ -217,22 +215,24 @@ int _currentIndex = 0;
                         ),
                         InkWell(
                           onTap: () {
-
-                            if(widget.indexPage==0){
+                            DIManager.findNavigator().pushNamed(
+                              MyProfilePage.routeName,
+                            );
+                           /* if(widget.indexPage==0){
                               if (!AppUtils.checkIfGuest(context)) {
                                 DIManager.findNavigator().pushNamed(
                                   MyProfilePage.routeName,
                                 );
                               }
-
                             } else if(widget.indexPage!=4 && widget.indexPage!=0) {
                               if (!AppUtils.checkIfGuest(context)) {
+                                print("Not Guest");
                                 DIManager.findNavigator().pushReplacementNamed(
                                   MyProfilePage.routeName,
                                 );
                               }
 
-                            }
+                            }*/
 
                             // if(widget.indexPage!=4){
                             //   DIManager.findNavigator().pushNamed(

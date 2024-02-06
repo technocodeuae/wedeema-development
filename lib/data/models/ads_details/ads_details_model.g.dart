@@ -61,7 +61,7 @@ CategoryAdsDetailsModel _$CategoryAdsDetailsModelFromJson(
       category_id: int.parse(json['category_id'] ??'0'),
       language_id: int.parse( json['language_id'] ),
       title: json['title'] as String?,
-      ad_id: int.parse(json['ad_id'] ??'0')  ,
+      ad_id: (json['ad_id'] ??'0')  ,
       essential: json['essential'] as String?,
       property_id: int.parse(json['property_id'] ??'0') ,
       subproperty_id: json['subproperty_id'],
@@ -97,7 +97,7 @@ ImageAdsDetailsModel _$ImageAdsDetailsModelFromJson(
         Map<String, dynamic> json) =>
     ImageAdsDetailsModel(
       id: json['id'] as int?,
-      ad_id: int.parse(json['ad_id'] ??'0') ,
+      ad_id: (json['ad_id'] ??'0') ,
       featured: json['featured'] as String?,
       name: json['name'] as String?,
       created_at: json['created_at'] == null
@@ -126,7 +126,7 @@ RatingAdsDetailsModel _$RatingAdsDetailsModelFromJson(
       type: json['type'] as String?,
       evaluator_id: int.parse(json['evaluator_id']??'0'),
       evaluated_id: json['evaluated_id'],
-      ad_id: int.parse(json['ad_id']??'1'),
+      ad_id: (json['ad_id']??'1'),
       value: double.parse(json['value'] ??'0.0'),
       comment: json['comment'] as String?,
       created_at: json['created_at'] == null
