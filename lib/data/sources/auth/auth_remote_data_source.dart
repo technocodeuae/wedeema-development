@@ -144,7 +144,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     return await RemoteDataSource.request<EmptyModel>(
       method: HttpMethod.POST,
       converter: (model) => EmptyModel(model),
-      data: {"country_code": countryCode, "mobile": mobile,  "is_change_password": isChangePassword},
+      data: {"country_code": countryCode, "mobile": mobile,},
       url: AppEndpoints.sendVerificationCode,
       headers: {RemoteDataSource.requiresToken: false},
     );
@@ -157,6 +157,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       data: {"mobile": mobile, "otp_code": otpCode, 'is_change_password': isChangePassword},
       url: AppEndpoints.validateMobileNumber,
       headers: {RemoteDataSource.requiresToken: false},
+    );
+  }
+
+  @override
+  Future<Result<EmptyModel>> deleteAccount() async {
+    return await RemoteDataSource.request<EmptyModel>(
+      converter: (model) => EmptyModel(model),
+      method: HttpMethod.POST,
+      url: AppEndpoints.logout,
+      headers: {RemoteDataSource.requiresToken: true},
     );
   }
 
@@ -200,6 +210,7 @@ abstract class AuthRemoteDataSource {
 // Future<Result<EmptyModel>> refreshToken(params);
 //
   Future<Result<EmptyModel>> logout();
+  Future<Result<EmptyModel>> deleteAccount();
 
   Future<Result<EmptyModel>> changePassword(String? email,String? mobile, String password);
 

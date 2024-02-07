@@ -17,6 +17,7 @@ class AppAssets {
   static const notificationIcons = "assets/icons/notification.svg";
   static const renewIcons = "assets/icons/renew.svg";
   static const chatIcons = "assets/icons/chat.svg";
+  static const deleteAccountIcons = "assets/icons/delete_account.svg";
   static const shareIcons = "assets/icons/share.svg";
   static const homeIcons = "assets/icons/home.svg";
   static const messengerIcons = "assets/icons/messenger.svg";

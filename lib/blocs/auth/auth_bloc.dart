@@ -219,6 +219,31 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+
+  Future<void> deleteAcount() async {
+    emit(state.copyWith(logout: BaseLoadingState()));
+
+    final result = await authRepo.logout();
+
+    if (result.hasDataOnly) {
+      DIManager.findDep<SharedPrefs>().logout();
+
+      emit(state.copyWith(logout: LogOutSuccessState(result.data!)));
+      DIManager.findNavigator().offAll(
+        SignInPage.routeName,arguments: 1
+      );
+    } else {
+      emit(
+        state.copyWith(
+          logout: BaseFailState(
+            result.error,
+            callback: () => this.logout(),
+          ),
+        ),
+      );
+    }
+  }
+
   Future<void> changePassword(
     String password, {
     String? email,

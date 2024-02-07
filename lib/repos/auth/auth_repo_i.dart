@@ -1,6 +1,7 @@
 
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:wadeema/data/models/auth/entity/auth_entity.dart';
 
 import '../../../core/models/empty_entity.dart';
@@ -28,6 +29,7 @@ abstract class AuthFacade {
   });
 
   Future<Result<EmptyEntity>> logout();
+  Future<Result<EmptyEntity>> deleteAccount(BuildContext context);
   Future<Result<EmptyEntity>> forgetPassword(String email);
   Future<Result<EmptyEntity>> changePassword(String? email, String? mobile, String password);
   Future<Result<dynamic>> sendVerificationCode(String countryCode,String mobile,bool isChangePassword);
