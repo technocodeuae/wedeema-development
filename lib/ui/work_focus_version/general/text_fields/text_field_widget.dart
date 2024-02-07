@@ -107,12 +107,12 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
               },
               onTap: widget.onTap,
               maxLength: widget.maxLength,
-              showCursor: !_showError,
+              // showCursor: !_showError,
               cursorColor: AppColorsController().scaffoldBGColor,
-              // validator: (String? value){
-              //   if (value?.isEmpty ?? true) return translate('this_field_is_required');
-              //   return null;
-              // },
+              validator: (String? value){
+                if (value?.isEmpty ?? true) return translate('this_field_is_required');
+                return null;
+              },
               onChanged: (value) {
                 if (value.toString().isNotEmpty) {
                   setState(() {
@@ -156,13 +156,13 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
                 counterText: '',
                 prefixIcon: widget.prefixIcon,
                 hintText:widget.hint ,
-                errorText: widget.isRequired == true
-                    ? (_showError == true
-                        ? translate('this_field_is_required')
-                        : null)
-                    : null,
+                // errorText: widget.isRequired == true
+                //     ? (_showError == true
+                //         ? translate('this_field_is_required')
+                //         : null)
+                //     : null,
                 // errorStyle: TextStyle(height: 0,fontSize: 1),
-                contentPadding: EdgeInsets.only(bottom: 10.sp),
+                contentPadding: EdgeInsets.only(bottom: 10.sp , top: 10.sp),
                 border: InputBorder.none,
                 suffixIcon: widget.suffix,
                 focusedBorder: InputBorder.none,

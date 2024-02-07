@@ -12,7 +12,7 @@ ItemsNotificationsModel _$ItemsNotificationsModelFromJson(
       int.parse(json['user_id']??'0'),
       id: json['id'] as int?,
       type: json['type'] as String?,
-      ad_id: int.parse(json['ad_id']??'0'),
+      ad_id: (json['ad_id']??'0'),
       message: json['message'] as String?,
       title: json['title'] as String?,
       body: json['body'] as String?,
