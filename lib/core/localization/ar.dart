@@ -13,6 +13,7 @@ Map<String, String> ar = {
   "email": "الإيميل",
   "password": "كلمة المرور",
   "sign_in": "تسجيل الدخول",
+  "delete_account":"حذف الحساب",
   "forgot_password": "نسيت كلمة المرور؟",
   "reset_password": "إعادة تعيين كلمة المرور",
   "send_otp": "إرسال OTP",

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wadeema/core/bloc/states/base_init_state.dart';
 import 'package:wadeema/core/constants/app_colors.dart';
 import 'package:wadeema/core/constants/app_consts.dart';
 import 'package:wadeema/core/constants/app_font.dart';
@@ -85,7 +86,7 @@ class _ForgetPageState extends State<ForgetPage> {
                   BlocConsumer<AuthCubit, AuthState>(
                       bloc: _authBloc,
                       listener: (_, state) {
-
+                        print("State==============> ${state.loginState}");
                         final loginState = state.loginState;
                         if (_isLoading == true &&loginState is BaseFailState) {
                           setState(() {
@@ -257,19 +258,22 @@ class _ForgetPageState extends State<ForgetPage> {
     setState(() {
       _isLoading = true;
     });
-    _authBloc.sendVerificationCode(AppConsts.countryCode, '${AppConsts.countryCode}$phoneValue',
+    _authBloc.sendVerificationCode(AppConsts.countryCode, '$phoneValue',
         isChangePassword: true,
         onDone: (){
       setState(() {
+        print("SENDOTPPAGE===================================>");
         _isLoading = false;
       });
+
       DIManager.findNavigator().pushNamed(
           SendOtpPage.routeName,
           arguments: {'phone_number': '+${AppConsts.countryCode}$phoneValue', 'is_change_password': true});
     },onError: (){
+      print("Errrrorororor");
       setState(() {
         _isLoading = false;
-      });
+    });
     });
   }
 }

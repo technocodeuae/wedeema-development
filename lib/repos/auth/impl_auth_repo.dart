@@ -102,6 +102,12 @@ Future<Result<EmptyEntity>> changePassword(String? email,String? mobile, String 
     final res = await _aRD.validateMobileNumber(otpCode, mobile,isChangePassword);
     return res;
   }
+
+  @override
+  Future<Result<EmptyEntity>> deleteAccount(context) async {
+    final res = await _aRD.deleteAccount();
+    return mapModelToEntity(res);
+  }
   //
   // @override
   // Future<Result<EmptyEntity>> refreshToken() async {

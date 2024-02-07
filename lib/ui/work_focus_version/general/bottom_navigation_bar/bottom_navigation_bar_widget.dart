@@ -215,9 +215,12 @@ int _currentIndex = 0;
                         ),
                         InkWell(
                           onTap: () {
-                            DIManager.findNavigator().pushNamed(
-                              MyProfilePage.routeName,
-                            );
+                            if(widget.indexPage!=4) {
+                              DIManager.findNavigator().pushNamed(
+                                MyProfilePage.routeName,
+                              );
+                            }
+
                            /* if(widget.indexPage==0){
                               if (!AppUtils.checkIfGuest(context)) {
                                 DIManager.findNavigator().pushNamed(

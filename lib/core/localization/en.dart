@@ -41,6 +41,7 @@ Map<String, String> en = {
   "address_ads": "Advertisement title",
   "image": "Image",
   "search": "Search",
+  "delete_account":"Delete Account",
   "search_in_wadeema": "Search in Wadeema",
   "view_all": "View All",
   "are_you_looking_for": "Are you looking for",
