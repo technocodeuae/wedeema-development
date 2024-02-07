@@ -16,7 +16,7 @@ import '../../../../core/utils/screen_utils/device_utils.dart';
 import '../../home/pages/home_page.dart';
 
 class SplashPage extends StatefulWidget {
-  static const routeName = '/SplashPage';
+  static const routeName = '/';
 
   const SplashPage();
 
