@@ -25,6 +25,7 @@ class SettingsRepo extends BaseRepository implements SettingsFacade {
   @override
   Future<Result<ShareLinkEntity>> getShareLink(String url) async {
     final res = await _aRD.getShareLink(url);
+    print("Share ==> ${res.data} ,,error : ${res.error} ,, MAp : ${mapModelToEntity(res)}");
     return mapModelToEntity(res);
   }
 

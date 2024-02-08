@@ -9,12 +9,14 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
+import 'package:uni_links/uni_links.dart';
 import 'package:wadeema/ui/work_focus_version/home/arg/items_args.dart';
 import 'package:wadeema/ui/work_focus_version/home/pages/items_details_page.dart';
 import 'package:wadeema/ui/work_focus_version/profile/pages/client_account_page.dart';
 import '../../../../core/di/di_manager.dart';
 import '../../../../core/errors/app_error_handler/app_error_handler.dart';
 import 'blocs/bloc_observer.dart';
+import 'blocs/setting/settings_bloc.dart';
 import 'core/shared_prefs/shared_prefs.dart';
 import 'data/models/notifications/notifications_model.dart';
 import 'ui/work_focus_version/app.dart';
@@ -148,6 +150,33 @@ void _configureFirebaseMessaging() {
 //
 //
 // }
+void processIncomingLink(String url , SettingsCubit settingsCubit) async{
+  // Process the incoming URL
+  print('Incoming URL: $url');
+  await settingsCubit.getShareLink(url);
+}
+
+void initUniLinks(SettingsCubit settingsCubit) async {
+  print("initUniLinks");
+  // Check if the app was launched from a deep link
+  try {
+    // Listen for incoming links
+
+    uriLinkStream.listen((Uri? uri) {
+      print("Listeeeeeeeeeeeeennnn $uri");
+      if (uri?.path != "https://wadeema.syria5.com/api/mobile/")
+        processIncomingLink(uri.toString() , settingsCubit);
+      // handleDeepLink(uri!.path);
+    },onError: (err){
+      print("Error in listen $err");
+    },onDone: () {
+      print("========= Success in listen =========");
+    },);
+  } on PlatformException {
+    print("Platform Exception");
+    // Handle exception if unable to retrieve initial link
+  }
+}
 
 Future<void> main() async {
   runZonedGuarded<Future<void>>(() async {
@@ -160,6 +189,7 @@ Future<void> main() async {
     // print(timeInDubai);
     WidgetsFlutterBinding.ensureInitialized();
     Bloc.observer = MyBlocObserver();
+
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     await DIManager.initDI();
@@ -168,7 +198,8 @@ Future<void> main() async {
     );
     await _initFirebaseMessaging();
     _configureFirebaseMessaging();
-
+    final settingsBloc = DIManager.findDep<SettingsCubit>();
+    initUniLinks(settingsBloc);
     // FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
     runApp(App());
 

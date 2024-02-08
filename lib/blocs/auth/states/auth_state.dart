@@ -10,6 +10,7 @@ class AuthState {
   GeneralState loginState;
   GeneralState registerState;
   GeneralState logout;
+  GeneralState deletAccount;
   GeneralState refreshToken;
   GeneralState changePassword;
   GeneralState forgetPassword;
@@ -19,6 +20,7 @@ class AuthState {
     required this.registerState,
     required this.loginState,
     required this.logout,
+    required this.deletAccount,
     required this.refreshToken,
     required this.changePassword,
     required this.forgetPassword,
@@ -30,6 +32,7 @@ class AuthState {
     loginState: BaseInitState(),
     registerState: BaseInitState(),
     logout: BaseInitState(),
+    deletAccount: BaseInitState(),
     refreshToken: BaseInitState(),
     changePassword: BaseInitState(),
     forgetPassword: BaseInitState(),
@@ -41,6 +44,7 @@ class AuthState {
     GeneralState? loginState,
     GeneralState? registerState,
     GeneralState? logout,
+    GeneralState? deletAccount,
     GeneralState? refreshToken,
     GeneralState? changePassword,
     GeneralState? verification,
@@ -51,6 +55,7 @@ class AuthState {
       loginState: loginState ?? this.loginState,
       registerState: registerState ?? this.registerState,
       logout: logout ?? this.logout,
+      deletAccount: deletAccount ?? this.deletAccount,
       verification: verification ?? this.verification,
       refreshToken: refreshToken ?? this.refreshToken,
       forgetPassword: forgetPassword ?? this.forgetPassword,
@@ -79,6 +84,11 @@ class LogOutSuccessState extends BaseSuccessState {
   final EmptyEntity data;
 
   LogOutSuccessState(this.data);
+}
+class DeleteAccountSuccessState extends BaseSuccessState {
+  final EmptyEntity data;
+
+  DeleteAccountSuccessState(this.data);
 }
 class ChangePasswordSuccessState extends BaseSuccessState {
   final EmptyEntity data;

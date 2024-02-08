@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage>
 
   @override
   void initState() {
-    initUniLinks();
+
     isLoadingCategories = true;
     isLoadingSponsor = true;
     _getData();
@@ -83,26 +83,30 @@ class _HomePageState extends State<HomePage>
     await sponsorBloc.getSponsors();
   }
 
-  void processIncomingLink(String url) {
+  void processIncomingLink(String url) async{
     // Process the incoming URL
     print('Incoming URL: $url');
-    settingsBloc.getShareLink(url);
+    await settingsBloc.getShareLink(url);
   }
 
   void initUniLinks() async {
+    print("initUniLinks");
     // Check if the app was launched from a deep link
     try {
       // Listen for incoming links
-      final initialLink = await getInitialLink();
 
-      // processIncomingLink(initialLink ?? "");
-
-      getUriLinksStream().listen((Uri? uri) {
+      uriLinkStream.listen((Uri? uri) {
+        print("Listeeeeeeeeeeeeennnn $uri");
         if (uri?.path != "https://wadeema.syria5.com/api/mobile/")
           processIncomingLink(uri.toString());
-        // handleDeepLink(uri!.path);
-      });
+         // handleDeepLink(uri!.path);
+      },onError: (err){
+        print("Error in listen $err");
+      },onDone: () {
+        print("========= Success in listen =========");
+      },);
     } on PlatformException {
+      print("Platform Exception");
       // Handle exception if unable to retrieve initial link
     }
   }
@@ -125,12 +129,16 @@ class _HomePageState extends State<HomePage>
               bloc: settingsBloc,
               listener: (context, state) {
                 final settingsState = state.getShareLinkState;
-                if (settingsState is BaseFailState) {}
+                print("Setting State : $settingsState");
+                if (settingsState is BaseFailState) {
+                  print("BaseFailState");
+                }
 
                 if (settingsState is GetShareLinkStateSuccessState) {
                   final data =
                       (state.getShareLinkState as GetShareLinkStateSuccessState)
                           .shareLink;
+                  print("DATA LINKKKKKK${data.user}");
                   if (data.user != null) {
                     DIManager.findNavigator().pushNamed(
                         ClientAccountPage.routeName,

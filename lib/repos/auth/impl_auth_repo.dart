@@ -104,7 +104,7 @@ Future<Result<EmptyEntity>> changePassword(String? email,String? mobile, String 
   }
 
   @override
-  Future<Result<EmptyEntity>> deleteAccount(context) async {
+  Future<Result<EmptyEntity>> deleteAccount() async {
     final res = await _aRD.deleteAccount();
     return mapModelToEntity(res);
   }

@@ -164,8 +164,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<Result<EmptyModel>> deleteAccount() async {
     return await RemoteDataSource.request<EmptyModel>(
       converter: (model) => EmptyModel(model),
-      method: HttpMethod.POST,
-      url: AppEndpoints.logout,
+      method: HttpMethod.GET,
+      url: AppEndpoints.deleteAccount,
       headers: {RemoteDataSource.requiresToken: true},
     );
   }

@@ -220,15 +220,14 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
 
-  Future<void> deleteAcount() async {
-    emit(state.copyWith(logout: BaseLoadingState()));
+  Future<void> deleteAccount() async {
+    emit(state.copyWith(deletAccount: BaseLoadingState()));
 
-    final result = await authRepo.logout();
-
+    final result = await authRepo.deleteAccount();
     if (result.hasDataOnly) {
-      DIManager.findDep<SharedPrefs>().logout();
+      DIManager.findDep<SharedPrefs>().deletAccount();
 
-      emit(state.copyWith(logout: LogOutSuccessState(result.data!)));
+      emit(state.copyWith(deletAccount: DeleteAccountSuccessState(result.data!)));
       DIManager.findNavigator().offAll(
         SignInPage.routeName,arguments: 1
       );
@@ -237,7 +236,7 @@ class AuthCubit extends Cubit<AuthState> {
         state.copyWith(
           logout: BaseFailState(
             result.error,
-            callback: () => this.logout(),
+            callback: () => this.deleteAccount(),
           ),
         ),
       );

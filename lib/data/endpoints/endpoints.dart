@@ -53,6 +53,7 @@ class AppEndpoints {
   static const String properties =  'properties';
   static const String profile =  '${User}profile/';
   static const String storeAds =  '${User}ad/store';
+  static const String deleteAccount =  '${User}deleteUserAndAds';
   static const String moreInfoProfile =  '${User}profile_see_more/';
   static const String showProfile =  '${User}profile_show/';
   static const String editProfile =  '${User}profile_edit';
