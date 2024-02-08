@@ -78,6 +78,18 @@ class SharedPrefs {
 
     //GlobalNotification.instance.deleteFCMToken();
   }
+  void deletAccount() {
+    setEmployeeMode(EmployeeModesEnum.NONE);
+    setLoginMode(LoginModeEnum.NONE);
+   // setAuth(null);
+    setToken(null);
+    setRefreshToken(null);
+    setImageProfile(null);
+    setNotificationsStatus(null);
+    setIsFirst(true);
+
+    //GlobalNotification.instance.deleteFCMToken();
+  }
 
   EmployeeModesEnum getEmployeeMode() =>
       EmployeeModesEnum.values[_employeeMode.val];

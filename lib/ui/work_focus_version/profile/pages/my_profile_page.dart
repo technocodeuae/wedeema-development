@@ -131,6 +131,7 @@ class _MyProfilePageState extends State<MyProfilePage>
                     bloc: DIManager.findDep<AuthCubit>(),
                     listener: (_, state) {
                       final registerState = state.logout;
+                      final deleteAccountState = state.deletAccount;
                       if (_isLoading == true &&registerState is BaseFailState) {
                         setState(() {
                           _isLoading = false;
@@ -145,6 +146,14 @@ class _MyProfilePageState extends State<MyProfilePage>
                       if (_isLoading == true && registerState is LogOutSuccessState) {
                         setState(() {
                           _isLoading = false;
+                        });
+                        DIManager.findNavigator().pushNamedAndRemoveUntil(
+                          SignInPage.routeName,
+                        );
+                      }
+                      if (_isLoadingDelete == true && deleteAccountState is DeleteAccountSuccessState) {
+                        setState(() {
+                          _isLoadingDelete = false;
                         });
                         DIManager.findNavigator().pushNamedAndRemoveUntil(
                           SignInPage.routeName,
@@ -211,7 +220,7 @@ class _MyProfilePageState extends State<MyProfilePage>
                     _isLoadingDelete = true;
                   });
                   if (!AppUtils.checkIfGuest(context)) {
-                    DIManager.findDep<AuthCubit>().deleteAcount();
+                    DIManager.findDep<AuthCubit>().deleteAccount();
                   }
                 },
               ),

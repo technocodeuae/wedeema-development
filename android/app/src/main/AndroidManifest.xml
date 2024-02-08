@@ -34,7 +34,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:theme="@style/LaunchTheme"
             android:hardwareAccelerated="true">
             <!-- Specifies an Android theme to apply to this Activity as soon as
@@ -55,6 +55,9 @@
               android:resource="@style/NormalTheme"
 
               />
+            <meta-data
+                android:name="flutter_deeplinking_enabled"
+                android:value="true" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
