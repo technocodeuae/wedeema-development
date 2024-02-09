@@ -110,7 +110,10 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
               // showCursor: !_showError,
               cursorColor: AppColorsController().scaffoldBGColor,
               validator: (String? value){
-                if (value?.isEmpty ?? true) return translate('this_field_is_required');
+               if(widget.isRequired) {
+                 if (value?.isEmpty ?? true)
+                   return translate('this_field_is_required');
+               }
                 return null;
               },
               onChanged: (value) {
